@@ -1,0 +1,16 @@
+65
+amarillo
+20
+80
+verde
+30
+30
+gris
+20
+15
+naranja
+20
+100
+celeste
+25
+10
