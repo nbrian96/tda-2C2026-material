@@ -79,15 +79,26 @@ La ecuación de recurrencia tiene la forma:
 from typing import List
 
 
+def _buscar_primer_cero_rec(arr: List[int], inicio: int, fin: int) -> int:
+  if inicio > fin:
+    return -1
+  
+  if inicio == fin:
+    return inicio if arr[inicio] == 0 else -1
+
+  mid = (inicio + fin) // 2
+  
+  if arr[mid] == 0:
+      return _buscar_primer_cero_rec(arr, inicio, mid)
+  else:
+      return _buscar_primer_cero_rec(arr, mid + 1, fin)
+  
 def buscar_primer_fallo(arr: List[int]) -> int:
-    """
-    Encuentra el índice del primer 0 en un arreglo de 1s seguidos de 0s.
-    Debe ejecutarse en tiempo O(log n).
-    Retorna el índice del primer 0, o -1 si no hay ninguno.
-    """
-    # TODO: Implementar la función auxiliar recursiva (o iterativa)
-    # usando inicio y fin para no copiar el arreglo.
-    raise NotImplementedError("¡Implementá esta función siguiendo los tips!")
+    if not arr:
+        return -1
+    return _buscar_primer_cero_rec(arr, 0, len(arr) - 1)
+
+
 
 
 # ------------------------------------------------------------------------------
@@ -103,6 +114,10 @@ if __name__ == "__main__":
         ([0], 0),
         ([1], -1),
         ([1, 1, 1, 1, 1, 1, 0], 6),
+        ([1, 0, 0, 0, 0, 0], 1),  # Atrapa el fallo prematuro en mid
+        ([1, 1, 1, 0, 0, 0, 0], 3),
+        ([], -1),                 # Arreglo vacío
+
     ]
 
     print("Probando solución de Ejercicio 02...")
