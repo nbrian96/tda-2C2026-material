@@ -6,8 +6,55 @@
 
 <p align="center">
   <strong>Facultad de Ingeniería — Universidad de Buenos Aires (FIUBA)</strong><br>
-  Repositorio centralizado de material de estudio, clases teóricas, guías prácticas, trabajos prácticos y exámenes parciales de la materia <em>Teoría de Algoritmos</em> (Segundo Cuatrimestre 2026).
+  Repositorio centralizado de material de estudio, clases teóricas, guías prácticas, trabajos prácticos, exámenes parciales y <strong>Guía Interactiva de Resolución de Parciales</strong> de la materia <em>Teoría de Algoritmos</em> (Segundo Cuatrimestre 2026).
 </p>
+
+---
+
+## ⚡ Guía Interactiva de Parciales ("Salvando el Cuatrimestre")
+
+Para preparar el examen parcial en poco tiempo, el repositorio incluye una **aplicación de estudio interactiva autocontenida** orientada a la práctica intensiva y al *Active Recall*:
+
+* 🌐 **Versión Web Interactiva:** [index.html](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/index.html) / [guia_tda_parciales.html](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/guia_tda_parciales.html)
+* 📄 **Manual Imprimible en PDF (73 páginas A4):** [guia_tda_parciales.pdf](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/guia_tda_parciales.pdf)
+* 📝 **Fuente estructurada en Markdown:** [guia_tda_parciales.md](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/guia_tda_parciales.md)
+
+### 🎯 Cómo estudiar con la Guía según tus días disponibles
+
+#### 1. Plan de Emergencia (48 a 72 horas antes del examen)
+1. Abrí [index.html](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/index.html) y activá el botón **⚡ Modo Emergencia**.
+2. Esto filtrará automáticamente los **30 ejercicios clave 🔴 IMPRESCINDIBLE** que salieron literalmente en los parciales recientes (2024-2 y 2025-1).
+3. Hacé el **Entrenador de Reconocimiento en 30 Segundos** (en la Sección 3) para no dudar entre Greedy, Programación Dinámica, Backtracking, Programación Lineal o Redes de Flujo.
+4. Repasá el drawer de **📐 Fórmulas y Recetas Rápidas** (Teorema Maestro, los 4 pasos de NP-C y los 5 pasos de PD).
+5. En cada ejercicio, lee el enunciado e intenta resolverlo en papel **antes de desplegar la solución** (*Active Recall*). Al dominarlo, márcalo como `Dominado` para registrar tu avance.
+
+#### 2. Plan Táctico (1 semana antes)
+1. Completá el Plan de Emergencia y cambiá a **🎯 Modo Táctico** para sumar los 8 ejercicios 🟡 **IMPORTANTES** de la guía práctica.
+2. Escribí en papel el pseudocódigo completo de los ejercicios de Programación Dinámica multidimensional, Flujo y Branch & Bound.
+3. Repasá los **Ejercicios Integradores Multi-Paradigma** (Sección 11) para comparar cómo resolver un mismo problema por Greedy vs PD vs PL.
+
+#### 3. Plan Integral (2 semanas o más)
+1. Recorré los 38 ejercicios en **📚 Modo Completo**.
+2. Probá las implementaciones en Python de la carpeta `Practicas/`.
+3. Verificá la **Checklist de Entrada al Aula** antes de rendir.
+
+---
+
+## 🌐 Cómo desplegar la Guía en GitHub Pages
+
+Para tener la guía interactiva online accesible desde cualquier computadora, tablet o celular:
+
+1. Ingresá a tu repositorio en GitHub: `https://github.com/nbrian96/tda-2C2026-material`.
+2. Hacé clic en la pestaña **Settings** (⚙️ Configuración) del repositorio.
+3. En el menú lateral izquierdo, seleccioná la sección **Pages** (dentro del grupo *Code and automation*).
+4. En **Build and deployment**:
+   * **Source:** Seleccioná `Deploy from a branch`.
+   * **Branch:** Elegí la rama `master` (o `main`) y en la carpeta seleccioná `/ (root)`.
+   * Hacé clic en **Save** (Guardar).
+5. Esperá entre 1 y 2 minutos mientras GitHub Actions ejecuta el deploy automático.
+6. ¡Listo! Tu guía estará disponible en la URL pública:
+   $$\text{https://nbrian96.github.io/tda-2C2026-material/}$$
+   *(El archivo `.nojekyll` y la copia `index.html` ya incluidos en el repositorio garantizan que el sitio cargue de inmediato sin errores de rutas ni procesamiento de Jekyll).*
 
 ---
 
@@ -15,18 +62,27 @@
 
 ```text
 tda-2C2026-material/
-├── DIapositivas/          # Diapositivas teóricas y prácticas oficiales (PDFs y scripts de clase)
-├── Guia-Ejercicios/       # Guías completas de problemas propuestos por la cátedra (PDFs 01 a 09)
-├── Practicas/             # Suite interactiva de ejercicios seleccionados (.py) con tips y tests
-├── Parciales/             # Enunciados y modelos de exámenes parciales anteriores (2024 - 2025)
-├── TP0/                   # Trabajo Práctico 0: Análisis empírico y complejidad asintótica
-├── logo-facultad.png      # Identidad visual FIUBA
-└── .gitignore             # Configuración de exclusión para Git (bytecode, pycache, entornos)
+├── index.html              # Guía Interactiva lista para GitHub Pages
+├── guia_tda_parciales.html # Aplicación web de estudio interactivo (Active Recall + HUD)
+├── guia_tda_parciales.pdf  # Manual completo de parciales en PDF (73 páginas A4)
+├── guia_tda_parciales.md   # Compendio completo de teoría y ejercicios en Markdown
+├── .nojekyll               # Configuración de GitHub Pages para assets estáticos
+├── builder/                # Motor de compilación y ensamble automatizado
+│   ├── build_manual.py     # Script compilador de Markdown, HTML interactivo y PDF
+│   ├── html_interactive_builder.py # Generador de interfaz, Active Recall y widgets
+│   └── sec01_... a sec11_  # Módulos temáticos individuales
+├── DIapositivas/           # Diapositivas teóricas y prácticas oficiales (PDFs y scripts)
+├── Guia-Ejercicios/        # Guías completas de problemas propuestos (PDFs 01 a 09)
+├── Practicas/              # Suite de ejercicios seleccionados en Python con tests
+├── Parciales/              # Enunciados oficiales de parciales (2024 - 2025)
+├── TP0/                    # Trabajo Práctico 0: Análisis asintótico y experimental
+├── logo-facultad.png       # Identidad visual FIUBA
+└── .gitignore              # Exclusiones de Git (entornos, cachés, temporales)
 ```
 
 ---
 
-## 📖 Contenido Detallado
+## 📖 Contenido Detallado de Carpetas
 
 ### 1. 📂 [DIapositivas/](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/DIapositivas)
 Presentaciones oficiales de las clases teóricas y prácticas, complementadas con scripts de seguimiento:
@@ -40,13 +96,12 @@ Presentaciones oficiales de las clases teóricas y prácticas, complementadas co
 * **Subcarpetas temáticas:**
   * `12 - Lindo/`: Modelos de optimización en formato LINDO (`.ltx`).
   * `12 - Mochila/`: Modelos y scripts para el problema de la mochila (`.lp`, `.py`).
-  * `12 - Viajante/`: Formulaciones del Problema del Viajante de Comercio (TSP) con distintas restricciones de subtours (MTZ, puentes, fuerza bruta).
-  * `Explicaciones/`: Guías teóricas complementarias (ej: `problema_mochila_y_greedy.md`).
+  * `12 - Viajante/`: Formulaciones de TSP con distintas restricciones de subtours (MTZ, puentes).
 
 ---
 
 ### 2. 📂 [Guia-Ejercicios/](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/Guia-Ejercicios)
-Guías de ejercicios oficiales publicadas por la cátedra para el cuatrimestre:
+Guías oficiales publicadas por la cátedra para el cuatrimestre:
 * `01_division_y_conquista.pdf`
 * `02_greedy.pdf`
 * `03_backtracking.pdf`
@@ -60,40 +115,19 @@ Guías de ejercicios oficiales publicadas por la cátedra para el cuatrimestre:
 ---
 
 ### 3. 📂 [Practicas/](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/Practicas)
-Suite de **práctica interactiva** pensada para optimizar el tiempo de estudio. Contiene una selección curada de 20 ejercicios clave (4 por cada paradigma de la primera parte de la materia) implementados como plantillas de práctica en Python:
+Suite de **práctica en código Python** con 20 ejercicios resueltos con tests unitarios:
+* **01_division_y_conquista:** `primer_cero`, `arreglo_pico`, `elemento_mayoritario`, `bolzano_biseccion`.
+* **02_greedy:** `seleccion_charlas`, `mochila_fraccionaria`, `minimizar_latencia`, `antenas_ruta`.
+* **03_backtracking:** `coloreo_grafos`, `n_reinas`, `independent_set_maximo`, `subset_sum`.
+* **04_programacion_dinamica:** `interval_scheduling_ponderado`, `juan_el_vago`, `mochila_01`, `cambio_monedas`.
+* **05_programacion_lineal:** `mochila_pl`, `juan_el_vago_pl`, `vertex_cover_pl`, `dos_particiones_min_max_pl`.
 
-* **01_division_y_conquista:**
-  * `ej02_primer_cero_tests.py`: Detección del primer fallo (Git Bisect) — $O(\log n)$.
-  * `ej04_arreglo_pico.py`: Arreglo en forma de pico (Peak Element) — $O(\log n)$.
-  * `ej09_elemento_mayoritario.py`: Elemento mayoritario — $O(n \log n)$.
-  * `ej14_bolzano_biseccion.py`: Raíz por Teorema de Bolzano — $O(\log(b - a))$.
-* **02_greedy:**
-  * `ej04_seleccion_charlas.py`: Interval Scheduling (maximizar charlas compatibles) — $O(n \log n)$.
-  * `ej08_mochila_fraccionaria.py`: Mochila fraccionaria vs 0-1 (contraejemplo) — $O(n \log n)$.
-  * `ej09_minimizar_latencia.py`: Scheduling con deadlines (EDF) — $O(n \log n)$.
-  * `ej13_antenas_ruta.py`: Cobertura de casas con antenas (Point Covering 1D) — $O(n \log n)$.
-* **03_backtracking:**
-  * `ej02_coloreo_grafos.py`: $k$-Coloración de grafos (problema de decisión).
-  * `ej03_n_reinas.py`: Problema de las N Reinas con podas en $O(1)$.
-  * `ej04_independent_set_maximo.py`: Maximum Independent Set (podas por factibilidad y Branch & Bound).
-  * `ej11_subset_sum.py`: Suma de subconjuntos que suman exactamente $n$.
-* **04_programacion_dinamica:**
-  * `ej02_interval_scheduling_ponderado.py`: Selección de charlas ponderadas con búsqueda binaria de $p(i)$ — $O(n \log n)$.
-  * `ej04_juan_el_vago.py`: Juan el Vago (House Robber 1D) con reconstrucción — $O(n)$.
-  * `ej07_mochila_01.py`: Mochila 0-1 (tabla 2D pseudo-polinomial) con reconstrucción — $O(n \cdot W)$.
-  * `ej08_cambio_monedas.py`: Problema del cambio de monedas no acotado — $O(M \cdot K)$.
-* **05_programacion_lineal:**
-  * `ej01_mochila_pl.py`: Mochila 0-1 en Programación Lineal Entera.
-  * `ej02_juan_el_vago_pl.py`: Restricción de no adyacencia ($x_i + x_{i+1} \le 1$).
-  * `ej03_vertex_cover_pl.py`: Vertex Cover Mínimo ($x_u + x_v \ge 1$).
-  * `ej12_dos_particiones_min_max_pl.py`: 2-Partition Problem (linealización de $\min \max$).
-
-Cada archivo contiene: enunciado, concepto clave, tips paso a paso, cálculo formal de complejidad, esqueleto con `TODO` y tests unitarios ejecutables. Consulta [Practicas/README.md](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/Practicas/README.md) para más detalles.
+Consulta [Practicas/README.md](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/Practicas/README.md) para más detalles.
 
 ---
 
 ### 4. 📂 [Parciales/](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/Parciales)
-Enunciados de exámenes parciales tomados en cuatrimestres recientes para entrenar con casos reales:
+Exámenes parciales tomados en fechas recientes:
 * `TP-2024-2-1.pdf`, `TP-2024-2-2.pdf`, `TP-2024-2-3.pdf`
 * `TP-2025-1-1.pdf`, `TP-2025-1-2.pdf`
 
@@ -108,21 +142,16 @@ Primer trabajo práctico de la materia:
 
 ---
 
-## 🚀 Cómo utilizar este material
+## 🛠️ Cómo recompilar el manual tras realizar cambios
 
-1. **Clonar o abrir el repositorio:**
-   ```bash
-   cd /home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material
-   ```
+Si editás los módulos de contenido en `builder/sec01_...` a `sec11_...`, podés reconstruir todo el ecosistema (Markdown, HTML interactivo y PDF) corriendo:
 
-2. **Flujo de estudio recomendado:**
-   * 1️⃣ Leer la teoría y ejemplos de seguimiento en [DIapositivas/](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/DIapositivas).
-   * 2️⃣ Explorar los ejercicios de la [Guia-Ejercicios/](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/Guia-Ejercicios).
-   * 3️⃣ Resolver los ejercicios seleccionados en [Practicas/](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/Practicas) y verificar corriendo:
-     ```bash
-     python3 Practicas/01_division_y_conquista/ej04_arreglo_pico.py
-     ```
-   * 4️⃣ Practicar simulacros de examen cronometrados con los PDFs de [Parciales/](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/Parciales).
+```bash
+cd builder
+python3 build_manual.py
+```
+
+El script verificará automáticamente la integridad de los bloques de código, ensamblará `guia_tda_parciales.md`, generará la aplicación `guia_tda_parciales.html` e `index.html`, y compilará el PDF `guia_tda_parciales.pdf` mediante Google Chrome headless.
 
 ---
 
