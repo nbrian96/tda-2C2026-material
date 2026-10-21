@@ -59,14 +59,14 @@ body {
   background-color: var(--bg-main);
   margin: 0;
   padding: 0;
-  padding-top: 155px;
   transition: background-color 0.2s ease, color 0.2s ease;
+  overflow-x: hidden;
 }
 
 .main-content-wrapper {
   max-width: 1060px;
   margin: 0 auto;
-  padding: 24px 20px 80px 20px;
+  padding: 20px 20px 80px 20px;
 }
 
 /* Headings */
@@ -235,7 +235,7 @@ blockquote {
 
 /* HUD Top Bar */
 .hud-top-bar {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -490,13 +490,10 @@ body.dark-mode .pill-btn.active {
 /* Emergency Banner */
 .emergency-banner {
   background: #fff5f5;
-  border-bottom: 1px solid #feb2b2;
+  border-top: 1px solid #feb2b2;
   color: #c53030;
-  font-size: 8.8pt;
+  font-size: 8.5pt;
   padding: 6px 16px;
-  position: sticky;
-  top: 155px;
-  z-index: 990;
 }
 
 body.dark-mode .emergency-banner {
@@ -1171,6 +1168,212 @@ body.dark-mode .warning-box {
   align-self: flex-end;
 }
 
+/* RESPONSIVE DESIGN FOR MOBILE & TABLET */
+@media (max-width: 768px) {
+  body {
+    font-size: 10pt;
+  }
+
+  .main-content-wrapper {
+    padding: 12px 10px 80px 10px;
+  }
+
+  h1 {
+    font-size: 16pt;
+    line-height: 1.25;
+  }
+
+  h2 {
+    font-size: 13pt;
+    margin-top: 24px;
+    scroll-margin-top: 130px;
+  }
+
+  h3 {
+    font-size: 11pt;
+    scroll-margin-top: 130px;
+  }
+
+  .hud-container {
+    padding: 6px 8px;
+  }
+
+  .hud-brand {
+    gap: 6px;
+  }
+
+  .hud-logo-icon {
+    font-size: 16pt;
+  }
+
+  .hud-title {
+    font-size: 9.6pt;
+  }
+
+  .hud-subtitle {
+    display: none;
+  }
+
+  .mode-label-long {
+    display: none;
+  }
+
+  .mode-label-short {
+    display: inline;
+  }
+
+  .mode-btn {
+    padding: 5px 6px;
+    font-size: 8pt;
+    gap: 3px;
+  }
+
+  .hud-quick-tools {
+    gap: 4px;
+  }
+
+  .hud-quick-tools .tool-text {
+    display: none;
+  }
+
+  .tool-btn {
+    padding: 5px 7px;
+    font-size: 9pt;
+  }
+
+  .hud-row-secondary {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .hud-progress-wrap {
+    min-width: 100%;
+  }
+
+  .hud-search-box {
+    width: 100%;
+  }
+
+  .hud-search-box input {
+    font-size: 9pt;
+    padding: 8px 28px 8px 30px;
+  }
+
+  .search-icon {
+    top: 8px;
+  }
+
+  .clear-search-btn {
+    top: 7px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .card-header-left {
+    width: 100%;
+  }
+
+  .card-header-meta {
+    width: 100%;
+  }
+
+  .badge-origin {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .card-header-actions {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
+
+  .mastered-label {
+    flex: 1;
+    justify-content: center;
+    padding: 7px 10px;
+    font-size: 8.8pt;
+  }
+
+  .btn-toggle-solution {
+    flex: 1;
+    justify-content: center;
+    padding: 7px 10px;
+    font-size: 8.8pt;
+  }
+
+  .card-body {
+    padding: 12px 10px;
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  pre {
+    font-size: 7.8pt;
+    padding: 10px 8px;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .trainer-box {
+    padding: 14px 10px;
+    margin: 20px 0;
+  }
+
+  .trainer-title {
+    font-size: 11.5pt;
+  }
+
+  .trainer-options-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .trainer-btn {
+    padding: 12px 14px;
+    font-size: 9.5pt;
+  }
+
+  .cheatsheet-drawer {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .floating-quick-btn {
+    bottom: 12px;
+    right: 12px;
+    gap: 6px;
+  }
+
+  .fab-btn {
+    padding: 8px 12px;
+    font-size: 8.5pt;
+  }
+
+  .exercise-card {
+    scroll-margin-top: 130px;
+  }
+}
+
+@media (min-width: 769px) {
+  .mode-label-short {
+    display: none;
+  }
+}
+
 /* PRINT RULES */
 @media print {
   @page {
@@ -1248,17 +1451,17 @@ body.dark-mode .warning-box {
       <div class="hud-mode-selector" role="group" aria-label="Modo de Estudio">
         <button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')">
           <span class="mode-icon">⚡</span>
-          <span class="mode-label">Modo Emergencia (48-72h)</span>
+          <span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span>
           <span class="mode-badge" id="badgeEmergencyCount">30</span>
         </button>
         <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')">
           <span class="mode-icon">🎯</span>
-          <span class="mode-label">Modo Táctico (1 semana)</span>
+          <span class="mode-label"><span class="mode-label-long">Modo Táctico (1 sem)</span><span class="mode-label-short">1 sem</span></span>
           <span class="mode-badge">38</span>
         </button>
         <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')">
           <span class="mode-icon">📚</span>
-          <span class="mode-label">Todos</span>
+          <span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span>
           <span class="mode-badge">38</span>
         </button>
       </div>
@@ -1313,16 +1516,16 @@ body.dark-mode .warning-box {
       </div>
     </div>
   </div>
-</header>
 
-<!-- Notification Banner de Modo Emergencia -->
-<div class="emergency-banner" id="emergencyBanner">
-  <div class="banner-inner">
-    <span class="banner-icon">⚡</span>
-    <span><strong>Modo Emergencia activado (48–72h):</strong> Mostrando únicamente los 30 ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> extraídos directamente de los parciales reales de 2024 y 2025.</span>
-    <button class="banner-dismiss" onclick="dismissBanner()">✕</button>
+  <!-- Notification Banner de Modo Emergencia -->
+  <div class="emergency-banner" id="emergencyBanner">
+    <div class="banner-inner">
+      <span class="banner-icon">⚡</span>
+      <span><strong>Modo Emergencia (48–72h):</strong> Mostrando los 30 ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de los exámenes reales 2024 y 2025.</span>
+      <button class="banner-dismiss" onclick="dismissBanner()">✕</button>
+    </div>
   </div>
-</div>
+</header>
 
 <!-- Drawer de Fórmulas y Recetas Rápidas -->
 <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeCheatsheet()"></div>
@@ -5488,20 +5691,20 @@ Se define el problema de <strong>Asignación de Frecuencias (AF)</strong> de la 
 <p>Utilizá esta lista de verificación durante tu última hora de repaso antes de ingresar al aula:</p>
 <h3>A. Dominio de Paradigmas</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_31128" onchange="toggleChecklistItem('chk_31128', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_6147" onchange="toggleChecklistItem('chk_6147', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_85064" onchange="toggleChecklistItem('chk_85064', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_65741" onchange="toggleChecklistItem('chk_65741', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_45511" onchange="toggleChecklistItem('chk_45511', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_517" onchange="toggleChecklistItem('chk_517', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_409" onchange="toggleChecklistItem('chk_409', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_84848" onchange="toggleChecklistItem('chk_84848', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_32961" onchange="toggleChecklistItem('chk_32961', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_23452" onchange="toggleChecklistItem('chk_23452', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_40402" onchange="toggleChecklistItem('chk_40402', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_64016" onchange="toggleChecklistItem('chk_64016', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_99005" onchange="toggleChecklistItem('chk_99005', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_17559" onchange="toggleChecklistItem('chk_17559', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
 </ul>
 <h3>B. Ejecución en la Hoja de Examen</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_62878" onchange="toggleChecklistItem('chk_62878', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_65550" onchange="toggleChecklistItem('chk_65550', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_60104" onchange="toggleChecklistItem('chk_60104', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_92605" onchange="toggleChecklistItem('chk_92605', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_72487" onchange="toggleChecklistItem('chk_72487', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_88128" onchange="toggleChecklistItem('chk_88128', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_29648" onchange="toggleChecklistItem('chk_29648', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_74018" onchange="toggleChecklistItem('chk_74018', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
 </ul>
 </main>
 <script>

@@ -275,17 +275,17 @@ def get_hud_and_drawer_html():
       <div class="hud-mode-selector" role="group" aria-label="Modo de Estudio">
         <button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')">
           <span class="mode-icon">⚡</span>
-          <span class="mode-label">Modo Emergencia (48-72h)</span>
+          <span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span>
           <span class="mode-badge" id="badgeEmergencyCount">30</span>
         </button>
         <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')">
           <span class="mode-icon">🎯</span>
-          <span class="mode-label">Modo Táctico (1 semana)</span>
+          <span class="mode-label"><span class="mode-label-long">Modo Táctico (1 sem)</span><span class="mode-label-short">1 sem</span></span>
           <span class="mode-badge">38</span>
         </button>
         <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')">
           <span class="mode-icon">📚</span>
-          <span class="mode-label">Todos</span>
+          <span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span>
           <span class="mode-badge">38</span>
         </button>
       </div>
@@ -340,16 +340,16 @@ def get_hud_and_drawer_html():
       </div>
     </div>
   </div>
-</header>
 
-<!-- Notification Banner de Modo Emergencia -->
-<div class="emergency-banner" id="emergencyBanner">
-  <div class="banner-inner">
-    <span class="banner-icon">⚡</span>
-    <span><strong>Modo Emergencia activado (48–72h):</strong> Mostrando únicamente los 30 ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> extraídos directamente de los parciales reales de 2024 y 2025.</span>
-    <button class="banner-dismiss" onclick="dismissBanner()">✕</button>
+  <!-- Notification Banner de Modo Emergencia -->
+  <div class="emergency-banner" id="emergencyBanner">
+    <div class="banner-inner">
+      <span class="banner-icon">⚡</span>
+      <span><strong>Modo Emergencia (48–72h):</strong> Mostrando los 30 ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de los exámenes reales 2024 y 2025.</span>
+      <button class="banner-dismiss" onclick="dismissBanner()">✕</button>
+    </div>
   </div>
-</div>
+</header>
 
 <!-- Drawer de Fórmulas y Recetas Rápidas -->
 <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeCheatsheet()"></div>
@@ -495,14 +495,14 @@ body {
   background-color: var(--bg-main);
   margin: 0;
   padding: 0;
-  padding-top: 155px;
   transition: background-color 0.2s ease, color 0.2s ease;
+  overflow-x: hidden;
 }
 
 .main-content-wrapper {
   max-width: 1060px;
   margin: 0 auto;
-  padding: 24px 20px 80px 20px;
+  padding: 20px 20px 80px 20px;
 }
 
 /* Headings */
@@ -671,7 +671,7 @@ blockquote {
 
 /* HUD Top Bar */
 .hud-top-bar {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -926,13 +926,10 @@ body.dark-mode .pill-btn.active {
 /* Emergency Banner */
 .emergency-banner {
   background: #fff5f5;
-  border-bottom: 1px solid #feb2b2;
+  border-top: 1px solid #feb2b2;
   color: #c53030;
-  font-size: 8.8pt;
+  font-size: 8.5pt;
   padding: 6px 16px;
-  position: sticky;
-  top: 155px;
-  z-index: 990;
 }
 
 body.dark-mode .emergency-banner {
@@ -1605,6 +1602,212 @@ body.dark-mode .warning-box {
   border: 1px solid var(--border-color);
   padding: 8px 12px;
   align-self: flex-end;
+}
+
+/* RESPONSIVE DESIGN FOR MOBILE & TABLET */
+@media (max-width: 768px) {
+  body {
+    font-size: 10pt;
+  }
+
+  .main-content-wrapper {
+    padding: 12px 10px 80px 10px;
+  }
+
+  h1 {
+    font-size: 16pt;
+    line-height: 1.25;
+  }
+
+  h2 {
+    font-size: 13pt;
+    margin-top: 24px;
+    scroll-margin-top: 130px;
+  }
+
+  h3 {
+    font-size: 11pt;
+    scroll-margin-top: 130px;
+  }
+
+  .hud-container {
+    padding: 6px 8px;
+  }
+
+  .hud-brand {
+    gap: 6px;
+  }
+
+  .hud-logo-icon {
+    font-size: 16pt;
+  }
+
+  .hud-title {
+    font-size: 9.6pt;
+  }
+
+  .hud-subtitle {
+    display: none;
+  }
+
+  .mode-label-long {
+    display: none;
+  }
+
+  .mode-label-short {
+    display: inline;
+  }
+
+  .mode-btn {
+    padding: 5px 6px;
+    font-size: 8pt;
+    gap: 3px;
+  }
+
+  .hud-quick-tools {
+    gap: 4px;
+  }
+
+  .hud-quick-tools .tool-text {
+    display: none;
+  }
+
+  .tool-btn {
+    padding: 5px 7px;
+    font-size: 9pt;
+  }
+
+  .hud-row-secondary {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .hud-progress-wrap {
+    min-width: 100%;
+  }
+
+  .hud-search-box {
+    width: 100%;
+  }
+
+  .hud-search-box input {
+    font-size: 9pt;
+    padding: 8px 28px 8px 30px;
+  }
+
+  .search-icon {
+    top: 8px;
+  }
+
+  .clear-search-btn {
+    top: 7px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .card-header-left {
+    width: 100%;
+  }
+
+  .card-header-meta {
+    width: 100%;
+  }
+
+  .badge-origin {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .card-header-actions {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
+
+  .mastered-label {
+    flex: 1;
+    justify-content: center;
+    padding: 7px 10px;
+    font-size: 8.8pt;
+  }
+
+  .btn-toggle-solution {
+    flex: 1;
+    justify-content: center;
+    padding: 7px 10px;
+    font-size: 8.8pt;
+  }
+
+  .card-body {
+    padding: 12px 10px;
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  pre {
+    font-size: 7.8pt;
+    padding: 10px 8px;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .trainer-box {
+    padding: 14px 10px;
+    margin: 20px 0;
+  }
+
+  .trainer-title {
+    font-size: 11.5pt;
+  }
+
+  .trainer-options-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .trainer-btn {
+    padding: 12px 14px;
+    font-size: 9.5pt;
+  }
+
+  .cheatsheet-drawer {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .floating-quick-btn {
+    bottom: 12px;
+    right: 12px;
+    gap: 6px;
+  }
+
+  .fab-btn {
+    padding: 8px 12px;
+    font-size: 8.5pt;
+  }
+
+  .exercise-card {
+    scroll-margin-top: 130px;
+  }
+}
+
+@media (min-width: 769px) {
+  .mode-label-short {
+    display: none;
+  }
 }
 
 /* PRINT RULES */
