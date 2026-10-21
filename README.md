@@ -15,14 +15,15 @@
 
 Para preparar el examen parcial en poco tiempo, el repositorio incluye una **aplicación de estudio interactiva autocontenida** orientada a la práctica intensiva y al *Active Recall*:
 
-* 🌐 **Versión Web Interactiva:** [index.html](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/index.html) / [guia_tda_parciales.html](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/guia_tda_parciales.html)
-* 📄 **Manual Imprimible en PDF (73 páginas A4):** [guia_tda_parciales.pdf](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/guia_tda_parciales.pdf)
-* 📝 **Fuente estructurada en Markdown:** [guia_tda_parciales.md](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/guia_tda_parciales.md)
+* 🌐 **Guía Online en GitHub Pages:** <a href="https://nbrian96.github.io/tda-2C2026-material/" target="_blank" rel="noopener noreferrer"><strong>https://nbrian96.github.io/tda-2C2026-material/</strong></a> (abre en una nueva pestaña)
+* 💻 **Versión Web Local:** [index.html](index.html) / [guia_tda_parciales.html](guia_tda_parciales.html)
+* 📄 **Manual Imprimible en PDF (73 páginas A4):** [guia_tda_parciales.pdf](guia_tda_parciales.pdf)
+* 📝 **Fuente estructurada en Markdown:** [guia_tda_parciales.md](guia_tda_parciales.md)
 
 ### 🎯 Cómo estudiar con la Guía según tus días disponibles
 
 #### 1. Plan de Emergencia (48 a 72 horas antes del examen)
-1. Abrí [index.html](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/index.html) y activá el botón **⚡ Modo Emergencia**.
+1. Abrí [index.html](index.html) (o la <a href="https://nbrian96.github.io/tda-2C2026-material/" target="_blank" rel="noopener noreferrer">versión online</a>) y activá el botón **⚡ Modo Emergencia**.
 2. Esto filtrará automáticamente los **30 ejercicios clave 🔴 IMPRESCINDIBLE** que salieron literalmente en los parciales recientes (2024-2 y 2025-1).
 3. Hacé el **Entrenador de Reconocimiento en 30 Segundos** (en la Sección 3) para no dudar entre Greedy, Programación Dinámica, Backtracking, Programación Lineal o Redes de Flujo.
 4. Repasá el drawer de **📐 Fórmulas y Recetas Rápidas** (Teorema Maestro, los 4 pasos de NP-C y los 5 pasos de PD).
@@ -44,7 +45,7 @@ Para preparar el examen parcial en poco tiempo, el repositorio incluye una **apl
 
 Para tener la guía interactiva online accesible desde cualquier computadora, tablet o celular:
 
-1. Ingresá a tu repositorio en GitHub: `https://github.com/nbrian96/tda-2C2026-material`.
+1. Ingresá a tu repositorio en GitHub: <a href="https://github.com/nbrian96/tda-2C2026-material" target="_blank" rel="noopener noreferrer">https://github.com/nbrian96/tda-2C2026-material</a>.
 2. Hacé clic en la pestaña **Settings** (⚙️ Configuración) del repositorio.
 3. En el menú lateral izquierdo, seleccioná la sección **Pages** (dentro del grupo *Code and automation*).
 4. En **Build and deployment**:
@@ -52,8 +53,10 @@ Para tener la guía interactiva online accesible desde cualquier computadora, ta
    * **Branch:** Elegí la rama `master` (o `main`) y en la carpeta seleccioná `/ (root)`.
    * Hacé clic en **Save** (Guardar).
 5. Esperá entre 1 y 2 minutos mientras GitHub Actions ejecuta el deploy automático.
-6. ¡Listo! Tu guía estará disponible en la URL pública:
-   $$\text{https://nbrian96.github.io/tda-2C2026-material/}$$
+6. ¡Listo! Tu guía estará disponible en la URL pública (hacé clic para abrir en una nueva pestaña):
+   
+   👉 **<a href="https://nbrian96.github.io/tda-2C2026-material/" target="_blank" rel="noopener noreferrer">https://nbrian96.github.io/tda-2C2026-material/</a>**
+
    *(El archivo `.nojekyll` y la copia `index.html` ya incluidos en el repositorio garantizan que el sitio cargue de inmediato sin errores de rutas ni procesamiento de Jekyll).*
 
 ---
@@ -84,7 +87,7 @@ tda-2C2026-material/
 
 ## 📖 Contenido Detallado de Carpetas
 
-### 1. 📂 [DIapositivas/](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/DIapositivas)
+### 1. 📂 [DIapositivas/](DIapositivas/)
 Presentaciones oficiales de las clases teóricas y prácticas, complementadas con scripts de seguimiento:
 * **00 - 01:** Presentación del curso, introducción y repasos fundamentales.
 * **02:** División y Conquista, Teorema Maestro y ejemplos de seguimiento.
@@ -100,7 +103,7 @@ Presentaciones oficiales de las clases teóricas y prácticas, complementadas co
 
 ---
 
-### 2. 📂 [Guia-Ejercicios/](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/Guia-Ejercicios)
+### 2. 📂 [Guia-Ejercicios/](Guia-Ejercicios/)
 Guías oficiales publicadas por la cátedra para el cuatrimestre:
 * `01_division_y_conquista.pdf`
 * `02_greedy.pdf`
@@ -114,7 +117,7 @@ Guías oficiales publicadas por la cátedra para el cuatrimestre:
 
 ---
 
-### 3. 📂 [Practicas/](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/Practicas)
+### 3. 📂 [Practicas/](Practicas/)
 Suite de **práctica en código Python** con 20 ejercicios resueltos con tests unitarios:
 * **01_division_y_conquista:** `primer_cero`, `arreglo_pico`, `elemento_mayoritario`, `bolzano_biseccion`.
 * **02_greedy:** `seleccion_charlas`, `mochila_fraccionaria`, `minimizar_latencia`, `antenas_ruta`.
@@ -122,18 +125,18 @@ Suite de **práctica en código Python** con 20 ejercicios resueltos con tests u
 * **04_programacion_dinamica:** `interval_scheduling_ponderado`, `juan_el_vago`, `mochila_01`, `cambio_monedas`.
 * **05_programacion_lineal:** `mochila_pl`, `juan_el_vago_pl`, `vertex_cover_pl`, `dos_particiones_min_max_pl`.
 
-Consulta [Practicas/README.md](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/Practicas/README.md) para más detalles.
+Consulta [Practicas/README.md](Practicas/README.md) para más detalles.
 
 ---
 
-### 4. 📂 [Parciales/](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/Parciales)
+### 4. 📂 [Parciales/](Parciales/)
 Exámenes parciales tomados en fechas recientes:
 * `TP-2024-2-1.pdf`, `TP-2024-2-2.pdf`, `TP-2024-2-3.pdf`
 * `TP-2025-1-1.pdf`, `TP-2025-1-2.pdf`
 
 ---
 
-### 5. 📂 [TP0/](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2C2026-material/TP0)
+### 5. 📂 [TP0/](TP0/)
 Primer trabajo práctico de la materia:
 * `TP00-2026-2c.pdf`: Enunciado oficial.
 * `cuartetos.py` y `cuartetos_malo.py`: Implementaciones y mediciones de tiempos.
