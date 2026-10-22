@@ -7,7 +7,7 @@ Esta sección contiene ejercicios nuevos creados específicamente siguiendo la e
 
 ---
 
-### Ejercicio 35 — Despacho de Drones de Emergencia con Ventanas de Batería
+### Ejercicio 37 — Despacho de Drones de Emergencia con Ventanas de Batería
 
 **Tipo:** Ejercicio generado a partir de patrones de parciales  
 **Clasificación:** 🔴 IMPRESCINDIBLE  
@@ -77,7 +77,7 @@ FUNCION AsignarDronesEmergencia(drones, puestos, matriz_distancias):
 
 ---
 
-### Ejercicio 36 — Plan de Publicidad Digital con Días de Enfriamiento y Presupuesto
+### Ejercicio 38 — Plan de Publicidad Digital con Días de Enfriamiento y Presupuesto
 
 **Tipo:** Ejercicio generado a partir de patrones de parciales  
 **Clasificación:** 🔴 IMPRESCINDIBLE  
@@ -148,7 +148,7 @@ FUNCION CampanaPublicitariaOptima(C, B, n, P):
 
 ---
 
-### Ejercicio 37 — Ubicación de Servidores Edge con Resiliencia del 80%
+### Ejercicio 39 — Ubicación de Servidores Edge con Resiliencia del 80%
 
 **Tipo:** Ejercicio generado a partir de patrones de parciales  
 **Clasificación:** 🔴 IMPRESCINDIBLE  
@@ -193,7 +193,7 @@ RESTRICCIONES:
 
 ---
 
-### Ejercicio 38 — NP-Completitud del Problema de Asignación de Frecuencias
+### Ejercicio 40 — NP-Completitud del Problema de Asignación de Frecuencias
 
 **Tipo:** Ejercicio generado a partir de patrones de parciales  
 **Clasificación:** 🔴 IMPRESCINDIBLE  

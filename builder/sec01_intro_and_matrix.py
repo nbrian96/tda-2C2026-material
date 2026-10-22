@@ -22,7 +22,7 @@ Este documento fue diseñado con un único objetivo en mente: **aprobar el parci
   1. Realizá el Plan de Emergencia completo.
   2. Sumá todos los ejercicios marcados como 🟡 **IMPORTANTE**.
   3. Escribí en papel (sin mirar la solución) el pseudocódigo de cada ejercicio de Programación Dinámica, Backtracking y Greedy.
-  4. Resolvé los **Ejercicios Integradores Multi-Paradigma** (Sección 11) y los **Ejercicios Tipo Parcial Generados** (Sección 12).
+  4. Resolvé los **Ejercicios Integradores Multi-Paradigma** (Sección 11, destacando **La Mochila — Ej 35** y **El Viajante TSP — Ej 36** en todos los paradigmas) y los **Ejercicios Tipo Parcial Generados** (Sección 12).
 * **Plan Integral (2 o más semanas):**
   1. Recorré la guía completa incluyendo ejercicios 🟢 **COMPLEMENTARIO**.
   2. Implementá en tu computadora los algoritmos más sensibles (o revisá las implementaciones en Python de la carpeta `Practicas/`).

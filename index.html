@@ -361,6 +361,26 @@ body.dark-mode .hud-mode-selector {
   color: var(--accent-color);
 }
 
+.tool-btn.highlight-tool {
+  background: linear-gradient(135deg, rgba(49, 130, 206, 0.12), rgba(128, 90, 213, 0.12));
+  border-color: rgba(49, 130, 206, 0.5);
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+body.dark-mode .tool-btn.highlight-tool {
+  background: linear-gradient(135deg, rgba(66, 153, 225, 0.22), rgba(159, 122, 234, 0.22));
+  border-color: rgba(66, 153, 225, 0.6);
+  color: #90cdf4;
+}
+
+.tool-btn.highlight-tool:hover {
+  background: var(--accent-color);
+  color: #ffffff;
+  border-color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
 .hud-row-secondary {
   display: flex;
   align-items: center;
@@ -1452,21 +1472,27 @@ body.dark-mode .warning-box {
         <button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')">
           <span class="mode-icon">⚡</span>
           <span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span>
-          <span class="mode-badge" id="badgeEmergencyCount">30</span>
+          <span class="mode-badge" id="badgeEmergencyCount">32</span>
         </button>
         <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')">
           <span class="mode-icon">🎯</span>
           <span class="mode-label"><span class="mode-label-long">Modo Táctico (1 sem)</span><span class="mode-label-short">1 sem</span></span>
-          <span class="mode-badge">38</span>
+          <span class="mode-badge">40</span>
         </button>
         <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')">
           <span class="mode-icon">📚</span>
           <span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span>
-          <span class="mode-badge">38</span>
+          <span class="mode-badge">40</span>
         </button>
       </div>
 
       <div class="hud-quick-tools">
+        <button class="tool-btn highlight-tool" onclick="scrollToExercise(35)" title="Ver La Mochila resuelta en todos los paradigmas">
+          <span class="tool-icon">🎒</span> <span class="tool-text">Mochila Multi-P</span>
+        </button>
+        <button class="tool-btn highlight-tool" onclick="scrollToExercise(36)" title="Ver El Viajante (TSP) resuelto en todos los paradigmas">
+          <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
+        </button>
         <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
           <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
         </button>
@@ -1486,7 +1512,7 @@ body.dark-mode .warning-box {
       <div class="hud-progress-wrap">
         <div class="progress-info">
           <span class="progress-title">Progreso en modo activo:</span>
-          <span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">30</span> dominados (<span id="progPercent">0%</span>)</span>
+          <span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">32</span> dominados (<span id="progPercent">0%</span>)</span>
         </div>
         <div class="progress-track">
           <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
@@ -1495,7 +1521,7 @@ body.dark-mode .warning-box {
 
       <div class="hud-search-box">
         <span class="search-icon">🔍</span>
-        <input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (ej. mochila, arnook, invap, antenas, lagrange)..." oninput="handleSearch(this.value)">
+        <input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (ej. mochila, viajante, tsp, knapsack, held-karp, arnook, invap)..." oninput="handleSearch(this.value)">
         <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display: none;">✕</button>
       </div>
     </div>
@@ -1503,7 +1529,7 @@ body.dark-mode .warning-box {
     <!-- Filter Pills por Paradigma -->
     <div class="hud-row-pills">
       <div class="filter-pills-scroll" id="paradigmPills">
-        <button class="pill-btn active" data-paradigm="all" onclick="filterByParadigm('all')">Todos (38)</button>
+        <button class="pill-btn active" data-paradigm="all" onclick="filterByParadigm('all')">Todos (40)</button>
         <button class="pill-btn" data-paradigm="dyc" onclick="filterByParadigm('dyc')">🔷 DyC (3)</button>
         <button class="pill-btn" data-paradigm="greedy" onclick="filterByParadigm('greedy')">🔶 Greedy (5)</button>
         <button class="pill-btn" data-paradigm="backtracking" onclick="filterByParadigm('backtracking')">🟣 Backtracking (4)</button>
@@ -1511,7 +1537,7 @@ body.dark-mode .warning-box {
         <button class="pill-btn" data-paradigm="pl" onclick="filterByParadigm('pl')">🔵 Prog. Lineal (5)</button>
         <button class="pill-btn" data-paradigm="flujo" onclick="filterByParadigm('flujo')">🔴 Redes de Flujo (4)</button>
         <button class="pill-btn" data-paradigm="reducciones" onclick="filterByParadigm('reducciones')">🟡 Reducciones NP (4)</button>
-        <button class="pill-btn" data-paradigm="integradores" onclick="filterByParadigm('integradores')">⚡ Integradores (3)</button>
+        <button class="pill-btn" data-paradigm="integradores" onclick="filterByParadigm('integradores')">⚡ Integradores (5)</button>
         <button class="pill-btn" data-paradigm="tipo_parcial" onclick="filterByParadigm('tipo_parcial')">📝 Tipo Parcial (4)</button>
       </div>
     </div>
@@ -1521,7 +1547,7 @@ body.dark-mode .warning-box {
   <div class="emergency-banner" id="emergencyBanner">
     <div class="banner-inner">
       <span class="banner-icon">⚡</span>
-      <span><strong>Modo Emergencia (48–72h):</strong> Mostrando los 30 ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de los exámenes reales 2024 y 2025.</span>
+      <span><strong>Modo Emergencia (48–72h):</strong> Mostrando los 32 ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de los exámenes reales y problemas canónicos.</span>
       <button class="banner-dismiss" onclick="dismissBanner()">✕</button>
     </div>
   </div>
@@ -1633,7 +1659,7 @@ body.dark-mode .warning-box {
 <li>Realizá el Plan de Emergencia completo.</li>
 <li>Sumá todos los ejercicios marcados como 🟡 <strong>IMPORTANTE</strong>.</li>
 <li>Escribí en papel (sin mirar la solución) el pseudocódigo de cada ejercicio de Programación Dinámica, Backtracking y Greedy.</li>
-<li>Resolvé los <strong>Ejercicios Integradores Multi-Paradigma</strong> (Sección 11) y los <strong>Ejercicios Tipo Parcial Generados</strong> (Sección 12).</li>
+<li>Resolvé los <strong>Ejercicios Integradores Multi-Paradigma</strong> (Sección 11, destacando <strong>La Mochila — Ej 35</strong> y <strong>El Viajante TSP — Ej 36</strong> en todos los paradigmas) y los <strong>Ejercicios Tipo Parcial Generados</strong> (Sección 12).</li>
 <li><strong>Plan Integral (2 o más semanas):</strong></li>
 <li>Recorré la guía completa incluyendo ejercicios 🟢 <strong>COMPLEMENTARIO</strong>.</li>
 <li>Implementá en tu computadora los algoritmos más sensibles (o revisá las implementaciones en Python de la carpeta <code>Practicas/</code>).</li>
@@ -2021,7 +2047,7 @@ FUNCION SumarMatrices(X, Y, m):
 <p><strong>Explicación del algoritmo</strong><br />
 El algoritmo parte las matrices en 4 cuadrantes. La partición y el copiado de submatrices toman O(n²). Luego se disparan 8 llamadas recursivas con submatrices de tamaño n/2. Finalmente, las sumas de bloques y el ensamblado en la matriz C toman 4 × O((n/2)²) = O(n²).</p>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em>* La ecuación de recurrencia es:</p>
+* <strong>Tiempo:</strong> La ecuación de recurrencia es:</p>
 <blockquote>
 <p>T(n) = 8 · T(n/2) + O(n²)</p>
 </blockquote>
@@ -2114,9 +2140,9 @@ FUNCION EncontrarPicoRec(A, ini, fin):
 <p><strong>Explicación del algoritmo</strong><br />
 El algoritmo inspecciona dos elementos centrales contiguos (m y m+1). Como todos los elementos adyacentes son distintos, siempre hay una dirección de ascenso. Seguir la pendiente ascendente asegura chocar contra un pico local o alcanzar el extremo del arreglo, el cual actúa como pico.</p>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> T(n) = 1 · T(n/2) + O(1). Con a = 1, b = 2, c = 0:
+* <strong>Tiempo:</strong> T(n) = 1 · T(n/2) + O(1). Con a = 1, b = 2, c = 0:
   log_b a = log₂ 1 = 0 = c ⟹ T(n) = O(n⁰ log n) = O(log n).
-* </em><em>Espacio adicional:</em>* O(log n) de memoria en la pila de llamadas recursivas (u O(1) si se formula con un bucle MIENTRAS).</p>
+* <strong>Espacio adicional:</strong> O(log n) de memoria en la pila de llamadas recursivas (u O(1) si se formula con un bucle MIENTRAS).</p>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
 * Llamar a la recursión izquierda con <code>m - 1</code>. Si A[m] &gt; A[m+1], A[m] podría ser el pico; si descartamos m, perdemos la solución. Por eso la llamada debe ser <code>[ini, m]</code>.
 * Acceder a <code>A[m+1]</code> cuando ini = fin (desbordamiento de índice). El caso base <code>ini = fin</code> previene esto porque con ini &lt; fin, m &lt; fin, asegurando que m + 1 ≤ fin.</p></div>
@@ -2196,8 +2222,8 @@ FUNCION BuscarPrimerCeroRec(A, ini, fin):
 <p><strong>Explicación del algoritmo</strong><br />
 En cada paso se evalúa el elemento central. Si es 1, se descarta toda la mitad izquierda junto con la posición central. Si es 0, se chequea si es el primer cero mirando el elemento anterior. Si no lo es, se explora recursivamente hacia la izquierda.</p>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> En cada llamada se divide el espacio de búsqueda exactamente por 2 y se realizan comparaciones O(1). T(n) = T(n/2) + O(1) ⟹ O(log n).
-* </em><em>Espacio adicional:</em>* O(log n) por la pila recursiva (O(1) si es iterativo).</p>
+* <strong>Tiempo:</strong> En cada llamada se divide el espacio de búsqueda exactamente por 2 y se realizan comparaciones O(1). T(n) = T(n/2) + O(1) ⟹ O(log n).
+* <strong>Espacio adicional:</strong> O(log n) por la pila recursiva (O(1) si es iterativo).</p>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
 * No chequear si m = 0 antes de acceder a A[m-1], lo que provoca un error de índice fuera de rango.
 * Si no hay ceros en todo el arreglo, caer en un ciclo infinito en lugar de devolver -1.</p></div>
@@ -2284,10 +2310,10 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> ¿Por qué descartar otros criterios?
-  * </em>Ordenar por inicio más temprano (s_i):<em> Falla si un pedido empieza muy temprano y ocupa toda la ruta ([1, 100] vs [2, 3] y [4, 5]).
-  * </em>Ordenar por menor longitud (f_i - s_i):<em> Falla si un pedido corto bloquea a dos pedidos compatibles a sus costados ([10, 20], [19, 21], [20, 30]).
-* </em>Criterio óptimo:<em> Ordenar las solicitudes por su </em><em>kilómetro de finalización más temprano (f_i)</em>*. Esto deja libre la mayor cantidad de ruta posible hacia adelante para futuras mafias.
+* ¿Por qué descartar otros criterios?
+  * <em>Ordenar por inicio más temprano (s_i):</em> Falla si un pedido empieza muy temprano y ocupa toda la ruta ([1, 100] vs [2, 3] y [4, 5]).
+  * <em>Ordenar por menor longitud (f_i - s_i):</em> Falla si un pedido corto bloquea a dos pedidos compatibles a sus costados ([10, 20], [19, 21], [20, 30]).
+* <em>Criterio óptimo:</em> Ordenar las solicitudes por su <strong>kilómetro de finalización más temprano (f_i)</strong>. Esto deja libre la mayor cantidad de ruta posible hacia adelante para futuras mafias.
 * Seleccionamos el primer pedido que termine más temprano. Luego, iteramos seleccionando el próximo pedido cuyo inicio s_j sea mayor o igual al fin del último pedido aceptado (s_j ≥ f_ultimo).</p>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION ConcederPermisosMafias(pedidos):
@@ -2312,7 +2338,7 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 <p><strong>Explicación del algoritmo</strong><br />
 El algoritmo clasifica las solicitudes de menor a mayor según el kilómetro en el que terminan. Al aceptar siempre la que termina antes y es compatible con las ya otorgadas, se minimiza el territorio retenido en cada decisión.</p>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em>* Ordenar n solicitudes requiere O(n log n) mediante Mergesort o Heapsort. El recorrido lineal posterior realiza una comparación O(1) por elemento en O(n). Por lo tanto, la complejidad temporal total es:</p>
+* <strong>Tiempo:</strong> Ordenar n solicitudes requiere O(n log n) mediante Mergesort o Heapsort. El recorrido lineal posterior realiza una comparación O(1) por elemento en O(n). Por lo tanto, la complejidad temporal total es:</p>
 <blockquote>
 <p><strong>O(n log n)</strong>
 * <strong>Espacio:</strong> O(n) para almacenar los pedidos seleccionados (o memoria auxiliar de ordenamiento).</p>
@@ -2322,8 +2348,8 @@ Es un algoritmo voraz porque:
 1. En cada paso toma una decisión basada en una regla miope de optimización local (elegir el intervalo compatible que termine antes).
 2. La decisión es <strong>irrevocable</strong>: una vez que un permiso es otorgado, nunca se retira ni se reconsidera a la luz de los pedidos futuros.</p>
 <p><strong>Demostración de Optimalidad (Greedy Stays Ahead)</strong><br />
-<em> Sean G = {g_1, g_2, ..., g_k} los intervalos seleccionados por el algoritmo voraz ordenados por fin, y OPT = {o_1, o_2, ..., o_m} los intervalos de una solución óptima arbitraria también ordenados por fin, con m ≥ k.
-* </em><em>Proposición inductiva:</em>* Para todo r ≤ k, el tiempo de fin del r-ésimo elemento voraz es menor o igual al del r-ésimo elemento óptimo:</p>
+* Sean G = {g_1, g_2, ..., g_k} los intervalos seleccionados por el algoritmo voraz ordenados por fin, y OPT = {o_1, o_2, ..., o_m} los intervalos de una solución óptima arbitraria también ordenados por fin, con m ≥ k.
+* <strong>Proposición inductiva:</strong> Para todo r ≤ k, el tiempo de fin del r-ésimo elemento voraz es menor o igual al del r-ésimo elemento óptimo:</p>
 <blockquote>
 <p><strong>f(g_r) ≤ f(o_r)</strong>
 * <strong>Caso Base (r = 1):</strong> El algoritmo voraz elige el intervalo con el menor tiempo de fin absoluto en todo el conjunto. Por lo tanto, f(g_1) ≤ f(o_1).
@@ -2339,8 +2365,8 @@ s(o_r) ≥ f(o_{r-1}) ≥ f(g_{r-1})</p>
 * Permitir solapamiento estricto si dos intervalos comparten un borde (chequear si el enunciado dice s_j ≥ f_i o s_j &gt; f_i).
 * Ordenar por tiempo de inicio o por duración, los cuales no son óptimos.</p></div>
 <p><strong>Variación típica de parcial</strong><br />
-<em> </em>Interval Scheduling Ponderado:<em> Cada intervalo tiene un valor o peso v_i. En este caso, </em><em>Greedy NO funciona</em><em> y se debe resolver con Programación Dinámica (ver Ejercicio 18).
-* </em>Interval Partitioning:* Se pide determinar la cantidad mínima de salas/recursos necesarios para programar todas las charlas sin solapamiento (se resuelve ordenando por inicio y usando una cola de prioridad).</p>
+* <em>Interval Scheduling Ponderado:</em> Cada intervalo tiene un valor o peso v_i. En este caso, <strong>Greedy NO funciona</strong> y se debe resolver con Programación Dinámica (ver Ejercicio 18).
+* <em>Interval Partitioning:</em> Se pide determinar la cantidad mínima de salas/recursos necesarios para programar todas las charlas sin solapamiento (se resuelve ordenando por inicio y usando una cola de prioridad).</p>
 <hr />
 <h3>Patrón de Ejercicio 2.2: Mochila Fraccionaria vs 0-1 con Garantía de Calidad 1/2</h3>
 <p>En las evaluaciones teóricas y en los TPs de la cátedra se examina la relación entre la solución fraccionaria (óptima con greedy) y la versión entera 0-1, demostrando cómo una regla greedy corregida otorga una cota de aproximación constante.</p>
@@ -2450,8 +2476,8 @@ max(P_1, v_c) ≥ (P_1 + v_c) / 2
 Sol ≥ (P_1 + v_c) / 2 &gt; OPT / 2  ⟹  Sol / OPT &gt; 1/2</p>
 </blockquote>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> Filtrado en O(n), ordenamiento de n elementos en O(n log n), recorrido voraz en O(n). Total: O(n log n).
-* </em><em>Espacio adicional:</em>* O(n) para almacenar la lista de candidatos y la solución seleccionada.</p>
+* <strong>Tiempo:</strong> Filtrado en O(n), ordenamiento de n elementos en O(n log n), recorrido voraz en O(n). Total: O(n log n).
+* <strong>Espacio adicional:</strong> O(n) para almacenar la lista de candidatos y la solución seleccionada.</p>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
 * No descartar previamente los elementos con w_i &gt; W. Si el elemento crítico pesa más que W, no puede incluirse en solitario.</p></div>
 <p><strong>Variación típica de parcial</strong><br />
@@ -2504,10 +2530,10 @@ Técnica de ordenamiento por fecha de vencimiento más temprana (<em>Earliest De
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> ¿Por qué otros criterios fallan?
-  * </em>Menor duración primero (t_i):<em> Ignora fechas límites urgentes.
-  * </em>Menor holgura (d_i - t_i):<em> Falla si una tarea corta tiene menor holgura pero fecha límite lejana y bloquea una urgente.
-* </em>Criterio óptimo (EDF):* Ordenar las tareas en orden creciente de sus fechas límites: d_1 ≤ d_2 ≤ ... ≤ d_n.
+* ¿Por qué otros criterios fallan?
+  * <em>Menor duración primero (t_i):</em> Ignora fechas límites urgentes.
+  * <em>Menor holgura (d_i - t_i):</em> Falla si una tarea corta tiene menor holgura pero fecha límite lejana y bloquea una urgente.
+* <em>Criterio óptimo (EDF):</em> Ordenar las tareas en orden creciente de sus fechas límites: d_1 ≤ d_2 ≤ ... ≤ d_n.
 * No dejar tiempo ocioso en la máquina entre tareas consecutivas.</p>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MinimizarLatenciaMaxima(tareas):
@@ -2544,8 +2570,8 @@ Al atender siempre la tarea cuyo vencimiento está más próximo, se previene qu
    * La nueva latencia de i finaliza en el mismo tiempo que antes finalizaba j. Como d_i &gt; d_j, su latencia nueva es menor que la latencia previa que tenía j.
 6. Por lo tanto, la latencia máxima tras el intercambio no aumentó. Esto reduce la cantidad de inversiones sin empeorar la solución óptima. Repitiendo el proceso se llega a la solución greedy, probando que es <strong>óptima</strong>.</p>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> O(n log n) por el ordenamiento inicial y O(n) en el barrido temporal. Total: O(n log n).
-* </em><em>Espacio adicional:</em>* O(n) para almacenar el cronograma resultante.</p>
+* <strong>Tiempo:</strong> O(n log n) por el ordenamiento inicial y O(n) en el barrido temporal. Total: O(n log n).
+* <strong>Espacio adicional:</strong> O(n) para almacenar el cronograma resultante.</p>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
 * Dejar huecos ociosos entre tareas. Una programación con tiempo ocioso siempre puede comprimirse hacia la izquierda sin aumentar la latencia.</p></div>
 <p><strong>Variación típica de parcial</strong><br />
@@ -2598,8 +2624,8 @@ Modelado del problema de <em>Weighted Set Cover</em> mediante una heurística vo
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> En cada paso, evaluamos todas las celdas candidatas donde aún no hay antena.
-* Para cada celda candidata (i, j), calculamos cuántos </em><em>nuevos vecindarios no cubiertos previamente</em>* aportaría instalar una antena allí: NuevosCobertura(i, j).
+* En cada paso, evaluamos todas las celdas candidatas donde aún no hay antena.
+* Para cada celda candidata (i, j), calculamos cuántos <strong>nuevos vecindarios no cubiertos previamente</strong> aportaría instalar una antena allí: NuevosCobertura(i, j).
 * Definimos el ratio de costo por beneficio marginal:</p>
 <blockquote>
 <p><strong>Ratio(i, j) = CTO_ij / NuevosCobertura(i, j)</strong>
@@ -2702,8 +2728,8 @@ Construcción de heurísticas paso a paso y formulación de contraejemplos matem
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> </em>Regla voraz:<em> Estando en la ciudad actual, elegir como siguiente parada aquella ciudad accesible en la etapa que tenga el </em><em>menor costo de seguro inmediato</em><em>.
-* </em>Optimalidad:<em> </em><em>NO es óptimo</em>*. Un tramo inicial barato puede forzar a tomar en la siguiente etapa rutas con costos astronómicos o sin salida barata.</p>
+* <em>Regla voraz:</em> Estando en la ciudad actual, elegir como siguiente parada aquella ciudad accesible en la etapa que tenga el <strong>menor costo de seguro inmediato</strong>.
+* <em>Optimalidad:</em> <strong>NO es óptimo</strong>. Un tramo inicial barato puede forzar a tomar en la siguiente etapa rutas con costos astronómicos o sin salida barata.</p>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION TrasladoInvapGreedy(origen, destino, grafo_etapas):
     ciudad_actual &lt;- origen
@@ -2750,8 +2776,8 @@ Consideremos el siguiente grafo de etapas desde el origen E (Ezeiza) hasta el de
 <li><strong>Conclusión:</strong> Como 110 &gt; 25, el algoritmo voraz no encuentra la solución óptima. Los problemas de caminos mínimos en grafos por etapas requieren <strong>Programación Dinámica</strong> (ver Ejercicio 32).</li>
 </ul>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> O(V + E) en el peor caso si recorre las aristas de las etapas.
-* </em><em>Espacio:</em>* O(V) para la lista de ciudades del camino.</p>
+* <strong>Tiempo:</strong> O(V + E) en el peor caso si recorre las aristas de las etapas.
+* <strong>Espacio:</strong> O(V) para la lista de ciudades del camino.</p>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Greedy</h3>
 <ol>
@@ -2822,12 +2848,12 @@ Realizar un algoritmo que resuelva el problema de las 8 reinas mediante backtrac
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> Colocamos exactamente una reina por fila, avanzando fila por fila (fila = 0, 1, ..., 7). Esto elimina automáticamente los conflictos de fila.
+* Colocamos exactamente una reina por fila, avanzando fila por fila (fila = 0, 1, ..., 7). Esto elimina automáticamente los conflictos de fila.
 * Para chequear columnas en O(1): vector booleano <code>col_ocupada[8]</code>.
 * Para diagonales:
   * Diagonal Principal (): la diferencia <code>fila - col</code> es constante para todas las celdas de una misma diagonal. Varía entre -7 y +7. Con un desplazamiento de +7, mapeamos al rango [0, 14] mediante la clave <code>fila - col + 7</code>.
   * Diagonal Secundaria (/): la suma <code>fila + col</code> es constante para todas las celdas de una misma diagonal. Varía entre 0 y 14 mediante la clave <code>fila + col</code>.
-* Al probar una columna válida en la fila actual, marcamos las estructuras, llamamos recursivamente a la fila siguiente, y al retornar </em><em>desmarcamos</em>* las estructuras.</p>
+* Al probar una columna válida en la fila actual, marcamos las estructuras, llamamos recursivamente a la fila siguiente, y al retornar <strong>desmarcamos</strong> las estructuras.</p>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION Resolver8Reinas():
     INICIALIZAR solucion como arreglo de tamaño 8 lleno de -1
@@ -2874,8 +2900,8 @@ FUNCION ReinasBT(fila, solucion, col_ocupada, diag_prin, diag_sec):
 <p><strong>Explicación del algoritmo</strong><br />
 El algoritmo recorre las columnas candidatas para la fila actual. Gracias a las tres tablas booleanas, la validación de no agresión toma O(1). Si una asignación conduce a un callejón sin salida en filas posteriores, la ejecución vuelve atrás, restaura los booleanos a <code>FALSO</code> y prueba la siguiente columna.</p>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> En el peor caso para N reinas es O(N!), ya que la primera fila tiene N opciones, la segunda a lo sumo N - 1, etc. Para N = 8, el espacio de búsqueda es menor a 8! = 40.320 nodos y con podas diagonales evalúa apenas unos pocos cientos de estados.
-* </em><em>Espacio:</em>* O(N) para la pila de recursión y los vectores de control booleanos (8 + 15 + 15 = 38 booleanos).</p>
+* <strong>Tiempo:</strong> En el peor caso para N reinas es O(N!), ya que la primera fila tiene N opciones, la segunda a lo sumo N - 1, etc. Para N = 8, el espacio de búsqueda es menor a 8! = 40.320 nodos y con podas diagonales evalúa apenas unos pocos cientos de estados.
+* <strong>Espacio:</strong> O(N) para la pila de recursión y los vectores de control booleanos (8 + 15 + 15 = 38 booleanos).</p>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
 * Olvidar desmarcar las tablas booleanas al retornar de la recursión.
 * Calcular mal el desplazamiento de la diagonal principal y provocar un índice negativo (<code>fila - col &lt; 0</code>).
@@ -2980,8 +3006,8 @@ FUNCION LagrangeBT(paso, remanente, max_limite, solucion):
 <p><strong>Explicación del algoritmo</strong><br />
 El algoritmo explora a lo sumo 3 niveles de profundidad, calculando el cuarto término analíticamente en O(1). La condición v ≤ anterior elimina simetrías, y la condición <code>terminos_restantes * (v * v) &lt; remanente</code> aborta inmediatamente ramas cuando los valores se vuelven demasiado pequeños para sumar n.</p>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> El primer término tiene a lo sumo √n opciones. El segundo tiene a lo sumo √n opciones. El tercero tiene a lo sumo √n opciones. El cuarto se determina en O(1). Por lo tanto, en el peor caso sin podas sería O((√n)³) = O(n^(3/2)). Con la poda de simetría w ≥ x ≥ y ≥ z y el corte temprano por cota inferior, el espacio de búsqueda se reduce a una fracción mínima de n^(3/2), resolviendo en milisegundos para números grandes.
-* </em><em>Espacio:</em>* O(1) de memoria adicional más una pila de recursión fija de profundidad 4.</p>
+* <strong>Tiempo:</strong> El primer término tiene a lo sumo √n opciones. El segundo tiene a lo sumo √n opciones. El tercero tiene a lo sumo √n opciones. El cuarto se determina en O(1). Por lo tanto, en el peor caso sin podas sería O((√n)³) = O(n^(3/2)). Con la poda de simetría w ≥ x ≥ y ≥ z y el corte temprano por cota inferior, el espacio de búsqueda se reduce a una fracción mínima de n^(3/2), resolviendo en milisegundos para números grandes.
+* <strong>Espacio:</strong> O(1) de memoria adicional más una pila de recursión fija de profundidad 4.</p>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
 * Iterar los 4 bucles hasta √n sin calcular el último término en O(1) (O(n²) vs O(n^(3/2))).
 * No imponer el orden decreciente v ≤ anterior, multiplicando el tiempo por 4! = 24.</p></div>
@@ -3035,11 +3061,11 @@ Estrategia de branching sobre aristas no cubiertas (al menos uno de los extremos
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> Un Vertex Cover requiere que para cada arista (u, v) ∈ E, al menos u ∈ C o v ∈ C.
-* </em>Branching inteligente:<em> En lugar de probar vértice por vértice arbitrariamente (2^|V|), buscamos una arista (u, v) que </em><em>aún no esté cubierta</em><em> por el conjunto actual:
+* Un Vertex Cover requiere que para cada arista (u, v) ∈ E, al menos u ∈ C o v ∈ C.
+* <em>Branching inteligente:</em> En lugar de probar vértice por vértice arbitrariamente (2^|V|), buscamos una arista (u, v) que <strong>aún no esté cubierta</strong> por el conjunto actual:
   * Rama 1: Incluimos u en la cobertura y recursamos.
   * Rama 2: Incluimos v en la cobertura y recursamos.
-* </em>Poda Branch and Bound:* Mantenemos el tamaño del mejor Vertex Cover encontrado hasta el momento (<code>mejor_tamano</code>). Si en el estado actual |C| ≥ mejor_tamano, podar inmediatamente la rama, porque cualquier solución derivada tendrá tamaño mayor o igual y no puede mejorar el récord actual.
+* <em>Poda Branch and Bound:</em> Mantenemos el tamaño del mejor Vertex Cover encontrado hasta el momento (<code>mejor_tamano</code>). Si en el estado actual |C| ≥ mejor_tamano, podar inmediatamente la rama, porque cualquier solución derivada tendrá tamaño mayor o igual y no puede mejorar el récord actual.
 * Caso base: Si no quedan aristas sin cubrir, C es un Vertex Cover válido y actualizamos la mejor solución.</p>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MinimoVertexCover(G):
@@ -3084,14 +3110,14 @@ FUNCION BuscarAristaNoCubierta(G, cobertura):
 <p><strong>Explicación del algoritmo</strong><br />
 Al ramificar sobre los dos extremos de una arista no cubierta, el árbol tiene factor de ramificación 2. Si el grafo tiene un Vertex Cover de tamaño k, la profundidad máxima explorada es k. La poda por cota superior asegura que apenas se encuentra una cobertura de tamaño k, ninguna rama de tamaño ≥ k es explorada.</p>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> En el peor caso la recursión genera O(2ᵏ · |E|) operaciones, donde k es el tamaño del Vertex Cover mínimo. Comparado con el espacio ingenuo O(2^|V|), esto es exponencialmente más veloz cuando k &lt; |V|.
-* </em><em>Espacio:</em>* O(|V|) para almacenar el conjunto de la cobertura actual y la pila de recursión.</p>
+* <strong>Tiempo:</strong> En el peor caso la recursión genera O(2ᵏ · |E|) operaciones, donde k es el tamaño del Vertex Cover mínimo. Comparado con el espacio ingenuo O(2^|V|), esto es exponencialmente más veloz cuando k &lt; |V|.
+* <strong>Espacio:</strong> O(|V|) para almacenar el conjunto de la cobertura actual y la pila de recursión.</p>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
 * Ramificar incluyendo ninguno de los dos extremos (eso violaría la definición de cobertura).
 * No hacer una copia profunda (<code>COPIAR</code>) de <code>actual</code> al actualizar <code>MEJOR</code>.
 * No podar con <code>&gt;= cardinal(MEJOR)</code> permitiendo explorar soluciones con igual o peor tamaño.</p></div>
 <p><strong>Variación típica de parcial</strong><br />
-<em> </em>Independent Set Máximo:* Recordar la dualidad S es Independent Set ⟺ V \ S es Vertex Cover.
+* <em>Independent Set Máximo:</em> Recordar la dualidad S es Independent Set ⟺ V \ S es Vertex Cover.
 * Resolver el problema de decisión: ¿Existe un Vertex Cover de tamaño ≤ k? (Se corta la búsqueda con éxito en cuanto se halle uno de tamaño ≤ k).</p>
 <hr />
 <h3>Patrón de Ejercicio 3.4: Suma de Subconjuntos (Subset Sum) con Podas</h3>
@@ -3184,8 +3210,8 @@ FUNCION SubsetSumRec(L, indice, remanente, solucion):
     RETORNAR FALSO
 </code></pre></div>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> O(2ⁿ) en el peor caso, pero fuertemente reducido por las podas con L ordenado.
-* </em><em>Espacio:</em>* O(n) por la pila de recursión y la lista de la solución.</p>
+* <strong>Tiempo:</strong> O(2ⁿ) en el peor caso, pero fuertemente reducido por las podas con L ordenado.
+* <strong>Espacio:</strong> O(n) por la pila de recursión y la lista de la solución.</p>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Backtracking</h3>
 <ol>
@@ -3260,14 +3286,14 @@ Modelado del estado en 1D, razonamiento hacia adelante o hacia atrás (K → 0),
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> </em>Perspectiva inversa (i → 0):<em> Pensar cómo llegar a un número i:
+* <em>Perspectiva inversa (i → 0):</em> Pensar cómo llegar a un número i:
   * Siempre podemos llegar desde i - 1 aplicando la operación +1.
   * Si i es par, también podemos llegar desde i / 2 aplicando la operación × 2.
-* </em>Definición del Estado:<em><br />
+* <em>Definición del Estado:</em><br />
   OPT(i): Mínima cantidad de operaciones necesarias para alcanzar el valor i partiendo desde 0.
-* </em>Casos Base:<em><br />
+* <em>Casos Base:</em><br />
   OPT(0) = 0 (ya estamos en 0, 0 operaciones).
-* </em>Ecuación de Recurrencia:*<br />
+* <em>Ecuación de Recurrencia:</em><br />
   Para i ≥ 1:  </p>
 <blockquote>
 <p><strong>OPT(i) = OPT(i - 1) + 1</strong> (si i es impar)<br />
@@ -3312,13 +3338,13 @@ Modelado del estado en 1D, razonamiento hacia adelante o hacia atrás (K → 0),
 <p><strong>Explicación del algoritmo</strong><br />
 El algoritmo construye una tabla lineal de tamaño K + 1. Cada celda i se resuelve en tiempo constante O(1) comparando a lo sumo dos estados previos (i - 1 y i / 2). El vector <code>padre</code> y <code>op</code> almacena el camino óptimo para reconstruir la secuencia en reversa.</p>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> La tabla tiene K + 1 posiciones y cada una se calcula en O(1) comparaciones aritméticas. La reconstrucción hace a lo sumo K saltos. Complejidad temporal: </em><em>O(K)</em><em>.
-* </em><em>Espacio:</em><em> Arreglos de tamaño K + 1 para almacenar los costos y predecesores: </em><em>O(K)</em>*.</p>
+* <strong>Tiempo:</strong> La tabla tiene K + 1 posiciones y cada una se calcula en O(1) comparaciones aritméticas. La reconstrucción hace a lo sumo K saltos. Complejidad temporal: <strong>O(K)</strong>.
+* <strong>Espacio:</strong> Arreglos de tamaño K + 1 para almacenar los costos y predecesores: <strong>O(K)</strong>.</p>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-<em> Intentar duplicar desde 0: 0 × 2 = 0, duplicar solo tiene sentido a partir de x ≥ 1.
-* No guardar la reconstrucción de las operaciones cuando el enunciado pide explícitamente </em>"y cómo son dichas operaciones"*.</p></div>
+* Intentar duplicar desde 0: 0 × 2 = 0, duplicar solo tiene sentido a partir de x ≥ 1.
+* No guardar la reconstrucción de las operaciones cuando el enunciado pide explícitamente <em>"y cómo son dichas operaciones"</em>.</p></div>
 <p><strong>Variación típica de parcial</strong><br />
-<em> ¿Se puede resolver con Greedy en tiempo O(log K)? </em><em>Sí:</em>* Partiendo de K hacia 0, si K es par siempre conviene dividir por 2; si es impar, restar 1. Pero el enunciado pide resolverlo obligatoriamente por Programación Dinámica.</p>
+* ¿Se puede resolver con Greedy en tiempo O(log K)? <strong>Sí:</strong> Partiendo de K hacia 0, si K es par siempre conviene dividir por 2; si es impar, restar 1. Pero el enunciado pide resolverlo obligatoriamente por Programación Dinámica.</p>
 <hr />
 <h3>Patrón de Ejercicio 4.2: Mochila 2D con Restricciones Lógicas</h3>
 <p>Aparece cuando la mochila tiene múltiples recursos acoplados (peso y volumen) y condiciones lógicas adicionales sobre subconjuntos específicos de elementos (exclusión mutua y obligatoriedad).</p>
@@ -3367,11 +3393,11 @@ Mochila 2D (estado tridimensional elemento × peso × volumen) y manejo riguroso
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> Una mochila con peso y volumen clásica tiene estado OPT(i, c, l): beneficio máximo con los primeros i elementos, peso máximo c y volumen máximo l.
+* Una mochila con peso y volumen clásica tiene estado OPT(i, c, l): beneficio máximo con los primeros i elementos, peso máximo c y volumen máximo l.
 * Restricción lógica: Debe estar exactamente el ítem 1 O el ítem 2.
-* </em>Estrategia limpia y robusta:<em>
-  1. </em><em>Caso A:</em><em> Asumimos que elegimos la Guía 1. Incorporamos obligatoriamente la Guía 1 (consumiendo w₁ de peso y v₁ de volumen, aportando b₁). Descartamos la Guía 2. Resolvemos la mochila 2D estándar para los ítems restantes 3, 4, ..., n con capacidades remanentes C - w₁ y L - v₁.
-  2. </em><em>Caso B:</em>* Asumimos que elegimos la Guía 2. Incorporamos obligatoriamente la Guía 2 (consumiendo w₂ y v₂, aportando b₂). Descartamos la Guía 1. Resolvemos la mochila 2D estándar para los ítems restantes 3, 4, ..., n con capacidades remanentes C - w₂ y L - v₂.
+* <em>Estrategia limpia y robusta:</em>
+  1. <strong>Caso A:</strong> Asumimos que elegimos la Guía 1. Incorporamos obligatoriamente la Guía 1 (consumiendo w₁ de peso y v₁ de volumen, aportando b₁). Descartamos la Guía 2. Resolvemos la mochila 2D estándar para los ítems restantes 3, 4, ..., n con capacidades remanentes C - w₁ y L - v₁.
+  2. <strong>Caso B:</strong> Asumimos que elegimos la Guía 2. Incorporamos obligatoriamente la Guía 2 (consumiendo w₂ y v₂, aportando b₂). Descartamos la Guía 1. Resolvemos la mochila 2D estándar para los ítems restantes 3, 4, ..., n con capacidades remanentes C - w₂ y L - v₂.
   3. Comparamos el beneficio total máximo de ambos casos y nos quedamos con el mejor.</p>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MochilaPaoloCasanova(items, C, L):
@@ -3448,8 +3474,8 @@ FUNCION Mochila2DEstandar(elementos, MaxPeso, MaxVol):
 <strong>OPT(i, p, v) = max(OPT(i - 1, p, v), OPT(i - 1, p - w_i, v - v_i) + b_i)</strong> (en otro caso)</p>
 </blockquote>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> Resolvemos la tabla 3D dos veces (una para cada guía obligatoria). Cada llenado tiene dimensiones n × C × L y operaciones O(1) por celda: </em><em>O(n · C · L)</em><em>.
-* </em><em>Espacio:</em><em> Tabla 3D de tamaño </em><em>O(n · C · L)</em>*.</p>
+* <strong>Tiempo:</strong> Resolvemos la tabla 3D dos veces (una para cada guía obligatoria). Cada llenado tiene dimensiones n × C × L y operaciones O(1) por celda: <strong>O(n · C · L)</strong>.
+* <strong>Espacio:</strong> Tabla 3D de tamaño <strong>O(n · C · L)</strong>.</p>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
 * Permitir que la mochila quede vacía de guías o que se lleven ambas.
 * No chequear si individualmente la Guía 1 o Guía 2 caben en la mochila antes de iniciar la recursión.</p></div>
@@ -3511,16 +3537,16 @@ DP sobre prefijos de secuencias (1 ... i), evaluación de la última línea como
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> </em>Definición del Estado:<em><br />
+* <em>Definición del Estado:</em><br />
   OPT(i): Mínimo costo total (suma de cuadrados de sobrantes) de formatear el prefijo de palabras W₁, ..., W_i.
-* </em>Decisión en el paso i:<em><br />
+* <em>Decisión en el paso i:</em><br />
   ¿Dónde empieza la última línea que contiene a W_i?
   Si la última línea empieza en la palabra j (con 1 ≤ j ≤ i), esa línea agrupa a W_j, ..., W_i.
   El costo de esa última línea es Sobrante(j, i)².
   El costo de las líneas previas es el costo óptimo de formatear las palabras hasta j - 1, es decir, OPT(j - 1).
-* </em>Caso Base:<em><br />
+* <em>Caso Base:</em><br />
   OPT(0) = 0 (cero palabras tienen costo cero).
-* </em>Ecuación de Recurrencia:*  </p>
+* <em>Ecuación de Recurrencia:</em>  </p>
 <blockquote>
 <p><strong>OPT(i) = min_{1 ≤ j ≤ i, Longitud(j, i) ≤ L} { OPT(j - 1) + (L - Longitud(j, i))² }</strong>
 * <em>Reconstrucción:</em> Guardamos en <code>corte[i]</code> el índice j óptimo que minimizó la expresión para i.</p>
@@ -3570,8 +3596,8 @@ DP sobre prefijos de secuencias (1 ... i), evaluación de la última línea como
 <p><strong>Explicación del algoritmo</strong><br />
 Para cada palabra i, retrocedemos evaluando posibles inicios de la línea actual j. Apenas el largo acumulado supera L, cortamos el bucle interno con <code>ROMPER</code> gracias a la monotonía de la suma de palabras. Cada línea se almacena como el rango de palabras [inicio, fin].</p>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> Hay n estados. Para cada estado i, el bucle interno evalúa a lo sumo i palabras (y en la práctica a lo sumo L palabras, ya que cada palabra tiene longitud ≥ 1). En el peor caso la complejidad es </em><em>O(n²) o bien O(n · L)</em><em>.
-* </em><em>Espacio:</em><em> Arreglos 1D de tamaño n + 1 para <code>DP</code> y <code>corte</code>: </em><em>O(n)</em>*.</p>
+* <strong>Tiempo:</strong> Hay n estados. Para cada estado i, el bucle interno evalúa a lo sumo i palabras (y en la práctica a lo sumo L palabras, ya que cada palabra tiene longitud ≥ 1). En el peor caso la complejidad es <strong>O(n²) o bien O(n · L)</strong>.
+* <strong>Espacio:</strong> Arreglos 1D de tamaño n + 1 para <code>DP</code> y <code>corte</code>: <strong>O(n)</strong>.</p>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
 * Olvidar sumar 1 por cada espacio intermedio entre palabras consecutivas (k - i).
 * No penalizar adecuadamente las líneas que superan L: si una combinación supera L, debe ser descartada o tratada como costo ∞, nunca permitir sobrantes negativos.</p></div>
@@ -3625,11 +3651,11 @@ Generalización formal de la mochila 0-1 a tres dimensiones de capacidad acumula
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> </em>Definición del Estado:<em><br />
+* <em>Definición del Estado:</em><br />
   OPT(i, w, v, m): Beneficio máximo considerando un subconjunto de los primeros i paquetes (1 ≤ i ≤ n), con un peso disponible de hasta w (0 ≤ w ≤ C), un volumen disponible de hasta v (0 ≤ v ≤ T), y un límite de costo de seguro disponible de hasta m (0 ≤ m ≤ M).
-* </em>Casos Base:<em><br />
+* <em>Casos Base:</em><br />
   OPT(0, w, v, m) = 0 para todo w, v, m.
-* </em>Ecuación de Recurrencia:*<br />
+* <em>Ecuación de Recurrencia:</em><br />
   Para el paquete i, evaluamos si cabe simultáneamente en los tres recursos (W_i ≤ w, V_i ≤ v, C_i ≤ m):  </p>
 <blockquote>
 <p><strong>OPT(i, w, v, m) = OPT(i - 1, w, v, m)</strong> (si no entra en algún recurso)<br />
@@ -3674,8 +3700,8 @@ Generalización formal de la mochila 0-1 a tres dimensiones de capacidad acumula
     RETORNAR (DP[n][C][T][M], seleccionados)
 </code></pre></div>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> Se llenan (n + 1) · (C + 1) · (T + 1) · (M + 1) celdas con O(1) operaciones por celda: </em><em>O(n · C · T · M)</em><em> (Complejidad pseudo-polinomial).
-* </em><em>Espacio:</em><em> </em><em>O(n · C · T · M)</em>* para la matriz completa (u O(C · T · M) si solo se pide el valor máximo iterando en reversa sobre una única tabla tridimensional).</p>
+* <strong>Tiempo:</strong> Se llenan (n + 1) · (C + 1) · (T + 1) · (M + 1) celdas con O(1) operaciones por celda: <strong>O(n · C · T · M)</strong> (Complejidad pseudo-polinomial).
+* <strong>Espacio:</strong> <strong>O(n · C · T · M)</strong> para la matriz completa (u O(C · T · M) si solo se pide el valor máximo iterando en reversa sobre una única tabla tridimensional).</p>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
 * Olvidar una de las tres dimensiones en la condición de inclusión (<code>SI p.peso &lt;= w Y p.volumen &lt;= v Y p.costo &lt;= m</code>).
 * No aclarar que es un algoritmo pseudo-polinomial dependiente del valor numérico de las capacidades.</p></div>
@@ -3725,9 +3751,9 @@ Juan dispone de ofertas de trabajo para los próximos n días. Cada día i le of
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> </em>Definición del Estado:<em><br />
+* <em>Definición del Estado:</em><br />
   OPT(i): Ganancia máxima considerando los primeros i días (1 ≤ i ≤ n).
-* </em>Recurrencia:*<br />
+* <em>Recurrencia:</em><br />
   En el día i:
   * No trabaja el día i: Ganancia = OPT(i - 1).
   * Trabaja el día i: Gana G[i], pero no pudo haber trabajado el día i - 1, por lo que suma OPT(i - 2).  </p>
@@ -3767,8 +3793,8 @@ Juan dispone de ofertas de trabajo para los próximos n días. Cada día i le of
     RETORNAR (DP[n], dias)
 </code></pre></div>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> O(n) pues llena una tabla lineal de n posiciones con operaciones O(1).
-* </em><em>Espacio:</em>* O(n) (u O(1) con variables temporales si no se requiere reconstrucción).</p>
+* <strong>Tiempo:</strong> O(n) pues llena una tabla lineal de n posiciones con operaciones O(1).
+* <strong>Espacio:</strong> O(n) (u O(1) con variables temporales si no se requiere reconstrucción).</p>
 <hr />
 <h3>Patrón de Ejercicio 4.6: Interval Scheduling Ponderado (DP con Búsqueda Binaria)</h3>
 <p>Selección de intervalos con pesos o beneficios arbitrarios donde Greedy falla y se requiere DP con búsqueda logarítmica del predecesor compatible.</p>
@@ -3869,8 +3895,8 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
     RETORNAR res
 </code></pre></div>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> Ordenamiento en O(n log n). Búsqueda binaria de p(i) para los n intervalos en O(n log n). Llenado de DP en O(n). Total: </em><em>O(n log n)</em><em>.
-* </em><em>Espacio:</em>* O(n) para los arreglos <code>DP</code>, <code>P</code> y la reconstrucción.</p>
+* <strong>Tiempo:</strong> Ordenamiento en O(n log n). Búsqueda binaria de p(i) para los n intervalos en O(n log n). Llenado de DP en O(n). Total: <strong>O(n log n)</strong>.
+* <strong>Espacio:</strong> O(n) para los arreglos <code>DP</code>, <code>P</code> y la reconstrucción.</p>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Programación Dinámica</h3>
 <ol>
@@ -3979,14 +4005,14 @@ RESTRICCIONES:
 <p><strong>Explicación del modelo</strong><br />
 Si Paolo no visita ningún lugar donde habita la especie i, todos los y_j con A_ij = 1 valen 0, por lo que la sumatoria es 0 y la restricción x_i ≤ 0 fuerza a que x_i = 0. Como el objetivo es maximizar la suma de x_i, en cuanto visite al menos un lugar con esa especie (y_j = 1), el solucionador pondrá automáticamente x_i = 1. Visitar dos lugares con la misma especie no duplica el valor porque x_i está acotada en 1.</p>
 <p><strong>Conteo de Variables y Restricciones</strong><br />
-<em> </em><em>Variables:</em><em><br />
+* <strong>Variables:</strong><br />
   * 6 variables binarias y_j (lugares).<br />
   * 10 variables binarias x_i (especies).<br />
-  * </em><em>Total de variables:</em><em> 6 + 10 = 16 variables binarias.
-* </em><em>Restricciones:</em><em><br />
+  * <strong>Total de variables:</strong> 6 + 10 = 16 variables binarias.
+* <strong>Restricciones:</strong><br />
   * 1 restricción de tiempo.<br />
   * 10 restricciones de cobertura de especies (una por cada i ∈ E).<br />
-  * </em><em>Total de restricciones:</em>* 1 + 10 = 11 restricciones lineales (más las cotas de dominio).</p>
+  * <strong>Total de restricciones:</strong> 1 + 10 = 11 restricciones lineales (más las cotas de dominio).</p>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
 * Poner x_i = ∑ A_ij · y_j con igualdad: si visita 2 lugares que tienen la misma especie, x_i tomaría el valor 2, sumando dos veces la misma especie en el objetivo.
 * Declarar y_j o x_i como continuas: daría valores fraccionarios absurdos (como visitar 0.3 de un lugar).</p></div>
@@ -4060,8 +4086,8 @@ RESTRICCIONES:
   x_v &lt;= ∑_{c ∈ AntenasQueCubren(v)} y_c    ∀ v ∈ V
 </code></pre></div>
 <p><strong>Conteo de Variables y Restricciones</strong><br />
-<em> </em><em>Variables:</em><em> |C| + |V| variables binarias.
-* </em><em>Restricciones:</em>* 1 restricción del umbral del 70% + |V| restricciones de cobertura. Total: |V| + 1 restricciones lineales.</p>
+* <strong>Variables:</strong> |C| + |V| variables binarias.
+* <strong>Restricciones:</strong> 1 restricción del umbral del 70% + |V| restricciones de cobertura. Total: |V| + 1 restricciones lineales.</p>
 <hr />
 <h3>Patrón de Ejercicio 5.3: Flujo de Costo Mínimo / Transporte Multizona</h3>
 <p>Problemas de balance de oferta y demanda con capacidades máximas y costos de transporte por arista.</p>
@@ -4131,9 +4157,9 @@ RESTRICCIONES:
   x_ij &lt;= CAP_ij    ∀ i, j ∈ R (i ≠ j)
 </code></pre></div>
 <p><strong>Conteo de Variables y Restricciones</strong><br />
-<em> Con 9 regiones, hay a lo sumo 9 × 8 = 72 pares de transporte posibles:
-  * </em><em>Variables:</em><em> 72 variables continuas x_ij ≥ 0.
-  * </em><em>Restricciones:</em>* 9 restricciones de balance nodal (una por región) + 72 restricciones de capacidad de línea = 81 restricciones lineales.</p>
+* Con 9 regiones, hay a lo sumo 9 × 8 = 72 pares de transporte posibles:
+  * <strong>Variables:</strong> 72 variables continuas x_ij ≥ 0.
+  * <strong>Restricciones:</strong> 9 restricciones de balance nodal (una por región) + 72 restricciones de capacidad de línea = 81 restricciones lineales.</p>
 <hr />
 <h3>Patrón de Ejercicio 5.4: Camino Mínimo Formulado como Flujo Unitario</h3>
 <p>Formulación de la búsqueda de rutas óptimas en grafos de decisión multietapa como problemas de flujo de una sola unidad desde el origen hasta el destino.</p>
@@ -4181,7 +4207,7 @@ Plantear un modelo de Programación Lineal que determine la ruta de menor costo 
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> Modelamos el problema inyectando </em><em>1 unidad de flujo</em><em> en el nodo origen s y extrayendo </em><em>1 unidad de flujo</em>* en el sumidero t.
+* Modelamos el problema inyectando <strong>1 unidad de flujo</strong> en el nodo origen s y extrayendo <strong>1 unidad de flujo</strong> en el sumidero t.
 * Variables: x_uv ∈ {0, 1} indica si el tramo (u, v) forma parte de la ruta elegida.
 * Conservación de flujo nodal:
   * En el origen s: ∑_v x_sv - ∑_u x_us = 1.
@@ -4202,8 +4228,8 @@ RESTRICCIONES:
       0   si i ∈ V \ {s, t} (ciudades intermedias)
 </code></pre></div>
 <p><strong>Conteo de Variables y Restricciones</strong><br />
-<em> </em><em>Variables:</em><em> |E| variables binarias (una por cada tramo factible).<br />
-</em> <strong>Restricciones:</strong> |V| restricciones de conservación de flujo (una por cada nodo).<br />
+* <strong>Variables:</strong> |E| variables binarias (una por cada tramo factible).<br />
+* <strong>Restricciones:</strong> |V| restricciones de conservación de flujo (una por cada nodo).<br />
 <em>(Nota teórica importante: Debido a la Unimodularidad Total de la matriz de incidencia de grafos, las variables x_uv pueden relajarse a continuas 0 ≤ x_uv ≤ 1 y el método Simplex garantiza soluciones enteras automáticamente).</em></p>
 <hr />
 <h3>Patrón de Ejercicio 5.5: Linealización de Funciones No Lineales (min max)</h3>
@@ -4266,8 +4292,8 @@ RESTRICCIONES:
   Z &gt;= ∑_{i=1}^n (T_i * (1 - x_i))
 </code></pre></div>
 <p><strong>Conteo de Variables y Restricciones</strong><br />
-<em> </em><em>Variables:</em><em> n variables binarias + 1 variable continua auxiliar = n + 1 variables.<br />
-</em> <strong>Restricciones:</strong> 2 restricciones lineales de cota superior sobre Z.</p>
+* <strong>Variables:</strong> n variables binarias + 1 variable continua auxiliar = n + 1 variables.<br />
+* <strong>Restricciones:</strong> 2 restricciones lineales de cota superior sobre Z.</p>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Programación Lineal</h3>
 <ol>
@@ -4349,12 +4375,12 @@ Modelado de asignación con capacidades unitarias mediante Redes de Flujo, creac
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> Construimos un grafo dirigido con 4 capas de nodos:
+* Construimos un grafo dirigido con 4 capas de nodos:
   1. Nodo super-fuente s.
   2. Capa de pacientes: un nodo p por cada paciente p ∈ P.
   3. Capa de turnos específicos: un nodo (m, h) por cada médico m y franja horaria disponible h ∈ H_m.
   4. Nodo super-sumidero t.
-* </em><em>Aristas y Capacidades:</em>*
+* <strong>Aristas y Capacidades:</strong>
   * Desde s a cada paciente p: capacidad c(s, p) = 1 (cada paciente recibe a lo sumo 1 cita).
   * Desde cada paciente p al turno (m, h) si el paciente es compatible con ese médico y horario: capacidad c(p, (m, h)) = 1.
   * Desde cada turno (m, h) al sumidero t: capacidad c((m, h), t) = 1 (un médico solo atiende a un paciente en esa franja horaria).
@@ -4395,13 +4421,13 @@ Modelado de asignación con capacidades unitarias mediante Redes de Flujo, creac
 <p><strong>Explicación del algoritmo</strong><br />
 La red fuerza a que cada paciente consuma a lo sumo 1 unidad de flujo desde s, y que cada turno de médico expulse a lo sumo 1 unidad hacia t. La conservación de flujo en los nodos intermedios asegura que un paciente solo se vincule con un médico en un horario compatible. Al ser todas las capacidades enteras, el flujo máximo equivale al matching máximo.</p>
 <p><strong>Complejidad</strong><br />
-<em> La cantidad total de nodos es |V| = 2 + |P| + ∑ |H_m| = O(|P| + |Turnos|).
-* El flujo máximo está acotado superiormente por el número de pacientes: |f</em>| ≤ |P|.
+* La cantidad total de nodos es |V| = 2 + |P| + ∑ |H_m| = O(|P| + |Turnos|).
+* El flujo máximo está acotado superiormente por el número de pacientes: |f*| ≤ |P|.
 * Cada camino de aumento encontrado por BFS toma O(E).
 * Complejidad total con Ford-Fulkerson: <strong>O(|P| · |E|)</strong>, lo cual es estrictamente polinomial y muy eficiente para capacidades unitarias.</p>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-<em> Conectar al médico directamente con capacidad infinita en lugar de separar por franja horaria (m, h), lo que permitiría que un médico atienda a varios pacientes a la misma hora.
-* Olvidar justificar por qué la solución es entera (debe citarse el </em><em>Teorema de Integralidad de Flujo</em>*).</p></div>
+* Conectar al médico directamente con capacidad infinita en lugar de separar por franja horaria (m, h), lo que permitiría que un médico atienda a varios pacientes a la misma hora.
+* Olvidar justificar por qué la solución es entera (debe citarse el <strong>Teorema de Integralidad de Flujo</strong>).</p></div>
 <hr />
 <h3>Patrón de Ejercicio 6.2: Redes de Demanda y Suministro con Super-Nodos</h3>
 <p>Sistemas de transporte o energía con múltiples fuentes de generación y múltiples centros de consumo, requiriendo super-fuente y super-sumidero para balancear el sistema.</p>
@@ -4626,10 +4652,10 @@ Dado el flujo máximo de una red y su red residual asociada, implementar un algo
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> Al aumentar la capacidad de (u, v) en 1, en la red residual G_f la capacidad residual de (u, v) aumenta exactamente en 1 unidad.
-* Por el Teorema de Flujo Máximo, el flujo máximo de la red o bien </em><em>se mantiene igual</em><em>, o bien </em><em>aumenta a lo sumo en 1 unidad</em><em>.
-* Por lo tanto, alcanza con buscar </em><em>un único camino de aumento</em><em> desde s hasta t en la nueva red residual G_f' mediante una búsqueda en anchura (BFS) o profundidad (DFS):
-  * Si existe un camino de aumento, aumentamos 1 unidad de flujo a lo largo de dicho camino en O(V). El nuevo flujo máximo es f</em> + 1.
+* Al aumentar la capacidad de (u, v) en 1, en la red residual G_f la capacidad residual de (u, v) aumenta exactamente en 1 unidad.
+* Por el Teorema de Flujo Máximo, el flujo máximo de la red o bien <strong>se mantiene igual</strong>, o bien <strong>aumenta a lo sumo en 1 unidad</strong>.
+* Por lo tanto, alcanza con buscar <strong>un único camino de aumento</strong> desde s hasta t en la nueva red residual G_f' mediante una búsqueda en anchura (BFS) o profundidad (DFS):
+  * Si existe un camino de aumento, aumentamos 1 unidad de flujo a lo largo de dicho camino en O(V). El nuevo flujo máximo es f* + 1.
   * Si no existe ningún camino de aumento, el flujo máximo original sigue siendo óptimo: el nuevo flujo máximo es f*.
 * Un único BFS/DFS sobre la red toma O(V + E).</p>
 <p><strong>Pseudocódigo</strong></p>
@@ -4651,14 +4677,14 @@ Dado el flujo máximo de una red y su red residual asociada, implementar un algo
         RETORNAR (flujo_actual, &quot;El flujo maximo no cambio&quot;)
 </code></pre></div>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> O(V + E) por una única ejecución de BFS.
-* </em><em>Espacio:</em>* O(V) para la cola y vector de visitados del BFS.</p>
+* <strong>Tiempo:</strong> O(V + E) por una única ejecución de BFS.
+* <strong>Espacio:</strong> O(V) para la cola y vector de visitados del BFS.</p>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Redes de Flujo</h3>
 <ol>
 <li><strong>Olvidar las aristas hacia atrás en la red residual:</strong> No permitir deshacer flujo imposibilita que Ford-Fulkerson corrija decisiones subóptimas tempranas.</li>
 <li><strong>Confundir la capacidad de un corte:</strong> Sumar aristas que van de B hacia A en lugar de sumar únicamente las aristas que van de A hacia B.</li>
-<li><strong>Afirmar que Ford-Fulkerson siempre es polinomial:</strong> Ford-Fulkerson es pseudo-polinomial (O(E · |f<em>|)). El algoritmo que garantiza tiempo polinomial estricto independiente de los valores de capacidad es </em><em>Edmonds-Karp</em>* (O(V · E²)).</li>
+<li><strong>Afirmar que Ford-Fulkerson siempre es polinomial:</strong> Ford-Fulkerson es pseudo-polinomial (O(E · |f*|)). El algoritmo que garantiza tiempo polinomial estricto independiente de los valores de capacidad es <strong>Edmonds-Karp</strong> (O(V · E²)).</li>
 </ol>
 <hr />
       </div>
@@ -4840,8 +4866,8 @@ Habiendo probado que Dominating Set ∈ NP y que Vertex Cover ≤_P Dominating S
       <p><strong>Enunciado</strong><br />
 Marco, el cadete de la empresa, compró un software que resuelve el problema del Viajante de Comercio (TSP en su versión de decisión) cuando le habían pedido un software para resolver Ciclo Hamiltoniano. El vendedor afirmó: <em>"Si puedes resolver TSP de decisión, puedes resolver fácilmente Ciclo Hamiltoniano"</em>.<br />
 Recordemos:<br />
-<em> </em><em>Ciclo Hamiltoniano:</em><em> Dado un grafo incompleto no dirigido G = (V, E), determinar si existe un ciclo simple que visite todos los vértices exactamente una vez y regrese al origen.<br />
-</em> <strong>TSP (Decisión):</strong> Dado un grafo completo G' = (V', E') con pesos enteros w(e) en las aristas y un entero k, determinar si existe un tour que recorra todos los vértices sin repetir y vuelva al origen con costo total ≤ k.<br />
+* <strong>Ciclo Hamiltoniano:</strong> Dado un grafo incompleto no dirigido G = (V, E), determinar si existe un ciclo simple que visite todos los vértices exactamente una vez y regrese al origen.<br />
+* <strong>TSP (Decisión):</strong> Dado un grafo completo G' = (V', E') con pesos enteros w(e) en las aristas y un entero k, determinar si existe un tour que recorra todos los vértices sin repetir y vuelva al origen con costo total ≤ k.<br />
 Determinar si el vendedor tiene razón o hay que despedir a Marco. Fundamentar construyendo la reducción polinomial formal.</p>
 <p><strong>Qué está evaluando</strong><br />
 Construcción de un grafo completo con ponderación de penalización (1 para aristas existentes, 2 o ∞ para inexistentes) y equivalencia lógica con cota k = |V|.</p>
@@ -4938,7 +4964,7 @@ Demostrar que el problema del cambio de monedas (en su versión de decisión: da
       </summary>
       <div class="solution-inner-content">
         <p><strong>Resolución y Demostración</strong><br />
-<em> La frase </em>"el problema A no es más difícil que B"* equivale a demostrar:</p>
+* La frase <em>"el problema A no es más difícil que B"</em> equivale a demostrar:</p>
 <blockquote>
 <p><strong>Cambio de Monedas ≤_P Subset Sum</strong>
 * En Subset Sum clásico cada elemento puede usarse a lo sumo <strong>una sola vez</strong>. En Cambio de Monedas, cada denominación puede usarse múltiples veces (hasta k veces).
@@ -4996,11 +5022,11 @@ Dados los problemas de decisión de Independent Set y Vertex Cover:<br />
       </summary>
       <div class="solution-inner-content">
         <p><strong>Demostración Formal</strong><br />
-<em> </em><em>Teorema Fundamental:</em><em> En cualquier grafo no dirigido G = (V, E), un subconjunto S ⊆ V es un </em><em>Independent Set</em><em> si y solo si su complemento V \ S es un </em><em>Vertex Cover</em><em>.
-* </em><em>Demostración del Lema:</em><em>
+* <strong>Teorema Fundamental:</strong> En cualquier grafo no dirigido G = (V, E), un subconjunto S ⊆ V es un <strong>Independent Set</strong> si y solo si su complemento V \ S es un <strong>Vertex Cover</strong>.
+* <strong>Demostración del Lema:</strong>
   * (⟹) Si S es Independent Set, ningún par de vértices en S comparte arista. Por ende, para cualquier arista (u, v) ∈ E, es imposible que ambos extremos pertenezcan a S. Por lo tanto, al menos uno de los extremos debe pertenecer a V \ S. Esto prueba que V \ S cubre todas las aristas y es un Vertex Cover.
   * (⟸) Si V \ S es un Vertex Cover, cubre toda arista (u, v). Por ende, ninguna arista puede tener ambos extremos fuera de V \ S (es decir, en S). Por lo tanto, no hay aristas entre nodos de S, lo que prueba que S es un Independent Set.
-* </em><em>Reducción Independent Set ≤_P Vertex Cover:</em>*<br />
+* <strong>Reducción Independent Set ≤_P Vertex Cover:</strong><br />
   Dada la instancia (G, k) de IS: construimos la instancia de VC (G, k') con el mismo grafo G y fijamos k' = |V| - k.<br />
   G tiene un IS de tamaño ≥ k ⟺ G tiene un VC de tamaño ≤ |V| - k.<br />
   La transformación copia el grafo y resta enteros en tiempo O(1).</p>
@@ -5306,14 +5332,762 @@ Para el problema de Vertex Cover Mínimo en un grafo G = (V, E), comparar tres e
     </details>
   </div>
 </article>
+
+<article class="exercise-card" id="ej-35" data-num="35" data-priority="imprescindible" data-paradigm="integradores" data-title="el problema canónico de la mochila (knapsack) resuelto en todos los paradigmas algorítmicos" data-origin="problema arquetípico canónico de tda / evaluación integral multi-paradigma">
+  <header class="card-header">
+    <div class="card-header-left">
+      <span class="exercise-pill-number">EJ 35</span>
+      <h3 class="exercise-title">El Problema Canónico de la Mochila (Knapsack) Resuelto en Todos los Paradigmas Algorítmicos</h3>
+    </div>
+    <div class="card-header-meta">
+      <span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span>
+      <span class="badge badge-paradigm badge-integrador">Multi-Paradigma</span>
+      <span class="badge badge-origin" title="Problema Arquetípico Canónico de TDA / Evaluación Integral Multi-Paradigma">🏛️ Problema Arquetípico Canónico de TDA</span>
+    </div>
+    <div class="card-header-actions">
+      <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="35" onchange="toggleMastered(35, this.checked)">
+        <span class="checkbox-custom"></span>
+        <span class="label-text">Dominado</span>
+      </label>
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(35)">
+        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="card-body">
+    <div class="exercise-statement-box">
+      <p><strong>Enunciado Integrador</strong><br />
+Se dispone de una mochila con capacidad entera máxima de peso $W &gt; 0$ y un conjunto de $n$ elementos disponibles, donde cada elemento $i \in {1, \dots, n}$ posee un peso entero $w_i &gt; 0$ y un valor o beneficio entero $v_i &gt; 0$.<br />
+Resolver y contrastar el problema a través de todos los paradigmas algorítmicos fundamentales evaluados en la materia:
+1. <strong>Paradigma Greedy (Algoritmo Voraz):</strong>
+   * Resolver la <strong>Mochila Fraccionaria (Continuous Knapsack)</strong>: regla voraz por densidad de valor, pseudocódigo y demostración formal de optimalidad por técnica de intercambio (<em>Greedy Stays Ahead</em>).
+   * Analizar la <strong>Mochila 0-1 (Indivisible)</strong>: contraejemplo formal de por qué la regla voraz falla arbitrariamente y desarrollo del <strong>Algoritmo 1/2-Aproximado</strong> con su demostración de cota garantizada.
+2. <strong>Paradigma Programación Dinámica (DP):</strong>
+   * Resolver la <strong>Mochila 0-1 Estándar</strong>: definición formal del subproblema $OPT(i, w)$, casos base, ecuación de recurrencia, pseudocódigo bottom-up con tabla $(n+1) \times (W+1)$, algoritmo de reconstrucción exacta de ítems y optimización de memoria espacial a $O(W)$. Demostración de su complejidad pseudo-polinomial frente al número de bits de la entrada.
+   * Resolver la <strong>Mochila No Acotada (Unbounded Knapsack)</strong> con disponibilidad infinita de cada ítem en $O(n \cdot W)$ tiempo y $O(W)$ espacio.
+3. <strong>Paradigma Backtracking y Branch &amp; Bound:</strong>
+   * Diseñar el árbol binario de decisiones, podas por factibilidad y podas por optimalidad con cota superior (<em>Branch and Bound</em>) mediante la relajación continua fraccionaria. Explicar cuándo este enfoque supera a la Programación Dinámica en la práctica.
+4. <strong>Paradigma Programación Lineal Entera (PLI):</strong>
+   * Modelar formalmente el problema indicando variables de decisión binarias, función objetivo, restricciones, conteo de variables/restricciones y su relación directa con la relajación lineal continua (LP Relaxation).
+5. <strong>Análisis de División y Conquista (DyC):</strong>
+   * Explicar teóricamente por qué División y Conquista puro fracasa o no es aplicable a la mochila 0-1 (subproblemas no disjuntos).
+6. <strong>Tabla Comparativa Maestra:</strong>
+   * Matriz comparativa multidimensional de complejidades, optimalidad y escenarios de examen.</p>
+<hr />
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-35">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Paradigma Greedy (Algoritmos Voraces)</h4>
+<h5>A. Mochila Fraccionaria (Continuous Knapsack) — Solución Óptima en O(n log n)</h5>
+<p>En la versión fraccionaria se permite tomar una fracción $x_i \in [0, 1]$ de cada elemento $i$. El beneficio aportado es $x_i \cdot v_i$ y el peso consumido es $x_i \cdot w_i$.</p>
+<ul>
+<li><strong>Regla Voraz:</strong> Ordenar los elementos de forma decreciente según su <strong>densidad de valor por unidad de peso</strong>:
+  $$r_i = \frac{v_i}{w_i} \quad \text{tal que } r_1 \ge r_2 \ge \dots \ge r_n$$</li>
+<li><strong>Estrategia:</strong> Tomar la mayor cantidad posible del elemento con mayor densidad disponible. Si el elemento cabe entero ($w_i \le \text{capacidad remanente}$), se toma completo ($x_i = 1$). Si no cabe entero, se toma exactamente la fracción que satura la mochila ($x_i = \frac{\text{capacidad remanente}}{w_i}$) y se finaliza el proceso.</li>
+</ul>
+<p><strong>Pseudocódigo de la Mochila Fraccionaria</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MochilaFraccionariaGreedy(pesos, valores, n, W):
+    // 1. Calcular densidades y ordenar en O(n log n)
+    INICIALIZAR items como lista de tuplas (id=i, peso=pesos[i], valor=valores[i], ratio=valores[i]/pesos[i])
+    ORDENAR items DECRECIENTE por campo ratio
+
+    cap_restante &lt;- W
+    valor_total &lt;- 0.0
+    INICIALIZAR fraccion como arreglo de tamaño n en 0.0
+
+    // 2. Selección voraz
+    PARA i &lt;- 0 HASTA n - 1:
+        SI cap_restante = 0:
+            ROMPER
+
+        item_actual &lt;- items[i]
+        id &lt;- item_actual.id
+
+        SI item_actual.peso &lt;= cap_restante:
+            fraccion[id] &lt;- 1.0
+            valor_total &lt;- valor_total + item_actual.valor
+            cap_restante &lt;- cap_restante - item_actual.peso
+        SINO:
+            // Tomamos la fracción que satura exactamente la mochila
+            f &lt;- cap_restante / item_actual.peso
+            fraccion[id] &lt;- f
+            valor_total &lt;- valor_total + f * item_actual.valor
+            cap_restante &lt;- 0
+
+    RETORNAR (valor_total, fraccion)
+</code></pre></div>
+<p><strong>Demostración Formal de Optimalidad (Técnica de Intercambio):</strong>
+1. Sea $G = (x_1, x_2, \dots, x_n)$ la solución voraz y $O = (y_1, y_2, \dots, y_n)$ una solución óptima distinta.
+2. Como $G \neq O$, existe un primer índice $k$ donde difieren ($x_k \neq y_k$). Por diseño del algoritmo voraz, debe ser $x_k &gt; y_k$ (la voraz tomó el máximo posible del elemento de mayor densidad disponible).
+3. Como la mochila está llena en ambas soluciones (o todos los elementos entraron), para compensar el déficit en el ítem $k$, la solución óptima $O$ debe haber tomado una cantidad de elementos posteriores $j &gt; k$ donde la densidad es menor o igual ($r_j \le r_k$).
+4. Modificamos la solución óptima $O$ incrementando $y_k$ en $\Delta w$ y reduciendo elementos posteriores $y_j$ en el mismo peso $\Delta w$.
+5. La variación del beneficio en la nueva solución $O'$ es:
+   $$\Delta Valor = \Delta w \cdot r_k - \Delta w \cdot r_j = \Delta w \cdot (r_k - r_j) \ge 0$$
+   dado que $r_k \ge r_j$.
+6. Por ende, el valor de $O'$ no disminuye ($Valor(O') \ge Valor(O)$). Repitiendo este proceso de intercambio para todos los elementos donde difieran, podemos transformar $O$ en $G$ sin reducir nunca el valor total.
+7. Conclusión: la solución voraz $G$ es óptima.
+* <strong>Complejidad:</strong> Tiempo $O(n \log n)$ por el ordenamiento inicial; Espacio $O(n)$.</p>
+<hr />
+<h5>B. Mochila 0-1: Por qué Greedy Falla y Algoritmo 1/2-Aproximado</h5>
+<p>En la mochila 0-1 los objetos son indivisibles ($x_i \in {0, 1}$).</p>
+<ul>
+<li><strong>Contraejemplo Minimal de No-Optimalidad para Greedy por Densidad:</strong></li>
+<li>Capacidad $W = 100$.</li>
+<li>Ítem 1: peso $w_1 = 1$, valor $v_1 = 2 \implies r_1 = 2.0$.</li>
+<li>Ítem 2: peso $w_2 = 100$, valor $v_2 = 100 \implies r_2 = 1.0$.</li>
+<li><em>Resultado Greedy:</em> Toma el ítem 1 (densidad 2.0). Capacidad restante: 99. El ítem 2 no cabe. <strong>Valor Greedy = 2</strong>.</li>
+<li><em>Solución Óptima:</em> Tomar únicamente el ítem 2. Peso = 100 $\le 100$. <strong>Valor Óptimo = 100</strong>.</li>
+<li>
+<p>La solución voraz logra un valor arbitrariamente alejado del óptimo (el ratio puede tender a 0 si $v_2 \to \infty$).</p>
+</li>
+<li>
+<p><strong>Algoritmo Greedy 1/2-Aproximado para Mochila 0-1:</strong></p>
+</li>
+<li>Ejecutar la regla voraz por densidad tomando ítems completos hasta el primer ítem $k$ que no quepa entero (ítem de corte). Sea $V_{greedy}$ el valor de los ítems tomados.</li>
+<li>Hallar el ítem individual más valioso que quepa en la mochila: $v_{max} = \max { v_i : w_i \le W }$.</li>
+<li>Retornar la mejor de las dos opciones:
+     $$V_{aprox} = \max(V_{greedy}, v_{max})$$</li>
+</ul>
+<p><strong>Demostración de la Garantía de Aproximación 1/2:</strong>
+1. Sea $V_{frac}$ el valor de la solución óptima fraccionaria sobre los mismos datos. Claramente $OPT_{01} \le V_{frac}$ (relajación).
+2. La solución fraccionaria toma exactamente los ítems enteros de $V_{greedy}$ más una fracción del ítem de corte $k$:
+   $$OPT_{01} \le V_{frac} = V_{greedy} + f \cdot v_k &lt; V_{greedy} + v_k$$
+3. Dado que el ítem $k$ cabe en una mochila vacía (si $w_k \le W$), tenemos $v_k \le v_{max}$.
+4. Por lo tanto:
+   $$OPT_{01} &lt; V_{greedy} + v_{max}$$
+5. Como $V_{aprox} = \max(V_{greedy}, v_{max})$, se cumple trivialmente que $V_{greedy} \le V_{aprox}$ y $v_{max} \le V_{aprox}$.
+6. Sumando ambas cotas:
+   $$OPT_{01} &lt; V_{aprox} + V_{aprox} = 2 \cdot V_{aprox} \implies V_{aprox} \ge \frac{1}{2} OPT_{01}$$
+* <strong>Garantía:</strong> El algoritmo garantiza al menos el <strong>50% del valor óptimo</strong> en tiempo $O(n \log n)$.</p>
+<hr />
+<h4>2. Paradigma Programación Dinámica (Dynamic Programming)</h4>
+<h5>A. Mochila 0-1 Estándar — Solución Óptima Exacta</h5>
+<ul>
+<li><strong>Definición del Subproblema:</strong><blockquote>
+<p><strong>$OPT(i, w)$:</strong> Beneficio máximo acumulable eligiendo un subconjunto de los primeros $i$ elementos ($1 \le i \le n$) tal que la suma de sus pesos no exceda la capacidad disponible $w$ ($0 \le w \le W$).</p>
+</blockquote>
+</li>
+<li><strong>Casos Base:</strong></li>
+<li>$OPT(0, w) = 0$ para todo $w \in [0, W]$ (sin elementos disponibles, beneficio 0).</li>
+<li>$OPT(i, 0) = 0$ para todo $i \in [0, n]$ (con capacidad 0, no se puede cargar peso positivo).</li>
+<li><strong>Ecuación de Recurrencia:</strong>
+  Para el elemento $i$ con peso $w_i$ y valor $v_i$:</li>
+<li>Si $w_i &gt; w$: el elemento $i$ no cabe con la capacidad actual.
+     $$OPT(i, w) = OPT(i - 1, w)$$</li>
+<li>Si $w_i \le w$: se elige el máximo entre excluir el elemento o incluirlo:
+     $$OPT(i, w) = \max \Big( OPT(i - 1, w), \; OPT(i - 1, w - w_i) + v_i \Big)$$</li>
+<li><strong>Orden de Llenado:</strong> Celdas calculadas fila por fila ($i$ de 1 a $n$), y para cada fila capacidad $w$ de 0 a $W$.</li>
+</ul>
+<p><strong>Pseudocódigo de Programación Dinámica con Reconstrucción</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION Mochila01ProgramacionDinamica(pesos, valores, n, W):
+    // Crear matriz de dimensiones (n + 1) x (W + 1) inicializada en 0
+    INICIALIZAR DP como matriz de tamaño (n + 1) x (W + 1) en 0
+
+    // Llenado de la tabla Bottom-Up
+    PARA i &lt;- 1 HASTA n:
+        w_i &lt;- pesos[i - 1]
+        v_i &lt;- valores[i - 1]
+        PARA w &lt;- 0 HASTA W:
+            SI w_i &gt; w:
+                DP[i][w] &lt;- DP[i - 1][w]
+            SINO:
+                excluir &lt;- DP[i - 1][w]
+                incluir &lt;- DP[i - 1][w - w_i] + v_i
+                SI incluir &gt; excluir:
+                    DP[i][w] &lt;- incluir
+                SINO:
+                    DP[i][w] &lt;- excluir
+
+    // Reconstrucción exacta de los ítems elegidos
+    INICIALIZAR seleccionados como lista vacía
+    cap_actual &lt;- W
+    PARA i &lt;- n BAJANDO HASTA 1:
+        // Si el valor cambió respecto a la fila anterior, el elemento i fue incluido
+        SI DP[i][cap_actual] != DP[i - 1][cap_actual]:
+            INSERTAR (i - 1) AL INICIO DE seleccionados
+            cap_actual &lt;- cap_actual - pesos[i - 1]
+
+    RETORNAR (DP[n][W], seleccionados)
+</code></pre></div>
+<p><strong>Optimización de Memoria Espacial a O(W):</strong>
+Como la fila $i$ solo depende estrictamente de la fila inmediata anterior $i - 1$, podemos utilizar un <strong>único vector 1D</strong> de tamaño $W + 1$.<br />
+<em>Condición crítica de examen:</em> La capacidad $w$ debe recorrerse en <strong>orden decreciente (de $W$ bajando hasta $w_i$)</strong> para evitar que el mismo ítem se contabilice múltiples veces en la misma fila:</p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION Mochila01EspacioOptimizado(pesos, valores, n, W):
+    INICIALIZAR DP como arreglo de tamaño (W + 1) en 0
+    PARA i &lt;- 0 HASTA n - 1:
+        w_i &lt;- pesos[i]
+        v_i &lt;- valores[i]
+        PARA w &lt;- W BAJANDO HASTA w_i:
+            DP[w] &lt;- MAXIMO(DP[w], DP[w - w_i] + v_i)
+    RETORNAR DP[W]
+</code></pre></div>
+<ul>
+<li><strong>Complejidad:</strong></li>
+<li><strong>Tiempo:</strong> $O(n \cdot W)$ operaciones aritméticas elementales.</li>
+<li><strong>Espacio:</strong> $O(n \cdot W)$ con matriz para reconstrucción, o $O(W)$ con vector unidimensional.</li>
+<li><strong>Análisis de Pseudo-Polinomialidad:</strong> La longitud de la entrada en bits para representar el número $W$ es $L = \lceil \log_2 W \rceil$. Por ende, $W = 2^L$. La complejidad en función del tamaño de entrada es $O(n \cdot 2^L)$, lo cual es <strong>exponencial en el tamaño de representación de $W$</strong>. Si $W$ es astronómico ($W = 10^{12}$), DP es impracticable por tiempo y memoria.</li>
+</ul>
+<hr />
+<h5>B. Mochila No Acotada (Unbounded Knapsack) — Repetición Ilimitada</h5>
+<p>Si se dispone de cantidad ilimitada de cada ítem, el estado depende únicamente de la capacidad $w$:
+* <strong>Subproblema:</strong> $OPT(w) =$ beneficio máximo que se puede obtener con capacidad exacta $w$.
+* <strong>Recurrencia:</strong>
+  $$OPT(w) = \max_{i: w_i \le w} { OPT(w - w_i) + v_i }, \quad \text{con } OPT(0) = 0$$
+* En este caso, el recorrido del vector 1D se realiza <strong>de izquierda a derecha (creciente de $w_i$ a $W$)</strong>, permitiendo explícitamente reutilizar el mismo ítem múltiples veces. Tiempo: $O(n \cdot W)$, Espacio: $O(W)$.</p>
+<hr />
+<h4>3. Paradigma Backtracking y Branch &amp; Bound (Búsqueda Exacta con Podas)</h4>
+<p>Cuando $W$ es gigantesco pero $n$ es moderado ($n \le 40$), la Programación Dinámica colapsa por memoria pero <strong>Backtracking con Branch &amp; Bound</strong> resuelve en milisegundos.</p>
+<ul>
+<li><strong>Estructura del Árbol de Búsqueda:</strong>
+  Árbol binario de profundidad $n$. En el nivel $i$, decidimos si incluimos o no el elemento $i$ ($x_i \in {0, 1}$).</li>
+<li><strong>Las Dos Clases de Podas Obligatorias en Parcial:</strong></li>
+<li><strong>Poda por Factibilidad (Feasibility):</strong>
+     Si $\text{peso_actual} + w_i &gt; W$, podar la rama de inclusión de $i$.</li>
+<li><strong>Poda por Optimalidad (Branch and Bound con Relajación Continua Fraccionaria):</strong>
+     Para el estado actual en el elemento $i$, calculamos una <strong>cota superior (Upper Bound)</strong> del máximo valor que podría obtenerse en el subárbol:
+     $$\text{CotaSuperior} = \text{valor_actual} + \text{MochilaFraccionaria}(\text{elementos restantes desde } i+1, \; W - \text{peso_actual})$$
+     Si $\text{CotaSuperior} \le \text{mejor_valor_global}$, es matemáticamente imposible que este subárbol supere el récord actual ya hallado $\implies$ <strong>podar inmediatamente toda la rama</strong>.</li>
+</ul>
+<p><strong>Pseudocódigo de Backtracking con Branch &amp; Bound</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MochilaBranchAndBound(pesos, valores, n, W):
+    // Preordenar elementos por densidad decreciente maximiza la efectividad de las podas
+    ORDENAR elementos DECRECIENTE por (valor / peso)
+
+    mejor_valor &lt;- 0
+    INICIALIZAR mejor_solucion como arreglo de tamaño n en 0
+    INICIALIZAR solucion_actual como arreglo de tamaño n en 0
+
+    MochilaBT(0, 0, 0, solucion_actual, mejor_solucion, mejor_valor, pesos, valores, n, W)
+    RETORNAR (mejor_valor, mejor_solucion)
+
+PROCEDIMIENTO MochilaBT(idx, peso_act, valor_act, sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W):
+    // Caso base: se evaluaron los n elementos
+    SI idx = n:
+        SI valor_act &gt; MEJOR_VAL:
+            MEJOR_VAL &lt;- valor_act
+            MEJOR_SOL &lt;- COPIAR(sol_act)
+        RETORNAR
+
+    // 1. Poda por Branch and Bound: Cota superior con relajación fraccionaria
+    cota_sup &lt;- valor_act + CalcularCotaFraccionaria(idx, W - peso_act, pesos, valores, n)
+    SI cota_sup &lt;= MEJOR_VAL:
+        RETORNAR // Poda: imposible mejorar la mejor solución registrada
+
+    // Rama 1: Intentar INCLUIR el elemento idx (si cabe: poda por factibilidad)
+    SI peso_act + pesos[idx] &lt;= W:
+        sol_act[idx] &lt;- 1
+        MochilaBT(idx + 1, peso_act + pesos[idx], valor_act + valores[idx], 
+                  sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
+        sol_act[idx] &lt;- 0 // Backtrack: restaurar estado
+
+    // Rama 2: EXCLUIR el elemento idx
+    sol_act[idx] &lt;- 0
+    MochilaBT(idx + 1, peso_act, valor_act, 
+              sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
+
+FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
+    cota &lt;- 0.0
+    cap &lt;- cap_disponible
+    PARA j &lt;- inicio HASTA n - 1:
+        SI cap = 0:
+            ROMPER
+        SI pesos[j] &lt;= cap:
+            cota &lt;- cota + valores[j]
+            cap &lt;- cap - pesos[j]
+        SINO:
+            cota &lt;- cota + valores[j] * (cap / pesos[j])
+            cap &lt;- 0
+    RETORNAR cota
+</code></pre></div>
+<ul>
+<li><strong>Complejidad:</strong> Peor caso asintótico $O(2^n)$ (árbol binario exhaustivo). En la práctica, con la cota fraccionaria y ordenamiento previo por densidad, las podas eliminan más del 99% de las ramas para $n \le 50$. Memoria: $O(n)$ en la pila de recursión.</li>
+</ul>
+<hr />
+<h4>4. Paradigma Programación Lineal Entera (PLI)</h4>
+<ul>
+<li><strong>Variables de Decisión:</strong>
+  $$x_i \in {0, 1} \quad \forall i \in {1, \dots, n}$$
+  donde $x_i = 1$ si el elemento $i$ se introduce en la mochila, y $0$ en caso contrario.</li>
+<li><strong>Función Objetivo:</strong>
+  $$\text{MAXIMIZAR } Z = \sum_{i=1}^n v_i \cdot x_i$$</li>
+<li><strong>Restricción de Capacidad:</strong>
+  $$\sum_{i=1}^n w_i \cdot x_i \le W$$</li>
+<li><strong>Restricciones de Dominio:</strong>
+  $$x_i \in {0, 1} \quad \forall i \in {1, \dots, n}$$</li>
+<li><strong>Recuento Riguroso para Examen:</strong></li>
+<li><strong>Variables:</strong> Exactamente $n$ variables binarias.</li>
+<li><strong>Restricciones:</strong> Exactamente 1 restricción lineal de capacidad $+ n$ cotas de dominio binario.</li>
+<li><strong>Vínculo con la Relajación Lineal (LP Relaxation):</strong>
+  Si reemplazamos $x_i \in {0, 1}$ por $0 \le x_i \le 1$ (variables continuas), el problema de PL continuo resultante se resuelve en tiempo polinomial y <strong>su solución óptima es idéntica a la Mochila Fraccionaria Greedy</strong>.</li>
+</ul>
+<hr />
+<h4>5. Por qué Falla División y Conquista (DyC) Puro en la Mochila</h4>
+<ul>
+<li>En <strong>División y Conquista</strong> (como MergeSort o multiplicación de Strassen), el problema se divide en subproblemas <strong>disjuntos e independientes</strong> cuyas soluciones se combinan sin solapamiento.</li>
+<li>En la Mochila 0-1, si partiéramos el conjunto de $n$ elementos en dos mitades de tamaño $n/2$, no sabemos a priori <strong>cuánta capacidad $W_1$ y $W_2$ asignar a cada mitad</strong> tal que $W_1 + W_2 = W$.</li>
+<li>Para encontrar la partición óptima de capacidad, habría que probar todos los posibles valores de $w \in [0, W]$, generando subproblemas repetidos de forma masiva. Intentar resolverlo recursivamente sin memorización conduce a un árbol de llamadas de costo $O(2^n)$.</li>
+<li>La presencia de <strong>subestructura óptima con superposición masiva de subproblemas</strong> es precisamente la condición teórica que invalida DyC e impone <strong>Programación Dinámica</strong>.</li>
+</ul>
+<hr />
+<h4>6. Tabla Comparativa Maestra: La Mochila en los 5 Paradigmas</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Paradigma</th>
+<th style="text-align: left;">Variante</th>
+<th style="text-align: left;">Complejidad Temporal</th>
+<th style="text-align: left;">Complejidad Espacial</th>
+<th style="text-align: center;">¿Garantiza Óptimo?</th>
+<th style="text-align: left;">Cuándo Usarlo en Parcial</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Greedy (Voraz)</strong></td>
+<td style="text-align: left;">Fraccionaria</td>
+<td style="text-align: left;"><strong>O(n log n)</strong></td>
+<td style="text-align: left;"><strong>O(1) / O(n)</strong></td>
+<td style="text-align: center;">✅ <strong>SÍ (Óptimo)</strong></td>
+<td style="text-align: left;">Cuando el enunciado permite fraccionar bienes (harina, combustible, tiempo).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Greedy Aprox</strong></td>
+<td style="text-align: left;">0-1 (Indivisible)</td>
+<td style="text-align: left;"><strong>O(n log n)</strong></td>
+<td style="text-align: left;"><strong>O(n)</strong></td>
+<td style="text-align: center;">❌ 1/2-Aprox ($V \ge \frac{1}{2}OPT$)</td>
+<td style="text-align: left;">Cuando piden algoritmo rápido polinomial con garantía de calidad mínima.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Prog. Dinámica</strong></td>
+<td style="text-align: left;">0-1 (Indivisible)</td>
+<td style="text-align: left;"><strong>O(n · W)</strong></td>
+<td style="text-align: left;"><strong>O(W) / O(n · W)</strong></td>
+<td style="text-align: center;">✅ <strong>SÍ (Exacto)</strong></td>
+<td style="text-align: left;">Cuando $W$ es razonable ($W \le 10^6$) y se exige el óptimo absoluto.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Prog. Dinámica</strong></td>
+<td style="text-align: left;">No Acotada</td>
+<td style="text-align: left;"><strong>O(n · W)</strong></td>
+<td style="text-align: left;"><strong>O(W)</strong></td>
+<td style="text-align: center;">✅ <strong>SÍ (Exacto)</strong></td>
+<td style="text-align: left;">Cuando hay stock infinito de cada ítem (cambio de monedas, cortes de varilla).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Backtracking (B&amp;B)</strong></td>
+<td style="text-align: left;">0-1 (Indivisible)</td>
+<td style="text-align: left;"><strong>O(2ⁿ)</strong> peor caso</td>
+<td style="text-align: left;"><strong>O(n)</strong></td>
+<td style="text-align: center;">✅ <strong>SÍ (Exacto)</strong></td>
+<td style="text-align: left;">Cuando $W$ es astronómico ($W &gt; 10^9$) pero $n$ es moderado ($n \le 40$).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Prog. Lineal (PLI)</strong></td>
+<td style="text-align: left;">0-1 Multidimensional</td>
+<td style="text-align: left;">Exponencial (peor caso)</td>
+<td style="text-align: left;">Polinomial en modelo</td>
+<td style="text-align: center;">✅ <strong>SÍ (Exacto)</strong></td>
+<td style="text-align: left;">Cuando hay múltiples recursos acoplados (peso, volumen, costo, exclusiones).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>División y Conquista</strong></td>
+<td style="text-align: left;">0-1</td>
+<td style="text-align: left;">O(2ⁿ) (inviable)</td>
+<td style="text-align: left;">O(n)</td>
+<td style="text-align: center;">❌ Inadecuado</td>
+<td style="text-align: left;">Demostrar en examen por qué subproblemas no disjuntos invalidan DyC.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+      </div>
+    </details>
+  </div>
+</article>
+
+<article class="exercise-card" id="ej-36" data-num="36" data-priority="imprescindible" data-paradigm="integradores" data-title="el problema del viajante de comercio (tsp) resuelto en todos los paradigmas algorítmicos" data-origin="problema arquetípico canónico de grafos y np-hard / evaluación integral multi-paradigma">
+  <header class="card-header">
+    <div class="card-header-left">
+      <span class="exercise-pill-number">EJ 36</span>
+      <h3 class="exercise-title">El Problema del Viajante de Comercio (TSP) Resuelto en Todos los Paradigmas Algorítmicos</h3>
+    </div>
+    <div class="card-header-meta">
+      <span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span>
+      <span class="badge badge-paradigm badge-integrador">Multi-Paradigma</span>
+      <span class="badge badge-origin" title="Problema Arquetípico Canónico de Grafos y NP-Hard / Evaluación Integral Multi-Paradigma">🏛️ Problema Arquetípico Canónico de Grafos y NP-Hard</span>
+    </div>
+    <div class="card-header-actions">
+      <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="36" onchange="toggleMastered(36, this.checked)">
+        <span class="checkbox-custom"></span>
+        <span class="label-text">Dominado</span>
+      </label>
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(36)">
+        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="card-body">
+    <div class="exercise-statement-box">
+      <p><strong>Enunciado Integrador</strong><br />
+Dado un conjunto de $n$ ciudades numeradas ${1, 2, \dots, n}$ y una matriz de distancias o costos $C = [c_{ij}]$ no negativos entre cada par de ciudades, el <strong>Problema del Viajante de Comercio (TSP - Travelling Salesperson Problem)</strong> consiste en encontrar un circuito simple (tour cerrado) que visite <strong>exactamente una vez cada ciudad y retorne a la ciudad de origen</strong> minimizando la distancia total recorrida.<br />
+Resolver y comparar este problema a través de todos los paradigmas algorítmicos fundamentales:
+1. <strong>Paradigma Backtracking y Branch &amp; Bound (Búsqueda Exacta):</strong>
+   * Definir el árbol de permutaciones, podas por factibilidad, poda por cota superior actual y poda avanzada por <strong>Cota Inferior basada en Árbol Generador Mínimo (MST / 1-Tree)</strong>.
+2. <strong>Paradigma Programación Dinámica (Algoritmo de Bellman-Held-Karp):</strong>
+   * Identificar la subestructura óptima y superposición de estados. Definir formalmente el subproblema sobre subconjuntos de vértices $C(S, j)$, la ecuación de recurrencia, el algoritmo tabular y demostrar la reducción de complejidad factorial $O(n!)$ a exponencial $O(n^2 2^n)$.
+3. <strong>Paradigma Greedy y Heurísticas de Aproximación:</strong>
+   * Desarrollar la heurística voraz del <strong>Vecino más Cercano (Nearest Neighbor)</strong> y exhibir un contraejemplo demostrando por qué no es óptima.
+   * Diseñar el <strong>Algoritmo 2-Aproximado para TSP Métrico</strong> (con desigualdad triangular) basado en Árbol Generador Mínimo y recorrido en preorden con atajos (<em>shortcuts</em>). Desarrollar la demostración formal paso a paso de la cota $Costo(Tour) \le 2 \cdot OPT$.
+4. <strong>Paradigma Programación Lineal Entera (PLI):</strong>
+   * Formular el modelo matemático exacto mediante la <strong>formulación de Miller-Tucker-Zemlin (MTZ)</strong> con variables de orden continuo $u_i$ para eliminar subtours desconectados. Recuento de variables y restricciones.
+5. <strong>Reducciones Polinomiales y Complejidad NP-Completa:</strong>
+   * Enunciar la versión de decisión de TSP. Demostrar formalmente que $TSP \in NP$ y que es NP-Completo mediante una reducción polinomial desde <strong>Ciclo Hamiltoniano</strong> ($\text{Ciclo Hamiltoniano} \le_P \text{TSP}$).
+6. <strong>Tabla Comparativa Maestra:</strong>
+   * Síntesis técnica de complejidades, optimalidad, garantías y casos de uso en parcial.</p>
+<hr />
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-36">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Paradigma Backtracking y Branch &amp; Bound (Exacto con Podas)</h4>
+<ul>
+<li><strong>Espacio de Búsqueda:</strong>
+  Cualquier solución factible es una permutación de las $n$ ciudades que comienza y termina en la ciudad 1. Sin podas, el espacio tiene tamaño $(n - 1)! / 2$ (fijando el origen y evitando simetrías de sentido inverso).</li>
+<li><strong>Podas Esenciales en Parcial:</strong></li>
+<li><strong>Poda por Factibilidad:</strong> Si entre la ciudad actual $u$ y la candidata $v$ no existe arista conectiva ($c_{uv} = \infty$), descartar $v$.</li>
+<li><strong>Poda por Cota Superior:</strong> Mantener el mejor costo de tour cerrado completo hallado hasta el momento (<code>mejor_costo</code>). Si en el camino parcial actual:
+     $$\text{costo_parcial} \ge \text{mejor_costo}$$
+     podar inmediatamente la rama (ningún costo de arista es negativo).</li>
+<li><strong>Poda por Cota Inferior (Branch &amp; Bound con MST / 1-Tree):</strong>
+     Para el conjunto de ciudades restantes aún no visitadas $V_{restantes}$, cualquier tour válido debe conectar estas ciudades formando al menos un árbol. Por ende:
+     $$\text{CotaInferior} = \text{costo_parcial} + \text{CostoMST}(V_{restantes}) + \min_{r \in V_{restantes}} c_{\text{actual}, r} + \min_{r \in V_{restantes}} c_{r, 1}$$
+     Si $\text{CotaInferior} \ge \text{mejor_costo} \implies$ podar toda la rama.</li>
+</ul>
+<p><strong>Pseudocódigo de TSP por Backtracking con Branch and Bound</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION TSP_BranchAndBound(ciudades, matriz_costos, n):
+    INICIALIZAR visitado como arreglo booleano de tamaño n en FALSO
+    INICIALIZAR ruta_actual como arreglo de tamaño n en 0
+    INICIALIZAR mejor_ruta como arreglo de tamaño n en 0
+    mejor_costo &lt;- INFINITO
+
+    // Fijamos la ciudad de partida en el nodo 0 para romper simetrías de rotación
+    ruta_actual[0] &lt;- 0
+    visitado[0] &lt;- VERDADERO
+
+    TSP_BT(1, 0, 0, ruta_actual, mejor_ruta, mejor_costo, visitado, matriz_costos, n)
+    RETORNAR (mejor_costo, mejor_ruta)
+
+PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n):
+    // Caso base: visitamos las n ciudades, cerramos el tour retornando al origen (nodo 0)
+    SI paso = n:
+        costo_cierre &lt;- C[actual][0]
+        SI costo_cierre != INFINITO:
+            costo_total &lt;- costo_acum + costo_cierre
+            SI costo_total &lt; MEJOR_COSTO:
+                MEJOR_COSTO &lt;- costo_total
+                MEJOR_RUTA &lt;- COPIAR(ruta_act)
+        RETORNAR
+
+    // Poda por cota superior básica
+    SI costo_acum &gt;= MEJOR_COSTO:
+        RETORNAR
+
+    // Probar cada ciudad candidata no visitada
+    PARA candidata &lt;- 1 HASTA n - 1:
+        SI NO visitado[candidata] Y C[actual][candidata] != INFINITO:
+            nuevo_costo &lt;- costo_acum + C[actual][candidata]
+
+            // Poda Branch &amp; Bound: si con el costo directo ya superamos el récord
+            SI nuevo_costo &lt; MEJOR_COSTO:
+                visitado[candidata] &lt;- VERDADERO
+                ruta_act[paso] &lt;- candidata
+
+                TSP_BT(paso + 1, candidata, nuevo_costo, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n)
+
+                // Backtrack: desmarcar estado
+                visitado[candidata] &lt;- FALSO
+                ruta_act[paso] &lt;- 0
+</code></pre></div>
+<ul>
+<li><strong>Complejidad:</strong> Peor caso asintótico $O(n!)$, pero con podas de cota inferior resuelve óptimamente instancias de hasta $n \approx 25$ ciudades. Espacio: $O(n)$ en pila de llamadas.</li>
+</ul>
+<hr />
+<h4>2. Paradigma Programación Dinámica (Algoritmo de Bellman-Held-Karp)</h4>
+<ul>
+<li><strong>Principio de Subestructura Óptima:</strong>
+  Para completar el tour desde la ciudad actual $j$, no importa el orden exacto en que se visitaron las ciudades anteriores; <strong>solo importa qué ciudad es la actual y cuál es el subconjunto de ciudades ya visitadas</strong>.</li>
+<li><strong>Definición Formal del Subproblema:</strong><blockquote>
+<p><strong>$C(S, j)$:</strong> Longitud mínima de un camino simple que comienza en la ciudad 1, visita <strong>exactamente</strong> todas las ciudades del subconjunto $S \subseteq {2, 3, \dots, n}$ y finaliza en la ciudad $j \in S$.</p>
+</blockquote>
+</li>
+<li><strong>Casos Base:</strong>
+  Para subconjuntos de tamaño 1 ($S = {j}$):
+  $$C({j}, j) = c_{1, j} \quad \forall j \in {2, \dots, n}$$</li>
+<li><strong>Ecuación de Recurrencia:</strong>
+  Para cualquier subconjunto $S$ de tamaño $|S| \ge 2$ y cualquier ciudad de llegada $j \in S$:
+  $$C(S, j) = \min_{k \in S \setminus {j}} \Big{ C(S \setminus {j}, k) + c_{kj} \Big}$$</li>
+<li><strong>Cálculo del Tour Cerrado Óptimo:</strong>
+  Una vez calculada la tabla para el conjunto completo $V' = {2, 3, \dots, n}$:
+  $$OPT = \min_{j \in {2, \dots, n}} \Big{ C({2, \dots, n}, j) + c_{j, 1} \Big}$$</li>
+</ul>
+<p><strong>Pseudocódigo de Held-Karp</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION TSP_HeldKarp(C, n):
+    // Hay 2^(n-1) subconjuntos posibles de ciudades intermedias {2, ..., n}
+    INICIALIZAR DP como tabla indexada por (subconjunto_bits, ciudad_destino) con INFINITO
+    INICIALIZAR padre como tabla para reconstrucción
+
+    // Casos base: caminos de longitud 1 desde ciudad 1 a ciudad j
+    PARA j &lt;- 1 HASTA n - 1: // Índice base 0: ciudad 0 es el nodo 1
+        mascara_unitaria &lt;- 1 &lt;&lt; (j - 1)
+        DP[mascara_unitaria][j] &lt;- C[0][j]
+
+    // Iteramos por tamaño de subconjunto: s = 2, 3, ..., n - 1
+    PARA tam &lt;- 2 HASTA n - 1:
+        PARA CADA mascara DE TAMAÑO tam EN SubconjuntosDeBits(n - 1):
+            PARA CADA j EN ElementosDe(mascara):
+                mascara_previa &lt;- mascara SIN EL BIT DE j
+                PARA CADA k EN ElementosDe(mascara_previa):
+                    costo_cand &lt;- DP[mascara_previa][k] + C[k][j]
+                    SI costo_cand &lt; DP[mascara][j]:
+                        DP[mascara][j] &lt;- costo_cand
+                        padre[mascara][j] &lt;- k
+
+    // Cierre del tour hacia el origen 0
+    mascara_completa &lt;- (1 &lt;&lt; (n - 1)) - 1
+    optimo &lt;- INFINITO
+    ultimo_nodo &lt;- -1
+
+    PARA j &lt;- 1 HASTA n - 1:
+        costo_total &lt;- DP[mascara_completa][j] + C[j][0]
+        SI costo_total &lt; optimo:
+            optimo &lt;- costo_total
+            ultimo_nodo &lt;- j
+
+    // Reconstrucción hacia atrás
+    INICIALIZAR tour como lista
+    curr_mascara &lt;- mascara_completa
+    curr_nodo &lt;- ultimo_nodo
+    MIENTRAS curr_nodo != -1:
+        INSERTAR curr_nodo AL INICIO DE tour
+        prev_nodo &lt;- padre[curr_mascara][curr_nodo]
+        curr_mascara &lt;- curr_mascara SIN EL BIT DE curr_nodo
+        curr_nodo &lt;- prev_nodo
+    INSERTAR 0 AL INICIO DE tour
+    AGREGAR 0 AL FINAL DE tour
+
+    RETORNAR (optimo, tour)
+</code></pre></div>
+<ul>
+<li><strong>Complejidad:</strong></li>
+<li><strong>Tiempo:</strong> Hay $\binom{n-1}{k}$ subconjuntos de tamaño $k$. Para cada par $(S, j)$, hay $k$ transiciones posibles. El tiempo total es:
+    $$\sum_{k=1}^{n-1} k \binom{n-1}{k} (n-1) = O(n^2 2^n)$$</li>
+<li><strong>Espacio:</strong> $O(n \cdot 2^n)$ para almacenar los estados de la tabla DP.</li>
+<li><strong>Comparativa con Fuerza Bruta:</strong> Para $n = 20$:<ul>
+<li>$n! = 20! \approx 2.43 \times 10^{18}$ operaciones (imposible en milenios).</li>
+<li>$n^2 2^n = 20^2 \cdot 2^{20} \approx 4.19 \times 10^8$ operaciones (corre en <strong>menos de 1 segundo</strong> en una PC moderna).</li>
+</ul>
+</li>
+</ul>
+<hr />
+<h4>3. Paradigma Greedy y Heurísticas de Aproximación</h4>
+<h5>A. Heurística Voraz del Vecino más Cercano (Nearest Neighbor)</h5>
+<ul>
+<li><strong>Regla:</strong> Comenzar en una ciudad inicial y en cada paso viajar a la <strong>ciudad no visitada más cercana</strong>. Al visitar las $n$ ciudades, regresar al inicio.</li>
+<li><strong>Complejidad:</strong> $O(n^2)$ en tiempo y $O(n)$ en espacio.</li>
+<li><strong>Contraejemplo de Falla Catastrófica (No es óptimo ni acotado en general):</strong></li>
+<li>Consideremos 4 ciudades en línea: $A, B, C, D$ con distancias: $dist(A, B) = 1$, $dist(B, C) = 2$, $dist(C, D) = 4$, y $dist(A, D) = 100$.</li>
+<li>Iniciando en $B$:<ul>
+<li>El vecino más cercano es $A$ (costo 1).</li>
+<li>Desde $A$, las no visitadas son $C$ y $D$. La más cercana es $C$ (costo $dist(A, C) = 3$).</li>
+<li>Desde $C$, la única no visitada es $D$ (costo 4).</li>
+<li>Finalmente, desde $D$ debe regresar a $B$ (costo $dist(D, B) = 6$ o arista de retorno forzosa).</li>
+<li>Si la última arista de retorno cuesta $M = 10.000$, la voracidad inicial queda atrapada en un costo astronómico.</li>
+</ul>
+</li>
+<li><em>Conclusión:</em> En grafos generales, ninguna heurística voraz puede garantizar una cota de aproximación constante a menos que $P = NP$.</li>
+</ul>
+<hr />
+<h5>B. Algoritmo 2-Aproximado para TSP Métrico (con Desigualdad Triangular)</h5>
+<p>Cuando las distancias cumplen la <strong>desigualdad triangular</strong> ($c_{uw} \le c_{uv} + c_{vw}$ para todo $u, v, w$), existe un algoritmo polinomial que garantiza que el costo del tour es a lo sumo <strong>el doble del óptimo ($Tour \le 2 \cdot OPT$)</strong>.</p>
+<ul>
+<li><strong>Pasos del Algoritmo:</strong></li>
+<li><strong>Árbol Generador Mínimo (MST):</strong> Construir un MST del grafo completo usando Kruskal o Prim en $O(n^2)$.</li>
+<li><strong>Duplicación de Aristas:</strong> Duplicar cada arista del MST. El grafo resultante es euleriano (todos los vértices tienen grado par).</li>
+<li><strong>Recorrido en Preorden con Atajos (<em>Shortcuts</em>):</strong> Realizar un recorrido DFS en preorden sobre el MST. Si un nodo ya fue visitado previamente, <strong>se saltea tomando un atajo directo</strong> hacia la siguiente ciudad no visitada, regresando finalmente al origen.</li>
+</ul>
+<p><strong>Pseudocódigo del Algoritmo 2-Aproximado</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION TSP_Metrico2Aproximado(grafo_completo_con_pesos, n):
+    // 1. Árbol Generador Mínimo con Prim en O(n^2)
+    mst &lt;- PrimMST(grafo_completo_con_pesos, nodo_origen=0)
+
+    // 2. Recorrido DFS en preorden para generar el tour con atajos
+    INICIALIZAR visitado como arreglo booleano de tamaño n en FALSO
+    INICIALIZAR tour como lista vacía
+
+    DFS_Preorden(mst, 0, visitado, tour)
+
+    // 3. Cerrar el tour regresando al nodo inicial
+    AGREGAR 0 AL FINAL DE tour
+    RETORNAR tour
+
+PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
+    visitado[u] &lt;- VERDADERO
+    AGREGAR u AL FINAL DE tour
+    PARA CADA v EN VecinosEnMST(mst, u):
+        SI NO visitado[v]:
+            DFS_Preorden(mst, v, visitado, tour)
+</code></pre></div>
+<p><strong>Demostración Rigurosa de la Garantía de Aproximación 2:</strong>
+1. Sea $T^<em>$ el tour óptimo de TSP y sea $OPT = Costo(T^</em>)$.
+2. Si removemos una arista cualquiera del tour óptimo $T^<em>$, obtenemos un camino simple que conecta todos los vértices del grafo. Todo camino que conecta todos los vértices es, por definición, un árbol generador.
+3. Como el MST es el árbol generador de <strong>mínimo costo posible</strong>, se cumple estrictamente:
+   $$Costo(MST) \le Costo(\text{camino simple}) \le Costo(T^</em>) = OPT$$
+4. El paseo euleriano que recorre cada arista del MST dos veces tiene un costo exacto de:
+   $$Costo(\text{Paseo}) = 2 \cdot Costo(MST) \le 2 \cdot OPT$$
+5. El algoritmo construye el tour final $T$ reemplazando secuencias de aristas del paseo por una arista directa (atajo) hacia la próxima ciudad no visitada.
+6. Gracias a la <strong>desigualdad triangular</strong> ($c_{uw} \le c_{uv} + c_{vw}$), cualquier atajo directo tiene un costo menor o igual al camino alternativo recorrido.
+7. Por ende:
+   $$Costo(T) \le Costo(\text{Paseo}) = 2 \cdot Costo(MST) \le 2 \cdot OPT$$
+8. <strong>Conclusión:</strong> El algoritmo corre en $O(n^2)$ y garantiza que $Costo(T) \le 2 \cdot OPT$.</p>
+<hr />
+<h4>4. Paradigma Programación Lineal Entera (PLI) — Formulación MTZ</h4>
+<p>Para formular TSP en PLI, no basta con exigir que cada nodo tenga grado de entrada 1 y grado de salida 1 (eso admitiría <strong>subtours desconectados</strong>, por ejemplo dos triángulos aislados de 3 nodos en vez de un ciclo de 6). Se utiliza la <strong>formulación de Miller-Tucker-Zemlin (MTZ)</strong>:</p>
+<ul>
+<li><strong>Variables de Decisión:</strong></li>
+<li>$x_{ij} \in {0, 1}$ para todo $i, j \in {1, \dots, n}$ con $i \neq j$ (1 si se viaja directamente de la ciudad $i$ a la $j$, 0 si no).</li>
+<li>$u_i \in \mathbb{R}$ para $i \in {2, \dots, n}$: variable continua auxiliar que representa el <strong>orden de visita</strong> de la ciudad $i$ a lo largo del tour.</li>
+<li><strong>Función Objetivo:</strong>
+  $$\text{MINIMIZAR } Z = \sum_{i=1}^n \sum_{j=1, j \neq i}^n c_{ij} \cdot x_{ij}$$</li>
+<li><strong>Restricciones de Grado (Asignación):</strong></li>
+<li>Salir exactamente una vez de cada ciudad:
+     $$\sum_{j=1, j \neq i}^n x_{ij} = 1 \quad \forall i \in {1, \dots, n}$$</li>
+<li>Llegar exactamente una vez a cada ciudad:
+     $$\sum_{i=1, i \neq j}^n x_{ij} = 1 \quad \forall j \in {1, \dots, n}$$</li>
+<li><strong>Restricciones de Eliminación de Subtours (MTZ):</strong>
+  Para cada par de ciudades $i, j \in {2, \dots, n}$ con $i \neq j$:
+  $$u_i - u_j + n \cdot x_{ij} \le n - 1$$</li>
+<li><strong>Demostración de por qué MTZ Elimina Subtours:</strong></li>
+<li>Si $x_{ij} = 1$ (la arista pertenece al tour), la restricción impone $u_j \ge u_i + 1$.</li>
+<li>Si existiera un subtour desconectado que no pasa por la ciudad 1 con $k$ ciudades ($2 \le k &lt; n$), al sumar las restricciones a lo largo de las aristas del ciclo obtendríamos $n \cdot k \le (n - 1) \cdot k$, lo cual implica $n \le n - 1$ (una <strong>contradicción matemática absoluta</strong>). Por ende, ningún subtour desconectado es factible.</li>
+<li><strong>Recuento Riguroso para Examen:</strong></li>
+<li><strong>Variables:</strong> $n(n - 1)$ variables binarias $x_{ij} + (n - 1)$ variables continuas $u_i$. Total: $n^2 - 1$ variables.</li>
+<li><strong>Restricciones:</strong> $n$ de salida $+ n$ de entrada $+ (n - 1)(n - 2)$ restricciones MTZ. Total: $2n + n^2 - 3n + 2 = n^2 - n + 2$ restricciones (orden $O(n^2)$, frente a las $O(2^n)$ de la formulación DFJ).</li>
+</ul>
+<hr />
+<h4>5. Reducciones Polinomiales y Complejidad NP-Completa</h4>
+<ul>
+<li><strong>Problema de Decisión de TSP:</strong>
+  Dado un grafo ponderado $G = (V, E)$, matriz de costos $C = [c_{uv}]$ y un entero $K$, ¿existe un tour cerrado que visite cada ciudad exactamente una vez con costo total $\le K$?</li>
+<li><strong>Paso 1: TSP $\in$ NP:</strong></li>
+<li><em>Certificado:</em> Una permutación ordenada de vértices $(v_1, v_2, \dots, v_n)$. Tamaño $O(n)$ (polinomial).</li>
+<li><em>Verificador:</em> Comprueba que todas las ciudades sean distintas, que existan las aristas $(v_i, v_{i+1})$ y $(v_n, v_1)$, y suma sus costos verificando que $\sum c \le K$. Corre en tiempo $O(n)$ (polinomial). Por lo tanto, <strong>TSP $\in$ NP</strong>.</li>
+<li><strong>Paso 2: Problema Conocido NP-Completo:</strong>
+  <strong>Ciclo Hamiltoniano (HC)</strong>: Dado un grafo no dirigido $G = (V, E)$, determinar si existe un ciclo simple que pase por todos los vértices.</li>
+<li><strong>Paso 3: Transformación Polinomial ($\text{HC} \le_P \text{TSP}$):</strong>
+  Dada una instancia de HC con grafo $G = (V, E)$:</li>
+<li>Construimos un grafo completo $G' = (V, E')$ con el mismo conjunto de vértices.</li>
+<li>Asignamos pesos a las aristas de $G'$:
+     $$c_{uv} = \begin{cases} 1 &amp; \text{si } (u, v) \in E \ 2 &amp; \text{si } (u, v) \notin E \end{cases}$$</li>
+<li>Fijamos la cota $K = |V|$.</li>
+<li>La construcción se realiza en tiempo $O(|V|^2)$, estrictamente polinomial.</li>
+<li><strong>Paso 4: Equivalencia Lógica Bidireccional:</strong></li>
+<li>($\implies$) Si $G$ tiene un Ciclo Hamiltoniano, ese ciclo utiliza únicamente aristas que pertenecían a $E$, las cuales tienen peso 1 en $G'$. El costo total del ciclo en $G'$ es exactamente $1 \cdot |V| = |V| \le K$. Por lo tanto, existe un tour de TSP con costo $\le K$.</li>
+<li>($\impliedby$) Si $G'$ tiene un tour de TSP con costo total $\le |V|$: como el tour recorre exactamente $|V|$ aristas y cada arista cuesta al menos 1, la <strong>única forma</strong> de que la suma sea $\le |V|$ es que <strong>cada arista del tour cueste exactamente 1</strong>. Como solo las aristas originales de $E$ tienen costo 1, todas las aristas del tour pertenecen a $E$, constituyendo un Ciclo Hamiltoniano válido en $G$.</li>
+<li><strong>Conclusión:</strong> TSP es <strong>NP-Completo</strong>.</li>
+</ul>
+<hr />
+<h4>6. Tabla Comparativa Maestra: El Viajante de Comercio en los 5 Paradigmas</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Paradigma</th>
+<th style="text-align: left;">Enfoque / Algoritmo</th>
+<th style="text-align: left;">Complejidad Temporal</th>
+<th style="text-align: left;">Complejidad Espacial</th>
+<th style="text-align: center;">¿Garantiza Óptimo?</th>
+<th style="text-align: left;">Cuándo Usarlo en Parcial</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Backtracking (B&amp;B)</strong></td>
+<td style="text-align: left;">Búsqueda con cota MST</td>
+<td style="text-align: left;"><strong>O(n!)</strong> peor caso</td>
+<td style="text-align: left;"><strong>O(n)</strong></td>
+<td style="text-align: center;">✅ <strong>SÍ (Exacto)</strong></td>
+<td style="text-align: left;">Cuando $n \le 20$ y piden algoritmo exacto combinatorio con poda de árbol.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Prog. Dinámica</strong></td>
+<td style="text-align: left;">Bellman-Held-Karp</td>
+<td style="text-align: left;"><strong>O(n² · 2ⁿ)</strong></td>
+<td style="text-align: left;"><strong>O(n · 2ⁿ)</strong></td>
+<td style="text-align: center;">✅ <strong>SÍ (Exacto)</strong></td>
+<td style="text-align: left;">Cuando $n \le 23$ y se exige el óptimo reduciendo factorial a exponencial.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Greedy Heurístico</strong></td>
+<td style="text-align: left;">Vecino más Cercano</td>
+<td style="text-align: left;"><strong>O(n²)</strong></td>
+<td style="text-align: left;"><strong>O(n)</strong></td>
+<td style="text-align: center;">❌ Sin garantía general</td>
+<td style="text-align: left;">Para mostrar por qué una decisión voraz miope puede ser catastrófica.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Algoritmo Aprox</strong></td>
+<td style="text-align: left;">2-Aproximación por MST</td>
+<td style="text-align: left;"><strong>O(n²)</strong></td>
+<td style="text-align: left;"><strong>O(n)</strong></td>
+<td style="text-align: center;">❌ Cota: $\text{Tour} \le 2 \cdot OPT$</td>
+<td style="text-align: left;">En grafos métricos (con desigualdad triangular) para tiempo polinomial.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Prog. Lineal (PLI)</strong></td>
+<td style="text-align: left;">Formulación MTZ</td>
+<td style="text-align: left;">Exponencial (peor caso)</td>
+<td style="text-align: left;">$O(n^2)$ variables</td>
+<td style="text-align: center;">✅ <strong>SÍ (Exacto)</strong></td>
+<td style="text-align: left;">Para solvers de optimización matemática con eliminación de subtours.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Reducciones NP-C</strong></td>
+<td style="text-align: left;">De Ciclo Hamiltoniano</td>
+<td style="text-align: left;">Reducción en <strong>O(V²)</strong></td>
+<td style="text-align: left;">$O(V^2)$</td>
+<td style="text-align: center;">Demostración formal</td>
+<td style="text-align: left;">Cuando piden probar que TSP de decisión es NP-Completo.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+      </div>
+    </details>
+  </div>
+</article>
 <h2>12. Ejercicios Tipo Parcial Generados</h2>
 <p>Esta sección contiene ejercicios nuevos creados específicamente siguiendo la estructura, terminología, nivel de dificultad y estilo narrativo de los exámenes reales de la cátedra Echevarría.</p>
 <hr />
 
-<article class="exercise-card" id="ej-35" data-num="35" data-priority="imprescindible" data-paradigm="tipo_parcial" data-title="despacho de drones de emergencia con ventanas de batería" data-origin="parcial / práctica fiuba">
+<article class="exercise-card" id="ej-37" data-num="37" data-priority="imprescindible" data-paradigm="tipo_parcial" data-title="despacho de drones de emergencia con ventanas de batería" data-origin="parcial / práctica fiuba">
   <header class="card-header">
     <div class="card-header-left">
-      <span class="exercise-pill-number">EJ 35</span>
+      <span class="exercise-pill-number">EJ 37</span>
       <h3 class="exercise-title">Despacho de Drones de Emergencia con Ventanas de Batería</h3>
     </div>
     <div class="card-header-meta">
@@ -5323,11 +6097,11 @@ Para el problema de Vertex Cover Mínimo en un grafo G = (V, E), comparar tres e
     </div>
     <div class="card-header-actions">
       <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
-        <input type="checkbox" class="mastered-checkbox" data-ej-num="35" onchange="toggleMastered(35, this.checked)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="37" onchange="toggleMastered(37, this.checked)">
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(35)">
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(37)">
         <span class="icon">👁️</span> <span class="text">Ver Solución</span>
       </button>
     </div>
@@ -5347,7 +6121,7 @@ El sistema de emergencias médicas de una provincia dispone de una flota de D dr
 Modelado de capacidades intermedias heterogéneas (c = 2 en drones), verificación temporal de compatibilidad previa a la red, y flujo máximo con cotas unitarias en puestos.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-35">
+    <details open class="exercise-solution-drawer" id="solution-drawer-37">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -5355,13 +6129,13 @@ Modelado de capacidades intermedias heterogéneas (c = 2 en drones), verificaci�
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> La compatibilidad temporal y geográfica se precalcula: el dron i puede atender al puesto j si la distancia es alcanzable y la ventana [h_j^min, h_j^max] cae dentro de la autonomía [t_i^inicio, t_i^fin].
+* La compatibilidad temporal y geográfica se precalcula: el dron i puede atender al puesto j si la distancia es alcanzable y la ventana [h_j^min, h_j^max] cae dentro de la autonomía [t_i^inicio, t_i^fin].
 * Construcción de la red:
   * Super-fuente s.
-  * Capa de drones: nodo d_i por cada dron. Arista s → d_i con </em><em>capacidad 2</em><em> (cada dron puede hacer hasta 2 entregas).
+  * Capa de drones: nodo d_i por cada dron. Arista s → d_i con <strong>capacidad 2</strong> (cada dron puede hacer hasta 2 entregas).
   * Capa de puestos sanitarios: nodo p_j por cada puesto.
-  * Para cada par compatible (i, j): arista d_i → p_j con </em><em>capacidad 1</em><em>.
-  * Super-sumidero t: aristas desde cada puesto p_j → t con </em><em>capacidad 1</em>* (cada puesto solo necesita 1 entrega).
+  * Para cada par compatible (i, j): arista d_i → p_j con <strong>capacidad 1</strong>.
+  * Super-sumidero t: aristas desde cada puesto p_j → t con <strong>capacidad 1</strong> (cada puesto solo necesita 1 entrega).
 * Flujo máximo mediante Ford-Fulkerson o Edmonds-Karp. Por integralidad, el flujo resultante asigna cada puesto a un dron válido sin superar las 2 entregas por dron.</p>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION AsignarDronesEmergencia(drones, puestos, matriz_distancias):
@@ -5398,20 +6172,20 @@ Modelado de capacidades intermedias heterogéneas (c = 2 en drones), verificaci�
     RETORNAR (max_puestos, asignacion)
 </code></pre></div>
 <p><strong>Complejidad</strong><br />
-<em> Nodos: |V| = 2 + D + P.<br />
-</em> Aristas: |E| ≤ D + D · P + P.<br />
-<em> Cota de flujo máximo: |f</em>| ≤ min(2D, P) ≤ P.<br />
-<em> Complejidad temporal con Ford-Fulkerson con capacidades enteras: O(|E| · |f</em>|) = O(D · P²) (o O(V · E²) con Edmonds-Karp).</p>
+* Nodos: |V| = 2 + D + P.<br />
+* Aristas: |E| ≤ D + D · P + P.<br />
+* Cota de flujo máximo: |f<em>| ≤ min(2D, P) ≤ P.<br />
+</em> Complejidad temporal con Ford-Fulkerson con capacidades enteras: O(|E| · |f*|) = O(D · P²) (o O(V · E²) con Edmonds-Karp).</p>
 <hr />
       </div>
     </details>
   </div>
 </article>
 
-<article class="exercise-card" id="ej-36" data-num="36" data-priority="imprescindible" data-paradigm="tipo_parcial" data-title="plan de publicidad digital con días de enfriamiento y presupuesto" data-origin="parcial / práctica fiuba">
+<article class="exercise-card" id="ej-38" data-num="38" data-priority="imprescindible" data-paradigm="tipo_parcial" data-title="plan de publicidad digital con días de enfriamiento y presupuesto" data-origin="parcial / práctica fiuba">
   <header class="card-header">
     <div class="card-header-left">
-      <span class="exercise-pill-number">EJ 36</span>
+      <span class="exercise-pill-number">EJ 38</span>
       <h3 class="exercise-title">Plan de Publicidad Digital con Días de Enfriamiento y Presupuesto</h3>
     </div>
     <div class="card-header-meta">
@@ -5421,11 +6195,11 @@ Modelado de capacidades intermedias heterogéneas (c = 2 en drones), verificaci�
     </div>
     <div class="card-header-actions">
       <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
-        <input type="checkbox" class="mastered-checkbox" data-ej-num="36" onchange="toggleMastered(36, this.checked)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="38" onchange="toggleMastered(38, this.checked)">
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(36)">
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(38)">
         <span class="icon">👁️</span> <span class="text">Ver Solución</span>
       </button>
     </div>
@@ -5442,7 +6216,7 @@ Una empresa de marketing digital planifica su campaña durante los próximos n d
 Combinación del patrón de exclusión espaciada (i - 3) con restricción de capacidad tipo mochila (P), y reconstrucción de días elegidos.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-36">
+    <details open class="exercise-solution-drawer" id="solution-drawer-38">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -5450,12 +6224,12 @@ Combinación del patrón de exclusión espaciada (i - 3) con restricción de cap
       </summary>
       <div class="solution-inner-content">
         <p><strong>Idea de resolución</strong><br />
-<em> </em>Definición del Estado:<em><br />
+* <em>Definición del Estado:</em><br />
   OPT(i, p): Conversión máxima obtenible considerando los primeros i días (1 ≤ i ≤ n) con un presupuesto restante de p pesos (0 ≤ p ≤ P).
-* </em>Opciones en el día i:<em><br />
-  1. </em><em>No pautar el día i:</em><em> El valor es OPT(i - 1, p).
-  2. </em><em>Pautar el día i:</em><em> Requiere C[i] ≤ p. Otorga B[i] conversiones y obliga a que la pauta previa haya sido como máximo en el día i - 3. El valor acumulado es OPT(i - 3, p - C[i]) + B[i].
-* </em>Recurrencia:*  </p>
+* <em>Opciones en el día i:</em><br />
+  1. <strong>No pautar el día i:</strong> El valor es OPT(i - 1, p).
+  2. <strong>Pautar el día i:</strong> Requiere C[i] ≤ p. Otorga B[i] conversiones y obliga a que la pauta previa haya sido como máximo en el día i - 3. El valor acumulado es OPT(i - 3, p - C[i]) + B[i].
+* <em>Recurrencia:</em>  </p>
 <blockquote>
 <p><strong>OPT(i, p) = OPT(i - 1, p)</strong> (si C[i] &gt; p)<br />
 <strong>OPT(i, p) = max(OPT(i - 1, p), OPT(max(0, i - 3), p - C[i]) + B[i])</strong> (si C[i] ≤ p)
@@ -5501,18 +6275,18 @@ Combinación del patrón de exclusión espaciada (i - 3) con restricción de cap
     RETORNAR (DP[n][P], dias_pauta)
 </code></pre></div>
 <p><strong>Complejidad</strong><br />
-<em> </em><em>Tiempo:</em><em> O(n · P) operaciones (llena una tabla de (n + 1) × (P + 1) con comparaciones O(1)).<br />
-</em> <strong>Espacio:</strong> O(n · P) para la tabla bidimensional.</p>
+* <strong>Tiempo:</strong> O(n · P) operaciones (llena una tabla de (n + 1) × (P + 1) con comparaciones O(1)).<br />
+* <strong>Espacio:</strong> O(n · P) para la tabla bidimensional.</p>
 <hr />
       </div>
     </details>
   </div>
 </article>
 
-<article class="exercise-card" id="ej-37" data-num="37" data-priority="imprescindible" data-paradigm="tipo_parcial" data-title="ubicación de servidores edge con resiliencia del 80%" data-origin="parcial / práctica fiuba">
+<article class="exercise-card" id="ej-39" data-num="39" data-priority="imprescindible" data-paradigm="tipo_parcial" data-title="ubicación de servidores edge con resiliencia del 80%" data-origin="parcial / práctica fiuba">
   <header class="card-header">
     <div class="card-header-left">
-      <span class="exercise-pill-number">EJ 37</span>
+      <span class="exercise-pill-number">EJ 39</span>
       <h3 class="exercise-title">Ubicación de Servidores Edge con Resiliencia del 80%</h3>
     </div>
     <div class="card-header-meta">
@@ -5522,11 +6296,11 @@ Combinación del patrón de exclusión espaciada (i - 3) con restricción de cap
     </div>
     <div class="card-header-actions">
       <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
-        <input type="checkbox" class="mastered-checkbox" data-ej-num="37" onchange="toggleMastered(37, this.checked)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="39" onchange="toggleMastered(39, this.checked)">
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(37)">
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(39)">
         <span class="icon">👁️</span> <span class="text">Ver Solución</span>
       </button>
     </div>
@@ -5541,7 +6315,7 @@ Combinación del patrón de exclusión espaciada (i - 3) con restricción de cap
 Una compañía de telecomunicaciones debe instalar servidores Edge en un conjunto de S ubicaciones posibles para dar cobertura de baja latencia a U usuarios industriales. Cada servidor instalado en el sitio i ∈ S tiene un costo de instalación K_i y una capacidad máxima de tráfico de T_i Gbps. Cada usuario j ∈ U demanda d_j Gbps y define un subconjunto de sitios candidatos S_j ⊆ S que cumplen con el límite de latencia de 5 milisegundos. La compañía exige que <strong>al menos el 80% de los usuarios industriales reciban servicio</strong>. Plantear un modelo de Programación Lineal Entera que determine qué servidores abrir y cómo asignar a los usuarios atendidos al menor costo de instalación posible. Indicar variables y restricciones.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-37">
+    <details open class="exercise-solution-drawer" id="solution-drawer-39">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -5576,18 +6350,18 @@ RESTRICCIONES:
   ∑_{j ∈ U: i ∈ S_j} (d_j * x_ji) &lt;= T_i * y_i    ∀ i ∈ S
 </code></pre></div>
 <p><strong>Conteo de Variables y Restricciones</strong><br />
-<em> </em><em>Variables:</em><em> |S| variables y_i + |U| variables u_j + ∑_j |S_j| variables de asignación x_ji.
-* </em><em>Restricciones:</em>* 1 de umbral + |U| de asignación + |S| de capacidad. Total: 1 + |U| + |S| restricciones.</p>
+* <strong>Variables:</strong> |S| variables y_i + |U| variables u_j + ∑_j |S_j| variables de asignación x_ji.
+* <strong>Restricciones:</strong> 1 de umbral + |U| de asignación + |S| de capacidad. Total: 1 + |U| + |S| restricciones.</p>
 <hr />
       </div>
     </details>
   </div>
 </article>
 
-<article class="exercise-card" id="ej-38" data-num="38" data-priority="imprescindible" data-paradigm="tipo_parcial" data-title="np-completitud del problema de asignación de frecuencias" data-origin="parcial / práctica fiuba">
+<article class="exercise-card" id="ej-40" data-num="40" data-priority="imprescindible" data-paradigm="tipo_parcial" data-title="np-completitud del problema de asignación de frecuencias" data-origin="parcial / práctica fiuba">
   <header class="card-header">
     <div class="card-header-left">
-      <span class="exercise-pill-number">EJ 38</span>
+      <span class="exercise-pill-number">EJ 40</span>
       <h3 class="exercise-title">NP-Completitud del Problema de Asignación de Frecuencias</h3>
     </div>
     <div class="card-header-meta">
@@ -5597,11 +6371,11 @@ RESTRICCIONES:
     </div>
     <div class="card-header-actions">
       <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
-        <input type="checkbox" class="mastered-checkbox" data-ej-num="38" onchange="toggleMastered(38, this.checked)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="40" onchange="toggleMastered(40, this.checked)">
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(38)">
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(40)">
         <span class="icon">👁️</span> <span class="text">Ver Solución</span>
       </button>
     </div>
@@ -5616,7 +6390,7 @@ RESTRICCIONES:
 Se define el problema de <strong>Asignación de Frecuencias (AF)</strong> de la siguiente manera: Dado un conjunto de antenas de transmisión y una lista de pares de antenas que interfieren entre sí si transmiten en frecuencias cercanas, junto con un número entero de canales disponibles k, determinar si es posible asignar una frecuencia a cada antena de modo que ninguna antena adyacente comparta frecuencia. Demostrar formalmente que AF es un problema NP-Completo reduciendo desde <strong>k-Coloring de Grafos</strong>.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-38">
+    <details open class="exercise-solution-drawer" id="solution-drawer-40">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -5691,20 +6465,20 @@ Se define el problema de <strong>Asignación de Frecuencias (AF)</strong> de la 
 <p>Utilizá esta lista de verificación durante tu última hora de repaso antes de ingresar al aula:</p>
 <h3>A. Dominio de Paradigmas</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_84848" onchange="toggleChecklistItem('chk_84848', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_32961" onchange="toggleChecklistItem('chk_32961', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_23452" onchange="toggleChecklistItem('chk_23452', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_40402" onchange="toggleChecklistItem('chk_40402', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_64016" onchange="toggleChecklistItem('chk_64016', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_99005" onchange="toggleChecklistItem('chk_99005', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_17559" onchange="toggleChecklistItem('chk_17559', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_27860" onchange="toggleChecklistItem('chk_27860', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_69578" onchange="toggleChecklistItem('chk_69578', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_22004" onchange="toggleChecklistItem('chk_22004', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_38679" onchange="toggleChecklistItem('chk_38679', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_42063" onchange="toggleChecklistItem('chk_42063', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_91395" onchange="toggleChecklistItem('chk_91395', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_22202" onchange="toggleChecklistItem('chk_22202', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
 </ul>
 <h3>B. Ejecución en la Hoja de Examen</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_72487" onchange="toggleChecklistItem('chk_72487', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_88128" onchange="toggleChecklistItem('chk_88128', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_29648" onchange="toggleChecklistItem('chk_29648', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_74018" onchange="toggleChecklistItem('chk_74018', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_33637" onchange="toggleChecklistItem('chk_33637', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_35415" onchange="toggleChecklistItem('chk_35415', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_58604" onchange="toggleChecklistItem('chk_58604', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_39259" onchange="toggleChecklistItem('chk_39259', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
 </ul>
 </main>
 <script>
@@ -5802,6 +6576,18 @@ const TRAINER_QUESTIONS = [
     answer: "greedy",
     paradigmName: "Greedy (Voraz)",
     trigger: "Earliest Deadline First (EDF): ordenar por fecha de entrega más temprana d_i. Se demuestra óptimo por argumento de intercambio (Guía 02, Ej 9)."
+  },
+  {
+    prompt: "Se tienen n objetos indivisibles con pesos w_i y valores v_i, y una mochila de capacidad máxima W. Encontrar la combinación de máximo valor respetando la capacidad entera.",
+    answer: "dp",
+    paradigmName: "Programación Dinámica",
+    trigger: "Mochila 0-1: subestructura óptima con superposición de subproblemas OPT(i, w). Requiere tabla (n+1) x (W+1) en O(n · W) pseudo-polinomial (Ejercicio 35)."
+  },
+  {
+    prompt: "Dado un conjunto de n ciudades con matriz de distancias métricas, hallar un circuito cerrado que visite todas las ciudades con costo garantizado a lo sumo el doble del óptimo.",
+    answer: "greedy",
+    paradigmName: "Algoritmo de Aproximación (MST + Preorden)",
+    trigger: "2-Aproximación de TSP Métrico: calcular Árbol Generador Mínimo (MST) con Prim o Kruskal y recorrer en preorden tomando atajos por desigualdad triangular (Ejercicio 36)."
   }
 ];
 
@@ -6026,6 +6812,49 @@ function toggleCardSolution(num) {
   const drawer = document.getElementById("solution-drawer-" + num);
   if (drawer) {
     drawer.open = !drawer.open;
+  }
+}
+
+function scrollToExercise(num) {
+  // Asegurar que se muestre el ejercicio independientemente del filtro activo
+  currentMode = 'all';
+  currentParadigm = 'all';
+  searchQuery = '';
+  const searchInput = document.getElementById("exerciseSearch");
+  if (searchInput) searchInput.value = "";
+  const clearBtn = document.getElementById("clearSearchBtn");
+  if (clearBtn) clearBtn.style.display = "none";
+
+  document.querySelectorAll(".mode-btn").forEach(btn => btn.classList.remove("active"));
+  const btnAll = document.getElementById("btnModeAll");
+  if (btnAll) btnAll.classList.add("active");
+
+  document.querySelectorAll(".pill-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.getAttribute("data-paradigm") === "all");
+  });
+
+  applyFilters();
+
+  const card = document.getElementById("ej-" + num);
+  if (card) {
+    const drawer = document.getElementById("solution-drawer-" + num);
+    if (drawer) drawer.open = true;
+
+    // Desplazamiento suave con compensación por el HUD fijo
+    const rect = card.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const hudHeight = document.getElementById("hudTopBar") ? document.getElementById("hudTopBar").offsetHeight : 140;
+    const targetY = rect.top + scrollTop - hudHeight - 16;
+
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+
+    card.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
+    card.style.borderColor = 'var(--accent-color)';
+    card.style.boxShadow = '0 0 0 4px rgba(49, 130, 206, 0.4)';
+    setTimeout(() => {
+      card.style.borderColor = '';
+      card.style.boxShadow = '';
+    }, 2800);
   }
 }
 

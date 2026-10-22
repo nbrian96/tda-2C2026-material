@@ -39,10 +39,12 @@ PARADIGMS = {
     32: ("integradores", "Integrador", "badge-integrador"),
     33: ("integradores", "Integrador", "badge-integrador"),
     34: ("integradores", "Integrador", "badge-integrador"),
-    35: ("tipo_parcial", "Tipo Parcial", "badge-tipo-parcial"),
-    36: ("tipo_parcial", "Tipo Parcial", "badge-tipo-parcial"),
+    35: ("integradores", "Multi-Paradigma", "badge-integrador"),
+    36: ("integradores", "Multi-Paradigma", "badge-integrador"),
     37: ("tipo_parcial", "Tipo Parcial", "badge-tipo-parcial"),
-    38: ("tipo_parcial", "Tipo Parcial", "badge-tipo-parcial")
+    38: ("tipo_parcial", "Tipo Parcial", "badge-tipo-parcial"),
+    39: ("tipo_parcial", "Tipo Parcial", "badge-tipo-parcial"),
+    40: ("tipo_parcial", "Tipo Parcial", "badge-tipo-parcial")
 }
 
 SOLUTION_MARKERS = [
@@ -54,6 +56,7 @@ SOLUTION_MARKERS = [
     r"<p><strong>Demostración Paso a Paso",
     r"<p><strong>Demostración Formal",
     r"<h4>1\. Resolución",
+    r"<h4>1\. Paradigma",
     r"<p><strong>Explicación del modelo",
     r"<p><strong>Demostración de Optimalidad"
 ]
@@ -276,21 +279,27 @@ def get_hud_and_drawer_html():
         <button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')">
           <span class="mode-icon">⚡</span>
           <span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span>
-          <span class="mode-badge" id="badgeEmergencyCount">30</span>
+          <span class="mode-badge" id="badgeEmergencyCount">32</span>
         </button>
         <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')">
           <span class="mode-icon">🎯</span>
           <span class="mode-label"><span class="mode-label-long">Modo Táctico (1 sem)</span><span class="mode-label-short">1 sem</span></span>
-          <span class="mode-badge">38</span>
+          <span class="mode-badge">40</span>
         </button>
         <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')">
           <span class="mode-icon">📚</span>
           <span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span>
-          <span class="mode-badge">38</span>
+          <span class="mode-badge">40</span>
         </button>
       </div>
 
       <div class="hud-quick-tools">
+        <button class="tool-btn highlight-tool" onclick="scrollToExercise(35)" title="Ver La Mochila resuelta en todos los paradigmas">
+          <span class="tool-icon">🎒</span> <span class="tool-text">Mochila Multi-P</span>
+        </button>
+        <button class="tool-btn highlight-tool" onclick="scrollToExercise(36)" title="Ver El Viajante (TSP) resuelto en todos los paradigmas">
+          <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
+        </button>
         <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
           <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
         </button>
@@ -310,7 +319,7 @@ def get_hud_and_drawer_html():
       <div class="hud-progress-wrap">
         <div class="progress-info">
           <span class="progress-title">Progreso en modo activo:</span>
-          <span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">30</span> dominados (<span id="progPercent">0%</span>)</span>
+          <span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">32</span> dominados (<span id="progPercent">0%</span>)</span>
         </div>
         <div class="progress-track">
           <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
@@ -319,7 +328,7 @@ def get_hud_and_drawer_html():
 
       <div class="hud-search-box">
         <span class="search-icon">🔍</span>
-        <input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (ej. mochila, arnook, invap, antenas, lagrange)..." oninput="handleSearch(this.value)">
+        <input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (ej. mochila, viajante, tsp, knapsack, held-karp, arnook, invap)..." oninput="handleSearch(this.value)">
         <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display: none;">✕</button>
       </div>
     </div>
@@ -327,7 +336,7 @@ def get_hud_and_drawer_html():
     <!-- Filter Pills por Paradigma -->
     <div class="hud-row-pills">
       <div class="filter-pills-scroll" id="paradigmPills">
-        <button class="pill-btn active" data-paradigm="all" onclick="filterByParadigm('all')">Todos (38)</button>
+        <button class="pill-btn active" data-paradigm="all" onclick="filterByParadigm('all')">Todos (40)</button>
         <button class="pill-btn" data-paradigm="dyc" onclick="filterByParadigm('dyc')">🔷 DyC (3)</button>
         <button class="pill-btn" data-paradigm="greedy" onclick="filterByParadigm('greedy')">🔶 Greedy (5)</button>
         <button class="pill-btn" data-paradigm="backtracking" onclick="filterByParadigm('backtracking')">🟣 Backtracking (4)</button>
@@ -335,7 +344,7 @@ def get_hud_and_drawer_html():
         <button class="pill-btn" data-paradigm="pl" onclick="filterByParadigm('pl')">🔵 Prog. Lineal (5)</button>
         <button class="pill-btn" data-paradigm="flujo" onclick="filterByParadigm('flujo')">🔴 Redes de Flujo (4)</button>
         <button class="pill-btn" data-paradigm="reducciones" onclick="filterByParadigm('reducciones')">🟡 Reducciones NP (4)</button>
-        <button class="pill-btn" data-paradigm="integradores" onclick="filterByParadigm('integradores')">⚡ Integradores (3)</button>
+        <button class="pill-btn" data-paradigm="integradores" onclick="filterByParadigm('integradores')">⚡ Integradores (5)</button>
         <button class="pill-btn" data-paradigm="tipo_parcial" onclick="filterByParadigm('tipo_parcial')">📝 Tipo Parcial (4)</button>
       </div>
     </div>
@@ -345,7 +354,7 @@ def get_hud_and_drawer_html():
   <div class="emergency-banner" id="emergencyBanner">
     <div class="banner-inner">
       <span class="banner-icon">⚡</span>
-      <span><strong>Modo Emergencia (48–72h):</strong> Mostrando los 30 ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de los exámenes reales 2024 y 2025.</span>
+      <span><strong>Modo Emergencia (48–72h):</strong> Mostrando los 32 ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de los exámenes reales y problemas canónicos.</span>
       <button class="banner-dismiss" onclick="dismissBanner()">✕</button>
     </div>
   </div>
@@ -795,6 +804,26 @@ body.dark-mode .hud-mode-selector {
   background: var(--accent-soft);
   border-color: var(--accent-color);
   color: var(--accent-color);
+}
+
+.tool-btn.highlight-tool {
+  background: linear-gradient(135deg, rgba(49, 130, 206, 0.12), rgba(128, 90, 213, 0.12));
+  border-color: rgba(49, 130, 206, 0.5);
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+body.dark-mode .tool-btn.highlight-tool {
+  background: linear-gradient(135deg, rgba(66, 153, 225, 0.22), rgba(159, 122, 234, 0.22));
+  border-color: rgba(66, 153, 225, 0.6);
+  color: #90cdf4;
+}
+
+.tool-btn.highlight-tool:hover {
+  background: var(--accent-color);
+  color: #ffffff;
+  border-color: var(--accent-color);
+  transform: translateY(-1px);
 }
 
 .hud-row-secondary {
@@ -1964,6 +1993,18 @@ const TRAINER_QUESTIONS = [
     answer: "greedy",
     paradigmName: "Greedy (Voraz)",
     trigger: "Earliest Deadline First (EDF): ordenar por fecha de entrega más temprana d_i. Se demuestra óptimo por argumento de intercambio (Guía 02, Ej 9)."
+  },
+  {
+    prompt: "Se tienen n objetos indivisibles con pesos w_i y valores v_i, y una mochila de capacidad máxima W. Encontrar la combinación de máximo valor respetando la capacidad entera.",
+    answer: "dp",
+    paradigmName: "Programación Dinámica",
+    trigger: "Mochila 0-1: subestructura óptima con superposición de subproblemas OPT(i, w). Requiere tabla (n+1) x (W+1) en O(n · W) pseudo-polinomial (Ejercicio 35)."
+  },
+  {
+    prompt: "Dado un conjunto de n ciudades con matriz de distancias métricas, hallar un circuito cerrado que visite todas las ciudades con costo garantizado a lo sumo el doble del óptimo.",
+    answer: "greedy",
+    paradigmName: "Algoritmo de Aproximación (MST + Preorden)",
+    trigger: "2-Aproximación de TSP Métrico: calcular Árbol Generador Mínimo (MST) con Prim o Kruskal y recorrer en preorden tomando atajos por desigualdad triangular (Ejercicio 36)."
   }
 ];
 
@@ -2188,6 +2229,49 @@ function toggleCardSolution(num) {
   const drawer = document.getElementById("solution-drawer-" + num);
   if (drawer) {
     drawer.open = !drawer.open;
+  }
+}
+
+function scrollToExercise(num) {
+  // Asegurar que se muestre el ejercicio independientemente del filtro activo
+  currentMode = 'all';
+  currentParadigm = 'all';
+  searchQuery = '';
+  const searchInput = document.getElementById("exerciseSearch");
+  if (searchInput) searchInput.value = "";
+  const clearBtn = document.getElementById("clearSearchBtn");
+  if (clearBtn) clearBtn.style.display = "none";
+
+  document.querySelectorAll(".mode-btn").forEach(btn => btn.classList.remove("active"));
+  const btnAll = document.getElementById("btnModeAll");
+  if (btnAll) btnAll.classList.add("active");
+
+  document.querySelectorAll(".pill-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.getAttribute("data-paradigm") === "all");
+  });
+
+  applyFilters();
+
+  const card = document.getElementById("ej-" + num);
+  if (card) {
+    const drawer = document.getElementById("solution-drawer-" + num);
+    if (drawer) drawer.open = true;
+
+    // Desplazamiento suave con compensación por el HUD fijo
+    const rect = card.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const hudHeight = document.getElementById("hudTopBar") ? document.getElementById("hudTopBar").offsetHeight : 140;
+    const targetY = rect.top + scrollTop - hudHeight - 16;
+
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+
+    card.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
+    card.style.borderColor = 'var(--accent-color)';
+    card.style.boxShadow = '0 0 0 4px rgba(49, 130, 206, 0.4)';
+    setTimeout(() => {
+      card.style.borderColor = '';
+      card.style.boxShadow = '';
+    }, 2800);
   }
 }
 
