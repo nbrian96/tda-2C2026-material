@@ -272,18 +272,39 @@ def inject_interactive_widgets(html_body):
 
     return html_body
 
-def get_hud_and_drawer_html():
-    return """
+def get_hud_and_drawer_html(active_paradigm="all"):
+    pills_config = [
+        ("all", "index.html", "📚 Todos (40)"),
+        ("dyc", "dyc.html", "🔷 DyC (3)"),
+        ("greedy", "greedy.html", "🔶 Greedy (5)"),
+        ("backtracking", "backtracking.html", "🟣 Backtracking (4)"),
+        ("dp", "dp.html", "🟢 Prog. Dinámica (6)"),
+        ("pl", "pl.html", "🔵 Prog. Lineal (5)"),
+        ("flujo", "flujo.html", "🔴 Redes de Flujo (4)"),
+        ("reducciones", "reducciones.html", "🟡 Reducciones NP (4)"),
+        ("integradores", "integradores.html", "⚡ Integradores (5)"),
+        ("tipo_parcial", "tipo_parcial.html", "📝 Tipo Parcial (4)")
+    ]
+    pills_html = []
+    for key, href, label in pills_config:
+        is_active = (key == active_paradigm)
+        active_cls = " active" if is_active else ""
+        pills_html.append(f'<a href="{href}" class="pill-btn{active_cls}" data-paradigm="{key}">{label}</a>')
+    rendered_pills = "\n        ".join(pills_html)
+
+    html_template = """
 <!-- Top Sticky HUD -->
 <header class="hud-top-bar" id="hudTopBar">
   <div class="hud-container">
     <div class="hud-row-primary">
       <div class="hud-brand">
-        <span class="hud-logo-icon">🚀</span>
-        <div>
-          <h1 class="hud-title">TDA — Guía Interactiva de Parciales</h1>
-          <span class="hud-subtitle">Edición Intensiva: Salvando el Cuatrimestre (2024–2025)</span>
-        </div>
+        <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;">
+          <span class="hud-logo-icon">🚀</span>
+          <div>
+            <h1 class="hud-title">TDA — Guía Interactiva de Parciales</h1>
+            <span class="hud-subtitle">Edición Intensiva: Salvando el Cuatrimestre (2024–2025)</span>
+          </div>
+        </a>
       </div>
 
       <div class="hud-mode-selector" role="group" aria-label="Modo de Estudio">
@@ -344,19 +365,10 @@ def get_hud_and_drawer_html():
       </div>
     </div>
 
-    <!-- Filter Pills por Paradigma -->
+    <!-- Filter Pills por Paradigma (Enlaces modulares para GitHub Pages) -->
     <div class="hud-row-pills">
       <div class="filter-pills-scroll" id="paradigmPills">
-        <button class="pill-btn active" data-paradigm="all" onclick="filterByParadigm('all')">Todos (40)</button>
-        <button class="pill-btn" data-paradigm="dyc" onclick="filterByParadigm('dyc')">🔷 DyC (3)</button>
-        <button class="pill-btn" data-paradigm="greedy" onclick="filterByParadigm('greedy')">🔶 Greedy (5)</button>
-        <button class="pill-btn" data-paradigm="backtracking" onclick="filterByParadigm('backtracking')">🟣 Backtracking (4)</button>
-        <button class="pill-btn" data-paradigm="dp" onclick="filterByParadigm('dp')">🟢 Prog. Dinámica (6)</button>
-        <button class="pill-btn" data-paradigm="pl" onclick="filterByParadigm('pl')">🔵 Prog. Lineal (5)</button>
-        <button class="pill-btn" data-paradigm="flujo" onclick="filterByParadigm('flujo')">🔴 Redes de Flujo (4)</button>
-        <button class="pill-btn" data-paradigm="reducciones" onclick="filterByParadigm('reducciones')">🟡 Reducciones NP (4)</button>
-        <button class="pill-btn" data-paradigm="integradores" onclick="filterByParadigm('integradores')">⚡ Integradores (5)</button>
-        <button class="pill-btn" data-paradigm="tipo_parcial" onclick="filterByParadigm('tipo_parcial')">📝 Tipo Parcial (4)</button>
+        <!-- REND_PILLS -->
       </div>
     </div>
   </div>
@@ -459,6 +471,7 @@ def get_hud_and_drawer_html():
   <button class="fab-btn fab-secondary" onclick="scrollToTop()" title="Volver Arriba">⬆️</button>
 </div>
 """
+    return html_template.replace("<!-- REND_PILLS -->", rendered_pills)
 
 def get_complete_css():
     return """
@@ -2161,9 +2174,8 @@ document.addEventListener("DOMContentLoaded", () => {
   loadSavedState();
   updateModeUI();
   applyFilters();
-  initTrainer();
-  initMathRendering();
   initMermaidDiagrams();
+  initMathRendering();
 });
 
 function initMathRendering() {
@@ -2171,11 +2183,10 @@ function initMathRendering() {
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
-        { left: "$", right: "$", display: false },
-        { left: "\\(", right: "\\)", display: false },
-        { left: "\\[", right: "\\]", display: true }
+        { left: "$", right: "$", display: false }
       ],
-      ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+      ignoredClasses: ["mermaid", "mermaid-wrapper", "code-container", "copy-code-btn"],
+      ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code", "svg"],
       throwOnError: false
     });
   }
@@ -2599,17 +2610,16 @@ document.addEventListener("keydown", (e) => {
 });
 """
 
-def build_interactive_html(md_text, output_file):
-    print("      [A] Convirtiendo Markdown base a HTML...")
+def build_interactive_html(md_text, output_file, active_paradigm="all", page_title=None):
+    title_text = "Teoría de Algoritmos — Guía Interactiva de Parciales (FIUBA)"
+    if page_title:
+        title_text = f"Teoría de Algoritmos — {page_title} (FIUBA)"
+
     html_raw = markdown.markdown(md_text, extensions=['fenced_code', 'tables'])
-
-    print("      [B] Estructurando tarjetas interactivas de ejercicios...")
     html_with_cards = process_html_exercises(html_raw)
-
-    print("      [C] Inyectando widgets de estudio (Simulador 30s y Checklist interactiva)...")
     html_with_widgets = inject_interactive_widgets(html_with_cards)
 
-    hud_and_drawer = get_hud_and_drawer_html()
+    hud_and_drawer = get_hud_and_drawer_html(active_paradigm=active_paradigm)
     css_styles = get_complete_css()
     js_scripts = get_complete_js()
 
@@ -2618,7 +2628,7 @@ def build_interactive_html(md_text, output_file):
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teoría de Algoritmos — Guía Interactiva de Parciales (FIUBA)</title>
+<title>{title_text}</title>
 <!-- KaTeX para renderizado matemático ultra veloz -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -2644,5 +2654,4 @@ def build_interactive_html(md_text, output_file):
     with open(output_file, "w", encoding="utf-8") as f:
         f.write(final_html)
 
-    print(f"      Guía interactiva generada con éxito en: {output_file}")
     return output_file

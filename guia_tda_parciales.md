@@ -1264,10 +1264,7 @@ Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguro
 
 3. **Ecuación de Recurrencia:**  
    Para todo $i \ge 1$:
-   $$OPT(i) = \begin{cases} 
-   OPT(i - 1) + 1 & \text{si } i \text{ es impar} \\
-   \min\Big(OPT(i - 1) + 1, \; OPT\left(\frac{i}{2}\right) + 1\Big) & \text{si } i \text{ es par}
-   \end{cases}$$
+   $$OPT(i) = \begin{cases} OPT(i - 1) + 1 & \text{si } i \text{ es impar} \\ \min\Big(OPT(i - 1) + 1, \; OPT\left(\frac{i}{2}\right) + 1\Big) & \text{si } i \text{ es par} \end{cases}$$
 
 4. **Orden de Llenado de la Tabla:**  
    Iteración unidireccional creciente (Bottom-Up) desde $i = 1$ hasta $K$.  
@@ -1315,36 +1312,36 @@ flowchart TD
     A(["Inicio: K = 10"]) --> B["DP[0] = 0"]
     B --> C["Bucle i de 1 hasta K"]
     C --> D["Candidato 1: DP[i-1] + 1 (Sumar 1)"]
-    D --> E{"¿i es par? (i % 2 == 0)"}
+    D --> E{"¿i es par?"}
     E -- No --> F["DP[i] = DP[i-1] + 1<br/>padre[i] = i - 1<br/>op[i] = '+1'"]
-    E -- Sí --> G{"¿DP[i/2] + 1 < DP[i]?"}
+    E -- Sí --> G{"¿DP[i/2] + 1 es menor que DP[i]?"}
     G -- Sí --> H["DP[i] = DP[i/2] + 1<br/>padre[i] = i / 2<br/>op[i] = '*2'"]
     G -- No --> F
     F --> I{"¿i == K?"}
     H --> I
     I -- No --> C
-    I -- Sí --> J["Backtracking desde K = 10 hasta 0 usando padre[actual]"]
+    I -- Sí --> J["Backtracking desde K = 10 hasta 0"]
     J --> K(["Retornar DP[10] = 5 y secuencia"])
 ```
 
 ```mermaid
 graph LR
-    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff;
-    classDef normal fill:#475569,stroke:#334155,stroke-width:1px,color:#fff;
+    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
+    classDef normal fill:#475569,stroke:#334155,stroke-width:1px,color:#fff
 
-    N0["0"]:::opt -->|"+1"| N1["1"]:::opt
-    N1 -->|"×2"| N2["2"]:::opt
-    N2 -->|"+1"| N3["3"]:::normal
-    N2 -->|"×2"| N4["4"]:::opt
-    N3 -->|"+1"| N4
-    N3 -->|"×2"| N6["6"]:::normal
-    N4 -->|"+1"| N5["5"]:::opt
-    N4 -->|"×2"| N8["8"]:::normal
-    N5 -->|"+1"| N6
-    N5 -->|"×2"| N10["10"]:::opt
-    N6 -->|"+1"| N7["7"]:::normal
-    N8 -->|"+1"| N9["9"]:::normal
-    N9 -->|"+1"| N10
+    N0["0"]:::opt -->|+1| N1["1"]:::opt
+    N1 -->|x2| N2["2"]:::opt
+    N2 -->|+1| N3["3"]:::normal
+    N2 -->|x2| N4["4"]:::opt
+    N3 -->|+1| N4
+    N3 -->|x2| N6["6"]:::normal
+    N4 -->|+1| N5["5"]:::opt
+    N4 -->|x2| N8["8"]:::normal
+    N5 -->|+1| N6
+    N5 -->|x2| N10["10"]:::opt
+    N6 -->|+1| N7["7"]:::normal
+    N8 -->|+1| N9["9"]:::normal
+    N9 -->|+1| N10
 ```
 
 <div class="visual-trace-container">

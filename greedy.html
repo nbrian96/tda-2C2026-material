@@ -1,0 +1,2891 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teoría de Algoritmos — Algoritmos Greedy (Voraces) (FIUBA)</title>
+<!-- KaTeX para renderizado matemático ultra veloz -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<!-- Mermaid para diagramas de flujo y grafos dinámicos -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+
+:root {
+  --primary-color: #1a365d;
+  --primary-light: #2b6cb0;
+  --accent-color: #3182ce;
+  --accent-soft: #ebf8ff;
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --imprescindible-color: #e53e3e;
+  --imprescindible-bg: #fff5f5;
+  --importante-color: #d69e2e;
+  --importante-bg: #fffaf0;
+  --mastered-color: #38a169;
+  --mastered-bg: #f0fff4;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'Liberation Mono', 'DejaVu Sans Mono', Consolas, 'Courier New', monospace;
+}
+
+body.dark-mode {
+  --primary-color: #90cdf4;
+  --primary-light: #63b3ed;
+  --accent-color: #4299e1;
+  --accent-soft: #2a4365;
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  --imprescindible-bg: #3c1e1e;
+  --importante-bg: #3d3215;
+  --mastered-bg: #143521;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: 10.5pt;
+  line-height: 1.55;
+  color: var(--text-main);
+  background-color: var(--bg-main);
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  overflow-x: hidden;
+}
+
+.main-content-wrapper {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 20px 20px 80px 20px;
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 22pt;
+  border-bottom: 3px solid var(--accent-color);
+  padding-bottom: 8px;
+}
+
+h2 {
+  font-size: 15pt;
+  border-bottom: 1.5px solid var(--border-color);
+  padding-bottom: 6px;
+  margin-top: 32px;
+  scroll-margin-top: 175px;
+}
+
+h3 {
+  font-size: 12pt;
+  scroll-margin-top: 175px;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+ul, ol {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-left: 24px;
+}
+
+li {
+  margin-bottom: 4px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 24px 0;
+}
+
+/* Pre & Code */
+pre {
+  background-color: #f1f5f9;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 8.8pt;
+  line-height: 1.4;
+  overflow-x: auto;
+  margin: 10px 0;
+  color: #0f172a;
+}
+
+body.dark-mode pre {
+  background-color: #0b1120;
+  color: #e2e8f0;
+  border-color: #334155;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 8.8pt;
+  background-color: rgba(99, 102, 241, 0.08);
+  padding: 2px 5px;
+  border-radius: 4px;
+  color: #2563eb;
+}
+
+body.dark-mode code {
+  color: #93c5fd;
+  background-color: rgba(147, 197, 253, 0.12);
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.code-container {
+  position: relative;
+  margin: 10px 0;
+}
+
+.code-container pre {
+  margin: 0;
+}
+
+.copy-code-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 7.8pt;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  z-index: 5;
+}
+
+.copy-code-btn:hover {
+  background: var(--accent-color);
+  color: #ffffff;
+  border-color: var(--accent-color);
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 9.5pt;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+th, td {
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #edf2f7;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+body.dark-mode th {
+  background-color: #1e293b;
+  color: #90cdf4;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+body.dark-mode tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+blockquote {
+  border-left: 4px solid var(--accent-color);
+  background-color: var(--accent-soft);
+  padding: 10px 14px;
+  margin: 12px 0;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* KaTeX Mathematical Formulas */
+.katex {
+  font-size: 1.05em;
+}
+.katex-display {
+  margin: 16px 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 0;
+}
+body.dark-mode .katex {
+  color: #e2e8f0;
+}
+
+/* Proof & Theoretical Cards */
+.proof-card {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-left: 4px solid #3b82f6;
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin: 14px 0;
+}
+body.dark-mode .proof-card {
+  background: #1e293b;
+  border-color: #334155;
+  border-left-color: #60a5fa;
+}
+.proof-card-header {
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Visual Decision & Flow Nodes */
+.visual-trace-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+.trace-node {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  border: 2px solid var(--accent-color);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: 700;
+  font-size: 9.5pt;
+  color: var(--primary-color);
+  min-width: 44px;
+  box-shadow: var(--shadow-sm);
+}
+body.dark-mode .trace-node {
+  background: #0f172a;
+  border-color: #63b3ed;
+  color: #90cdf4;
+}
+.trace-node.start-node {
+  border-color: #10b981;
+  color: #065f46;
+}
+body.dark-mode .trace-node.start-node {
+  border-color: #34d399;
+  color: #6ee7b7;
+}
+.trace-node.end-node {
+  border-color: #8b5cf6;
+  color: #5b21b6;
+}
+body.dark-mode .trace-node.end-node {
+  border-color: #a78bfa;
+  color: #c4b5fd;
+}
+.trace-arrow {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 8pt;
+  font-weight: 700;
+  color: #059669;
+  padding: 0 4px;
+}
+body.dark-mode .trace-arrow {
+  color: #34d399;
+}
+.trace-arrow .arrow-op {
+  background: rgba(16, 185, 129, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+}
+body.dark-mode .trace-arrow .arrow-op {
+  background: rgba(52, 211, 153, 0.2);
+}
+
+/* Mermaid Wrapper */
+.mermaid-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin: 16px 0;
+  overflow-x: auto;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+body.dark-mode .mermaid-wrapper {
+  background: #1e293b;
+  border-color: #334155;
+}
+.mermaid {
+  display: flex;
+  justify-content: center;
+}
+
+/* HUD Top Bar */
+.hud-top-bar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+}
+
+.hud-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 8px 16px;
+}
+
+.hud-row-primary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hud-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hud-logo-icon {
+  font-size: 20pt;
+}
+
+.hud-title {
+  font-size: 11.5pt;
+  margin: 0;
+  font-weight: 800;
+  color: var(--primary-color);
+  line-height: 1.2;
+}
+
+.hud-subtitle {
+  font-size: 8pt;
+  color: var(--text-muted);
+  display: block;
+}
+
+.hud-mode-selector {
+  display: flex;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 3px;
+  border-radius: var(--radius-md);
+  gap: 3px;
+}
+
+body.dark-mode .hud-mode-selector {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font-size: 8.5pt;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mode-btn:hover {
+  color: var(--text-main);
+}
+
+.mode-btn.active {
+  background: var(--accent-color);
+  color: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+
+.mode-badge {
+  background: rgba(255, 255, 255, 0.25);
+  font-size: 7.5pt;
+  padding: 1px 5px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.mode-btn:not(.active) .mode-badge {
+  background: var(--border-color);
+  color: var(--text-main);
+}
+
+.hud-quick-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tool-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  padding: 5px 10px;
+  font-size: 8.5pt;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-main);
+  transition: all 0.15s ease;
+}
+
+.tool-btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.tool-btn.highlight-tool {
+  background: linear-gradient(135deg, rgba(49, 130, 206, 0.12), rgba(128, 90, 213, 0.12));
+  border-color: rgba(49, 130, 206, 0.5);
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+body.dark-mode .tool-btn.highlight-tool {
+  background: linear-gradient(135deg, rgba(66, 153, 225, 0.22), rgba(159, 122, 234, 0.22));
+  border-color: rgba(66, 153, 225, 0.6);
+  color: #90cdf4;
+}
+
+.tool-btn.highlight-tool:hover {
+  background: var(--accent-color);
+  color: #ffffff;
+  border-color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+.hud-row-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.hud-progress-wrap {
+  flex: 1;
+  min-width: 250px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 8pt;
+  margin-bottom: 3px;
+  color: var(--text-muted);
+}
+
+.progress-numbers strong {
+  color: var(--mastered-color);
+}
+
+.progress-track {
+  height: 7px;
+  background: var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #38a169, #48bb78);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.hud-search-box {
+  position: relative;
+  width: 320px;
+}
+
+.hud-search-box input {
+  width: 100%;
+  padding: 6px 28px 6px 30px;
+  font-size: 8.5pt;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  background: var(--bg-main);
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.hud-search-box input:focus {
+  border-color: var(--accent-color);
+  background: var(--bg-card);
+}
+
+.search-icon {
+  position: absolute;
+  left: 9px;
+  top: 6px;
+  font-size: 9pt;
+  color: var(--text-muted);
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 8px;
+  top: 5px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 9pt;
+}
+
+.hud-row-pills {
+  margin-top: 6px;
+}
+
+.filter-pills-scroll {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  padding-bottom: 3px;
+  scrollbar-width: none;
+}
+
+.filter-pills-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.pill-btn {
+  white-space: nowrap;
+  font-size: 7.8pt;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pill-btn:hover {
+  background: var(--accent-soft);
+  color: var(--accent-color);
+}
+
+.pill-btn.active {
+  background: var(--primary-color);
+  color: #ffffff;
+  border-color: var(--primary-color);
+}
+
+body.dark-mode .pill-btn.active {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* Emergency Banner */
+.emergency-banner {
+  background: #fff5f5;
+  border-top: 1px solid #feb2b2;
+  color: #c53030;
+  font-size: 8.5pt;
+  padding: 6px 16px;
+}
+
+body.dark-mode .emergency-banner {
+  background: #3c1e1e;
+  border-color: #742a2a;
+  color: #feb2b2;
+}
+
+.banner-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.banner-icon {
+  font-size: 11pt;
+}
+
+.banner-dismiss {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 10pt;
+}
+
+/* Exercise Cards */
+.exercise-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--primary-color);
+  border-radius: var(--radius-md);
+  margin: 22px 0;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+  overflow: hidden;
+  scroll-margin-top: 175px;
+}
+
+.exercise-card[data-priority="imprescindible"] {
+  border-left-color: var(--imprescindible-color);
+}
+
+.exercise-card[data-priority="importante"] {
+  border-left-color: var(--importante-color);
+}
+
+.exercise-card.is-mastered {
+  border-left-color: var(--mastered-color) !important;
+  background-color: var(--mastered-bg);
+}
+
+.exercise-card.is-hidden {
+  display: none !important;
+}
+
+.card-header {
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.015);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+body.dark-mode .card-header {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.exercise-pill-number {
+  background: var(--primary-color);
+  color: #ffffff;
+  font-size: 8.5pt;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.5px;
+}
+
+body.dark-mode .exercise-pill-number {
+  background: var(--accent-color);
+}
+
+.exercise-title {
+  margin: 0;
+  font-size: 11.5pt;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.card-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 7.5pt;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.badge-priority-imprescindible {
+  background: var(--imprescindible-bg);
+  color: var(--imprescindible-color);
+  border: 1px solid rgba(229, 62, 62, 0.3);
+}
+
+.badge-priority-importante {
+  background: var(--importante-bg);
+  color: var(--importante-color);
+  border: 1px solid rgba(214, 158, 46, 0.3);
+}
+
+.badge-paradigm {
+  background: var(--accent-soft);
+  color: var(--accent-color);
+  border: 1px solid rgba(49, 130, 206, 0.25);
+}
+
+.badge-origin {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  text-transform: none;
+  font-weight: 600;
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.dark-mode .badge-origin {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.card-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mastered-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 8.5pt;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--border-color);
+  transition: all 0.15s ease;
+}
+
+body.dark-mode .mastered-label {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.mastered-checkbox {
+  cursor: pointer;
+  accent-color: var(--mastered-color);
+}
+
+.card-body {
+  padding: 16px;
+}
+
+.exercise-statement-box {
+  margin-bottom: 14px;
+}
+
+.exercise-statement-box p {
+  line-height: 1.5;
+}
+
+/* Solution Drawer / Accordion */
+.exercise-solution-drawer {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.015);
+  margin-top: 14px;
+  overflow: hidden;
+}
+
+body.dark-mode .exercise-solution-drawer {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.solution-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--bg-card);
+  cursor: pointer;
+  font-size: 9.5pt;
+  font-weight: 700;
+  color: var(--accent-color);
+  user-select: none;
+  transition: background 0.15s ease;
+}
+
+.solution-summary:hover {
+  background: var(--accent-soft);
+}
+
+.summary-toggle-icon {
+  font-size: 8.5pt;
+  transition: transform 0.2s ease;
+}
+
+details[open] .summary-toggle-icon {
+  transform: rotate(90deg);
+}
+
+.summary-title {
+  flex: 1;
+}
+
+.summary-badge {
+  font-size: 7.5pt;
+  font-weight: 600;
+  background: #edf2f7;
+  color: #4a5568;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+body.dark-mode .summary-badge {
+  background: #334155;
+  color: #cbd5e1;
+}
+
+.solution-inner-content {
+  padding: 14px 16px;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-card);
+}
+
+.btn-toggle-solution {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  font-size: 8pt;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--accent-color);
+  cursor: pointer;
+}
+
+.btn-toggle-solution:hover {
+  background: var(--accent-soft);
+}
+
+/* Warning & Trap Callout */
+.trap-callout {
+  background: #fffaf0;
+  border: 1px solid #fbd38d;
+  border-left: 4px solid #dd6b20;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin: 14px 0;
+}
+
+body.dark-mode .trap-callout {
+  background: #332612;
+  border-color: #7b4e18;
+  border-left-color: #ed8936;
+}
+
+.trap-header {
+  font-size: 9pt;
+  font-weight: 800;
+  color: #c05621;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+body.dark-mode .trap-header {
+  color: #fbd38d;
+}
+
+/* Trainer Box */
+.trainer-box {
+  background: var(--bg-card);
+  border: 2px solid var(--accent-color);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin: 28px 0;
+  box-shadow: var(--shadow-md);
+}
+
+.trainer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.trainer-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.trainer-badge-icon {
+  font-size: 24pt;
+}
+
+.trainer-title {
+  margin: 0;
+  font-size: 13.5pt;
+  font-weight: 800;
+}
+
+.trainer-subtitle {
+  margin: 0;
+  font-size: 8.5pt;
+  color: var(--text-muted);
+}
+
+.stat-pill {
+  background: var(--accent-soft);
+  color: var(--accent-color);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 9pt;
+  font-weight: 600;
+}
+
+.trainer-card {
+  background: var(--bg-main);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.trainer-card-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 8.5pt;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.trainer-prompt {
+  font-size: 11pt;
+  font-weight: 600;
+  line-height: 1.5;
+  margin-bottom: 18px;
+  color: var(--text-main);
+}
+
+.trainer-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.trainer-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 9pt;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.trainer-btn:hover:not(:disabled) {
+  border-color: var(--accent-color);
+  background: var(--accent-soft);
+}
+
+.trainer-btn.btn-correct {
+  background: #f0fff4 !important;
+  border-color: #38a169 !important;
+  color: #22543d !important;
+}
+
+.trainer-btn.btn-wrong {
+  background: #fff5f5 !important;
+  border-color: #e53e3e !important;
+  color: #742a2a !important;
+}
+
+.trainer-feedback {
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.trainer-feedback.feedback-success {
+  background: #f0fff4;
+  border-left: 4px solid #38a169;
+  color: #22543d;
+}
+
+.trainer-feedback.feedback-error {
+  background: #fff5f5;
+  border-left: 4px solid #e53e3e;
+  color: #742a2a;
+}
+
+body.dark-mode .trainer-feedback.feedback-success {
+  background: #143521;
+  color: #9ae6b4;
+}
+
+body.dark-mode .trainer-feedback.feedback-error {
+  background: #3c1e1e;
+  color: #feb2b2;
+}
+
+.feedback-result {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.feedback-trigger {
+  font-size: 9pt;
+  line-height: 1.4;
+}
+
+.trainer-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 9pt;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--accent-color);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: var(--primary-light);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+.btn-ghost:hover {
+  background: var(--bg-card);
+  color: var(--text-main);
+}
+
+/* Interactive Checklist */
+.checklist-interactive-item {
+  list-style: none;
+  margin-left: -20px;
+  margin-bottom: 6px;
+}
+
+.chk-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.exam-checklist-input {
+  margin-top: 3px;
+  accent-color: var(--accent-color);
+  cursor: pointer;
+}
+
+.exam-checklist-input:checked + .chk-custom + .chk-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+/* Cheatsheet Drawer */
+.drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.drawer-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cheatsheet-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 500px;
+  max-width: 90vw;
+  background: var(--bg-card);
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.15);
+  z-index: 2001;
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.cheatsheet-drawer.is-open {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.drawer-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.drawer-title-group h2 {
+  margin: 0;
+  font-size: 13pt;
+  border: none;
+  padding: 0;
+}
+
+.drawer-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 14pt;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.drawer-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.drawer-section {
+  margin-bottom: 24px;
+}
+
+.drawer-section h3 {
+  font-size: 11pt;
+  color: var(--accent-color);
+  margin-top: 0;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 4px;
+}
+
+.formula-card {
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 9pt;
+}
+
+.steps-list {
+  padding-left: 18px;
+  font-size: 9pt;
+}
+
+.steps-list li {
+  margin-bottom: 6px;
+}
+
+.warning-box {
+  background: #fff5f5;
+  border: 1px solid #feb2b2;
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+
+body.dark-mode .warning-box {
+  background: #3c1e1e;
+  border-color: #742a2a;
+}
+
+.warning-box h3 {
+  color: #c53030;
+  border-color: #feb2b2;
+}
+
+/* Floating Actions */
+.floating-quick-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 800;
+}
+
+.fab-btn {
+  background: var(--accent-color);
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 16px;
+  font-size: 9.5pt;
+  font-weight: 700;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fab-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: var(--primary-light);
+}
+
+.fab-secondary {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  align-self: flex-end;
+}
+
+/* RESPONSIVE DESIGN FOR MOBILE & TABLET */
+@media (max-width: 768px) {
+  body {
+    font-size: 10pt;
+  }
+
+  .main-content-wrapper {
+    padding: 12px 10px 80px 10px;
+  }
+
+  h1 {
+    font-size: 16pt;
+    line-height: 1.25;
+  }
+
+  h2 {
+    font-size: 13pt;
+    margin-top: 24px;
+    scroll-margin-top: 130px;
+  }
+
+  h3 {
+    font-size: 11pt;
+    scroll-margin-top: 130px;
+  }
+
+  .hud-container {
+    padding: 6px 8px;
+  }
+
+  .hud-brand {
+    gap: 6px;
+  }
+
+  .hud-logo-icon {
+    font-size: 16pt;
+  }
+
+  .hud-title {
+    font-size: 9.6pt;
+  }
+
+  .hud-subtitle {
+    display: none;
+  }
+
+  .mode-label-long {
+    display: none;
+  }
+
+  .mode-label-short {
+    display: inline;
+  }
+
+  .mode-btn {
+    padding: 5px 6px;
+    font-size: 8pt;
+    gap: 3px;
+  }
+
+  .hud-quick-tools {
+    gap: 4px;
+  }
+
+  .hud-quick-tools .tool-text {
+    display: none;
+  }
+
+  .tool-btn {
+    padding: 5px 7px;
+    font-size: 9pt;
+  }
+
+  .hud-row-secondary {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .hud-progress-wrap {
+    min-width: 100%;
+  }
+
+  .hud-search-box {
+    width: 100%;
+  }
+
+  .hud-search-box input {
+    font-size: 9pt;
+    padding: 8px 28px 8px 30px;
+  }
+
+  .search-icon {
+    top: 8px;
+  }
+
+  .clear-search-btn {
+    top: 7px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .card-header-left {
+    width: 100%;
+  }
+
+  .card-header-meta {
+    width: 100%;
+  }
+
+  .badge-origin {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .card-header-actions {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
+
+  .mastered-label {
+    flex: 1;
+    justify-content: center;
+    padding: 7px 10px;
+    font-size: 8.8pt;
+  }
+
+  .btn-toggle-solution {
+    flex: 1;
+    justify-content: center;
+    padding: 7px 10px;
+    font-size: 8.8pt;
+  }
+
+  .card-body {
+    padding: 12px 10px;
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  pre {
+    font-size: 7.8pt;
+    padding: 10px 8px;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .trainer-box {
+    padding: 14px 10px;
+    margin: 20px 0;
+  }
+
+  .trainer-title {
+    font-size: 11.5pt;
+  }
+
+  .trainer-options-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .trainer-btn {
+    padding: 12px 14px;
+    font-size: 9.5pt;
+  }
+
+  .cheatsheet-drawer {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .floating-quick-btn {
+    bottom: 12px;
+    right: 12px;
+    gap: 6px;
+  }
+
+  .fab-btn {
+    padding: 8px 12px;
+    font-size: 8.5pt;
+  }
+
+  .exercise-card {
+    scroll-margin-top: 130px;
+  }
+}
+
+@media (min-width: 769px) {
+  .mode-label-short {
+    display: none;
+  }
+}
+
+/* PRINT RULES */
+@media print {
+  @page {
+    size: A4;
+    margin: 18mm 14mm 18mm 14mm;
+    @bottom-center {
+      content: "Teoría de Algoritmos — FIUBA | Página " counter(page);
+      font-family: 'Liberation Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 8pt;
+      color: #718096;
+    }
+  }
+
+  body {
+    padding-top: 0 !important;
+    background: #ffffff !important;
+    color: #2d3748 !important;
+    font-size: 10pt !important;
+  }
+
+  .hud-top-bar,
+  .emergency-banner,
+  .cheatsheet-drawer,
+  .drawer-backdrop,
+  .floating-quick-btn,
+  .card-header-actions,
+  .copy-code-btn,
+  .trainer-box,
+  .solution-summary {
+    display: none !important;
+  }
+
+  .exercise-card {
+    border: 1px solid #e2e8f0 !important;
+    border-left: 4px solid #3182ce !important;
+    box-shadow: none !important;
+    margin: 16px 0 !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .exercise-solution-drawer {
+    border: none !important;
+    background: transparent !important;
+    display: block !important;
+  }
+
+  .solution-inner-content {
+    display: block !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  .is-hidden {
+    display: block !important;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Top Sticky HUD -->
+<header class="hud-top-bar" id="hudTopBar">
+  <div class="hud-container">
+    <div class="hud-row-primary">
+      <div class="hud-brand">
+        <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;">
+          <span class="hud-logo-icon">🚀</span>
+          <div>
+            <h1 class="hud-title">TDA — Guía Interactiva de Parciales</h1>
+            <span class="hud-subtitle">Edición Intensiva: Salvando el Cuatrimestre (2024–2025)</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="hud-mode-selector" role="group" aria-label="Modo de Estudio">
+        <button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')">
+          <span class="mode-icon">⚡</span>
+          <span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span>
+          <span class="mode-badge" id="badgeEmergencyCount">32</span>
+        </button>
+        <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')">
+          <span class="mode-icon">🎯</span>
+          <span class="mode-label"><span class="mode-label-long">Modo Táctico (1 sem)</span><span class="mode-label-short">1 sem</span></span>
+          <span class="mode-badge">40</span>
+        </button>
+        <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')">
+          <span class="mode-icon">📚</span>
+          <span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span>
+          <span class="mode-badge">40</span>
+        </button>
+      </div>
+
+      <div class="hud-quick-tools">
+        <button class="tool-btn highlight-tool" onclick="scrollToExercise(35)" title="Ver La Mochila resuelta en todos los paradigmas">
+          <span class="tool-icon">🎒</span> <span class="tool-text">Mochila Multi-P</span>
+        </button>
+        <button class="tool-btn highlight-tool" onclick="scrollToExercise(36)" title="Ver El Viajante (TSP) resuelto en todos los paradigmas">
+          <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
+        </button>
+        <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
+          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
+        </button>
+        <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
+          <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
+        </button>
+        <button class="tool-btn" onclick="scrollToTrainer()" title="Ir al simulador de 30 segundos">
+          <span class="tool-icon">⚡</span> <span class="tool-text">Simulador 30s</span>
+        </button>
+        <button class="tool-btn" onclick="toggleDarkMode()" id="btnDarkMode" title="Cambiar tema">
+          <span class="tool-icon">🌓</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="hud-row-secondary">
+      <div class="hud-progress-wrap">
+        <div class="progress-info">
+          <span class="progress-title">Progreso en modo activo:</span>
+          <span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">32</span> dominados (<span id="progPercent">0%</span>)</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <div class="hud-search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (ej. mochila, viajante, tsp, knapsack, held-karp, arnook, invap)..." oninput="handleSearch(this.value)">
+        <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display: none;">✕</button>
+      </div>
+    </div>
+
+    <!-- Filter Pills por Paradigma (Enlaces modulares para GitHub Pages) -->
+    <div class="hud-row-pills">
+      <div class="filter-pills-scroll" id="paradigmPills">
+        <a href="index.html" class="pill-btn" data-paradigm="all">📚 Todos (40)</a>
+        <a href="dyc.html" class="pill-btn" data-paradigm="dyc">🔷 DyC (3)</a>
+        <a href="greedy.html" class="pill-btn active" data-paradigm="greedy">🔶 Greedy (5)</a>
+        <a href="backtracking.html" class="pill-btn" data-paradigm="backtracking">🟣 Backtracking (4)</a>
+        <a href="dp.html" class="pill-btn" data-paradigm="dp">🟢 Prog. Dinámica (6)</a>
+        <a href="pl.html" class="pill-btn" data-paradigm="pl">🔵 Prog. Lineal (5)</a>
+        <a href="flujo.html" class="pill-btn" data-paradigm="flujo">🔴 Redes de Flujo (4)</a>
+        <a href="reducciones.html" class="pill-btn" data-paradigm="reducciones">🟡 Reducciones NP (4)</a>
+        <a href="integradores.html" class="pill-btn" data-paradigm="integradores">⚡ Integradores (5)</a>
+        <a href="tipo_parcial.html" class="pill-btn" data-paradigm="tipo_parcial">📝 Tipo Parcial (4)</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Banner de Modo Emergencia -->
+  <div class="emergency-banner" id="emergencyBanner">
+    <div class="banner-inner">
+      <span class="banner-icon">⚡</span>
+      <span><strong>Modo Emergencia (48–72h):</strong> Mostrando los 32 ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de los exámenes reales y problemas canónicos.</span>
+      <button class="banner-dismiss" onclick="dismissBanner()">✕</button>
+    </div>
+  </div>
+</header>
+
+<!-- Drawer de Fórmulas y Recetas Rápidas -->
+<div class="drawer-backdrop" id="drawerBackdrop" onclick="closeCheatsheet()"></div>
+<aside class="cheatsheet-drawer" id="cheatsheetDrawer" aria-hidden="true">
+  <div class="drawer-header">
+    <div class="drawer-title-group">
+      <span class="drawer-icon">📐</span>
+      <h2>Fórmulas y Recetas Rápidas de Parcial</h2>
+    </div>
+    <button class="drawer-close-btn" onclick="closeCheatsheet()" aria-label="Cerrar">✕</button>
+  </div>
+
+  <div class="drawer-content">
+    <section class="drawer-section">
+      <h3>1. Teorema Maestro (División y Conquista)</h3>
+      <div class="formula-card">
+        <code>T(n) = a · T(n/b) + O(nᶜ)</code> (con a ≥ 1, b &gt; 1, c ≥ 0)
+        <ul>
+          <li><strong>Caso 1 (Hojas dominan):</strong> Si <code>log_b(a) &gt; c</code> ⟹ <strong>O(n^(log_b a))</strong></li>
+          <li><strong>Caso 2 (Balance):</strong> Si <code>log_b(a) = c</code> ⟹ <strong>O(nᶜ · log n)</strong></li>
+          <li><strong>Caso 3 (Raíz domina):</strong> Si <code>log_b(a) &lt; c</code> ⟹ <strong>O(nᶜ)</strong> <em>(si a·f(n/b) ≤ k·f(n))</em></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="drawer-section">
+      <h3>2. Esquema de 4 Pasos Obligatorios para NP-C</h3>
+      <ol class="steps-list">
+        <li><strong>Certificado y Verificador en NP:</strong> Definir certificado polinomial C y algoritmo verificador en tiempo O(nᵏ).</li>
+        <li><strong>Problema conocido en NPC:</strong> Seleccionar problema base A ∈ NPC (Vertex Cover, 3-SAT, Ciclo Ham, Subset Sum).</li>
+        <li><strong>Transformación polinomial:</strong> Definir f(I_A) → I_B computable en tiempo polinomial.</li>
+        <li><strong>Demostración Bidireccional:</strong>
+          <ul>
+            <li><strong>Ida (⟹):</strong> Si I_A es instancia SI de A ⟹ f(I_A) es instancia SI de B.</li>
+            <li><strong>Vuelta (⟸):</strong> Si f(I_A) es instancia SI de B ⟹ I_A es instancia SI de A.</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <section class="drawer-section">
+      <h3>3. Los 5 Pasos de Programación Dinámica</h3>
+      <ol class="steps-list">
+        <li><strong>Definición semántica del Estado:</strong> Explicar con palabras qué significa OPT(i, w).</li>
+        <li><strong>Casos Base:</strong> Inicializar explícitamente celdas triviales y estados infactibles (-∞ o +∞).</li>
+        <li><strong>Ecuación de Recurrencia:</strong> Decisión local (ej. max(OPT(i-1, w), OPT(i-1, w - w_i) + v_i)).</li>
+        <li><strong>Orden de Llenado:</strong> Especificar dirección bottom-up (filas crecientes, columnas crecientes).</li>
+        <li><strong>Algoritmo de Reconstrucción:</strong> Rastrear las decisiones para devolver los elementos elegidos.</li>
+      </ol>
+    </section>
+
+    <section class="drawer-section">
+      <h3>4. Reglas de Oro de Programación Lineal (PLI)</h3>
+      <ul>
+        <li>Definir variables de decisión con su dominio explícito (x_i ∈ {0, 1} o y_j ≥ 0).</li>
+        <li><strong>¡PROHIBIDO!</strong> Multiplicar variables de decisión (x_i · y_j anula el ejercicio).</li>
+        <li><strong>Linealizar Min/Max:</strong> min z sujeto a z ≥ f_i(x).</li>
+        <li>Contar explícitamente cantidad de variables y restricciones si el enunciado lo pide.</li>
+      </ul>
+    </section>
+
+    <section class="drawer-section">
+      <h3>5. Redes de Flujo (Ford-Fulkerson)</h3>
+      <ul>
+        <li>Construir super-fuente s y super-sumidero t para entradas/salidas múltiples.</li>
+        <li>Capacidades en aristas dirigidas. Red residual G_f con aristas hacia atrás con capacidad f(u, v).</li>
+        <li><strong>Teorema Max-Flow Min-Cut:</strong> Flujo máximo = Capacidad del corte mínimo (S, T).</li>
+        <li><strong>Teorema de Integralidad:</strong> Capacidades enteras garantizan flujo entero (clave en emparejamientos).</li>
+      </ul>
+    </section>
+
+    <section class="drawer-section warning-box">
+      <h3>⚠️ Errores Prohibidos que Anulan el Ejercicio</h3>
+      <ul>
+        <li>❌ <strong>Reducir al revés en NP-C:</strong> Jamás hagas B ≤_P A. Siempre A_conocido ≤_P B_nuevo.</li>
+        <li>❌ <strong>Afirmar optimalidad en Greedy sin prueba:</strong> Requiere inducción por Greedy Stays Ahead.</li>
+        <li>❌ <strong>Olvidar casos base en DP:</strong> Asumir 0 en estados infactibles corrompe la solución.</li>
+        <li>❌ <strong>Omitir aristas residuales hacia atrás en Flujo:</strong> No es Ford-Fulkerson sin ellas.</li>
+      </ul>
+    </section>
+  </div>
+</aside>
+
+<!-- Floating Fast Button -->
+<div class="floating-quick-btn" id="floatingQuickBtn">
+  <button class="fab-btn" onclick="openCheatsheet()" title="Fórmulas Rápidas">📐 Recetas</button>
+  <button class="fab-btn fab-secondary" onclick="scrollToTop()" title="Volver Arriba">⬆️</button>
+</div>
+
+<main class="main-content-wrapper">
+<h2>5. Tema 2: Algoritmos Greedy (Voraces)</h2>
+<h3>Conceptos Mínimos de Supervivencia</h3>
+<ol>
+<li><strong>Naturaleza de un Algoritmo Greedy:</strong>
+   En cada paso, toma la decisión que parece mejor en ese momento específico (óptimo local) bajo una regla de selección fija, sin mirar atrás ni reconsiderar elecciones previas (elección irrevocable).</li>
+<li><strong>Propiedad de la Elección Voraz y Subestructura Óptima:</strong>
+   Para que un algoritmo greedy sea <strong>óptimo</strong>, debe cumplirse que:</li>
+<li>Una elección voraz inicial conduce a una solución globalmente óptima (propiedad de elección voraz).</li>
+<li>La solución óptima del problema global contiene dentro de sí soluciones óptimas a los subproblemas resultantes (subestructura óptima).</li>
+<li><strong>Las Dos Técnicas Canónicas de Demostración de Optimalidad:</strong></li>
+<li><strong>Greedy Stays Ahead ("El voraz se mantiene adelante"):</strong> Se define una métrica de progreso m(i). Se demuestra por inducción que en cada paso k, la solución voraz aventaja o iguala a cualquier solución óptima OPT (m(G_k) ≤ m(OPT_k) o m(G_k) ≥ m(OPT_k)), garantizando que al finalizar no puede ser superada.</li>
+<li><strong>Argumento de Intercambio (Exchange Argument):</strong> Se toma una solución óptima hipotética OPT que difiere de la solución greedy G. Se identifica la primera inversión o discrepancia y se demuestra que al intercambiar el elemento de OPT por el elemento elegido por G, la calidad de la solución no empeora. Repitiendo el proceso, OPT se transforma en G sin perder valor, probando que G también es óptima.</li>
+<li><strong>Cómo Probar que una Idea Greedy es Incorrecta (El Contraejemplo):</strong>
+   Si en un examen te preguntan <em>"¿El algoritmo greedy propuesto es óptimo siempre? Indicar si es óptimo o dar un contraejemplo"</em>, <strong>NUNCA</strong> respondas con explicaciones vagas. Debes presentar un contraejemplo concreto:</li>
+<li>Definir una instancia pequeña con datos numéricos explícitos.</li>
+<li>Mostrar paso a paso qué elige el algoritmo greedy y cuál es su costo/beneficio obtenido.</li>
+<li>Mostrar una solución alternativa factible y su costo/beneficio estrictamente superior.</li>
+<li>Concluir formalmente: <em>Como Valor(Alternativa) &gt; Valor(Greedy), el algoritmo no garantiza la solución óptima.</em></li>
+</ol>
+<hr />
+<h3>Patrón de Ejercicio 2.1: Interval Scheduling (Planificación de Intervalos No Solapados)</h3>
+<p>Aparece con diferentes metáforas narrativas: charlas en un aula, pedidos de mafias locales para controlar kilómetros de una ruta, franjas horarias de satélites o turnos de guardias. El objetivo es maximizar la cantidad de pedidos aceptados sin solapamiento.</p>
+<hr />
+
+<article class="exercise-card" id="ej-4" data-num="4" data-priority="imprescindible" data-paradigm="greedy" data-title="concesión de permisos a mafias en la ruta costera (arnook)" data-origin="parcial 2024-2-2 (26 de noviembre de 2024), ejercicio 3 / guía 02 ejercicio 12">
+  <header class="card-header">
+    <div class="card-header-left">
+      <span class="exercise-pill-number">EJ 4</span>
+      <h3 class="exercise-title">Concesión de Permisos a Mafias en la Ruta Costera (Arnook)</h3>
+    </div>
+    <div class="card-header-meta">
+      <span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span>
+      <span class="badge badge-paradigm badge-greedy">Greedy / Voraz</span>
+      <span class="badge badge-origin" title="Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 3 / Guía 02 Ejercicio 12">🏛️ Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 3</span>
+    </div>
+    <div class="card-header-actions">
+      <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="4" onchange="toggleMastered(4, this.checked)">
+        <span class="checkbox-custom"></span>
+        <span class="label-text">Dominado</span>
+      </label>
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(4)">
+        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="card-body">
+    <div class="exercise-statement-box">
+      <p><strong>Enunciado</strong><br />
+Trabajamos para el mafioso Arnook, quien organiza los pedidos de pequeñas mafias locales por el control de diferentes kilómetros de la ruta costera de Ciudad República. Cada mafia le pide control sobre un rango de kilómetros [s_i, f_i] (por ejemplo, del kilómetro 1 al 5, del 3 al 8, etc.). Si una mafia toma control de un kilómetro, ninguna otra puede ocupar ese mismo tramo (no pueden solaparse). Arnook cobra una tarifa fija por otorgar el permiso, independientemente de los kilómetros pedidos, por lo que su objetivo es maximizar la cantidad total de permisos otorgados sin conflictos de territorio.<br />
+1. Implementar un algoritmo Greedy que determine a qué mafias otorgar el permiso.<br />
+2. Indicar y justificar la complejidad temporal y espacial.<br />
+3. Justificar por qué el algoritmo planteado es Greedy.<br />
+4. ¿El algoritmo da la solución óptima siempre? Demostrarlo formalmente.</p>
+<p><strong>Qué está evaluando</strong><br />
+Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio voraz correcto (ordenamiento por punto final más temprano), y la demostración formal de optimalidad vía <em>Greedy Stays Ahead</em>.</p>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-4">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <p><strong>Idea de resolución</strong><br />
+* ¿Por qué descartar otros criterios?
+  * <em>Ordenar por inicio más temprano (s_i):</em> Falla si un pedido empieza muy temprano y ocupa toda la ruta ([1, 100] vs [2, 3] y [4, 5]).
+  * <em>Ordenar por menor longitud (f_i - s_i):</em> Falla si un pedido corto bloquea a dos pedidos compatibles a sus costados ([10, 20], [19, 21], [20, 30]).
+* <em>Criterio óptimo:</em> Ordenar las solicitudes por su <strong>kilómetro de finalización más temprano (f_i)</strong>. Esto deja libre la mayor cantidad de ruta posible hacia adelante para futuras mafias.
+* Seleccionamos el primer pedido que termine más temprano. Luego, iteramos seleccionando el próximo pedido cuyo inicio s_j sea mayor o igual al fin del último pedido aceptado (s_j ≥ f_ultimo).</p>
+<p><strong>Pseudocódigo</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION ConcederPermisosMafias(pedidos):
+    SI longitud(pedidos) = 0:
+        RETORNAR lista vacía
+
+    // 1. Ordenar por fin ascendente: pedidos[i].fin
+    ORDENAR pedidos POR fin ASCENDENTE
+
+    INICIALIZAR seleccionados como lista vacía
+    INSERTAR pedidos[0] EN seleccionados
+    ultimo_fin &lt;- pedidos[0].fin
+
+    // 2. Selección voraz de intervalos compatibles
+    PARA i &lt;- 1 HASTA longitud(pedidos) - 1:
+        SI pedidos[i].inicio &gt;= ultimo_fin:
+            INSERTAR pedidos[i] EN seleccionados
+            ultimo_fin &lt;- pedidos[i].fin
+
+    RETORNAR seleccionados
+</code></pre></div>
+<p><strong>Explicación del algoritmo</strong><br />
+El algoritmo clasifica las solicitudes de menor a mayor según el kilómetro en el que terminan. Al aceptar siempre la que termina antes y es compatible con las ya otorgadas, se minimiza el territorio retenido en cada decisión.</p>
+<p><strong>Complejidad</strong><br />
+* <strong>Tiempo:</strong> Ordenar n solicitudes requiere O(n log n) mediante Mergesort o Heapsort. El recorrido lineal posterior realiza una comparación O(1) por elemento en O(n). Por lo tanto, la complejidad temporal total es:</p>
+<blockquote>
+<p><strong>O(n log n)</strong>
+* <strong>Espacio:</strong> O(n) para almacenar los pedidos seleccionados (o memoria auxiliar de ordenamiento).</p>
+</blockquote>
+<p><strong>Justificación de por qué es Greedy</strong><br />
+Es un algoritmo voraz porque:
+1. En cada paso toma una decisión basada en una regla miope de optimización local (elegir el intervalo compatible que termine antes).
+2. La decisión es <strong>irrevocable</strong>: una vez que un permiso es otorgado, nunca se retira ni se reconsidera a la luz de los pedidos futuros.</p>
+<p><strong>Demostración de Optimalidad (Greedy Stays Ahead)</strong><br />
+* Sean G = {g_1, g_2, ..., g_k} los intervalos seleccionados por el algoritmo voraz ordenados por fin, y OPT = {o_1, o_2, ..., o_m} los intervalos de una solución óptima arbitraria también ordenados por fin, con m ≥ k.
+* <strong>Proposición inductiva:</strong> Para todo r ≤ k, el tiempo de fin del r-ésimo elemento voraz es menor o igual al del r-ésimo elemento óptimo:</p>
+<blockquote>
+<p><strong>f(g_r) ≤ f(o_r)</strong>
+* <strong>Caso Base (r = 1):</strong> El algoritmo voraz elige el intervalo con el menor tiempo de fin absoluto en todo el conjunto. Por lo tanto, f(g_1) ≤ f(o_1).
+* <strong>Paso Inductivo:</strong> Asumimos f(g_{r-1}) ≤ f(o_{r-1}). Como o_r es compatible con o_{r-1}, sabemos que s(o_r) ≥ f(o_{r-1}). Por hipótesis inductiva:
+s(o_r) ≥ f(o_{r-1}) ≥ f(g_{r-1})</p>
+</blockquote>
+<p>Esto prueba que o_r era una opción válida y compatible para el algoritmo voraz al buscar su r-ésimo elemento. Dado que el algoritmo voraz selecciona el que tiene el menor tiempo de fin entre todos los compatibles disponibles, necesariamente:</p>
+<blockquote>
+<p>f(g_r) ≤ f(o_r)
+* <strong>Conclusión:</strong> Si la solución óptima tuviera más elementos que el voraz (m &gt; k), existiría un elemento o_{k+1} en OPT. Por la propiedad anterior, s(o_{k+1}) ≥ f(o_k) ≥ f(g_k), lo cual significa que o_{k+1} era compatible con g_k. Pero el algoritmo voraz terminó en g_k porque ya no quedaba ningún intervalo compatible. Contradicción. Por lo tanto, k = m y la solución voraz es <strong>óptima</strong>.</p>
+</blockquote>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
+* Permitir solapamiento estricto si dos intervalos comparten un borde (chequear si el enunciado dice s_j ≥ f_i o s_j &gt; f_i).
+* Ordenar por tiempo de inicio o por duración, los cuales no son óptimos.</p></div>
+<p><strong>Variación típica de parcial</strong><br />
+* <em>Interval Scheduling Ponderado:</em> Cada intervalo tiene un valor o peso v_i. En este caso, <strong>Greedy NO funciona</strong> y se debe resolver con Programación Dinámica (ver Ejercicio 18).
+* <em>Interval Partitioning:</em> Se pide determinar la cantidad mínima de salas/recursos necesarios para programar todas las charlas sin solapamiento (se resuelve ordenando por inicio y usando una cola de prioridad).</p>
+<hr />
+<h3>Patrón de Ejercicio 2.2: Mochila Fraccionaria vs 0-1 con Garantía de Calidad 1/2</h3>
+<p>En las evaluaciones teóricas y en los TPs de la cátedra se examina la relación entre la solución fraccionaria (óptima con greedy) y la versión entera 0-1, demostrando cómo una regla greedy corregida otorga una cota de aproximación constante.</p>
+<hr />
+      </div>
+    </details>
+  </div>
+</article>
+
+<article class="exercise-card" id="ej-5" data-num="5" data-priority="imprescindible" data-paradigm="greedy" data-title="mochila 0-1 con garantía de aproximación 1/2" data-origin="guía de ejercicios 02, ejercicio 8 / diapositivas explicativas de cátedra">
+  <header class="card-header">
+    <div class="card-header-left">
+      <span class="exercise-pill-number">EJ 5</span>
+      <h3 class="exercise-title">Mochila 0-1 con Garantía de Aproximación 1/2</h3>
+    </div>
+    <div class="card-header-meta">
+      <span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span>
+      <span class="badge badge-paradigm badge-greedy">Greedy / Voraz</span>
+      <span class="badge badge-origin" title="Guía de Ejercicios 02, Ejercicio 8 / Diapositivas Explicativas de Cátedra">🏛️ Guía de Ejercicios 02, Ejercicio 8</span>
+    </div>
+    <div class="card-header-actions">
+      <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="5" onchange="toggleMastered(5, this.checked)">
+        <span class="checkbox-custom"></span>
+        <span class="label-text">Dominado</span>
+      </label>
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(5)">
+        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="card-body">
+    <div class="exercise-statement-box">
+      <p><strong>Enunciado</strong><br />
+Se tiene una mochila de capacidad de peso W y n objetos indivisibles (0-1), donde cada objeto i tiene peso w_i y valor v_i.<br />
+1. Explicar por qué la regla voraz estándar basada en ordenar por densidad de valor (v_i / w_i) puede fallar de forma arbitraria en la mochila 0-1.<br />
+2. Diseñar un algoritmo greedy modificado que garantice una calidad de al menos 1/2 respecto a la solución óptima global.<br />
+3. Demostrar formalmente que Sol / OPT &gt; 1/2.<br />
+4. Indicar la complejidad temporal del algoritmo.</p>
+<p><strong>Qué está evaluando</strong><br />
+Capacidad de analizar por qué un algoritmo voraz falla, cómo corregirlo mediante la detección del <em>elemento crítico</em>, y el cálculo de factores de aproximación comparando contra la relajación continua.</p>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-5">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <p><strong>Idea de resolución</strong><br />
+1. Descartamos elementos que individualmente pesen más que W.
+2. Ordenamos por ratio r_i = v_i / w_i descendente.
+3. Llenamos vorazmente. El primer objeto que no entra lo denominamos <strong>Elemento Crítico (c)</strong> con peso w_c y valor v_c.
+4. La solución voraz acumulada tiene valor P_1.
+5. Comparamos P_1 contra el elemento crítico en solitario v_c. Devolvemos max(P_1, v_c).</p>
+<p><strong>Pseudocódigo</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MochilaGreedyConGarantia(objetos, W):
+    INICIALIZAR candidatos como lista vacía
+
+    // 1. Filtrar objetos que no entran por sí solos
+    PARA CADA obj EN objetos:
+        SI obj.peso &lt;= W:
+            INSERTAR obj EN candidatos
+
+    SI longitud(candidatos) = 0:
+        RETORNAR (0, lista vacía)
+
+    // 2. Ordenar por densidad valor/peso descendente
+    ORDENAR candidatos POR (valor / peso) DESCENDENTE
+
+    INICIALIZAR solucion_greedy como lista vacía
+    peso_acumulado &lt;- 0
+    valor_acumulado &lt;- 0
+    elemento_critico &lt;- NULO
+
+    // 3. Llenado voraz e identificación del elemento crítico
+    PARA CADA obj EN candidatos:
+        SI peso_acumulado + obj.peso &lt;= W:
+            INSERTAR obj EN solucion_greedy
+            peso_acumulado &lt;- peso_acumulado + obj.peso
+            valor_acumulado &lt;- valor_acumulado + obj.valor
+        SINO:
+            SI elemento_critico = NULO:
+                elemento_critico &lt;- obj
+
+    // 4. Aplicación de la cota 1/2
+    SI elemento_critico != NULO Y elemento_critico.valor &gt; valor_acumulado:
+        INICIALIZAR sol_critica como lista con elemento_critico
+        RETORNAR (elemento_critico.valor, sol_critica)
+
+    RETORNAR (valor_acumulado, solucion_greedy)
+</code></pre></div>
+<p><strong>Explicación del algoritmo</strong><br />
+La debilidad de la densidad v_i / w_i es que puede tomar objetos muy densos pero diminutos, dejando capacidad insuficiente para un objeto pesado que vale mucho más. Al comparar la solución greedy acumulada contra el valor del primer objeto rechazado (v_c), nos cubrimos de ese peor caso.</p>
+<p><strong>Demostración Formal de la Cota 1/2</strong><br />
+1. Sea OPT el valor de la solución óptima del problema entero 0-1.
+2. Sea OPT_frac el valor de la solución óptima fraccionaria. Es inmediato que OPT ≤ OPT_frac.
+3. La solución fraccionaria óptima toma exactamente los elementos de la solución greedy entera (P_1) más una fracción α ∈ [0, 1) del elemento crítico c:</p>
+<blockquote>
+<p>OPT_frac = P_1 + α · v_c &lt; P_1 + v_c
+4. Por transitividad: OPT &lt; P_1 + v_c.
+5. Nuestro algoritmo devuelve Sol = max(P_1, v_c). Por propiedad del promedio aritmético:
+max(P_1, v_c) ≥ (P_1 + v_c) / 2
+6. Sustituyendo la cota de OPT:
+Sol ≥ (P_1 + v_c) / 2 &gt; OPT / 2  ⟹  Sol / OPT &gt; 1/2</p>
+</blockquote>
+<p><strong>Complejidad</strong><br />
+* <strong>Tiempo:</strong> Filtrado en O(n), ordenamiento de n elementos en O(n log n), recorrido voraz en O(n). Total: O(n log n).
+* <strong>Espacio adicional:</strong> O(n) para almacenar la lista de candidatos y la solución seleccionada.</p>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
+* No descartar previamente los elementos con w_i &gt; W. Si el elemento crítico pesa más que W, no puede incluirse en solitario.</p></div>
+<p><strong>Variación típica de parcial</strong><br />
+Preguntar por qué la mochila fraccionaria sí es óptima con greedy y la 0-1 requiere Programación Dinámica (subestructura óptima con superposición vs subproblemas fraccionarios independientes).</p>
+<hr />
+<h3>Patrón de Ejercicio 2.3: Minimización de Latencia y Deadlines (EDF)</h3>
+<p>Se tienen tareas con tiempos de procesamiento y fechas límite de entrega (deadlines). El objetivo es ordenar las tareas para minimizar la latencia máxima que experimenta cualquier tarea.</p>
+<hr />
+      </div>
+    </details>
+  </div>
+</article>
+
+<article class="exercise-card" id="ej-6" data-num="6" data-priority="importante" data-paradigm="greedy" data-title="minimización de latencia máxima (earliest deadline first)" data-origin="guía de ejercicios 02, ejercicio 9 / práctica">
+  <header class="card-header">
+    <div class="card-header-left">
+      <span class="exercise-pill-number">EJ 6</span>
+      <h3 class="exercise-title">Minimización de Latencia Máxima (Earliest Deadline First)</h3>
+    </div>
+    <div class="card-header-meta">
+      <span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span>
+      <span class="badge badge-paradigm badge-greedy">Greedy / Voraz</span>
+      <span class="badge badge-origin" title="Guía de Ejercicios 02, Ejercicio 9 / Práctica">🏛️ Guía de Ejercicios 02, Ejercicio 9</span>
+    </div>
+    <div class="card-header-actions">
+      <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="6" onchange="toggleMastered(6, this.checked)">
+        <span class="checkbox-custom"></span>
+        <span class="label-text">Dominado</span>
+      </label>
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(6)">
+        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="card-body">
+    <div class="exercise-statement-box">
+      <p><strong>Enunciado</strong><br />
+Se tienen n tareas que deben procesarse secuencialmente en una única máquina. Cada tarea i tiene una duración t_i y una fecha límite de entrega d_i. Si una tarea comienza en el tiempo s_i, finaliza en f_i = s_i + t_i. La latencia de la tarea i se define como L_i = max(0, f_i - d_i). Diseñar un algoritmo greedy que programe las tareas minimizando la latencia máxima L_max = max_i L_i. Demostrar su optimalidad.</p>
+<p><strong>Qué está evaluando</strong><br />
+Técnica de ordenamiento por fecha de vencimiento más temprana (<em>Earliest Deadline First</em>) y demostración por argumento de intercambio de inversiones adyacentes.</p>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-6">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <p><strong>Idea de resolución</strong><br />
+* ¿Por qué otros criterios fallan?
+  * <em>Menor duración primero (t_i):</em> Ignora fechas límites urgentes.
+  * <em>Menor holgura (d_i - t_i):</em> Falla si una tarea corta tiene menor holgura pero fecha límite lejana y bloquea una urgente.
+* <em>Criterio óptimo (EDF):</em> Ordenar las tareas en orden creciente de sus fechas límites: d_1 ≤ d_2 ≤ ... ≤ d_n.
+* No dejar tiempo ocioso en la máquina entre tareas consecutivas.</p>
+<p><strong>Pseudocódigo</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MinimizarLatenciaMaxima(tareas):
+    // Cada tarea tiene id, duracion, deadline
+    ORDENAR tareas POR deadline ASCENDENTE
+
+    tiempo_actual &lt;- 0
+    latencia_maxima &lt;- 0
+    INICIALIZAR programacion como lista vacía
+
+    PARA CADA tarea EN tareas:
+        inicio &lt;- tiempo_actual
+        fin &lt;- tiempo_actual + tarea.duracion
+        latencia &lt;- maximo(0, fin - tarea.deadline)
+
+        SI latencia &gt; latencia_maxima:
+            latencia_maxima &lt;- latencia
+
+        INSERTAR (tarea.id, inicio, fin, latencia) EN programacion
+        tiempo_actual &lt;- fin
+
+    RETORNAR (latencia_maxima, programacion)
+</code></pre></div>
+<p><strong>Explicación del algoritmo</strong><br />
+Al atender siempre la tarea cuyo vencimiento está más próximo, se previene que las fechas límites inminentes acumulen retrasos catastróficos causados por tareas menos urgentes.</p>
+<p><strong>Demostración de Optimalidad (Argumento de Intercambio)</strong><br />
+1. Decimos que una programación tiene una <strong>inversión</strong> si existe un par de tareas adyacentes i seguida inmediatamente por j tal que d_i &gt; d_j (la tarea i vence más tarde que j, pero se ejecuta antes).
+2. La solución greedy por definición no tiene inversiones.
+3. Sea OPT una solución óptima sin tiempo ocioso con la menor cantidad de inversiones. Si OPT tiene cero inversiones, coincide con la programación greedy.
+4. Si OPT tiene al menos una inversión, deben existir dos tareas contiguas invertidas i y j con d_i &gt; d_j.
+5. Al intercambiar i y j en el cronograma:
+   * Las tareas distintas de i y j no modifican sus tiempos de inicio ni fin, por lo que sus latencias no cambian.
+   * La tarea j se adelanta, por lo que su latencia estrictamente no aumenta.
+   * La nueva latencia de i finaliza en el mismo tiempo que antes finalizaba j. Como d_i &gt; d_j, su latencia nueva es menor que la latencia previa que tenía j.
+6. Por lo tanto, la latencia máxima tras el intercambio no aumentó. Esto reduce la cantidad de inversiones sin empeorar la solución óptima. Repitiendo el proceso se llega a la solución greedy, probando que es <strong>óptima</strong>.</p>
+<p><strong>Complejidad</strong><br />
+* <strong>Tiempo:</strong> O(n log n) por el ordenamiento inicial y O(n) en el barrido temporal. Total: O(n log n).
+* <strong>Espacio adicional:</strong> O(n) para almacenar el cronograma resultante.</p>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
+* Dejar huecos ociosos entre tareas. Una programación con tiempo ocioso siempre puede comprimirse hacia la izquierda sin aumentar la latencia.</p></div>
+<p><strong>Variación típica de parcial</strong><br />
+Considerar que las tareas tienen tiempos de arribo r_i diferentes. En este caso el problema se vuelve NP-Duro y EDF simple no garantiza el óptimo.</p>
+<hr />
+<h3>Patrón de Ejercicio 2.4: Heurísticas Voraces de Cobertura (Set Cover Greedy)</h3>
+<p>Aparece cuando el problema exacto es NP-Hard (como Set Cover o Dominating Set) y el enunciado solicita explícitamente: <em>"El personal no conoce programación lineal, diseñar un algoritmo greedy..."</em>.</p>
+<hr />
+      </div>
+    </details>
+  </div>
+</article>
+
+<article class="exercise-card" id="ej-7" data-num="7" data-priority="imprescindible" data-paradigm="greedy" data-title="ubicación voraz de antenas celulares con costo por vecindario" data-origin="parcial 2024-2-3 (10 de diciembre de 2024), ejercicio 4">
+  <header class="card-header">
+    <div class="card-header-left">
+      <span class="exercise-pill-number">EJ 7</span>
+      <h3 class="exercise-title">Ubicación Voraz de Antenas Celulares con Costo por Vecindario</h3>
+    </div>
+    <div class="card-header-meta">
+      <span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span>
+      <span class="badge badge-paradigm badge-greedy">Greedy / Voraz</span>
+      <span class="badge badge-origin" title="Parcial 2024-2-3 (10 de diciembre de 2024), Ejercicio 4">🏛️ Parcial 2024-2-3 (10 de diciembre de 2024), Ejercicio 4</span>
+    </div>
+    <div class="card-header-actions">
+      <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="7" onchange="toggleMastered(7, this.checked)">
+        <span class="checkbox-custom"></span>
+        <span class="label-text">Dominado</span>
+      </label>
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(7)">
+        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="card-body">
+    <div class="exercise-statement-box">
+      <p><strong>Enunciado</strong><br />
+Una empresa de telefonía celular desea colocar antenas en una grilla de celdas para brindar cobertura a un conjunto de vecindarios distribuidos en la zona. Cada antena colocada en una celda (i, j) da cobertura a esa celda y a las 8 que la rodean (un bloque de 3 × 3). El costo de instalar una antena en la celda (i, j) es de CTO_ij pesos. Se desea cubrir todos los vecindarios (o un porcentaje requerido) minimizando el costo total. Diseñar un algoritmo Greedy que determine en qué celdas colocar antenas. Justificar la regla de elección voraz y la complejidad del algoritmo.</p>
+<p><strong>Qué está evaluando</strong><br />
+Modelado del problema de <em>Weighted Set Cover</em> mediante una heurística voraz de costo/beneficio marginal.</p>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-7">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <p><strong>Idea de resolución</strong><br />
+* En cada paso, evaluamos todas las celdas candidatas donde aún no hay antena.
+* Para cada celda candidata (i, j), calculamos cuántos <strong>nuevos vecindarios no cubiertos previamente</strong> aportaría instalar una antena allí: NuevosCobertura(i, j).
+* Definimos el ratio de costo por beneficio marginal:</p>
+<blockquote>
+<p><strong>Ratio(i, j) = CTO_ij / NuevosCobertura(i, j)</strong>
+* Elegimos vorazmente la celda que tenga el <strong>menor ratio de costo por vecindario nuevo cubierto</strong>.
+* Marcamos los vecindarios como cubiertos y repetimos hasta que todos los vecindarios estén cubiertos.</p>
+</blockquote>
+<p><strong>Pseudocódigo</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION ColocarAntenasGreedy(grilla, vecindarios, CTO):
+    INICIALIZAR no_cubiertos como conjunto con todos los vecindarios
+    INICIALIZAR antenas_elegidas como lista vacía
+
+    MIENTRAS longitud(no_cubiertos) &gt; 0:
+        mejor_celda &lt;- NULO
+        mejor_ratio &lt;- INFINITO
+
+        // Evaluar todas las celdas posibles de la grilla
+        PARA CADA celda (i, j) EN grilla:
+            vecinos_nuevos &lt;- 0
+            PARA CADA v EN Cobertura(i, j):
+                SI v PERTENECE A no_cubiertos:
+                    vecinos_nuevos &lt;- vecinos_nuevos + 1
+
+            // Solo consideramos celdas que aportan cobertura nueva
+            SI vecinos_nuevos &gt; 0:
+                ratio &lt;- CTO[i][j] / vecinos_nuevos
+                SI ratio &lt; mejor_ratio:
+                    mejor_ratio &lt;- ratio
+                    mejor_celda &lt;- (i, j)
+
+        // Si no encontramos celda que cubra los restantes, es infactible
+        SI mejor_celda = NULO:
+            ROMPER // No se pueden cubrir todos los vecindarios restantes
+
+        INSERTAR mejor_celda EN antenas_elegidas
+        // Actualizar vecindarios cubiertos
+        PARA CADA v EN Cobertura(mejor_celda):
+            ELIMINAR v DE no_cubiertos
+
+    RETORNAR antenas_elegidas
+</code></pre></div>
+<p><strong>Explicación del algoritmo</strong><br />
+El algoritmo aplica la regla clásica de Chvátal para Set Cover. En cada iteración maximiza la eficiencia económica por cada elemento nuevo incorporado al universo cubierto.</p>
+<p><strong>Complejidad</strong><br />
+* Si la grilla tiene M celdas y hay V vecindarios, en el peor caso se seleccionan hasta V antenas. En cada paso se evalúan las M celdas inspeccionando las 9 celdas cubiertas (O(1)).
+* Tiempo total: O(V · M).
+* Espacio adicional: O(V) para mantener el conjunto de vecindarios no cubiertos.</p>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
+* Elegir la celda con menor costo absoluto CTO_ij (podría no cubrir ningún vecindario o muy pocos).
+* Elegir la celda que cubre más vecindarios sin considerar el costo (podría ser extremadamente cara).
+* El cociente debe ser siempre costo / nuevos vecindarios, no sobre el total histórico de celdas que abarca.</p></div>
+<p><strong>Variación típica de parcial</strong><br />
+Preguntar si este algoritmo garantiza la solución óptima. <strong>Respuesta:</strong> No, porque Set Cover es NP-Duro. Este algoritmo voraz es una aproximación con factor de garantía ln |V| + 1.</p>
+<hr />
+<h3>Patrón de Ejercicio 2.5: Greedy en Caminos y Etapas (Demostración de No-Optimalidad)</h3>
+<p>Aparece cuando se plantea un problema de etapas secuenciales y se pide evaluar si un enfoque voraz local alcanza el óptimo global.</p>
+<hr />
+      </div>
+    </details>
+  </div>
+</article>
+
+<article class="exercise-card" id="ej-8" data-num="8" data-priority="imprescindible" data-paradigm="greedy" data-title="traslado crítico invap: enfoque voraz y contraejemplo formal" data-origin="parcial 2025-1-2 (17 de junio de 2025), ejercicio 3">
+  <header class="card-header">
+    <div class="card-header-left">
+      <span class="exercise-pill-number">EJ 8</span>
+      <h3 class="exercise-title">Traslado Crítico INVAP: Enfoque Voraz y Contraejemplo Formal</h3>
+    </div>
+    <div class="card-header-meta">
+      <span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span>
+      <span class="badge badge-paradigm badge-greedy">Greedy / Voraz</span>
+      <span class="badge badge-origin" title="Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 3">🏛️ Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 3</span>
+    </div>
+    <div class="card-header-actions">
+      <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="8" onchange="toggleMastered(8, this.checked)">
+        <span class="checkbox-custom"></span>
+        <span class="label-text">Dominado</span>
+      </label>
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(8)">
+        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="card-body">
+    <div class="exercise-statement-box">
+      <p><strong>Enunciado</strong><br />
+Para el traslado de una carga peligrosa del INVAP de Ezeiza a Bariloche a través de etapas diarias (con alternativas de ciudades intermedias y costos de seguro asociados a cada tramo):<br />
+1. Diseñar un algoritmo Greedy que decida el itinerario.<br />
+2. Indicar si la solución obtenida será óptima o no. Fundamentar con un contraejemplo riguroso.</p>
+<p><strong>Qué está evaluando</strong><br />
+Construcción de heurísticas paso a paso y formulación de contraejemplos matemáticos claros para refutar la optimalidad de algoritmos voraces en grafos de decisión multietapa.</p>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-8">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <p><strong>Idea de resolución</strong><br />
+* <em>Regla voraz:</em> Estando en la ciudad actual, elegir como siguiente parada aquella ciudad accesible en la etapa que tenga el <strong>menor costo de seguro inmediato</strong>.
+* <em>Optimalidad:</em> <strong>NO es óptimo</strong>. Un tramo inicial barato puede forzar a tomar en la siguiente etapa rutas con costos astronómicos o sin salida barata.</p>
+<p><strong>Pseudocódigo</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION TrasladoInvapGreedy(origen, destino, grafo_etapas):
+    ciudad_actual &lt;- origen
+    costo_total &lt;- 0
+    INICIALIZAR camino como lista con origen
+
+    MIENTRAS ciudad_actual != destino:
+        siguientes_opciones &lt;- ObtenerVecinos(grafo_etapas, ciudad_actual)
+        SI longitud(siguientes_opciones) = 0:
+            RETORNAR (&quot;Error: camino bloqueado&quot;, INFINITO)
+
+        // Elección voraz: mínimo costo en el tramo inmediato
+        mejor_siguiente &lt;- NULO
+        menor_costo_tramo &lt;- INFINITO
+
+        PARA CADA (ciudad_sig, costo_seguro) EN siguientes_opciones:
+            SI costo_seguro &lt; menor_costo_tramo:
+                menor_costo_tramo &lt;- costo_seguro
+                mejor_siguiente &lt;- ciudad_sig
+
+        INSERTAR mejor_siguiente EN camino
+        costo_total &lt;- costo_total + menor_costo_tramo
+        ciudad_actual &lt;- mejor_siguiente
+
+    RETORNAR (camino, costo_total)
+</code></pre></div>
+<p><strong>Contraejemplo Formal de No-Optimalidad</strong><br />
+Consideremos el siguiente grafo de etapas desde el origen E (Ezeiza) hasta el destino B (Bariloche):
+* Etapa 1 desde E:
+  * Tramo E → V1 con costo de seguro de 10 pesos.
+  * Tramo E → V2 con costo de seguro de 20 pesos.
+* Etapa 2 hacia el destino B:
+  * Desde V1 → B con costo de seguro de 100 pesos.
+  * Desde V2 → B con costo de seguro de 5 pesos.</p>
+<ul>
+<li><strong>Ejecución del algoritmo Greedy:</strong></li>
+<li>En E, compara las opciones inmediatas: 10 pesos (a V1) vs 20 pesos (a V2).</li>
+<li>Elige vorazmente E → V1 por costar 10 pesos.</li>
+<li>En V1, la única opción hacia el destino es V1 → B con costo de 100 pesos.</li>
+<li><strong>Costo total obtenido por Greedy:</strong> 10 + 100 = 110 pesos.</li>
+<li><strong>Solución alternativa factible:</strong></li>
+<li>Ruta E → V2 → B.</li>
+<li>Costo total: 20 + 5 = 25 pesos.</li>
+<li><strong>Conclusión:</strong> Como 110 &gt; 25, el algoritmo voraz no encuentra la solución óptima. Los problemas de caminos mínimos en grafos por etapas requieren <strong>Programación Dinámica</strong> (ver Ejercicio 32).</li>
+</ul>
+<p><strong>Complejidad</strong><br />
+* <strong>Tiempo:</strong> O(V + E) en el peor caso si recorre las aristas de las etapas.
+* <strong>Espacio:</strong> O(V) para la lista de ciudades del camino.</p>
+<hr />
+<h3>Errores Frecuentes en Exámenes sobre Greedy</h3>
+<ol>
+<li><strong>Afirmar que Greedy es óptimo sin demostrarlo:</strong> Poner "es óptimo porque siempre elijo lo mejor" es causal de pérdida total de puntos. Se debe presentar <em>Greedy Stays Ahead</em> o <em>Argumento de Intercambio</em>.</li>
+<li><strong>Dar un contraejemplo sin números:</strong> Decir "podría pasar que después sea más caro" no es un contraejemplo. Un contraejemplo exige nodos, aristas y costos numéricos explícitos.</li>
+<li><strong>No justificar por qué el algoritmo es voraz:</strong> Se debe explicitar que la decisión es local, miope e irrevocable.</li>
+<li><strong>Confundir Interval Scheduling con Interval Scheduling Ponderado:</strong> Si las tareas tienen valores o beneficios distintos, ordenar por tiempo de fin no es óptimo.</li>
+</ol>
+      </div>
+    </details>
+  </div>
+</article>
+
+</main>
+<script>
+
+// Global state
+let currentMode = 'emergency';
+let currentParadigm = 'all';
+let searchQuery = '';
+let solutionsExpanded = false;
+let masteredExercises = new Set();
+let checklistState = {};
+
+// 14 real exam scenario questions for the 30-second trainer
+const TRAINER_QUESTIONS = [
+  {
+    prompt: "Dado un número entero positivo K, determinar la mínima cantidad de operaciones necesarias para llegar desde 0 hasta K, sabiendo que las únicas operaciones permitidas son sumar 1 o duplicar el valor actual.",
+    answer: "dp",
+    paradigmName: "Programación Dinámica",
+    trigger: "Subproblemas con superposición: llegar a K depende de K-1 o K/2. Ecuación OPT(x) = 1 + min(OPT(x-1), OPT(x/2)). Es DP clásico de caminos mínimos en DAG de estados (Parcial 2024-2-2)."
+  },
+  {
+    prompt: "Se tienen N solicitudes de mafias para operar en tramos de ruta costera [s_i, f_i]. Dos tramos no pueden superponerse. Se desea otorgar la máxima cantidad de permisos sin conflictos.",
+    answer: "greedy",
+    paradigmName: "Greedy (Voraz)",
+    trigger: "Interval Scheduling sin pesos: se resuelve vorazmente ordenando por tiempo de finalización más temprano (f_i). Optimalidad demostrada por Greedy Stays Ahead (Parcial 2024-2-2, Arnook)."
+  },
+  {
+    prompt: "Dado un entero n, encontrar cuatro enteros w, x, y, z >= 0 tales que n = w² + x² + y² + z². Si hay múltiples soluciones, retornar una con estructuras de poda temprana por cotas.",
+    answer: "backtracking",
+    paradigmName: "Backtracking & B&B",
+    trigger: "Búsqueda exhaustiva en espacio de estados con podas por cotas numéricas (w² <= n). Teorema de los 4 cuadrados de Lagrange (Parcial 2024-2-1)."
+  },
+  {
+    prompt: "Demostrar formalmente que el problema de decidir si un grafo G tiene un conjunto dominante de tamaño a lo sumo k (Dominating Set) es NP-Completo, sabiendo que Vertex Cover es NP-Completo.",
+    answer: "reducciones",
+    paradigmName: "Reducciones NP-C",
+    trigger: "Consigna explícita: 'Demostrar que X es NP-Completo'. Requiere el esquema de 4 pasos: Verificador en NP + Problema conocido VC <=_P DS + Transformación de grafo + Demostración ida y vuelta (Parcial 2024-2-2 y 2024-2-3)."
+  },
+  {
+    prompt: "Un hospital dispone de M médicos y P pacientes. Cada médico tiene turnos disponibles y atiende hasta 4 pacientes al día. Cada paciente tiene turnos compatibles. Determinar si se puede asignar turno a todos.",
+    answer: "flujo",
+    paradigmName: "Redes de Flujo",
+    trigger: "Matching bipartito con capacidades por nodo: modelar red s -> Médicos -> Turnos -> t y resolver con Ford-Fulkerson en tiempo polinomial por Teorema de Integralidad (Parcial 2024-2-2)."
+  },
+  {
+    prompt: "Dada una grilla de comunidades, se desea decidir en qué celdas instalar antenas para cubrir al menos el 70% de comunidades con costo mínimo, indicando cantidad de variables y restricciones.",
+    answer: "pl",
+    paradigmName: "Programación Lineal (PLI)",
+    trigger: "Consigna: 'Formular un modelo matemático con variables y restricciones'. Es Set Cover formulado como Programación Lineal Entera con variables binarias x_i in {0, 1} (Parcial 2024-2-3)."
+  },
+  {
+    prompt: "Dadas dos matrices cuadradas de n x n, multiplicarlas particionando en 4 bloques de n/2 x n/2 y deduciendo la complejidad formal con el Teorema Maestro.",
+    answer: "dyc",
+    paradigmName: "División y Conquista",
+    trigger: "Partición recursiva en subproblemas disjuntos de tamaño n/b y aplicación del Teorema Maestro T(n) = 8·T(n/2) + O(n²) (Parcial 2025-1-2)."
+  },
+  {
+    prompt: "Juan el Vago recibe ofertas de changas diarias v_i. Si trabaja el día i, debe descansar obligatoriamente el día i+1. Maximizar su beneficio total.",
+    answer: "dp",
+    paradigmName: "Programación Dinámica",
+    trigger: "Subproblemas dependientes con exclusión de días adyacentes: OPT(i) = max(OPT(i-1), OPT(i-2) + v_i). (Guía 04, Ej 4)."
+  },
+  {
+    prompt: "Dada una red energética con generadores (oferta), ciudades (demanda) y líneas de transmisión con capacidades máximas, determinar el balance óptimo.",
+    answer: "flujo",
+    paradigmName: "Redes de Flujo",
+    trigger: "Ford-Fulkerson con super-fuente y super-sumidero para balancear múltiples fuentes y sumideros con capacidades (Parcial 2025-1-1)."
+  },
+  {
+    prompt: "Un cadete debe repartir encomiendas recorriendo n ciudades y regresar al punto de partida. Demostrar que este problema no es más fácil que Ciclo Hamiltoniano.",
+    answer: "reducciones",
+    paradigmName: "Reducciones NP-C",
+    trigger: "Reducción polinomial de Ciclo Hamiltoniano a TSP (Problema del Viajante) con grafo completo y pesos 1 y 2 (Parcial 2025-1-1, Marco el cadete)."
+  },
+  {
+    prompt: "Ubicar 8 reinas en un tablero de ajedrez sin que se ataquen, verificando conflictos de columna y diagonales en O(1) con arreglos booleanos.",
+    answer: "backtracking",
+    paradigmName: "Backtracking & B&B",
+    trigger: "Exploración exhaustiva de tablero con control de factibilidad O(1) mediante arreglos auxiliares y vuelta atrás del estado (Parcial 2025-1-2)."
+  },
+  {
+    prompt: "Formatear un párrafo de palabras minimizando la suma de cuadrados de espacios sobrantes al final de cada línea (Word Wrap / Knuth-Plass).",
+    answer: "dp",
+    paradigmName: "Programación Dinámica",
+    trigger: "La elección del corte de palabras en la línea actual define la longitud de los renglones restantes: OPT(j) = min_{i < j} (OPT(i) + costo(i+1, j)) (Parcial 2024-2-3)."
+  },
+  {
+    prompt: "Dado un arreglo unimodal donde los valores suben y luego bajan, encontrar el elemento pico en tiempo O(log n).",
+    answer: "dyc",
+    paradigmName: "División y Conquista",
+    trigger: "Búsqueda binaria adaptada sobre arreglo unimodal: comparar A[mid] con A[mid+1] descartando la mitad del arreglo en cada paso (Guía 01, Ej 4)."
+  },
+  {
+    prompt: "Dadas n tareas con tiempos de procesamiento y fechas límite d_i, ordenar la secuencia para minimizar la latencia máxima L = max(0, C_i - d_i).",
+    answer: "greedy",
+    paradigmName: "Greedy (Voraz)",
+    trigger: "Earliest Deadline First (EDF): ordenar por fecha de entrega más temprana d_i. Se demuestra óptimo por argumento de intercambio (Guía 02, Ej 9)."
+  },
+  {
+    prompt: "Se tienen n objetos indivisibles con pesos w_i y valores v_i, y una mochila de capacidad máxima W. Encontrar la combinación de máximo valor respetando la capacidad entera.",
+    answer: "dp",
+    paradigmName: "Programación Dinámica",
+    trigger: "Mochila 0-1: subestructura óptima con superposición de subproblemas OPT(i, w). Requiere tabla (n+1) x (W+1) en O(n · W) pseudo-polinomial (Ejercicio 35)."
+  },
+  {
+    prompt: "Dado un conjunto de n ciudades con matriz de distancias métricas, hallar un circuito cerrado que visite todas las ciudades con costo garantizado a lo sumo el doble del óptimo.",
+    answer: "greedy",
+    paradigmName: "Algoritmo de Aproximación (MST + Preorden)",
+    trigger: "2-Aproximación de TSP Métrico: calcular Árbol Generador Mínimo (MST) con Prim o Kruskal y recorrer en preorden tomando atajos por desigualdad triangular (Ejercicio 36)."
+  }
+];
+
+let trainerIndex = 0;
+let trainerScore = 0;
+let trainerAnswered = false;
+
+// Initialization on DOM ready
+document.addEventListener("DOMContentLoaded", () => {
+  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall
+  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
+    drawer.open = false;
+  });
+
+  loadSavedState();
+  updateModeUI();
+  applyFilters();
+  initMermaidDiagrams();
+  initMathRendering();
+});
+
+function initMathRendering() {
+  if (typeof renderMathInElement === "function") {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ],
+      ignoredClasses: ["mermaid", "mermaid-wrapper", "code-container", "copy-code-btn"],
+      ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code", "svg"],
+      throwOnError: false
+    });
+  }
+}
+
+function initMermaidDiagrams() {
+  if (typeof mermaid === "undefined") return;
+  const isDark = document.body.classList.contains("dark-mode");
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: isDark ? "dark" : "neutral",
+    securityLevel: "loose",
+    themeVariables: {
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    }
+  });
+  mermaid.run({ querySelector: ".mermaid" });
+}
+
+// Al imprimir desde el navegador (Ctrl+P), expandir todas las soluciones
+window.addEventListener("beforeprint", () => {
+  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
+    drawer.open = true;
+  });
+});
+
+window.addEventListener("afterprint", () => {
+  if (!solutionsExpanded) {
+    document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
+      drawer.open = false;
+    });
+  }
+});
+
+function loadSavedState() {
+  try {
+    const savedMastered = localStorage.getItem("tda_mastered_exercises");
+    if (savedMastered) {
+      masteredExercises = new Set(JSON.parse(savedMastered));
+    }
+    const savedChecklist = localStorage.getItem("tda_exam_checklist");
+    if (savedChecklist) {
+      checklistState = JSON.parse(savedChecklist);
+    }
+    const savedTheme = localStorage.getItem("tda_theme");
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark-mode");
+    }
+  } catch (e) {
+    console.error("Error reading localStorage", e);
+  }
+
+  // Restore checkboxes in exercise cards
+  document.querySelectorAll(".mastered-checkbox").forEach(cb => {
+    const num = parseInt(cb.getAttribute("data-ej-num"));
+    if (masteredExercises.has(num)) {
+      cb.checked = true;
+      const card = document.getElementById("ej-" + num);
+      if (card) card.classList.add("is-mastered");
+    }
+  });
+
+  // Restore checklist inputs
+  document.querySelectorAll(".exam-checklist-input").forEach(inp => {
+    const id = inp.getAttribute("data-chk-id");
+    if (checklistState[id]) {
+      inp.checked = true;
+    }
+  });
+}
+
+function saveState() {
+  try {
+    localStorage.setItem("tda_mastered_exercises", JSON.stringify(Array.from(masteredExercises)));
+    localStorage.setItem("tda_exam_checklist", JSON.stringify(checklistState));
+  } catch (e) {
+    console.error("Error saving state", e);
+  }
+}
+
+// Mastered exercise toggle
+function toggleMastered(num, isMastered) {
+  if (isMastered) {
+    masteredExercises.add(num);
+  } else {
+    masteredExercises.delete(num);
+  }
+  const card = document.getElementById("ej-" + num);
+  if (card) {
+    if (isMastered) card.classList.add("is-mastered");
+    else card.classList.remove("is-mastered");
+  }
+  saveState();
+  updateProgressHUD();
+}
+
+// Checklist item toggle
+function toggleChecklistItem(id, isChecked) {
+  checklistState[id] = isChecked;
+  saveState();
+}
+
+// Filter and View Logic
+function setStudyMode(mode) {
+  currentMode = mode;
+  updateModeUI();
+  applyFilters();
+}
+
+function updateModeUI() {
+  document.getElementById("btnModeEmergency").classList.toggle("active", currentMode === "emergency");
+  document.getElementById("btnModeTactical").classList.toggle("active", currentMode === "tactical");
+  document.getElementById("btnModeAll").classList.toggle("active", currentMode === "all");
+  
+  const banner = document.getElementById("emergencyBanner");
+  if (banner) {
+    banner.style.display = currentMode === "emergency" ? "block" : "none";
+  }
+}
+
+function filterByParadigm(paradigm) {
+  currentParadigm = paradigm;
+  document.querySelectorAll("#paradigmPills .pill-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.getAttribute("data-paradigm") === paradigm);
+  });
+  applyFilters();
+}
+
+function handleSearch(val) {
+  searchQuery = val.trim().toLowerCase();
+  document.getElementById("clearSearchBtn").style.display = searchQuery ? "block" : "none";
+  applyFilters();
+}
+
+function clearSearch() {
+  const searchInput = document.getElementById("exerciseSearch");
+  searchInput.value = "";
+  searchQuery = "";
+  document.getElementById("clearSearchBtn").style.display = "none";
+  applyFilters();
+}
+
+function dismissBanner() {
+  document.getElementById("emergencyBanner").style.display = "none";
+}
+
+function applyFilters() {
+  const cards = document.querySelectorAll(".exercise-card");
+  let visibleCount = 0;
+  let masteredCount = 0;
+
+  cards.forEach(card => {
+    const num = parseInt(card.getAttribute("data-num"));
+    const priority = card.getAttribute("data-priority");
+    const paradigm = card.getAttribute("data-paradigm");
+    const title = card.getAttribute("data-title") || "";
+    const origin = card.getAttribute("data-origin") || "";
+    const cardText = card.textContent.toLowerCase();
+
+    // Mode filter
+    let matchesMode = true;
+    if (currentMode === "emergency") {
+      matchesMode = (priority === "imprescindible");
+    } else if (currentMode === "tactical") {
+      matchesMode = (priority === "imprescindible" || priority === "importante");
+    }
+
+    // Paradigm filter
+    let matchesParadigm = true;
+    if (currentParadigm !== "all") {
+      matchesParadigm = (paradigm === currentParadigm);
+    }
+
+    // Search query filter
+    let matchesSearch = true;
+    if (searchQuery) {
+      matchesSearch = title.includes(searchQuery) || origin.includes(searchQuery) || cardText.includes(searchQuery);
+    }
+
+    const isVisible = matchesMode && matchesParadigm && matchesSearch;
+    card.classList.toggle("is-hidden", !isVisible);
+
+    if (isVisible) {
+      visibleCount++;
+      if (masteredExercises.has(num)) {
+        masteredCount++;
+      }
+    }
+  });
+
+  updateProgressHUD(visibleCount, masteredCount);
+}
+
+function updateProgressHUD(totalVisible, totalMastered) {
+  if (totalVisible === undefined) {
+    const cards = document.querySelectorAll(".exercise-card:not(.is-hidden)");
+    totalVisible = cards.length;
+    totalMastered = 0;
+    cards.forEach(c => {
+      const num = parseInt(c.getAttribute("data-num"));
+      if (masteredExercises.has(num)) totalMastered++;
+    });
+  }
+
+  const progMastered = document.getElementById("progMastered");
+  const progTotal = document.getElementById("progTotal");
+  const progPercent = document.getElementById("progPercent");
+  const progressFill = document.getElementById("progressFill");
+
+  if (progMastered && progTotal && progPercent && progressFill) {
+    progMastered.textContent = totalMastered;
+    progTotal.textContent = totalVisible;
+    const pct = totalVisible > 0 ? Math.round((totalMastered / totalVisible) * 100) : 0;
+    progPercent.textContent = pct + "%";
+    progressFill.style.width = pct + "%";
+  }
+}
+
+// Active recall solution controls
+function toggleCardSolution(num) {
+  const drawer = document.getElementById("solution-drawer-" + num);
+  if (drawer) {
+    drawer.open = !drawer.open;
+  }
+}
+
+function scrollToExercise(num) {
+  // Asegurar que se muestre el ejercicio independientemente del filtro activo
+  currentMode = 'all';
+  currentParadigm = 'all';
+  searchQuery = '';
+  const searchInput = document.getElementById("exerciseSearch");
+  if (searchInput) searchInput.value = "";
+  const clearBtn = document.getElementById("clearSearchBtn");
+  if (clearBtn) clearBtn.style.display = "none";
+
+  document.querySelectorAll(".mode-btn").forEach(btn => btn.classList.remove("active"));
+  const btnAll = document.getElementById("btnModeAll");
+  if (btnAll) btnAll.classList.add("active");
+
+  document.querySelectorAll(".pill-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.getAttribute("data-paradigm") === "all");
+  });
+
+  applyFilters();
+
+  const card = document.getElementById("ej-" + num);
+  if (card) {
+    const drawer = document.getElementById("solution-drawer-" + num);
+    if (drawer) drawer.open = true;
+
+    // Desplazamiento suave con compensación por el HUD fijo
+    const rect = card.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const hudHeight = document.getElementById("hudTopBar") ? document.getElementById("hudTopBar").offsetHeight : 140;
+    const targetY = rect.top + scrollTop - hudHeight - 16;
+
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+
+    card.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
+    card.style.borderColor = 'var(--accent-color)';
+    card.style.boxShadow = '0 0 0 4px rgba(49, 130, 206, 0.4)';
+    setTimeout(() => {
+      card.style.borderColor = '';
+      card.style.boxShadow = '';
+    }, 2800);
+  }
+}
+
+function toggleGlobalSolutions() {
+  solutionsExpanded = !solutionsExpanded;
+  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
+    drawer.open = solutionsExpanded;
+  });
+  const lbl = document.getElementById("lblGlobalSolutions");
+  if (lbl) {
+    lbl.textContent = solutionsExpanded ? "Ocultar Todas" : "Revelar Todas";
+  }
+}
+
+// Cheatsheet drawer
+function openCheatsheet() {
+  document.getElementById("cheatsheetDrawer").classList.add("is-open");
+  document.getElementById("drawerBackdrop").classList.add("is-open");
+}
+
+function closeCheatsheet() {
+  document.getElementById("cheatsheetDrawer").classList.remove("is-open");
+  document.getElementById("drawerBackdrop").classList.remove("is-open");
+}
+
+// Theme
+function toggleDarkMode() {
+  const isDark = document.body.classList.toggle("dark-mode");
+  try {
+    localStorage.setItem("tda_theme", isDark ? "dark" : "light");
+  } catch (e) {}
+}
+
+// Copy Code Block
+function copyCodeBlock(btn) {
+  const pre = btn.nextElementSibling;
+  if (!pre) return;
+  const text = pre.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const original = btn.textContent;
+    btn.textContent = "¡Copiado! ✓";
+    btn.style.background = "#38a169";
+    btn.style.color = "#ffffff";
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.style.background = "";
+      btn.style.color = "";
+    }, 1800);
+  });
+}
+
+// Trainer 30s logic
+function initTrainer() {
+  trainerIndex = 0;
+  trainerScore = 0;
+  trainerAnswered = false;
+  loadTrainerQuestion();
+}
+
+function loadTrainerQuestion() {
+  trainerAnswered = false;
+  const q = TRAINER_QUESTIONS[trainerIndex];
+  
+  document.getElementById("trainerCurrentIndex").textContent = trainerIndex + 1;
+  document.getElementById("trainerPrompt").textContent = q.prompt;
+  
+  document.getElementById("trainerFeedback").style.display = "none";
+  document.getElementById("trainerNextBtn").style.display = "none";
+
+  const buttons = document.querySelectorAll("#trainerOptions .trainer-btn");
+  buttons.forEach(btn => {
+    btn.disabled = false;
+    btn.classList.remove("btn-correct", "btn-wrong");
+  });
+}
+
+function checkTrainerAnswer(selected) {
+  if (trainerAnswered) return;
+  trainerAnswered = true;
+
+  const q = TRAINER_QUESTIONS[trainerIndex];
+  const isCorrect = (selected === q.answer);
+  
+  if (isCorrect) {
+    trainerScore++;
+  }
+  
+  document.getElementById("trainerScore").textContent = trainerScore;
+  document.getElementById("trainerTotal").textContent = trainerIndex + 1;
+
+  const buttons = document.querySelectorAll("#trainerOptions .trainer-btn");
+  buttons.forEach(btn => {
+    btn.disabled = true;
+    const btnClickAttr = btn.getAttribute("onclick") || "";
+    if (btnClickAttr.includes("'" + q.answer + "'")) {
+      btn.classList.add("btn-correct");
+    } else if (btnClickAttr.includes("'" + selected + "'") && !isCorrect) {
+      btn.classList.add("btn-wrong");
+    }
+  });
+
+  const feedback = document.getElementById("trainerFeedback");
+  const result = document.getElementById("feedbackResult");
+  const trigger = document.getElementById("feedbackTrigger");
+
+  feedback.style.display = "block";
+  feedback.className = "trainer-feedback " + (isCorrect ? "feedback-success" : "feedback-error");
+
+  result.textContent = isCorrect 
+    ? "¡Excelente! Respuesta correcta 🎉 (" + q.paradigmName + ")" 
+    : "No es la técnica ideal. El paradigma correcto es: " + q.paradigmName;
+
+  trigger.innerHTML = "<strong>Disparador Léxico de Examen:</strong> " + q.trigger;
+
+  const nextBtn = document.getElementById("trainerNextBtn");
+  if (trainerIndex < TRAINER_QUESTIONS.length - 1) {
+    nextBtn.style.display = "inline-block";
+    nextBtn.textContent = "Siguiente Enunciado (" + (trainerIndex + 2) + "/" + TRAINER_QUESTIONS.length + ") ➔";
+  } else {
+    nextBtn.style.display = "inline-block";
+    nextBtn.textContent = "Ver Resultado Final 🏁";
+  }
+}
+
+function nextTrainerQuestion() {
+  if (trainerIndex < TRAINER_QUESTIONS.length - 1) {
+    trainerIndex++;
+    loadTrainerQuestion();
+  } else {
+    alert("¡Simulación completada! Puntaje final: " + trainerScore + " / " + TRAINER_QUESTIONS.length + " aciertos.");
+    initTrainer();
+  }
+}
+
+function resetTrainer() {
+  initTrainer();
+}
+
+function scrollToTrainer() {
+  const trainer = document.getElementById("entrenador-30s");
+  if (trainer) {
+    trainer.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// Close drawer on Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    closeCheatsheet();
+  }
+});
+
+</script>
+</body>
+</html>

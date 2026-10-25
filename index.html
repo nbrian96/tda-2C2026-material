@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teoría de Algoritmos — Guía Interactiva de Parciales (FIUBA)</title>
+<title>Teoría de Algoritmos — Guía Interactiva Completa (40 Ejercicios) (FIUBA)</title>
 <!-- KaTeX para renderizado matemático ultra veloz -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -1595,11 +1595,13 @@ body.dark-mode .warning-box {
   <div class="hud-container">
     <div class="hud-row-primary">
       <div class="hud-brand">
-        <span class="hud-logo-icon">🚀</span>
-        <div>
-          <h1 class="hud-title">TDA — Guía Interactiva de Parciales</h1>
-          <span class="hud-subtitle">Edición Intensiva: Salvando el Cuatrimestre (2024–2025)</span>
-        </div>
+        <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;">
+          <span class="hud-logo-icon">🚀</span>
+          <div>
+            <h1 class="hud-title">TDA — Guía Interactiva de Parciales</h1>
+            <span class="hud-subtitle">Edición Intensiva: Salvando el Cuatrimestre (2024–2025)</span>
+          </div>
+        </a>
       </div>
 
       <div class="hud-mode-selector" role="group" aria-label="Modo de Estudio">
@@ -1660,19 +1662,19 @@ body.dark-mode .warning-box {
       </div>
     </div>
 
-    <!-- Filter Pills por Paradigma -->
+    <!-- Filter Pills por Paradigma (Enlaces modulares para GitHub Pages) -->
     <div class="hud-row-pills">
       <div class="filter-pills-scroll" id="paradigmPills">
-        <button class="pill-btn active" data-paradigm="all" onclick="filterByParadigm('all')">Todos (40)</button>
-        <button class="pill-btn" data-paradigm="dyc" onclick="filterByParadigm('dyc')">🔷 DyC (3)</button>
-        <button class="pill-btn" data-paradigm="greedy" onclick="filterByParadigm('greedy')">🔶 Greedy (5)</button>
-        <button class="pill-btn" data-paradigm="backtracking" onclick="filterByParadigm('backtracking')">🟣 Backtracking (4)</button>
-        <button class="pill-btn" data-paradigm="dp" onclick="filterByParadigm('dp')">🟢 Prog. Dinámica (6)</button>
-        <button class="pill-btn" data-paradigm="pl" onclick="filterByParadigm('pl')">🔵 Prog. Lineal (5)</button>
-        <button class="pill-btn" data-paradigm="flujo" onclick="filterByParadigm('flujo')">🔴 Redes de Flujo (4)</button>
-        <button class="pill-btn" data-paradigm="reducciones" onclick="filterByParadigm('reducciones')">🟡 Reducciones NP (4)</button>
-        <button class="pill-btn" data-paradigm="integradores" onclick="filterByParadigm('integradores')">⚡ Integradores (5)</button>
-        <button class="pill-btn" data-paradigm="tipo_parcial" onclick="filterByParadigm('tipo_parcial')">📝 Tipo Parcial (4)</button>
+        <a href="index.html" class="pill-btn active" data-paradigm="all">📚 Todos (40)</a>
+        <a href="dyc.html" class="pill-btn" data-paradigm="dyc">🔷 DyC (3)</a>
+        <a href="greedy.html" class="pill-btn" data-paradigm="greedy">🔶 Greedy (5)</a>
+        <a href="backtracking.html" class="pill-btn" data-paradigm="backtracking">🟣 Backtracking (4)</a>
+        <a href="dp.html" class="pill-btn" data-paradigm="dp">🟢 Prog. Dinámica (6)</a>
+        <a href="pl.html" class="pill-btn" data-paradigm="pl">🔵 Prog. Lineal (5)</a>
+        <a href="flujo.html" class="pill-btn" data-paradigm="flujo">🔴 Redes de Flujo (4)</a>
+        <a href="reducciones.html" class="pill-btn" data-paradigm="reducciones">🟡 Reducciones NP (4)</a>
+        <a href="integradores.html" class="pill-btn" data-paradigm="integradores">⚡ Integradores (5)</a>
+        <a href="tipo_parcial.html" class="pill-btn" data-paradigm="tipo_parcial">📝 Tipo Parcial (4)</a>
       </div>
     </div>
   </div>
@@ -3440,10 +3442,7 @@ Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguro
 <li>
 <p><strong>Ecuación de Recurrencia:</strong><br />
    Para todo $i \ge 1$:
-   $$OPT(i) = \begin{cases} 
-   OPT(i - 1) + 1 &amp; \text{si } i \text{ es impar} \
-   \min\Big(OPT(i - 1) + 1, \; OPT\left(\frac{i}{2}\right) + 1\Big) &amp; \text{si } i \text{ es par}
-   \end{cases}$$</p>
+   $$OPT(i) = \begin{cases} OPT(i - 1) + 1 &amp; \text{si } i \text{ es impar} \ \min\Big(OPT(i - 1) + 1, \; OPT\left(\frac{i}{2}\right) + 1\Big) &amp; \text{si } i \text{ es par} \end{cases}$$</p>
 </li>
 <li>
 <p><strong>Orden de Llenado de la Tabla:</strong><br />
@@ -3490,34 +3489,34 @@ Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguro
     A(["Inicio: K = 10"]) --> B["DP[0] = 0"]
     B --> C["Bucle i de 1 hasta K"]
     C --> D["Candidato 1: DP[i-1] + 1 (Sumar 1)"]
-    D --> E{"¿i es par? (i % 2 == 0)"}
+    D --> E{"¿i es par?"}
     E -- No --> F["DP[i] = DP[i-1] + 1<br/>padre[i] = i - 1<br/>op[i] = '+1'"]
-    E -- Sí --> G{"¿DP[i/2] + 1 < DP[i]?"}
+    E -- Sí --> G{"¿DP[i/2] + 1 es menor que DP[i]?"}
     G -- Sí --> H["DP[i] = DP[i/2] + 1<br/>padre[i] = i / 2<br/>op[i] = '*2'"]
     G -- No --> F
     F --> I{"¿i == K?"}
     H --> I
     I -- No --> C
-    I -- Sí --> J["Backtracking desde K = 10 hasta 0 usando padre[actual]"]
+    I -- Sí --> J["Backtracking desde K = 10 hasta 0"]
     J --> K(["Retornar DP[10] = 5 y secuencia"])
 </div></div>
 <div class="mermaid-wrapper"><div class="mermaid">graph LR
-    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff;
-    classDef normal fill:#475569,stroke:#334155,stroke-width:1px,color:#fff;
+    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
+    classDef normal fill:#475569,stroke:#334155,stroke-width:1px,color:#fff
 
-    N0["0"]:::opt -->|"+1"| N1["1"]:::opt
-    N1 -->|"×2"| N2["2"]:::opt
-    N2 -->|"+1"| N3["3"]:::normal
-    N2 -->|"×2"| N4["4"]:::opt
-    N3 -->|"+1"| N4
-    N3 -->|"×2"| N6["6"]:::normal
-    N4 -->|"+1"| N5["5"]:::opt
-    N4 -->|"×2"| N8["8"]:::normal
-    N5 -->|"+1"| N6
-    N5 -->|"×2"| N10["10"]:::opt
-    N6 -->|"+1"| N7["7"]:::normal
-    N8 -->|"+1"| N9["9"]:::normal
-    N9 -->|"+1"| N10
+    N0["0"]:::opt -->|+1| N1["1"]:::opt
+    N1 -->|x2| N2["2"]:::opt
+    N2 -->|+1| N3["3"]:::normal
+    N2 -->|x2| N4["4"]:::opt
+    N3 -->|+1| N4
+    N3 -->|x2| N6["6"]:::normal
+    N4 -->|+1| N5["5"]:::opt
+    N4 -->|x2| N8["8"]:::normal
+    N5 -->|+1| N6
+    N5 -->|x2| N10["10"]:::opt
+    N6 -->|+1| N7["7"]:::normal
+    N8 -->|+1| N9["9"]:::normal
+    N9 -->|+1| N10
 </div></div>
 <div class="visual-trace-container">
   <span class="trace-node start-node">0</span>
@@ -6865,20 +6864,20 @@ Se define el problema de <strong>Asignación de Frecuencias (AF)</strong> de la 
 <p>Utilizá esta lista de verificación durante tu última hora de repaso antes de ingresar al aula:</p>
 <h3>A. Dominio de Paradigmas</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_74358" onchange="toggleChecklistItem('chk_74358', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_45231" onchange="toggleChecklistItem('chk_45231', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_9963" onchange="toggleChecklistItem('chk_9963', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_51389" onchange="toggleChecklistItem('chk_51389', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_48040" onchange="toggleChecklistItem('chk_48040', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_75255" onchange="toggleChecklistItem('chk_75255', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_46960" onchange="toggleChecklistItem('chk_46960', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_38512" onchange="toggleChecklistItem('chk_38512', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_27273" onchange="toggleChecklistItem('chk_27273', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_49373" onchange="toggleChecklistItem('chk_49373', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_81348" onchange="toggleChecklistItem('chk_81348', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_46935" onchange="toggleChecklistItem('chk_46935', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_10364" onchange="toggleChecklistItem('chk_10364', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_25814" onchange="toggleChecklistItem('chk_25814', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
 </ul>
 <h3>B. Ejecución en la Hoja de Examen</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_9946" onchange="toggleChecklistItem('chk_9946', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_87963" onchange="toggleChecklistItem('chk_87963', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_77929" onchange="toggleChecklistItem('chk_77929', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_29962" onchange="toggleChecklistItem('chk_29962', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_84934" onchange="toggleChecklistItem('chk_84934', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_75575" onchange="toggleChecklistItem('chk_75575', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_50655" onchange="toggleChecklistItem('chk_50655', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_56767" onchange="toggleChecklistItem('chk_56767', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
 </ul>
 </main>
 <script>
@@ -7005,9 +7004,8 @@ document.addEventListener("DOMContentLoaded", () => {
   loadSavedState();
   updateModeUI();
   applyFilters();
-  initTrainer();
-  initMathRendering();
   initMermaidDiagrams();
+  initMathRendering();
 });
 
 function initMathRendering() {
@@ -7015,11 +7013,10 @@ function initMathRendering() {
     renderMathInElement(document.body, {
       delimiters: [
         { left: "$$", right: "$$", display: true },
-        { left: "$", right: "$", display: false },
-        { left: "\(", right: "\)", display: false },
-        { left: "\[", right: "\]", display: true }
+        { left: "$", right: "$", display: false }
       ],
-      ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+      ignoredClasses: ["mermaid", "mermaid-wrapper", "code-container", "copy-code-btn"],
+      ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code", "svg"],
       throwOnError: false
     });
   }

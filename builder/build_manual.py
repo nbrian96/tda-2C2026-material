@@ -19,11 +19,70 @@ import sec09_integradores
 import sec10_tipo_parcial
 import sec11_errores_checklist
 
+import concurrent.futures
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MD_FILE = os.path.join(BASE_DIR, "guia_tda_parciales.md")
 PDF_FILE = os.path.join(BASE_DIR, "guia_tda_parciales.pdf")
 HTML_FILE = os.path.join(BASE_DIR, "guia_tda_parciales.html")
 INDEX_FILE = os.path.join(BASE_DIR, "index.html")
+
+PARADIGM_TARGETS = [
+    {
+        "filename": "dyc.html",
+        "title": "División y Conquista",
+        "paradigm_key": "dyc",
+        "modules": [sec01_intro_and_matrix, sec02_dyc]
+    },
+    {
+        "filename": "greedy.html",
+        "title": "Algoritmos Greedy (Voraces)",
+        "paradigm_key": "greedy",
+        "modules": [sec03_greedy]
+    },
+    {
+        "filename": "backtracking.html",
+        "title": "Backtracking y Branch & Bound",
+        "paradigm_key": "backtracking",
+        "modules": [sec04_backtracking]
+    },
+    {
+        "filename": "dp.html",
+        "title": "Programación Dinámica (PD)",
+        "paradigm_key": "dp",
+        "modules": [sec05_dp]
+    },
+    {
+        "filename": "pl.html",
+        "title": "Programación Lineal y PLI",
+        "paradigm_key": "pl",
+        "modules": [sec06_pl]
+    },
+    {
+        "filename": "flujo.html",
+        "title": "Redes de Flujo",
+        "paradigm_key": "flujo",
+        "modules": [sec07_flujo]
+    },
+    {
+        "filename": "reducciones.html",
+        "title": "Reducciones y NP-Completitud",
+        "paradigm_key": "reducciones",
+        "modules": [sec08_reducciones]
+    },
+    {
+        "filename": "integradores.html",
+        "title": "Problemas Integradores",
+        "paradigm_key": "integradores",
+        "modules": [sec09_integradores]
+    },
+    {
+        "filename": "tipo_parcial.html",
+        "title": "Simulacros Tipo Parcial y Checklist",
+        "paradigm_key": "tipo_parcial",
+        "modules": [sec10_tipo_parcial, sec11_errores_checklist]
+    }
+]
 
 def assemble_markdown():
     print("[1/5] Ensamblando secciones en Markdown...")
@@ -63,13 +122,43 @@ def verify_markdown(md_text):
     for ej in ejercicios:
         print(f"        -> {ej}")
 
+def compile_single_page(target):
+    out_path = os.path.join(BASE_DIR, target["filename"])
+    sections_md = "\n\n---\n\n".join([m.get_content() for m in target["modules"]])
+    html_interactive_builder.build_interactive_html(
+        sections_md,
+        out_path,
+        active_paradigm=target["paradigm_key"],
+        page_title=target["title"]
+    )
+    return target["filename"]
+
 def convert_to_html(md_text):
-    print("[3/5] Convirtiendo Markdown a HTML interactivo y optimizado para estudio...")
+    print("[3/5] Convirtiendo y modularizando HTML para GitHub Pages (Paralelizado)...")
     import shutil
-    res = html_interactive_builder.build_interactive_html(md_text, HTML_FILE)
+    
+    # 1. Compilar página principal maestra (index.html y guia_tda_parciales.html)
+    html_interactive_builder.build_interactive_html(
+        md_text,
+        HTML_FILE,
+        active_paradigm="all",
+        page_title="Guía Interactiva Completa (40 Ejercicios)"
+    )
     shutil.copyfile(HTML_FILE, INDEX_FILE)
-    print(f"      Copia para GitHub Pages generada en: {INDEX_FILE}")
-    return res
+    print(f"      Página principal generada en: {INDEX_FILE}")
+
+    # 2. Compilar páginas modulares por paradigma en paralelo
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = {executor.submit(compile_single_page, target): target["filename"] for target in PARADIGM_TARGETS}
+        for future in concurrent.futures.as_completed(futures):
+            fname = futures[future]
+            try:
+                future.result()
+                print(f"      Módulo generado en paralelo: {fname}")
+            except Exception as e:
+                print(f"      ERROR generando {fname}: {e}")
+                raise e
+    return INDEX_FILE
 
 def find_browser():
     import shutil

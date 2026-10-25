@@ -1,0 +1,2743 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teoría de Algoritmos — Simulacros Tipo Parcial y Checklist (FIUBA)</title>
+<!-- KaTeX para renderizado matemático ultra veloz -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<!-- Mermaid para diagramas de flujo y grafos dinámicos -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<style>
+
+:root {
+  --primary-color: #1a365d;
+  --primary-light: #2b6cb0;
+  --accent-color: #3182ce;
+  --accent-soft: #ebf8ff;
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --imprescindible-color: #e53e3e;
+  --imprescindible-bg: #fff5f5;
+  --importante-color: #d69e2e;
+  --importante-bg: #fffaf0;
+  --mastered-color: #38a169;
+  --mastered-bg: #f0fff4;
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'Liberation Mono', 'DejaVu Sans Mono', Consolas, 'Courier New', monospace;
+}
+
+body.dark-mode {
+  --primary-color: #90cdf4;
+  --primary-light: #63b3ed;
+  --accent-color: #4299e1;
+  --accent-soft: #2a4365;
+  --bg-main: #0f172a;
+  --bg-card: #1e293b;
+  --text-main: #f1f5f9;
+  --text-muted: #94a3b8;
+  --border-color: #334155;
+  --imprescindible-bg: #3c1e1e;
+  --importante-bg: #3d3215;
+  --mastered-bg: #143521;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  font-size: 10.5pt;
+  line-height: 1.55;
+  color: var(--text-main);
+  background-color: var(--bg-main);
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  overflow-x: hidden;
+}
+
+.main-content-wrapper {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 20px 20px 80px 20px;
+}
+
+/* Headings */
+h1, h2, h3, h4 {
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-top: 24px;
+  margin-bottom: 10px;
+}
+
+h1 {
+  font-size: 22pt;
+  border-bottom: 3px solid var(--accent-color);
+  padding-bottom: 8px;
+}
+
+h2 {
+  font-size: 15pt;
+  border-bottom: 1.5px solid var(--border-color);
+  padding-bottom: 6px;
+  margin-top: 32px;
+  scroll-margin-top: 175px;
+}
+
+h3 {
+  font-size: 12pt;
+  scroll-margin-top: 175px;
+}
+
+p {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+ul, ol {
+  margin-top: 0;
+  margin-bottom: 10px;
+  padding-left: 24px;
+}
+
+li {
+  margin-bottom: 4px;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--border-color);
+  margin: 24px 0;
+}
+
+/* Pre & Code */
+pre {
+  background-color: #f1f5f9;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-family: var(--font-mono);
+  font-size: 8.8pt;
+  line-height: 1.4;
+  overflow-x: auto;
+  margin: 10px 0;
+  color: #0f172a;
+}
+
+body.dark-mode pre {
+  background-color: #0b1120;
+  color: #e2e8f0;
+  border-color: #334155;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 8.8pt;
+  background-color: rgba(99, 102, 241, 0.08);
+  padding: 2px 5px;
+  border-radius: 4px;
+  color: #2563eb;
+}
+
+body.dark-mode code {
+  color: #93c5fd;
+  background-color: rgba(147, 197, 253, 0.12);
+}
+
+pre code {
+  background-color: transparent;
+  padding: 0;
+  color: inherit;
+}
+
+.code-container {
+  position: relative;
+  margin: 10px 0;
+}
+
+.code-container pre {
+  margin: 0;
+}
+
+.copy-code-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 7.8pt;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  z-index: 5;
+}
+
+.copy-code-btn:hover {
+  background: var(--accent-color);
+  color: #ffffff;
+  border-color: var(--accent-color);
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 14px 0;
+  font-size: 9.5pt;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+th, td {
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #edf2f7;
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+body.dark-mode th {
+  background-color: #1e293b;
+  color: #90cdf4;
+}
+
+tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+body.dark-mode tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+blockquote {
+  border-left: 4px solid var(--accent-color);
+  background-color: var(--accent-soft);
+  padding: 10px 14px;
+  margin: 12px 0;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* KaTeX Mathematical Formulas */
+.katex {
+  font-size: 1.05em;
+}
+.katex-display {
+  margin: 16px 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 0;
+}
+body.dark-mode .katex {
+  color: #e2e8f0;
+}
+
+/* Proof & Theoretical Cards */
+.proof-card {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-left: 4px solid #3b82f6;
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin: 14px 0;
+}
+body.dark-mode .proof-card {
+  background: #1e293b;
+  border-color: #334155;
+  border-left-color: #60a5fa;
+}
+.proof-card-header {
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Visual Decision & Flow Nodes */
+.visual-trace-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+.trace-node {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  border: 2px solid var(--accent-color);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: 700;
+  font-size: 9.5pt;
+  color: var(--primary-color);
+  min-width: 44px;
+  box-shadow: var(--shadow-sm);
+}
+body.dark-mode .trace-node {
+  background: #0f172a;
+  border-color: #63b3ed;
+  color: #90cdf4;
+}
+.trace-node.start-node {
+  border-color: #10b981;
+  color: #065f46;
+}
+body.dark-mode .trace-node.start-node {
+  border-color: #34d399;
+  color: #6ee7b7;
+}
+.trace-node.end-node {
+  border-color: #8b5cf6;
+  color: #5b21b6;
+}
+body.dark-mode .trace-node.end-node {
+  border-color: #a78bfa;
+  color: #c4b5fd;
+}
+.trace-arrow {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 8pt;
+  font-weight: 700;
+  color: #059669;
+  padding: 0 4px;
+}
+body.dark-mode .trace-arrow {
+  color: #34d399;
+}
+.trace-arrow .arrow-op {
+  background: rgba(16, 185, 129, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+}
+body.dark-mode .trace-arrow .arrow-op {
+  background: rgba(52, 211, 153, 0.2);
+}
+
+/* Mermaid Wrapper */
+.mermaid-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin: 16px 0;
+  overflow-x: auto;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+body.dark-mode .mermaid-wrapper {
+  background: #1e293b;
+  border-color: #334155;
+}
+.mermaid {
+  display: flex;
+  justify-content: center;
+}
+
+/* HUD Top Bar */
+.hud-top-bar {
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  box-shadow: var(--shadow-md);
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+}
+
+.hud-container {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 8px 16px;
+}
+
+.hud-row-primary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hud-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hud-logo-icon {
+  font-size: 20pt;
+}
+
+.hud-title {
+  font-size: 11.5pt;
+  margin: 0;
+  font-weight: 800;
+  color: var(--primary-color);
+  line-height: 1.2;
+}
+
+.hud-subtitle {
+  font-size: 8pt;
+  color: var(--text-muted);
+  display: block;
+}
+
+.hud-mode-selector {
+  display: flex;
+  background: rgba(0, 0, 0, 0.04);
+  padding: 3px;
+  border-radius: var(--radius-md);
+  gap: 3px;
+}
+
+body.dark-mode .hud-mode-selector {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.mode-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  font-size: 8.5pt;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mode-btn:hover {
+  color: var(--text-main);
+}
+
+.mode-btn.active {
+  background: var(--accent-color);
+  color: #ffffff;
+  box-shadow: var(--shadow-sm);
+}
+
+.mode-badge {
+  background: rgba(255, 255, 255, 0.25);
+  font-size: 7.5pt;
+  padding: 1px 5px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.mode-btn:not(.active) .mode-badge {
+  background: var(--border-color);
+  color: var(--text-main);
+}
+
+.hud-quick-tools {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.tool-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  padding: 5px 10px;
+  font-size: 8.5pt;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--text-main);
+  transition: all 0.15s ease;
+}
+
+.tool-btn:hover {
+  background: var(--accent-soft);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.tool-btn.highlight-tool {
+  background: linear-gradient(135deg, rgba(49, 130, 206, 0.12), rgba(128, 90, 213, 0.12));
+  border-color: rgba(49, 130, 206, 0.5);
+  color: var(--primary-color);
+  font-weight: 700;
+}
+
+body.dark-mode .tool-btn.highlight-tool {
+  background: linear-gradient(135deg, rgba(66, 153, 225, 0.22), rgba(159, 122, 234, 0.22));
+  border-color: rgba(66, 153, 225, 0.6);
+  color: #90cdf4;
+}
+
+.tool-btn.highlight-tool:hover {
+  background: var(--accent-color);
+  color: #ffffff;
+  border-color: var(--accent-color);
+  transform: translateY(-1px);
+}
+
+.hud-row-secondary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.hud-progress-wrap {
+  flex: 1;
+  min-width: 250px;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 8pt;
+  margin-bottom: 3px;
+  color: var(--text-muted);
+}
+
+.progress-numbers strong {
+  color: var(--mastered-color);
+}
+
+.progress-track {
+  height: 7px;
+  background: var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #38a169, #48bb78);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.hud-search-box {
+  position: relative;
+  width: 320px;
+}
+
+.hud-search-box input {
+  width: 100%;
+  padding: 6px 28px 6px 30px;
+  font-size: 8.5pt;
+  border: 1px solid var(--border-color);
+  border-radius: 20px;
+  background: var(--bg-main);
+  color: var(--text-main);
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.hud-search-box input:focus {
+  border-color: var(--accent-color);
+  background: var(--bg-card);
+}
+
+.search-icon {
+  position: absolute;
+  left: 9px;
+  top: 6px;
+  font-size: 9pt;
+  color: var(--text-muted);
+}
+
+.clear-search-btn {
+  position: absolute;
+  right: 8px;
+  top: 5px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 9pt;
+}
+
+.hud-row-pills {
+  margin-top: 6px;
+}
+
+.filter-pills-scroll {
+  display: flex;
+  gap: 5px;
+  overflow-x: auto;
+  padding-bottom: 3px;
+  scrollbar-width: none;
+}
+
+.filter-pills-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.pill-btn {
+  white-space: nowrap;
+  font-size: 7.8pt;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.pill-btn:hover {
+  background: var(--accent-soft);
+  color: var(--accent-color);
+}
+
+.pill-btn.active {
+  background: var(--primary-color);
+  color: #ffffff;
+  border-color: var(--primary-color);
+}
+
+body.dark-mode .pill-btn.active {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+/* Emergency Banner */
+.emergency-banner {
+  background: #fff5f5;
+  border-top: 1px solid #feb2b2;
+  color: #c53030;
+  font-size: 8.5pt;
+  padding: 6px 16px;
+}
+
+body.dark-mode .emergency-banner {
+  background: #3c1e1e;
+  border-color: #742a2a;
+  color: #feb2b2;
+}
+
+.banner-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.banner-icon {
+  font-size: 11pt;
+}
+
+.banner-dismiss {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  font-size: 10pt;
+}
+
+/* Exercise Cards */
+.exercise-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--primary-color);
+  border-radius: var(--radius-md);
+  margin: 22px 0;
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+  overflow: hidden;
+  scroll-margin-top: 175px;
+}
+
+.exercise-card[data-priority="imprescindible"] {
+  border-left-color: var(--imprescindible-color);
+}
+
+.exercise-card[data-priority="importante"] {
+  border-left-color: var(--importante-color);
+}
+
+.exercise-card.is-mastered {
+  border-left-color: var(--mastered-color) !important;
+  background-color: var(--mastered-bg);
+}
+
+.exercise-card.is-hidden {
+  display: none !important;
+}
+
+.card-header {
+  padding: 12px 16px;
+  background: rgba(0, 0, 0, 0.015);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+body.dark-mode .card-header {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.card-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.exercise-pill-number {
+  background: var(--primary-color);
+  color: #ffffff;
+  font-size: 8.5pt;
+  font-weight: 800;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  letter-spacing: 0.5px;
+}
+
+body.dark-mode .exercise-pill-number {
+  background: var(--accent-color);
+}
+
+.exercise-title {
+  margin: 0;
+  font-size: 11.5pt;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.card-header-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 7.5pt;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.badge-priority-imprescindible {
+  background: var(--imprescindible-bg);
+  color: var(--imprescindible-color);
+  border: 1px solid rgba(229, 62, 62, 0.3);
+}
+
+.badge-priority-importante {
+  background: var(--importante-bg);
+  color: var(--importante-color);
+  border: 1px solid rgba(214, 158, 46, 0.3);
+}
+
+.badge-paradigm {
+  background: var(--accent-soft);
+  color: var(--accent-color);
+  border: 1px solid rgba(49, 130, 206, 0.25);
+}
+
+.badge-origin {
+  background: rgba(0, 0, 0, 0.04);
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+  text-transform: none;
+  font-weight: 600;
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+body.dark-mode .badge-origin {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.card-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mastered-label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 8.5pt;
+  font-weight: 600;
+  cursor: pointer;
+  user-select: none;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.03);
+  border: 1px solid var(--border-color);
+  transition: all 0.15s ease;
+}
+
+body.dark-mode .mastered-label {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.mastered-checkbox {
+  cursor: pointer;
+  accent-color: var(--mastered-color);
+}
+
+.card-body {
+  padding: 16px;
+}
+
+.exercise-statement-box {
+  margin-bottom: 14px;
+}
+
+.exercise-statement-box p {
+  line-height: 1.5;
+}
+
+/* Solution Drawer / Accordion */
+.exercise-solution-drawer {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.015);
+  margin-top: 14px;
+  overflow: hidden;
+}
+
+body.dark-mode .exercise-solution-drawer {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.solution-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: var(--bg-card);
+  cursor: pointer;
+  font-size: 9.5pt;
+  font-weight: 700;
+  color: var(--accent-color);
+  user-select: none;
+  transition: background 0.15s ease;
+}
+
+.solution-summary:hover {
+  background: var(--accent-soft);
+}
+
+.summary-toggle-icon {
+  font-size: 8.5pt;
+  transition: transform 0.2s ease;
+}
+
+details[open] .summary-toggle-icon {
+  transform: rotate(90deg);
+}
+
+.summary-title {
+  flex: 1;
+}
+
+.summary-badge {
+  font-size: 7.5pt;
+  font-weight: 600;
+  background: #edf2f7;
+  color: #4a5568;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+body.dark-mode .summary-badge {
+  background: #334155;
+  color: #cbd5e1;
+}
+
+.solution-inner-content {
+  padding: 14px 16px;
+  border-top: 1px solid var(--border-color);
+  background: var(--bg-card);
+}
+
+.btn-toggle-solution {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  font-size: 8pt;
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--accent-color);
+  cursor: pointer;
+}
+
+.btn-toggle-solution:hover {
+  background: var(--accent-soft);
+}
+
+/* Warning & Trap Callout */
+.trap-callout {
+  background: #fffaf0;
+  border: 1px solid #fbd38d;
+  border-left: 4px solid #dd6b20;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin: 14px 0;
+}
+
+body.dark-mode .trap-callout {
+  background: #332612;
+  border-color: #7b4e18;
+  border-left-color: #ed8936;
+}
+
+.trap-header {
+  font-size: 9pt;
+  font-weight: 800;
+  color: #c05621;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+body.dark-mode .trap-header {
+  color: #fbd38d;
+}
+
+/* Trainer Box */
+.trainer-box {
+  background: var(--bg-card);
+  border: 2px solid var(--accent-color);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  margin: 28px 0;
+  box-shadow: var(--shadow-md);
+}
+
+.trainer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 12px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.trainer-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.trainer-badge-icon {
+  font-size: 24pt;
+}
+
+.trainer-title {
+  margin: 0;
+  font-size: 13.5pt;
+  font-weight: 800;
+}
+
+.trainer-subtitle {
+  margin: 0;
+  font-size: 8.5pt;
+  color: var(--text-muted);
+}
+
+.stat-pill {
+  background: var(--accent-soft);
+  color: var(--accent-color);
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 9pt;
+  font-weight: 600;
+}
+
+.trainer-card {
+  background: var(--bg-main);
+  border-radius: var(--radius-md);
+  padding: 16px;
+}
+
+.trainer-card-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 8.5pt;
+  color: var(--text-muted);
+  margin-bottom: 10px;
+}
+
+.trainer-prompt {
+  font-size: 11pt;
+  font-weight: 600;
+  line-height: 1.5;
+  margin-bottom: 18px;
+  color: var(--text-main);
+}
+
+.trainer-options-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.trainer-btn {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 9pt;
+  font-weight: 600;
+  color: var(--text-main);
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.15s ease;
+}
+
+.trainer-btn:hover:not(:disabled) {
+  border-color: var(--accent-color);
+  background: var(--accent-soft);
+}
+
+.trainer-btn.btn-correct {
+  background: #f0fff4 !important;
+  border-color: #38a169 !important;
+  color: #22543d !important;
+}
+
+.trainer-btn.btn-wrong {
+  background: #fff5f5 !important;
+  border-color: #e53e3e !important;
+  color: #742a2a !important;
+}
+
+.trainer-feedback {
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 14px;
+}
+
+.trainer-feedback.feedback-success {
+  background: #f0fff4;
+  border-left: 4px solid #38a169;
+  color: #22543d;
+}
+
+.trainer-feedback.feedback-error {
+  background: #fff5f5;
+  border-left: 4px solid #e53e3e;
+  color: #742a2a;
+}
+
+body.dark-mode .trainer-feedback.feedback-success {
+  background: #143521;
+  color: #9ae6b4;
+}
+
+body.dark-mode .trainer-feedback.feedback-error {
+  background: #3c1e1e;
+  color: #feb2b2;
+}
+
+.feedback-result {
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.feedback-trigger {
+  font-size: 9pt;
+  line-height: 1.4;
+}
+
+.trainer-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn {
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 9pt;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--accent-color);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: var(--primary-light);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid var(--border-color);
+}
+
+.btn-ghost:hover {
+  background: var(--bg-card);
+  color: var(--text-main);
+}
+
+/* Interactive Checklist */
+.checklist-interactive-item {
+  list-style: none;
+  margin-left: -20px;
+  margin-bottom: 6px;
+}
+
+.chk-label {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.exam-checklist-input {
+  margin-top: 3px;
+  accent-color: var(--accent-color);
+  cursor: pointer;
+}
+
+.exam-checklist-input:checked + .chk-custom + .chk-text {
+  text-decoration: line-through;
+  color: var(--text-muted);
+}
+
+/* Cheatsheet Drawer */
+.drawer-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(3px);
+  z-index: 2000;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+
+.drawer-backdrop.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.cheatsheet-drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 500px;
+  max-width: 90vw;
+  background: var(--bg-card);
+  box-shadow: -5px 0 20px rgba(0, 0, 0, 0.15);
+  z-index: 2001;
+  transform: translateX(100%);
+  transition: transform 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.cheatsheet-drawer.is-open {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.drawer-title-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.drawer-title-group h2 {
+  margin: 0;
+  font-size: 13pt;
+  border: none;
+  padding: 0;
+}
+
+.drawer-close-btn {
+  background: transparent;
+  border: none;
+  font-size: 14pt;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.drawer-content {
+  padding: 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.drawer-section {
+  margin-bottom: 24px;
+}
+
+.drawer-section h3 {
+  font-size: 11pt;
+  color: var(--accent-color);
+  margin-top: 0;
+  margin-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 4px;
+}
+
+.formula-card {
+  background: var(--bg-main);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-size: 9pt;
+}
+
+.steps-list {
+  padding-left: 18px;
+  font-size: 9pt;
+}
+
+.steps-list li {
+  margin-bottom: 6px;
+}
+
+.warning-box {
+  background: #fff5f5;
+  border: 1px solid #feb2b2;
+  border-radius: var(--radius-sm);
+  padding: 12px;
+}
+
+body.dark-mode .warning-box {
+  background: #3c1e1e;
+  border-color: #742a2a;
+}
+
+.warning-box h3 {
+  color: #c53030;
+  border-color: #feb2b2;
+}
+
+/* Floating Actions */
+.floating-quick-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 800;
+}
+
+.fab-btn {
+  background: var(--accent-color);
+  color: #ffffff;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 16px;
+  font-size: 9.5pt;
+  font-weight: 700;
+  box-shadow: var(--shadow-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.fab-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  background: var(--primary-light);
+}
+
+.fab-secondary {
+  background: var(--bg-card);
+  color: var(--text-main);
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  align-self: flex-end;
+}
+
+/* RESPONSIVE DESIGN FOR MOBILE & TABLET */
+@media (max-width: 768px) {
+  body {
+    font-size: 10pt;
+  }
+
+  .main-content-wrapper {
+    padding: 12px 10px 80px 10px;
+  }
+
+  h1 {
+    font-size: 16pt;
+    line-height: 1.25;
+  }
+
+  h2 {
+    font-size: 13pt;
+    margin-top: 24px;
+    scroll-margin-top: 130px;
+  }
+
+  h3 {
+    font-size: 11pt;
+    scroll-margin-top: 130px;
+  }
+
+  .hud-container {
+    padding: 6px 8px;
+  }
+
+  .hud-brand {
+    gap: 6px;
+  }
+
+  .hud-logo-icon {
+    font-size: 16pt;
+  }
+
+  .hud-title {
+    font-size: 9.6pt;
+  }
+
+  .hud-subtitle {
+    display: none;
+  }
+
+  .mode-label-long {
+    display: none;
+  }
+
+  .mode-label-short {
+    display: inline;
+  }
+
+  .mode-btn {
+    padding: 5px 6px;
+    font-size: 8pt;
+    gap: 3px;
+  }
+
+  .hud-quick-tools {
+    gap: 4px;
+  }
+
+  .hud-quick-tools .tool-text {
+    display: none;
+  }
+
+  .tool-btn {
+    padding: 5px 7px;
+    font-size: 9pt;
+  }
+
+  .hud-row-secondary {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .hud-progress-wrap {
+    min-width: 100%;
+  }
+
+  .hud-search-box {
+    width: 100%;
+  }
+
+  .hud-search-box input {
+    font-size: 9pt;
+    padding: 8px 28px 8px 30px;
+  }
+
+  .search-icon {
+    top: 8px;
+  }
+
+  .clear-search-btn {
+    top: 7px;
+  }
+
+  .card-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 10px 12px;
+  }
+
+  .card-header-left {
+    width: 100%;
+  }
+
+  .card-header-meta {
+    width: 100%;
+  }
+
+  .badge-origin {
+    max-width: 100%;
+    white-space: normal;
+  }
+
+  .card-header-actions {
+    width: 100%;
+    display: flex;
+    gap: 8px;
+  }
+
+  .mastered-label {
+    flex: 1;
+    justify-content: center;
+    padding: 7px 10px;
+    font-size: 8.8pt;
+  }
+
+  .btn-toggle-solution {
+    flex: 1;
+    justify-content: center;
+    padding: 7px 10px;
+    font-size: 8.8pt;
+  }
+
+  .card-body {
+    padding: 12px 10px;
+  }
+
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  pre {
+    font-size: 7.8pt;
+    padding: 10px 8px;
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .trainer-box {
+    padding: 14px 10px;
+    margin: 20px 0;
+  }
+
+  .trainer-title {
+    font-size: 11.5pt;
+  }
+
+  .trainer-options-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .trainer-btn {
+    padding: 12px 14px;
+    font-size: 9.5pt;
+  }
+
+  .cheatsheet-drawer {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .floating-quick-btn {
+    bottom: 12px;
+    right: 12px;
+    gap: 6px;
+  }
+
+  .fab-btn {
+    padding: 8px 12px;
+    font-size: 8.5pt;
+  }
+
+  .exercise-card {
+    scroll-margin-top: 130px;
+  }
+}
+
+@media (min-width: 769px) {
+  .mode-label-short {
+    display: none;
+  }
+}
+
+/* PRINT RULES */
+@media print {
+  @page {
+    size: A4;
+    margin: 18mm 14mm 18mm 14mm;
+    @bottom-center {
+      content: "Teoría de Algoritmos — FIUBA | Página " counter(page);
+      font-family: 'Liberation Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 8pt;
+      color: #718096;
+    }
+  }
+
+  body {
+    padding-top: 0 !important;
+    background: #ffffff !important;
+    color: #2d3748 !important;
+    font-size: 10pt !important;
+  }
+
+  .hud-top-bar,
+  .emergency-banner,
+  .cheatsheet-drawer,
+  .drawer-backdrop,
+  .floating-quick-btn,
+  .card-header-actions,
+  .copy-code-btn,
+  .trainer-box,
+  .solution-summary {
+    display: none !important;
+  }
+
+  .exercise-card {
+    border: 1px solid #e2e8f0 !important;
+    border-left: 4px solid #3182ce !important;
+    box-shadow: none !important;
+    margin: 16px 0 !important;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .exercise-solution-drawer {
+    border: none !important;
+    background: transparent !important;
+    display: block !important;
+  }
+
+  .solution-inner-content {
+    display: block !important;
+    padding: 0 !important;
+    border: none !important;
+  }
+
+  .is-hidden {
+    display: block !important;
+  }
+}
+
+</style>
+</head>
+<body>
+
+<!-- Top Sticky HUD -->
+<header class="hud-top-bar" id="hudTopBar">
+  <div class="hud-container">
+    <div class="hud-row-primary">
+      <div class="hud-brand">
+        <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;">
+          <span class="hud-logo-icon">🚀</span>
+          <div>
+            <h1 class="hud-title">TDA — Guía Interactiva de Parciales</h1>
+            <span class="hud-subtitle">Edición Intensiva: Salvando el Cuatrimestre (2024–2025)</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="hud-mode-selector" role="group" aria-label="Modo de Estudio">
+        <button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')">
+          <span class="mode-icon">⚡</span>
+          <span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span>
+          <span class="mode-badge" id="badgeEmergencyCount">32</span>
+        </button>
+        <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')">
+          <span class="mode-icon">🎯</span>
+          <span class="mode-label"><span class="mode-label-long">Modo Táctico (1 sem)</span><span class="mode-label-short">1 sem</span></span>
+          <span class="mode-badge">40</span>
+        </button>
+        <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')">
+          <span class="mode-icon">📚</span>
+          <span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span>
+          <span class="mode-badge">40</span>
+        </button>
+      </div>
+
+      <div class="hud-quick-tools">
+        <button class="tool-btn highlight-tool" onclick="scrollToExercise(35)" title="Ver La Mochila resuelta en todos los paradigmas">
+          <span class="tool-icon">🎒</span> <span class="tool-text">Mochila Multi-P</span>
+        </button>
+        <button class="tool-btn highlight-tool" onclick="scrollToExercise(36)" title="Ver El Viajante (TSP) resuelto en todos los paradigmas">
+          <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
+        </button>
+        <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
+          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
+        </button>
+        <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
+          <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
+        </button>
+        <button class="tool-btn" onclick="scrollToTrainer()" title="Ir al simulador de 30 segundos">
+          <span class="tool-icon">⚡</span> <span class="tool-text">Simulador 30s</span>
+        </button>
+        <button class="tool-btn" onclick="toggleDarkMode()" id="btnDarkMode" title="Cambiar tema">
+          <span class="tool-icon">🌓</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="hud-row-secondary">
+      <div class="hud-progress-wrap">
+        <div class="progress-info">
+          <span class="progress-title">Progreso en modo activo:</span>
+          <span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">32</span> dominados (<span id="progPercent">0%</span>)</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+        </div>
+      </div>
+
+      <div class="hud-search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (ej. mochila, viajante, tsp, knapsack, held-karp, arnook, invap)..." oninput="handleSearch(this.value)">
+        <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display: none;">✕</button>
+      </div>
+    </div>
+
+    <!-- Filter Pills por Paradigma (Enlaces modulares para GitHub Pages) -->
+    <div class="hud-row-pills">
+      <div class="filter-pills-scroll" id="paradigmPills">
+        <a href="index.html" class="pill-btn" data-paradigm="all">📚 Todos (40)</a>
+        <a href="dyc.html" class="pill-btn" data-paradigm="dyc">🔷 DyC (3)</a>
+        <a href="greedy.html" class="pill-btn" data-paradigm="greedy">🔶 Greedy (5)</a>
+        <a href="backtracking.html" class="pill-btn" data-paradigm="backtracking">🟣 Backtracking (4)</a>
+        <a href="dp.html" class="pill-btn" data-paradigm="dp">🟢 Prog. Dinámica (6)</a>
+        <a href="pl.html" class="pill-btn" data-paradigm="pl">🔵 Prog. Lineal (5)</a>
+        <a href="flujo.html" class="pill-btn" data-paradigm="flujo">🔴 Redes de Flujo (4)</a>
+        <a href="reducciones.html" class="pill-btn" data-paradigm="reducciones">🟡 Reducciones NP (4)</a>
+        <a href="integradores.html" class="pill-btn" data-paradigm="integradores">⚡ Integradores (5)</a>
+        <a href="tipo_parcial.html" class="pill-btn active" data-paradigm="tipo_parcial">📝 Tipo Parcial (4)</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notification Banner de Modo Emergencia -->
+  <div class="emergency-banner" id="emergencyBanner">
+    <div class="banner-inner">
+      <span class="banner-icon">⚡</span>
+      <span><strong>Modo Emergencia (48–72h):</strong> Mostrando los 32 ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de los exámenes reales y problemas canónicos.</span>
+      <button class="banner-dismiss" onclick="dismissBanner()">✕</button>
+    </div>
+  </div>
+</header>
+
+<!-- Drawer de Fórmulas y Recetas Rápidas -->
+<div class="drawer-backdrop" id="drawerBackdrop" onclick="closeCheatsheet()"></div>
+<aside class="cheatsheet-drawer" id="cheatsheetDrawer" aria-hidden="true">
+  <div class="drawer-header">
+    <div class="drawer-title-group">
+      <span class="drawer-icon">📐</span>
+      <h2>Fórmulas y Recetas Rápidas de Parcial</h2>
+    </div>
+    <button class="drawer-close-btn" onclick="closeCheatsheet()" aria-label="Cerrar">✕</button>
+  </div>
+
+  <div class="drawer-content">
+    <section class="drawer-section">
+      <h3>1. Teorema Maestro (División y Conquista)</h3>
+      <div class="formula-card">
+        <code>T(n) = a · T(n/b) + O(nᶜ)</code> (con a ≥ 1, b &gt; 1, c ≥ 0)
+        <ul>
+          <li><strong>Caso 1 (Hojas dominan):</strong> Si <code>log_b(a) &gt; c</code> ⟹ <strong>O(n^(log_b a))</strong></li>
+          <li><strong>Caso 2 (Balance):</strong> Si <code>log_b(a) = c</code> ⟹ <strong>O(nᶜ · log n)</strong></li>
+          <li><strong>Caso 3 (Raíz domina):</strong> Si <code>log_b(a) &lt; c</code> ⟹ <strong>O(nᶜ)</strong> <em>(si a·f(n/b) ≤ k·f(n))</em></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="drawer-section">
+      <h3>2. Esquema de 4 Pasos Obligatorios para NP-C</h3>
+      <ol class="steps-list">
+        <li><strong>Certificado y Verificador en NP:</strong> Definir certificado polinomial C y algoritmo verificador en tiempo O(nᵏ).</li>
+        <li><strong>Problema conocido en NPC:</strong> Seleccionar problema base A ∈ NPC (Vertex Cover, 3-SAT, Ciclo Ham, Subset Sum).</li>
+        <li><strong>Transformación polinomial:</strong> Definir f(I_A) → I_B computable en tiempo polinomial.</li>
+        <li><strong>Demostración Bidireccional:</strong>
+          <ul>
+            <li><strong>Ida (⟹):</strong> Si I_A es instancia SI de A ⟹ f(I_A) es instancia SI de B.</li>
+            <li><strong>Vuelta (⟸):</strong> Si f(I_A) es instancia SI de B ⟹ I_A es instancia SI de A.</li>
+          </ul>
+        </li>
+      </ol>
+    </section>
+
+    <section class="drawer-section">
+      <h3>3. Los 5 Pasos de Programación Dinámica</h3>
+      <ol class="steps-list">
+        <li><strong>Definición semántica del Estado:</strong> Explicar con palabras qué significa OPT(i, w).</li>
+        <li><strong>Casos Base:</strong> Inicializar explícitamente celdas triviales y estados infactibles (-∞ o +∞).</li>
+        <li><strong>Ecuación de Recurrencia:</strong> Decisión local (ej. max(OPT(i-1, w), OPT(i-1, w - w_i) + v_i)).</li>
+        <li><strong>Orden de Llenado:</strong> Especificar dirección bottom-up (filas crecientes, columnas crecientes).</li>
+        <li><strong>Algoritmo de Reconstrucción:</strong> Rastrear las decisiones para devolver los elementos elegidos.</li>
+      </ol>
+    </section>
+
+    <section class="drawer-section">
+      <h3>4. Reglas de Oro de Programación Lineal (PLI)</h3>
+      <ul>
+        <li>Definir variables de decisión con su dominio explícito (x_i ∈ {0, 1} o y_j ≥ 0).</li>
+        <li><strong>¡PROHIBIDO!</strong> Multiplicar variables de decisión (x_i · y_j anula el ejercicio).</li>
+        <li><strong>Linealizar Min/Max:</strong> min z sujeto a z ≥ f_i(x).</li>
+        <li>Contar explícitamente cantidad de variables y restricciones si el enunciado lo pide.</li>
+      </ul>
+    </section>
+
+    <section class="drawer-section">
+      <h3>5. Redes de Flujo (Ford-Fulkerson)</h3>
+      <ul>
+        <li>Construir super-fuente s y super-sumidero t para entradas/salidas múltiples.</li>
+        <li>Capacidades en aristas dirigidas. Red residual G_f con aristas hacia atrás con capacidad f(u, v).</li>
+        <li><strong>Teorema Max-Flow Min-Cut:</strong> Flujo máximo = Capacidad del corte mínimo (S, T).</li>
+        <li><strong>Teorema de Integralidad:</strong> Capacidades enteras garantizan flujo entero (clave en emparejamientos).</li>
+      </ul>
+    </section>
+
+    <section class="drawer-section warning-box">
+      <h3>⚠️ Errores Prohibidos que Anulan el Ejercicio</h3>
+      <ul>
+        <li>❌ <strong>Reducir al revés en NP-C:</strong> Jamás hagas B ≤_P A. Siempre A_conocido ≤_P B_nuevo.</li>
+        <li>❌ <strong>Afirmar optimalidad en Greedy sin prueba:</strong> Requiere inducción por Greedy Stays Ahead.</li>
+        <li>❌ <strong>Olvidar casos base en DP:</strong> Asumir 0 en estados infactibles corrompe la solución.</li>
+        <li>❌ <strong>Omitir aristas residuales hacia atrás en Flujo:</strong> No es Ford-Fulkerson sin ellas.</li>
+      </ul>
+    </section>
+  </div>
+</aside>
+
+<!-- Floating Fast Button -->
+<div class="floating-quick-btn" id="floatingQuickBtn">
+  <button class="fab-btn" onclick="openCheatsheet()" title="Fórmulas Rápidas">📐 Recetas</button>
+  <button class="fab-btn fab-secondary" onclick="scrollToTop()" title="Volver Arriba">⬆️</button>
+</div>
+
+<main class="main-content-wrapper">
+<h2>12. Ejercicios Tipo Parcial Generados</h2>
+<p>Esta sección contiene ejercicios nuevos creados específicamente siguiendo la estructura, terminología, nivel de dificultad y estilo narrativo de los exámenes reales de la cátedra Echevarría.</p>
+<hr />
+
+<article class="exercise-card" id="ej-37" data-num="37" data-priority="imprescindible" data-paradigm="tipo_parcial" data-title="despacho de drones de emergencia con ventanas de batería" data-origin="parcial / práctica fiuba">
+  <header class="card-header">
+    <div class="card-header-left">
+      <span class="exercise-pill-number">EJ 37</span>
+      <h3 class="exercise-title">Despacho de Drones de Emergencia con Ventanas de Batería</h3>
+    </div>
+    <div class="card-header-meta">
+      <span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span>
+      <span class="badge badge-paradigm badge-tipo-parcial">Tipo Parcial</span>
+      <span class="badge badge-origin" title="Parcial / Práctica FIUBA">🏛️ Parcial</span>
+    </div>
+    <div class="card-header-actions">
+      <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="37" onchange="toggleMastered(37, this.checked)">
+        <span class="checkbox-custom"></span>
+        <span class="label-text">Dominado</span>
+      </label>
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(37)">
+        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="card-body">
+    <div class="exercise-statement-box">
+      <p><strong>Tipo:</strong> Ejercicio generado a partir de patrones de parciales<br />
+<strong>Clasificación:</strong> 🔴 IMPRESCINDIBLE<br />
+<strong>Paradigma:</strong> Redes de Flujo (Matching Bipartito con Restricción de Recursos)</p>
+<p><strong>Enunciado</strong><br />
+El sistema de emergencias médicas de una provincia dispone de una flota de D drones para transportar medicamentos urgentes a P puestos sanitarios aislados. Cada dron i tiene una base de despegue y una autonomía de batería que le permite realizar vuelos únicamente dentro de un intervalo horario específico [t_i^inicio, t_i^fin]. Además, por limitaciones de carga térmica de sus baterías, cada dron puede realizar a lo sumo 2 entregas durante su turno de operación. Por su parte, cada puesto sanitario j requiere exactamente 1 entrega de medicamentos y define una ventana horaria estricta [h_j^min, h_j^max] en la cual puede recibirla. Se conoce qué drones son compatibles con qué puestos (distancia de vuelo factible).<br />
+1. Diseñar un algoritmo mediante Redes de Flujo que determine una asignación que maximice la cantidad total de puestos sanitarios abastecidos.<br />
+2. Detallar la construcción formal de la red (nodos, aristas, fuentes, sumideros y capacidades).<br />
+3. Indicar y justificar la complejidad temporal del algoritmo.</p>
+<p><strong>Qué está evaluando</strong><br />
+Modelado de capacidades intermedias heterogéneas (c = 2 en drones), verificación temporal de compatibilidad previa a la red, y flujo máximo con cotas unitarias en puestos.</p>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-37">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <p><strong>Idea de resolución</strong><br />
+* La compatibilidad temporal y geográfica se precalcula: el dron i puede atender al puesto j si la distancia es alcanzable y la ventana [h_j^min, h_j^max] cae dentro de la autonomía [t_i^inicio, t_i^fin].
+* Construcción de la red:
+  * Super-fuente s.
+  * Capa de drones: nodo d_i por cada dron. Arista s → d_i con <strong>capacidad 2</strong> (cada dron puede hacer hasta 2 entregas).
+  * Capa de puestos sanitarios: nodo p_j por cada puesto.
+  * Para cada par compatible (i, j): arista d_i → p_j con <strong>capacidad 1</strong>.
+  * Super-sumidero t: aristas desde cada puesto p_j → t con <strong>capacidad 1</strong> (cada puesto solo necesita 1 entrega).
+* Flujo máximo mediante Ford-Fulkerson o Edmonds-Karp. Por integralidad, el flujo resultante asigna cada puesto a un dron válido sin superar las 2 entregas por dron.</p>
+<p><strong>Pseudocódigo</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION AsignarDronesEmergencia(drones, puestos, matriz_distancias):
+    INICIALIZAR Red como grafo dirigido con capacidades
+    s &lt;- &quot;SUPER_FUENTE&quot;
+    t &lt;- &quot;SUPER_SUMIDERO&quot;
+
+    // 1. Aristas de la fuente a cada dron (capacidad 2)
+    PARA CADA d EN drones:
+        AgregarArista(Red, s, d.id, capacidad=2)
+
+    // 2. Aristas de drones a puestos sanitarios compatibles (capacidad 1)
+    PARA CADA d EN drones:
+        PARA CADA p EN puestos:
+            // Verificación de autonomía y ventana horaria
+            SI EsCompatibleDistancia(d, p, matriz_distancias) Y 
+               d.inicio_bateria &lt;= p.hora_min Y p.hora_max &lt;= d.fin_bateria:
+                AgregarArista(Red, d.id, p.id, capacidad=1)
+
+    // 3. Aristas de puestos al sumidero (capacidad 1)
+    PARA CADA p EN puestos:
+        AgregarArista(Red, p.id, t, capacidad=1)
+
+    // 4. Ejecución de flujo máximo
+    (max_puestos, flujo) &lt;- EdmondsKarp(Red, s, t)
+
+    // 5. Reconstrucción de la asignación
+    INICIALIZAR asignacion como lista vacía
+    PARA CADA d EN drones:
+        PARA CADA p EN puestos:
+            SI flujo[(d.id, p.id)] = 1:
+                INSERTAR (dron=d.id, puesto=p.id) EN asignacion
+
+    RETORNAR (max_puestos, asignacion)
+</code></pre></div>
+<p><strong>Complejidad</strong><br />
+* Nodos: |V| = 2 + D + P.<br />
+* Aristas: |E| ≤ D + D · P + P.<br />
+* Cota de flujo máximo: |f<em>| ≤ min(2D, P) ≤ P.<br />
+</em> Complejidad temporal con Ford-Fulkerson con capacidades enteras: O(|E| · |f*|) = O(D · P²) (o O(V · E²) con Edmonds-Karp).</p>
+<hr />
+      </div>
+    </details>
+  </div>
+</article>
+
+<article class="exercise-card" id="ej-38" data-num="38" data-priority="imprescindible" data-paradigm="tipo_parcial" data-title="plan de publicidad digital con días de enfriamiento y presupuesto" data-origin="parcial / práctica fiuba">
+  <header class="card-header">
+    <div class="card-header-left">
+      <span class="exercise-pill-number">EJ 38</span>
+      <h3 class="exercise-title">Plan de Publicidad Digital con Días de Enfriamiento y Presupuesto</h3>
+    </div>
+    <div class="card-header-meta">
+      <span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span>
+      <span class="badge badge-paradigm badge-tipo-parcial">Tipo Parcial</span>
+      <span class="badge badge-origin" title="Parcial / Práctica FIUBA">🏛️ Parcial</span>
+    </div>
+    <div class="card-header-actions">
+      <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="38" onchange="toggleMastered(38, this.checked)">
+        <span class="checkbox-custom"></span>
+        <span class="label-text">Dominado</span>
+      </label>
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(38)">
+        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="card-body">
+    <div class="exercise-statement-box">
+      <p><strong>Tipo:</strong> Ejercicio generado a partir de patrones de parciales<br />
+<strong>Clasificación:</strong> 🔴 IMPRESCINDIBLE<br />
+<strong>Paradigma:</strong> Programación Dinámica (Exclusión Multidía con Restricción de Presupuesto)</p>
+<p><strong>Enunciado</strong><br />
+Una empresa de marketing digital planifica su campaña durante los próximos n días. Para cada día i dispone de una propuesta de pauta publicitaria que cuesta C[i] pesos y genera una conversión estimada de B[i] nuevos clientes. El presupuesto total asignado para los n días es de P pesos. Por políticas de fatiga de audiencia, si se pauta en el día i, <strong>no se puede volver a pautar durante los siguientes 2 días</strong> (es decir, tras pautar el día i, los días i + 1 e i + 2 deben ser de enfriamiento obligatorio; recién se podría pautar nuevamente el día i + 3). Desarrollar un algoritmo de Programación Dinámica que maximice la cantidad total de conversiones sin exceder el presupuesto. Detallar estado, casos base, recurrencia, complejidad y reconstrucción.</p>
+<p><strong>Qué está evaluando</strong><br />
+Combinación del patrón de exclusión espaciada (i - 3) con restricción de capacidad tipo mochila (P), y reconstrucción de días elegidos.</p>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-38">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <p><strong>Idea de resolución</strong><br />
+* <em>Definición del Estado:</em><br />
+  OPT(i, p): Conversión máxima obtenible considerando los primeros i días (1 ≤ i ≤ n) con un presupuesto restante de p pesos (0 ≤ p ≤ P).
+* <em>Opciones en el día i:</em><br />
+  1. <strong>No pautar el día i:</strong> El valor es OPT(i - 1, p).
+  2. <strong>Pautar el día i:</strong> Requiere C[i] ≤ p. Otorga B[i] conversiones y obliga a que la pauta previa haya sido como máximo en el día i - 3. El valor acumulado es OPT(i - 3, p - C[i]) + B[i].
+* <em>Recurrencia:</em>  </p>
+<blockquote>
+<p><strong>OPT(i, p) = OPT(i - 1, p)</strong> (si C[i] &gt; p)<br />
+<strong>OPT(i, p) = max(OPT(i - 1, p), OPT(max(0, i - 3), p - C[i]) + B[i])</strong> (si C[i] ≤ p)
+* <em>Casos Base:</em><br />
+  OPT(0, p) = 0 para todo 0 ≤ p ≤ P.</p>
+</blockquote>
+<p><strong>Pseudocódigo</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION CampanaPublicitariaOptima(C, B, n, P):
+    INICIALIZAR DP como matriz de (n + 1) x (P + 1) en 0
+
+    PARA i &lt;- 1 HASTA n:
+        costo_dia &lt;- C[i - 1]
+        beneficio_dia &lt;- B[i - 1]
+
+        PARA p &lt;- 0 HASTA P:
+            // Opcion 1: No pautar el día i
+            DP[i][p] &lt;- DP[i - 1][p]
+
+            // Opcion 2: Pautar el día i si hay presupuesto
+            SI costo_dia &lt;= p:
+                dia_previo &lt;- maximo(0, i - 3)
+                con_pauta &lt;- DP[dia_previo][p - costo_dia] + beneficio_dia
+                SI con_pauta &gt; DP[i][p]:
+                    DP[i][p] &lt;- con_pauta
+
+    // Reconstrucción de los días elegidos
+    INICIALIZAR dias_pauta como lista vacía
+    idx_dia &lt;- n
+    idx_p &lt;- P
+
+    MIENTRAS idx_dia &gt; 0:
+        costo_dia &lt;- C[idx_dia - 1]
+        beneficio_dia &lt;- B[idx_dia - 1]
+        dia_previo &lt;- maximo(0, idx_dia - 3)
+
+        SI idx_p &gt;= costo_dia Y DP[idx_dia][idx_p] = DP[dia_previo][idx_p - costo_dia] + beneficio_dia:
+            INSERTAR idx_dia AL INICIO DE dias_pauta
+            idx_p &lt;- idx_p - costo_dia
+            idx_dia &lt;- dia_previo
+        SINO:
+            idx_dia &lt;- idx_dia - 1
+
+    RETORNAR (DP[n][P], dias_pauta)
+</code></pre></div>
+<p><strong>Complejidad</strong><br />
+* <strong>Tiempo:</strong> O(n · P) operaciones (llena una tabla de (n + 1) × (P + 1) con comparaciones O(1)).<br />
+* <strong>Espacio:</strong> O(n · P) para la tabla bidimensional.</p>
+<hr />
+      </div>
+    </details>
+  </div>
+</article>
+
+<article class="exercise-card" id="ej-39" data-num="39" data-priority="imprescindible" data-paradigm="tipo_parcial" data-title="ubicación de servidores edge con resiliencia del 80%" data-origin="parcial / práctica fiuba">
+  <header class="card-header">
+    <div class="card-header-left">
+      <span class="exercise-pill-number">EJ 39</span>
+      <h3 class="exercise-title">Ubicación de Servidores Edge con Resiliencia del 80%</h3>
+    </div>
+    <div class="card-header-meta">
+      <span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span>
+      <span class="badge badge-paradigm badge-tipo-parcial">Tipo Parcial</span>
+      <span class="badge badge-origin" title="Parcial / Práctica FIUBA">🏛️ Parcial</span>
+    </div>
+    <div class="card-header-actions">
+      <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="39" onchange="toggleMastered(39, this.checked)">
+        <span class="checkbox-custom"></span>
+        <span class="label-text">Dominado</span>
+      </label>
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(39)">
+        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="card-body">
+    <div class="exercise-statement-box">
+      <p><strong>Tipo:</strong> Ejercicio generado a partir de patrones de parciales<br />
+<strong>Clasificación:</strong> 🔴 IMPRESCINDIBLE<br />
+<strong>Paradigma:</strong> Programación Lineal Entera (Set Cover Ponderado con Umbral y Presupuesto)</p>
+<p><strong>Enunciado</strong><br />
+Una compañía de telecomunicaciones debe instalar servidores Edge en un conjunto de S ubicaciones posibles para dar cobertura de baja latencia a U usuarios industriales. Cada servidor instalado en el sitio i ∈ S tiene un costo de instalación K_i y una capacidad máxima de tráfico de T_i Gbps. Cada usuario j ∈ U demanda d_j Gbps y define un subconjunto de sitios candidatos S_j ⊆ S que cumplen con el límite de latencia de 5 milisegundos. La compañía exige que <strong>al menos el 80% de los usuarios industriales reciban servicio</strong>. Plantear un modelo de Programación Lineal Entera que determine qué servidores abrir y cómo asignar a los usuarios atendidos al menor costo de instalación posible. Indicar variables y restricciones.</p>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-39">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <p><strong>Modelo Matemático Formal</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">CONJUNTOS Y PARÁMETROS:
+  S                       // Sitios candidatos para servidores
+  U                       // Usuarios industriales
+  K_i &gt; 0        ∀ i ∈ S  // Costo de abrir servidor en sitio i
+  T_i &gt; 0        ∀ i ∈ S  // Capacidad de tráfico del servidor i
+  d_j &gt; 0        ∀ j ∈ U  // Demanda de tráfico del usuario j
+  S_j ⊆ S        ∀ j ∈ U  // Sitios con latencia &lt;= 5ms para el usuario j
+
+VARIABLES DE DECISIÓN:
+  y_i ∈ {0, 1}   ∀ i ∈ S        // 1 si se instala servidor en sitio i, 0 si no
+  x_ji ∈ {0, 1}  ∀ j ∈ U, i ∈ S_j // 1 si el usuario j es abastecido por el servidor i, 0 si no
+  u_j ∈ {0, 1}   ∀ j ∈ U        // 1 si el usuario j recibe servicio, 0 si no
+
+FUNCIÓN OBJETIVO:
+  MINIMIZAR Costo = ∑_{i ∈ S} (K_i * y_i)
+
+RESTRICCIONES:
+  // 1. Umbral mínimo de resiliencia del 80% de los usuarios
+  ∑_{j ∈ U} u_j &gt;= 0.80 * |U|
+
+  // 2. Un usuario atendido se asigna a exactamente un servidor compatible
+  ∑_{i ∈ S_j} x_ji = u_j    ∀ j ∈ U
+
+  // 3. Capacidad de tráfico de cada servidor instalado
+  ∑_{j ∈ U: i ∈ S_j} (d_j * x_ji) &lt;= T_i * y_i    ∀ i ∈ S
+</code></pre></div>
+<p><strong>Conteo de Variables y Restricciones</strong><br />
+* <strong>Variables:</strong> |S| variables y_i + |U| variables u_j + ∑_j |S_j| variables de asignación x_ji.
+* <strong>Restricciones:</strong> 1 de umbral + |U| de asignación + |S| de capacidad. Total: 1 + |U| + |S| restricciones.</p>
+<hr />
+      </div>
+    </details>
+  </div>
+</article>
+
+<article class="exercise-card" id="ej-40" data-num="40" data-priority="imprescindible" data-paradigm="tipo_parcial" data-title="np-completitud del problema de asignación de frecuencias" data-origin="parcial / práctica fiuba">
+  <header class="card-header">
+    <div class="card-header-left">
+      <span class="exercise-pill-number">EJ 40</span>
+      <h3 class="exercise-title">NP-Completitud del Problema de Asignación de Frecuencias</h3>
+    </div>
+    <div class="card-header-meta">
+      <span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span>
+      <span class="badge badge-paradigm badge-tipo-parcial">Tipo Parcial</span>
+      <span class="badge badge-origin" title="Parcial / Práctica FIUBA">🏛️ Parcial</span>
+    </div>
+    <div class="card-header-actions">
+      <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
+        <input type="checkbox" class="mastered-checkbox" data-ej-num="40" onchange="toggleMastered(40, this.checked)">
+        <span class="checkbox-custom"></span>
+        <span class="label-text">Dominado</span>
+      </label>
+      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(40)">
+        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="card-body">
+    <div class="exercise-statement-box">
+      <p><strong>Tipo:</strong> Ejercicio generado a partir de patrones de parciales<br />
+<strong>Clasificación:</strong> 🔴 IMPRESCINDIBLE<br />
+<strong>Paradigma:</strong> Reducciones Polinomiales (K-Coloring a Asignación de Frecuencias)</p>
+<p><strong>Enunciado</strong><br />
+Se define el problema de <strong>Asignación de Frecuencias (AF)</strong> de la siguiente manera: Dado un conjunto de antenas de transmisión y una lista de pares de antenas que interfieren entre sí si transmiten en frecuencias cercanas, junto con un número entero de canales disponibles k, determinar si es posible asignar una frecuencia a cada antena de modo que ninguna antena adyacente comparta frecuencia. Demostrar formalmente que AF es un problema NP-Completo reduciendo desde <strong>k-Coloring de Grafos</strong>.</p>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-40">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <p><strong>Demostración Paso a Paso</strong></p>
+<ol>
+<li><strong>Paso 1: AF ∈ NP:</strong></li>
+<li><em>Certificado:</em> Un vector C de tamaño n donde C[i] ∈ {1, ..., k} indica la frecuencia asignada a la antena i. Tamaño polinomial O(n).</li>
+<li><em>Verificador:</em> Recorre todas las aristas de interferencia (u, v). Si para alguna arista C[u] = C[v], retorna <code>NO</code>. Si todas son distintas, retorna <code>SI</code>. Tiempo: O(V + E) (polinomial). Por ende, <strong>AF ∈ NP</strong>.</li>
+<li><strong>Paso 2: Problema Conocido:</strong><br />
+   k-Coloring de grafos (k ≥ 3), conocido NP-Completo: <em>¿Se puede colorear G = (V, E) con a lo sumo k colores sin que dos vértices adyacentes compartan color?</em></li>
+<li><strong>Paso 3: Transformación Polinomial:</strong><br />
+   Dada la instancia de k-Coloring (G = (V, E), k):</li>
+<li>Cada vértice v ∈ V representa una antena.</li>
+<li>Cada arista (u, v) ∈ E representa un par de antenas con interferencia mutua.</li>
+<li>Los k colores corresponden a los k canales de frecuencia disponibles.</li>
+<li>La transformación es la identidad estructural (f(G, k) = (G, k)) y se realiza en tiempo O(1).</li>
+<li><strong>Paso 4: Equivalencia Bidireccional:</strong>  </li>
+<li>(⟹) Si G es k-coloreable, existe una partición de V en k clases independientes. Asignar la frecuencia c a todos los vértices de color c produce una asignación sin interferencias, pues no hay aristas entre vértices del mismo color.</li>
+<li>(⟸) Si existe una asignación válida de k frecuencias sin interferencias, cada frecuencia define una clase de color donde ningún par de vértices adyacentes coincide. Esto define un k-coloreo válido para G.</li>
+<li><strong>Conclusión:</strong> AF es NP-Completo.</li>
+</ol>
+<hr />
+      </div>
+    </details>
+  </div>
+</article>
+<h2>13. Catálogo de Errores Típicos de Parcial y Trampas Frecuentes</h2>
+<p>Este catálogo compila las fallas y penalizaciones más comunes detectadas en las correcciones de exámenes de la cátedra:</p>
+<h3>1. En Reducciones NP-Completitud (Las fallas más costosas)</h3>
+<ul>
+<li>❌ <strong>Reducir al revés (B ≤_P A en vez de A ≤_P B):</strong> Es el error que anula inmediatamente el ejercicio. Recordá la regla mnemotécnica: <em>"Reduzco DESDE el problema difícil que ya conozco (A) HACIA el problema nuevo (B)"</em>.</li>
+<li>❌ <strong>Olvidar probar que B ∈ NP:</strong> No incluir el certificado y el algoritmo verificador polinomial reduce la nota del ejercicio al 50%, pues solo probaste que es NP-Hard.</li>
+<li>❌ <strong>Probar únicamente la implicación de ida (⟹):</strong> Si solo probás la ida, no demostraste que resolver B resuelve A. La vuelta (⟸) es obligatoria.</li>
+<li>❌ <strong>Usar certificados de tamaño exponencial:</strong> El certificado debe poder escribirse en espacio polinomial O(nᵏ).</li>
+</ul>
+<h3>2. En Programación Dinámica</h3>
+<ul>
+<li>❌ <strong>No definir formalmente qué almacena la tabla OPT(...):</strong> Escribir una matriz o una fórmula sin explicar en palabras qué significan los índices i, w es fuertemente penalizado.</li>
+<li>❌ <strong>Olvidar los Casos Base:</strong> Dejar celdas no inicializadas o asumir 0 en estados que representan configuraciones infactibles (los cuales deben inicializarse con -∞ o +∞).</li>
+<li>❌ <strong>Omitir la reconstrucción de la solución:</strong> Si el problema pide "cuáles son los elementos" o "qué días trabajar", dar únicamente el número del valor máximo equivale a respuesta incompleta.</li>
+<li>❌ <strong>No justificar la dirección de llenado:</strong> La tabla debe llenarse en un orden donde cada estado consulte celdas previamente computadas.</li>
+</ul>
+<h3>3. En Algoritmos Greedy (Voraces)</h3>
+<ul>
+<li>❌ <strong>Afirmar optimalidad sin demostración:</strong> Decir <em>"es óptimo porque en cada paso elijo lo que más conviene"</em> no es una demostración. Se debe aplicar <em>Greedy Stays Ahead</em> o <em>Argumento de Intercambio</em>.</li>
+<li>❌ <strong>Dar un contraejemplo abstracto:</strong> Escribir <em>"podría pasar que después haya un costo más alto"</em> no refuta nada. Un contraejemplo debe tener nodos, aristas y valores numéricos exactos donde Greedy obtenga un resultado peor que la alternativa.</li>
+<li>❌ <strong>Confundir la mochila fraccionaria con la 0-1:</strong> La mochila fraccionaria es voraz en O(n log n); la 0-1 es NP-Hard y requiere Programación Dinámica en O(n · W).</li>
+</ul>
+<h3>4. En Programación Lineal (PL / PLI)</h3>
+<ul>
+<li>❌ <strong>Multiplicar variables de decisión (x_i · y_j):</strong> Destruye la condición de linealidad y anula el modelo.</li>
+<li>❌ <strong>No declarar el dominio de las variables:</strong> Olvidar explicitar x_i ∈ {0, 1} o y_j ≥ 0.</li>
+<li>❌ <strong>Olvidar contar variables y restricciones:</strong> Si el enunciado pide el recuento, debe presentarse la sumatoria algebraica explícita de variables y restricciones.</li>
+<li>❌ <strong>Usar operadores no lineales directos:</strong> Como max(a, b) o |x - y|; deben linealizarse con variables auxiliares continuas y desigualdades.</li>
+</ul>
+<h3>5. En Redes de Flujo</h3>
+<ul>
+<li>❌ <strong>Olvidar las aristas hacia atrás (residuales):</strong> Si la red residual no permite cancelar flujo hacia atrás, el algoritmo no es Ford-Fulkerson y no alcanzará el flujo máximo.</li>
+<li>❌ <strong>Confundir la capacidad de un corte:</strong> Sumar aristas que van de B hacia A en vez de sumar estrictamente las aristas dirigidas desde A hacia B.</li>
+<li>❌ <strong>No justificar por qué la solución es entera:</strong> En problemas de emparejamiento, debe citarse el <strong>Teorema de Integralidad de Flujo</strong>.</li>
+</ul>
+<h3>6. En Backtracking</h3>
+<ul>
+<li>❌ <strong>Olvidar deshacer la modificación (Backtrack):</strong> Dejar marcadas variables globales o booleanos al retornar de la recursión corrompe las ramas posteriores.</li>
+<li>❌ <strong>Validar en O(n) en vez de O(1):</strong> En problemas como N-Reinas, chequear conflictos con bucles es penalizado; se deben usar arreglos booleanos de columnas y diagonales.</li>
+</ul>
+<hr />
+<h2>14. Checklist Definitiva Antes de Entrar al Parcial</h2>
+<p>Utilizá esta lista de verificación durante tu última hora de repaso antes de ingresar al aula:</p>
+<h3>A. Dominio de Paradigmas</h3>
+<ul>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_38512" onchange="toggleChecklistItem('chk_38512', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_27273" onchange="toggleChecklistItem('chk_27273', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_49373" onchange="toggleChecklistItem('chk_49373', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_81348" onchange="toggleChecklistItem('chk_81348', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_46935" onchange="toggleChecklistItem('chk_46935', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_10364" onchange="toggleChecklistItem('chk_10364', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_25814" onchange="toggleChecklistItem('chk_25814', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
+</ul>
+<h3>B. Ejecución en la Hoja de Examen</h3>
+<ul>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_84934" onchange="toggleChecklistItem('chk_84934', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_75575" onchange="toggleChecklistItem('chk_75575', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_50655" onchange="toggleChecklistItem('chk_50655', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_56767" onchange="toggleChecklistItem('chk_56767', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
+</ul>
+</main>
+<script>
+
+// Global state
+let currentMode = 'emergency';
+let currentParadigm = 'all';
+let searchQuery = '';
+let solutionsExpanded = false;
+let masteredExercises = new Set();
+let checklistState = {};
+
+// 14 real exam scenario questions for the 30-second trainer
+const TRAINER_QUESTIONS = [
+  {
+    prompt: "Dado un número entero positivo K, determinar la mínima cantidad de operaciones necesarias para llegar desde 0 hasta K, sabiendo que las únicas operaciones permitidas son sumar 1 o duplicar el valor actual.",
+    answer: "dp",
+    paradigmName: "Programación Dinámica",
+    trigger: "Subproblemas con superposición: llegar a K depende de K-1 o K/2. Ecuación OPT(x) = 1 + min(OPT(x-1), OPT(x/2)). Es DP clásico de caminos mínimos en DAG de estados (Parcial 2024-2-2)."
+  },
+  {
+    prompt: "Se tienen N solicitudes de mafias para operar en tramos de ruta costera [s_i, f_i]. Dos tramos no pueden superponerse. Se desea otorgar la máxima cantidad de permisos sin conflictos.",
+    answer: "greedy",
+    paradigmName: "Greedy (Voraz)",
+    trigger: "Interval Scheduling sin pesos: se resuelve vorazmente ordenando por tiempo de finalización más temprano (f_i). Optimalidad demostrada por Greedy Stays Ahead (Parcial 2024-2-2, Arnook)."
+  },
+  {
+    prompt: "Dado un entero n, encontrar cuatro enteros w, x, y, z >= 0 tales que n = w² + x² + y² + z². Si hay múltiples soluciones, retornar una con estructuras de poda temprana por cotas.",
+    answer: "backtracking",
+    paradigmName: "Backtracking & B&B",
+    trigger: "Búsqueda exhaustiva en espacio de estados con podas por cotas numéricas (w² <= n). Teorema de los 4 cuadrados de Lagrange (Parcial 2024-2-1)."
+  },
+  {
+    prompt: "Demostrar formalmente que el problema de decidir si un grafo G tiene un conjunto dominante de tamaño a lo sumo k (Dominating Set) es NP-Completo, sabiendo que Vertex Cover es NP-Completo.",
+    answer: "reducciones",
+    paradigmName: "Reducciones NP-C",
+    trigger: "Consigna explícita: 'Demostrar que X es NP-Completo'. Requiere el esquema de 4 pasos: Verificador en NP + Problema conocido VC <=_P DS + Transformación de grafo + Demostración ida y vuelta (Parcial 2024-2-2 y 2024-2-3)."
+  },
+  {
+    prompt: "Un hospital dispone de M médicos y P pacientes. Cada médico tiene turnos disponibles y atiende hasta 4 pacientes al día. Cada paciente tiene turnos compatibles. Determinar si se puede asignar turno a todos.",
+    answer: "flujo",
+    paradigmName: "Redes de Flujo",
+    trigger: "Matching bipartito con capacidades por nodo: modelar red s -> Médicos -> Turnos -> t y resolver con Ford-Fulkerson en tiempo polinomial por Teorema de Integralidad (Parcial 2024-2-2)."
+  },
+  {
+    prompt: "Dada una grilla de comunidades, se desea decidir en qué celdas instalar antenas para cubrir al menos el 70% de comunidades con costo mínimo, indicando cantidad de variables y restricciones.",
+    answer: "pl",
+    paradigmName: "Programación Lineal (PLI)",
+    trigger: "Consigna: 'Formular un modelo matemático con variables y restricciones'. Es Set Cover formulado como Programación Lineal Entera con variables binarias x_i in {0, 1} (Parcial 2024-2-3)."
+  },
+  {
+    prompt: "Dadas dos matrices cuadradas de n x n, multiplicarlas particionando en 4 bloques de n/2 x n/2 y deduciendo la complejidad formal con el Teorema Maestro.",
+    answer: "dyc",
+    paradigmName: "División y Conquista",
+    trigger: "Partición recursiva en subproblemas disjuntos de tamaño n/b y aplicación del Teorema Maestro T(n) = 8·T(n/2) + O(n²) (Parcial 2025-1-2)."
+  },
+  {
+    prompt: "Juan el Vago recibe ofertas de changas diarias v_i. Si trabaja el día i, debe descansar obligatoriamente el día i+1. Maximizar su beneficio total.",
+    answer: "dp",
+    paradigmName: "Programación Dinámica",
+    trigger: "Subproblemas dependientes con exclusión de días adyacentes: OPT(i) = max(OPT(i-1), OPT(i-2) + v_i). (Guía 04, Ej 4)."
+  },
+  {
+    prompt: "Dada una red energética con generadores (oferta), ciudades (demanda) y líneas de transmisión con capacidades máximas, determinar el balance óptimo.",
+    answer: "flujo",
+    paradigmName: "Redes de Flujo",
+    trigger: "Ford-Fulkerson con super-fuente y super-sumidero para balancear múltiples fuentes y sumideros con capacidades (Parcial 2025-1-1)."
+  },
+  {
+    prompt: "Un cadete debe repartir encomiendas recorriendo n ciudades y regresar al punto de partida. Demostrar que este problema no es más fácil que Ciclo Hamiltoniano.",
+    answer: "reducciones",
+    paradigmName: "Reducciones NP-C",
+    trigger: "Reducción polinomial de Ciclo Hamiltoniano a TSP (Problema del Viajante) con grafo completo y pesos 1 y 2 (Parcial 2025-1-1, Marco el cadete)."
+  },
+  {
+    prompt: "Ubicar 8 reinas en un tablero de ajedrez sin que se ataquen, verificando conflictos de columna y diagonales en O(1) con arreglos booleanos.",
+    answer: "backtracking",
+    paradigmName: "Backtracking & B&B",
+    trigger: "Exploración exhaustiva de tablero con control de factibilidad O(1) mediante arreglos auxiliares y vuelta atrás del estado (Parcial 2025-1-2)."
+  },
+  {
+    prompt: "Formatear un párrafo de palabras minimizando la suma de cuadrados de espacios sobrantes al final de cada línea (Word Wrap / Knuth-Plass).",
+    answer: "dp",
+    paradigmName: "Programación Dinámica",
+    trigger: "La elección del corte de palabras en la línea actual define la longitud de los renglones restantes: OPT(j) = min_{i < j} (OPT(i) + costo(i+1, j)) (Parcial 2024-2-3)."
+  },
+  {
+    prompt: "Dado un arreglo unimodal donde los valores suben y luego bajan, encontrar el elemento pico en tiempo O(log n).",
+    answer: "dyc",
+    paradigmName: "División y Conquista",
+    trigger: "Búsqueda binaria adaptada sobre arreglo unimodal: comparar A[mid] con A[mid+1] descartando la mitad del arreglo en cada paso (Guía 01, Ej 4)."
+  },
+  {
+    prompt: "Dadas n tareas con tiempos de procesamiento y fechas límite d_i, ordenar la secuencia para minimizar la latencia máxima L = max(0, C_i - d_i).",
+    answer: "greedy",
+    paradigmName: "Greedy (Voraz)",
+    trigger: "Earliest Deadline First (EDF): ordenar por fecha de entrega más temprana d_i. Se demuestra óptimo por argumento de intercambio (Guía 02, Ej 9)."
+  },
+  {
+    prompt: "Se tienen n objetos indivisibles con pesos w_i y valores v_i, y una mochila de capacidad máxima W. Encontrar la combinación de máximo valor respetando la capacidad entera.",
+    answer: "dp",
+    paradigmName: "Programación Dinámica",
+    trigger: "Mochila 0-1: subestructura óptima con superposición de subproblemas OPT(i, w). Requiere tabla (n+1) x (W+1) en O(n · W) pseudo-polinomial (Ejercicio 35)."
+  },
+  {
+    prompt: "Dado un conjunto de n ciudades con matriz de distancias métricas, hallar un circuito cerrado que visite todas las ciudades con costo garantizado a lo sumo el doble del óptimo.",
+    answer: "greedy",
+    paradigmName: "Algoritmo de Aproximación (MST + Preorden)",
+    trigger: "2-Aproximación de TSP Métrico: calcular Árbol Generador Mínimo (MST) con Prim o Kruskal y recorrer en preorden tomando atajos por desigualdad triangular (Ejercicio 36)."
+  }
+];
+
+let trainerIndex = 0;
+let trainerScore = 0;
+let trainerAnswered = false;
+
+// Initialization on DOM ready
+document.addEventListener("DOMContentLoaded", () => {
+  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall
+  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
+    drawer.open = false;
+  });
+
+  loadSavedState();
+  updateModeUI();
+  applyFilters();
+  initMermaidDiagrams();
+  initMathRendering();
+});
+
+function initMathRendering() {
+  if (typeof renderMathInElement === "function") {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false }
+      ],
+      ignoredClasses: ["mermaid", "mermaid-wrapper", "code-container", "copy-code-btn"],
+      ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code", "svg"],
+      throwOnError: false
+    });
+  }
+}
+
+function initMermaidDiagrams() {
+  if (typeof mermaid === "undefined") return;
+  const isDark = document.body.classList.contains("dark-mode");
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: isDark ? "dark" : "neutral",
+    securityLevel: "loose",
+    themeVariables: {
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    }
+  });
+  mermaid.run({ querySelector: ".mermaid" });
+}
+
+// Al imprimir desde el navegador (Ctrl+P), expandir todas las soluciones
+window.addEventListener("beforeprint", () => {
+  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
+    drawer.open = true;
+  });
+});
+
+window.addEventListener("afterprint", () => {
+  if (!solutionsExpanded) {
+    document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
+      drawer.open = false;
+    });
+  }
+});
+
+function loadSavedState() {
+  try {
+    const savedMastered = localStorage.getItem("tda_mastered_exercises");
+    if (savedMastered) {
+      masteredExercises = new Set(JSON.parse(savedMastered));
+    }
+    const savedChecklist = localStorage.getItem("tda_exam_checklist");
+    if (savedChecklist) {
+      checklistState = JSON.parse(savedChecklist);
+    }
+    const savedTheme = localStorage.getItem("tda_theme");
+    if (savedTheme === "dark") {
+      document.body.classList.add("dark-mode");
+    }
+  } catch (e) {
+    console.error("Error reading localStorage", e);
+  }
+
+  // Restore checkboxes in exercise cards
+  document.querySelectorAll(".mastered-checkbox").forEach(cb => {
+    const num = parseInt(cb.getAttribute("data-ej-num"));
+    if (masteredExercises.has(num)) {
+      cb.checked = true;
+      const card = document.getElementById("ej-" + num);
+      if (card) card.classList.add("is-mastered");
+    }
+  });
+
+  // Restore checklist inputs
+  document.querySelectorAll(".exam-checklist-input").forEach(inp => {
+    const id = inp.getAttribute("data-chk-id");
+    if (checklistState[id]) {
+      inp.checked = true;
+    }
+  });
+}
+
+function saveState() {
+  try {
+    localStorage.setItem("tda_mastered_exercises", JSON.stringify(Array.from(masteredExercises)));
+    localStorage.setItem("tda_exam_checklist", JSON.stringify(checklistState));
+  } catch (e) {
+    console.error("Error saving state", e);
+  }
+}
+
+// Mastered exercise toggle
+function toggleMastered(num, isMastered) {
+  if (isMastered) {
+    masteredExercises.add(num);
+  } else {
+    masteredExercises.delete(num);
+  }
+  const card = document.getElementById("ej-" + num);
+  if (card) {
+    if (isMastered) card.classList.add("is-mastered");
+    else card.classList.remove("is-mastered");
+  }
+  saveState();
+  updateProgressHUD();
+}
+
+// Checklist item toggle
+function toggleChecklistItem(id, isChecked) {
+  checklistState[id] = isChecked;
+  saveState();
+}
+
+// Filter and View Logic
+function setStudyMode(mode) {
+  currentMode = mode;
+  updateModeUI();
+  applyFilters();
+}
+
+function updateModeUI() {
+  document.getElementById("btnModeEmergency").classList.toggle("active", currentMode === "emergency");
+  document.getElementById("btnModeTactical").classList.toggle("active", currentMode === "tactical");
+  document.getElementById("btnModeAll").classList.toggle("active", currentMode === "all");
+  
+  const banner = document.getElementById("emergencyBanner");
+  if (banner) {
+    banner.style.display = currentMode === "emergency" ? "block" : "none";
+  }
+}
+
+function filterByParadigm(paradigm) {
+  currentParadigm = paradigm;
+  document.querySelectorAll("#paradigmPills .pill-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.getAttribute("data-paradigm") === paradigm);
+  });
+  applyFilters();
+}
+
+function handleSearch(val) {
+  searchQuery = val.trim().toLowerCase();
+  document.getElementById("clearSearchBtn").style.display = searchQuery ? "block" : "none";
+  applyFilters();
+}
+
+function clearSearch() {
+  const searchInput = document.getElementById("exerciseSearch");
+  searchInput.value = "";
+  searchQuery = "";
+  document.getElementById("clearSearchBtn").style.display = "none";
+  applyFilters();
+}
+
+function dismissBanner() {
+  document.getElementById("emergencyBanner").style.display = "none";
+}
+
+function applyFilters() {
+  const cards = document.querySelectorAll(".exercise-card");
+  let visibleCount = 0;
+  let masteredCount = 0;
+
+  cards.forEach(card => {
+    const num = parseInt(card.getAttribute("data-num"));
+    const priority = card.getAttribute("data-priority");
+    const paradigm = card.getAttribute("data-paradigm");
+    const title = card.getAttribute("data-title") || "";
+    const origin = card.getAttribute("data-origin") || "";
+    const cardText = card.textContent.toLowerCase();
+
+    // Mode filter
+    let matchesMode = true;
+    if (currentMode === "emergency") {
+      matchesMode = (priority === "imprescindible");
+    } else if (currentMode === "tactical") {
+      matchesMode = (priority === "imprescindible" || priority === "importante");
+    }
+
+    // Paradigm filter
+    let matchesParadigm = true;
+    if (currentParadigm !== "all") {
+      matchesParadigm = (paradigm === currentParadigm);
+    }
+
+    // Search query filter
+    let matchesSearch = true;
+    if (searchQuery) {
+      matchesSearch = title.includes(searchQuery) || origin.includes(searchQuery) || cardText.includes(searchQuery);
+    }
+
+    const isVisible = matchesMode && matchesParadigm && matchesSearch;
+    card.classList.toggle("is-hidden", !isVisible);
+
+    if (isVisible) {
+      visibleCount++;
+      if (masteredExercises.has(num)) {
+        masteredCount++;
+      }
+    }
+  });
+
+  updateProgressHUD(visibleCount, masteredCount);
+}
+
+function updateProgressHUD(totalVisible, totalMastered) {
+  if (totalVisible === undefined) {
+    const cards = document.querySelectorAll(".exercise-card:not(.is-hidden)");
+    totalVisible = cards.length;
+    totalMastered = 0;
+    cards.forEach(c => {
+      const num = parseInt(c.getAttribute("data-num"));
+      if (masteredExercises.has(num)) totalMastered++;
+    });
+  }
+
+  const progMastered = document.getElementById("progMastered");
+  const progTotal = document.getElementById("progTotal");
+  const progPercent = document.getElementById("progPercent");
+  const progressFill = document.getElementById("progressFill");
+
+  if (progMastered && progTotal && progPercent && progressFill) {
+    progMastered.textContent = totalMastered;
+    progTotal.textContent = totalVisible;
+    const pct = totalVisible > 0 ? Math.round((totalMastered / totalVisible) * 100) : 0;
+    progPercent.textContent = pct + "%";
+    progressFill.style.width = pct + "%";
+  }
+}
+
+// Active recall solution controls
+function toggleCardSolution(num) {
+  const drawer = document.getElementById("solution-drawer-" + num);
+  if (drawer) {
+    drawer.open = !drawer.open;
+  }
+}
+
+function scrollToExercise(num) {
+  // Asegurar que se muestre el ejercicio independientemente del filtro activo
+  currentMode = 'all';
+  currentParadigm = 'all';
+  searchQuery = '';
+  const searchInput = document.getElementById("exerciseSearch");
+  if (searchInput) searchInput.value = "";
+  const clearBtn = document.getElementById("clearSearchBtn");
+  if (clearBtn) clearBtn.style.display = "none";
+
+  document.querySelectorAll(".mode-btn").forEach(btn => btn.classList.remove("active"));
+  const btnAll = document.getElementById("btnModeAll");
+  if (btnAll) btnAll.classList.add("active");
+
+  document.querySelectorAll(".pill-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.getAttribute("data-paradigm") === "all");
+  });
+
+  applyFilters();
+
+  const card = document.getElementById("ej-" + num);
+  if (card) {
+    const drawer = document.getElementById("solution-drawer-" + num);
+    if (drawer) drawer.open = true;
+
+    // Desplazamiento suave con compensación por el HUD fijo
+    const rect = card.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const hudHeight = document.getElementById("hudTopBar") ? document.getElementById("hudTopBar").offsetHeight : 140;
+    const targetY = rect.top + scrollTop - hudHeight - 16;
+
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+
+    card.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
+    card.style.borderColor = 'var(--accent-color)';
+    card.style.boxShadow = '0 0 0 4px rgba(49, 130, 206, 0.4)';
+    setTimeout(() => {
+      card.style.borderColor = '';
+      card.style.boxShadow = '';
+    }, 2800);
+  }
+}
+
+function toggleGlobalSolutions() {
+  solutionsExpanded = !solutionsExpanded;
+  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
+    drawer.open = solutionsExpanded;
+  });
+  const lbl = document.getElementById("lblGlobalSolutions");
+  if (lbl) {
+    lbl.textContent = solutionsExpanded ? "Ocultar Todas" : "Revelar Todas";
+  }
+}
+
+// Cheatsheet drawer
+function openCheatsheet() {
+  document.getElementById("cheatsheetDrawer").classList.add("is-open");
+  document.getElementById("drawerBackdrop").classList.add("is-open");
+}
+
+function closeCheatsheet() {
+  document.getElementById("cheatsheetDrawer").classList.remove("is-open");
+  document.getElementById("drawerBackdrop").classList.remove("is-open");
+}
+
+// Theme
+function toggleDarkMode() {
+  const isDark = document.body.classList.toggle("dark-mode");
+  try {
+    localStorage.setItem("tda_theme", isDark ? "dark" : "light");
+  } catch (e) {}
+}
+
+// Copy Code Block
+function copyCodeBlock(btn) {
+  const pre = btn.nextElementSibling;
+  if (!pre) return;
+  const text = pre.textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const original = btn.textContent;
+    btn.textContent = "¡Copiado! ✓";
+    btn.style.background = "#38a169";
+    btn.style.color = "#ffffff";
+    setTimeout(() => {
+      btn.textContent = original;
+      btn.style.background = "";
+      btn.style.color = "";
+    }, 1800);
+  });
+}
+
+// Trainer 30s logic
+function initTrainer() {
+  trainerIndex = 0;
+  trainerScore = 0;
+  trainerAnswered = false;
+  loadTrainerQuestion();
+}
+
+function loadTrainerQuestion() {
+  trainerAnswered = false;
+  const q = TRAINER_QUESTIONS[trainerIndex];
+  
+  document.getElementById("trainerCurrentIndex").textContent = trainerIndex + 1;
+  document.getElementById("trainerPrompt").textContent = q.prompt;
+  
+  document.getElementById("trainerFeedback").style.display = "none";
+  document.getElementById("trainerNextBtn").style.display = "none";
+
+  const buttons = document.querySelectorAll("#trainerOptions .trainer-btn");
+  buttons.forEach(btn => {
+    btn.disabled = false;
+    btn.classList.remove("btn-correct", "btn-wrong");
+  });
+}
+
+function checkTrainerAnswer(selected) {
+  if (trainerAnswered) return;
+  trainerAnswered = true;
+
+  const q = TRAINER_QUESTIONS[trainerIndex];
+  const isCorrect = (selected === q.answer);
+  
+  if (isCorrect) {
+    trainerScore++;
+  }
+  
+  document.getElementById("trainerScore").textContent = trainerScore;
+  document.getElementById("trainerTotal").textContent = trainerIndex + 1;
+
+  const buttons = document.querySelectorAll("#trainerOptions .trainer-btn");
+  buttons.forEach(btn => {
+    btn.disabled = true;
+    const btnClickAttr = btn.getAttribute("onclick") || "";
+    if (btnClickAttr.includes("'" + q.answer + "'")) {
+      btn.classList.add("btn-correct");
+    } else if (btnClickAttr.includes("'" + selected + "'") && !isCorrect) {
+      btn.classList.add("btn-wrong");
+    }
+  });
+
+  const feedback = document.getElementById("trainerFeedback");
+  const result = document.getElementById("feedbackResult");
+  const trigger = document.getElementById("feedbackTrigger");
+
+  feedback.style.display = "block";
+  feedback.className = "trainer-feedback " + (isCorrect ? "feedback-success" : "feedback-error");
+
+  result.textContent = isCorrect 
+    ? "¡Excelente! Respuesta correcta 🎉 (" + q.paradigmName + ")" 
+    : "No es la técnica ideal. El paradigma correcto es: " + q.paradigmName;
+
+  trigger.innerHTML = "<strong>Disparador Léxico de Examen:</strong> " + q.trigger;
+
+  const nextBtn = document.getElementById("trainerNextBtn");
+  if (trainerIndex < TRAINER_QUESTIONS.length - 1) {
+    nextBtn.style.display = "inline-block";
+    nextBtn.textContent = "Siguiente Enunciado (" + (trainerIndex + 2) + "/" + TRAINER_QUESTIONS.length + ") ➔";
+  } else {
+    nextBtn.style.display = "inline-block";
+    nextBtn.textContent = "Ver Resultado Final 🏁";
+  }
+}
+
+function nextTrainerQuestion() {
+  if (trainerIndex < TRAINER_QUESTIONS.length - 1) {
+    trainerIndex++;
+    loadTrainerQuestion();
+  } else {
+    alert("¡Simulación completada! Puntaje final: " + trainerScore + " / " + TRAINER_QUESTIONS.length + " aciertos.");
+    initTrainer();
+  }
+}
+
+function resetTrainer() {
+  initTrainer();
+}
+
+function scrollToTrainer() {
+  const trainer = document.getElementById("entrenador-30s");
+  if (trainer) {
+    trainer.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// Close drawer on Escape key
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") {
+    closeCheatsheet();
+  }
+});
+
+</script>
+</body>
+</html>
