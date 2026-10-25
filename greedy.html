@@ -1792,10 +1792,16 @@ body.dark-mode .warning-box {
 <li>
 <p>Una elección voraz inicial conduce a una solución globalmente óptima (propiedad de elección voraz).</p>
 </li>
-<li>La solución óptima del problema global contiene dentro de sí soluciones óptimas a los subproblemas resultantes (subestructura óptima).</li>
-<li><strong>Las Dos Técnicas Canónicas de Demostración de Optimalidad:</strong></li>
-<li><strong>Greedy Stays Ahead ("El voraz se mantiene adelante"):</strong> Se define una métrica de progreso m(i). Se demuestra por inducción que en cada paso k, la solución voraz aventaja o iguala a cualquier solución óptima OPT (m(G_k) ≤ m(OPT_k) o m(G_k) ≥ m(OPT_k)), garantizando que al finalizar no puede ser superada.</li>
-<li><strong>Argumento de Intercambio (Exchange Argument):</strong> Se toma una solución óptima hipotética OPT que difiere de la solución greedy G. Se identifica la primera inversión o discrepancia y se demuestra que al intercambiar el elemento de OPT por el elemento elegido por G, la calidad de la solución no empeora. Repitiendo el proceso, OPT se transforma en G sin perder valor, probando que G también es óptima.</li>
+<li>
+<p>La solución óptima del problema global contiene dentro de sí soluciones óptimas a los subproblemas resultantes (subestructura óptima).</p>
+</li>
+<li>
+<p><strong>Las Dos Técnicas Canónicas de Demostración de Optimalidad:</strong></p>
+</li>
+<li><strong>Greedy Stays Ahead ("El voraz se mantiene adelante"):</strong> Se define una métrica de progreso $m(i)$. Se demuestra por inducción que en cada paso $k$, la solución voraz aventaja o iguala a cualquier solución óptima $OPT$ ($m(G_k) \le m(OPT_k)$ o $m(G_k) \ge m(OPT_k)$), garantizando que al finalizar no puede ser superada.</li>
+<li>
+<p><strong>Argumento de Intercambio (Exchange Argument):</strong> Se toma una solución óptima hipotética $OPT$ que difiere de la solución greedy $G$. Se identifica la primera inversión o discrepancia y se demuestra que al intercambiar el elemento de $OPT$ por el elemento elegido por $G$, la calidad de la solución no empeora. Repitiendo el proceso, $OPT$ se transforma en $G$ sin perder valor, probando que $G$ también es óptima.</p>
+</li>
 <li>
 <p><strong>Cómo Probar que una Idea Greedy es Incorrecta (El Contraejemplo):</strong>
    Si en un examen te preguntan <em>"¿El algoritmo greedy propuesto es óptimo siempre? Indicar si es óptimo o dar un contraejemplo"</em>, <strong>NUNCA</strong> respondas con explicaciones vagas. Debes presentar un contraejemplo concreto:</p>
@@ -1805,11 +1811,11 @@ body.dark-mode .warning-box {
 </li>
 <li>Mostrar paso a paso qué elige el algoritmo greedy y cuál es su costo/beneficio obtenido.</li>
 <li>Mostrar una solución alternativa factible y su costo/beneficio estrictamente superior.</li>
-<li>Concluir formalmente: <em>Como Valor(Alternativa) &gt; Valor(Greedy), el algoritmo no garantiza la solución óptima.</em></li>
+<li>Concluir formalmente: <em>Como $\text{Valor}(\text{Alternativa}) &gt; \text{Valor}(\text{Greedy})$, el algoritmo no garantiza la solución óptima.</em></li>
 </ol>
 <hr />
 <h3>Patrón de Ejercicio 2.1: Interval Scheduling (Planificación de Intervalos No Solapados)</h3>
-<p>Aparece con diferentes metáforas narrativas: charlas en un aula, pedidos de mafias locales para controlar kilómetros de una ruta, franjas horarias de satélites o turnos de guardias. El objetivo es maximizar la cantidad de pedidos aceptados sin solapamiento.</p>
+<p>Aparece con diferentes metáforas narrativas: charlas en un aula, pedidos de mafias locales por el control de kilómetros de una ruta, franjas horarias de satélites o turnos de guardias. El objetivo es maximizar la cantidad total de pedidos aceptados sin solapamiento.</p>
 <hr />
 
 <article class="exercise-card" id="ej-4" data-num="4" data-priority="imprescindible" data-paradigm="greedy" data-title="concesión de permisos a mafias en la ruta costera (arnook)" data-origin="parcial 2024-2-2 (26 de noviembre de 2024), ejercicio 3 / guía 02 ejercicio 12">
@@ -1837,16 +1843,235 @@ body.dark-mode .warning-box {
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      <p><strong>Enunciado</strong><br />
-Trabajamos para el mafioso Arnook, quien organiza los pedidos de pequeñas mafias locales por el control de diferentes kilómetros de la ruta costera de Ciudad República. Cada mafia le pide control sobre un rango de kilómetros [s_i, f_i] (por ejemplo, del kilómetro 1 al 5, del 3 al 8, etc.). Si una mafia toma control de un kilómetro, ninguna otra puede ocupar ese mismo tramo (no pueden solaparse). Arnook cobra una tarifa fija por otorgar el permiso, independientemente de los kilómetros pedidos, por lo que su objetivo es maximizar la cantidad total de permisos otorgados sin conflictos de territorio.  </p>
+      
+
+<p><strong>Enunciado</strong><br />
+Trabajamos para el mafioso Arnook, quien organiza los pedidos de pequeñas mafias locales por el control de diferentes kilómetros de la ruta costera de Ciudad República. Cada mafia le pide control sobre un rango de kilómetros $[s_i, f_i]$ (por ejemplo, del kilómetro 1 al 5, del 3 al 8, etc.). Si una mafia toma control de un kilómetro, ninguna otra puede ocupar ese mismo tramo (no pueden solaparse). Arnook cobra una tarifa fija por otorgar el permiso, independientemente de los kilómetros pedidos, por lo que su objetivo es maximizar la cantidad total de permisos otorgados sin conflictos de territorio.  </p>
 <ol>
 <li>Implementar un algoritmo Greedy que determine a qué mafias otorgar el permiso.  </li>
 <li>Indicar y justificar la complejidad temporal y espacial.  </li>
 <li>Justificar por qué el algoritmo planteado es Greedy.  </li>
 <li>¿El algoritmo da la solución óptima siempre? Demostrarlo formalmente.</li>
 </ol>
-<p><strong>Qué está evaluando</strong><br />
+<p><strong>Qué está evaluando la cátedra</strong><br />
 Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio voraz correcto (ordenamiento por punto final más temprano), y la demostración formal de optimalidad vía <em>Greedy Stays Ahead</em>.</p>
+<h4>1. Deducción Metodológica Formal (Los 5 Pasos de Greedy)</h4>
+<ol>
+<li><strong>Paso 1: Análisis de Reglas Candidatas y Descarte de Erróneas:</strong></li>
+<li><em>Criterio erróneo 1 (Inicio más temprano $s_i$):</em> Falla si un pedido empieza muy temprano y ocupa toda la ruta ($[1, 100]$ bloquea a $[2, 3]$ y $[4, 5]$).</li>
+<li><em>Criterio erróneo 2 (Menor longitud $f_i - s_i$):</em> Falla si un intervalo corto bloquea a dos largos compatibles a sus extremos ($[10, 20]$ y $[20, 30]$ vs $[19, 21]$).</li>
+<li><em>Criterio Óptimo:</em> Ordenar las solicitudes por su <strong>kilómetro de finalización más temprano ($f_i$)</strong>. Al terminar lo antes posible, se libera el recurso de la ruta lo más temprano posible para futuras mafias.</li>
+<li>
+<p><strong>Paso 2: Criterio de Ordenamiento:</strong>
+   Se ordenan los $n$ intervalos de modo que $f_1 \le f_2 \le \dots \le f_n$. Esto insume tiempo $O(n \log n)$.</p>
+</li>
+<li>
+<p><strong>Paso 3: Verificación de Factibilidad:</strong>
+   Un intervalo candidato $j$ es factible si y solo si su punto de inicio es mayor o igual al fin del último intervalo aceptado:
+   $$s_j \ge f_{\text{último}}$$</p>
+</li>
+<li>
+<p><strong>Paso 4: Invocación Irrevocable:</strong>
+   Se acepta el intervalo compatible y se actualiza $f_{\text{último}} = f_j$. Esta decisión es definitiva: nunca se desasigna un permiso otorgado.</p>
+</li>
+<li>
+<p><strong>Paso 5: Complejidad:</strong></p>
+</li>
+<li><strong>Tiempo:</strong> $O(n \log n)$ por el ordenamiento inicial y $O(n)$ en el barrido secuencial. Total: $\Theta(n \log n)$.</li>
+<li><strong>Espacio:</strong> $O(n)$ para la lista de permisos seleccionados.</li>
+</ol>
+<h4>2. Demostración Formal de Optimalidad (Greedy Stays Ahead)</h4>
+<ul>
+<li>
+<p><strong>Definición de Soluciones:</strong>
+  Sea $G = {g_1, g_2, \dots, g_k}$ el conjunto de intervalos elegidos por el algoritmo Greedy, ordenados cronológicamente por tiempo de fin.
+  Sea $OPT = {o_1, o_2, \dots, o_m}$ el conjunto de intervalos de una solución óptima arbitraria, también ordenados por tiempo de fin, con $m \ge k$.</p>
+</li>
+<li>
+<p><strong>Lema Inductivo:</strong> Para todo $r \le k$, el tiempo de fin del $r$-ésimo elemento voraz es menor o igual al del $r$-ésimo elemento óptimo:
+  $$f(g_r) \le f(o_r)$$</p>
+</li>
+<li>
+<p><strong>Caso Base ($r = 1$):</strong> El algoritmo voraz selecciona como primer elemento aquel con el menor tiempo de fin absoluto en todo el conjunto de entrada. Por ende, $f(g_1) \le f(o_1)$ por definición.</p>
+</li>
+<li><strong>Hipótesis Inductiva:</strong> Asumimos que para un $r - 1 &lt; k$ se cumple $f(g_{r-1}) \le f(o_{r-1})$.</li>
+<li>
+<p><strong>Paso Inductivo ($r$):</strong>
+  Como $OPT$ es una solución factible, el intervalo $o_r$ no se solapa con $o_{r-1}$, lo que implica $s(o_r) \ge f(o_{r-1})$.
+  Aplicando la hipótesis inductiva:
+  $$s(o_r) \ge f(o_{r-1}) \ge f(g_{r-1})$$
+  Esto demuestra que cuando el algoritmo voraz buscaba su $r$-ésimo elemento tras haber seleccionado $g_{r-1}$, el intervalo $o_r$ era una alternativa perfectamente <strong>factible y compatible</strong>.
+  Dado que el algoritmo voraz selecciona el intervalo compatible con el menor tiempo de fin disponible, su elección $g_r$ debe satisfacer:
+  $$f(g_r) \le f(o_r)$$</p>
+</li>
+<li>
+<p><strong>Conclusión de Optimalidad ($k = m$):</strong>
+  Supongamos por contradicción que $m &gt; k$, lo que significa que la solución óptima tiene al menos un intervalo adicional $o_{k+1}$.
+  Por el lema anterior aplicado a $r = k$:
+  $$s(o_{k+1}) \ge f(o_k) \ge f(g_k)$$
+  Esto significa que $o_{k+1}$ es compatible con el último elemento voraz $g_k$. Pero el algoritmo voraz terminó en $g_k$ precisamente porque no existía ningún intervalo compatible remanente en el conjunto. Contradicción. Por ende, $k = m$ y la solución voraz es <strong>estrictamente óptima</strong>. $\blacksquare$</p>
+</li>
+</ul>
+<h4>3. Ejemplo Concreto y Tabla de Traza Paso a Paso</h4>
+<p>Sean los siguientes 5 pedidos de mafias sobre la ruta costera:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">ID</th>
+<th style="text-align: center;">Mafia</th>
+<th style="text-align: center;">Kilómetros $[s_i, f_i]$</th>
+<th style="text-align: center;">Longitud</th>
+<th style="text-align: center;">¿Fin más temprano?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>A</strong></td>
+<td style="text-align: center;">Los del Puerto</td>
+<td style="text-align: center;">$[1, 4]$</td>
+<td style="text-align: center;">$3$</td>
+<td style="text-align: center;">1º en terminar ($f=4$)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>B</strong></td>
+<td style="text-align: center;">Banda del Centro</td>
+<td style="text-align: center;">$[3, 5]$</td>
+<td style="text-align: center;">$2$</td>
+<td style="text-align: center;">2º en terminar ($f=5$)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>C</strong></td>
+<td style="text-align: center;">Costanera Sur</td>
+<td style="text-align: center;">$[0, 6]$</td>
+<td style="text-align: center;">$6$</td>
+<td style="text-align: center;">3º en terminar ($f=6$)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>D</strong></td>
+<td style="text-align: center;">Zona Norte</td>
+<td style="text-align: center;">$[4, 7]$</td>
+<td style="text-align: center;">$3$</td>
+<td style="text-align: center;">4º en terminar ($f=7$)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>E</strong></td>
+<td style="text-align: center;">Pescadores</td>
+<td style="text-align: center;">$[6, 9]$</td>
+<td style="text-align: center;">$3$</td>
+<td style="text-align: center;">5º en terminar ($f=9$)</td>
+</tr>
+</tbody>
+</table>
+<p><em>Traza del Algoritmo Voraz (Ordenados por $f_i$ ascendente: A, B, C, D, E):</em></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Paso</th>
+<th style="text-align: center;">Pedido Evaluado</th>
+<th style="text-align: center;">$[s_i, f_i]$</th>
+<th style="text-align: center;">$f_{\text{último}}$</th>
+<th style="text-align: center;">Condición $s_i \ge f_{\text{último}}$</th>
+<th style="text-align: center;">Decisión</th>
+<th style="text-align: left;">Permisos Otorgados</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;"><strong>A</strong></td>
+<td style="text-align: center;">$[1, 4]$</td>
+<td style="text-align: center;">$0$ (inicial)</td>
+<td style="text-align: center;">$1 \ge 0$ (Sí)</td>
+<td style="text-align: center;"><strong>ACEPTAR A</strong></td>
+<td style="text-align: left;">${A}$, $f_{\text{último}} = 4$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: center;"><strong>B</strong></td>
+<td style="text-align: center;">$[3, 5]$</td>
+<td style="text-align: center;">$4$</td>
+<td style="text-align: center;">$3 \ge 4$ (No)</td>
+<td style="text-align: center;"><strong>RECHAZAR</strong> (conflicto)</td>
+<td style="text-align: left;">${A}$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;"><strong>C</strong></td>
+<td style="text-align: center;">$[0, 6]$</td>
+<td style="text-align: center;">$4$</td>
+<td style="text-align: center;">$0 \ge 4$ (No)</td>
+<td style="text-align: center;"><strong>RECHAZAR</strong> (conflicto)</td>
+<td style="text-align: left;">${A}$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;"><strong>D</strong></td>
+<td style="text-align: center;">$[4, 7]$</td>
+<td style="text-align: center;">$4$</td>
+<td style="text-align: center;">$4 \ge 4$ (Sí)</td>
+<td style="text-align: center;"><strong>ACEPTAR D</strong></td>
+<td style="text-align: left;">${A, D}$, $f_{\text{último}} = 7$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>5</strong></td>
+<td style="text-align: center;"><strong>E</strong></td>
+<td style="text-align: center;">$[6, 9]$</td>
+<td style="text-align: center;">$7$</td>
+<td style="text-align: center;">$6 \ge 7$ (No)</td>
+<td style="text-align: center;"><strong>RECHAZAR</strong> (conflicto)</td>
+<td style="text-align: left;">${A, D}$</td>
+</tr>
+</tbody>
+</table>
+<p><em>Total de permisos máximos otorgados:</em> 2 mafias (${A, D}$).</p>
+<h4>4. Diagrama Visual de Intervalos</h4>
+<div class="mermaid-wrapper"><pre class="mermaid">graph LR
+    subgraph Ruta [Ocupación en Ruta Costera]
+        A["[1, 4] Mafia A (ACEPTADO)"]:::opt
+        B["[3, 5] Mafia B (RECHAZADO)"]:::bad
+        C["[0, 6] Mafia C (RECHAZADO)"]:::bad
+        D["[4, 7] Mafia D (ACEPTADO)"]:::opt
+        E["[6, 9] Mafia E (RECHAZADO)"]:::bad
+    end
+    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
+    classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:1px,color:#fff
+</pre></div>
+<h4>5. Implementación en Python (Tipada y Ejecutable)</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-python">def conceder_permisos_mafias(pedidos: list[tuple[str, int, int]]) -&gt; list[tuple[str, int, int]]:
+    # pedidos: lista de (nombre, inicio, fin)
+    if not pedidos:
+        return []
+
+    # 1. Ordenar vorazmente por punto final ascendente
+    pedidos_ordenados = sorted(pedidos, key=lambda x: x[2])
+
+    seleccionados = [pedidos_ordenados[0]]
+    ultimo_fin = pedidos_ordenados[0][2]
+
+    # 2. Selección voraz de intervalos compatibles
+    for pedido in pedidos_ordenados[1:]:
+        nombre, inicio, fin = pedido
+        if inicio &gt;= ultimo_fin:
+            seleccionados.append(pedido)
+            ultimo_fin = fin
+
+    return seleccionados
+</code></pre></div>
+<div class="trap-callout">
+  <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
+  <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
+  <ul>
+    <li><strong>Confundir Interval Scheduling con Interval Scheduling Ponderado:</strong> Si las mafias ofrecieran dinero diferente por cada permiso ($v_i$), la regla voraz por fin más temprano **deja de ser óptima**. Se debe resolver obligatoriamente mediante Programación Dinámica con búsqueda binaria en $O(n \log n)$ (ver Ejercicio 18).</li>
+    <li><strong>Solapamiento en extremos ($s_j == f_i$):</strong> Prestar atención a si el enunciado indica si compartir el kilómetro exacto está permitido o no ($s_j \ge f_i$ vs $s_j > f_i$). En la ruta costera, la frontera compartida es admisible ($s_j \ge f_{\text{último}}$).</li>
+    <li><strong>Ordenar por duración ($f_i - s_i$):</strong> Es el error intuitivo más frecuente en parciales. Recuerde que un intervalo de duración 2 puede arruinar a dos intervalos adyacentes de duración 3, obteniendo 1 en lugar de 2.</li>
+  </ul>
+</div>
+
+<hr />
+<h3>Patrón de Ejercicio 2.2: Mochila Fraccionaria vs 0-1 con Garantía de Calidad 1/2</h3>
+<p>En las evaluaciones teóricas y en los TPs de la cátedra se examina la relación entre la solución fraccionaria (óptima con greedy) y la versión entera 0-1, demostrando cómo una regla greedy corregida otorga una cota de aproximación constante.</p>
+<hr />
+
     </div>
 
     <details open class="exercise-solution-drawer" id="solution-drawer-4">
@@ -1856,94 +2081,7 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong>  </p>
-<ul>
-<li>¿Por qué descartar otros criterios?<ul>
-<li><em>Ordenar por inicio más temprano (s_i):</em> Falla si un pedido empieza muy temprano y ocupa toda la ruta ([1, 100] vs [2, 3] y [4, 5]).</li>
-<li><em>Ordenar por menor longitud (f_i - s_i):</em> Falla si un pedido corto bloquea a dos pedidos compatibles a sus costados ([10, 20], [19, 21], [20, 30]).</li>
-</ul>
-</li>
-<li><em>Criterio óptimo:</em> Ordenar las solicitudes por su <strong>kilómetro de finalización más temprano (f_i)</strong>. Esto deja libre la mayor cantidad de ruta posible hacia adelante para futuras mafias.</li>
-<li>Seleccionamos el primer pedido que termine más temprano. Luego, iteramos seleccionando el próximo pedido cuyo inicio s_j sea mayor o igual al fin del último pedido aceptado (s_j ≥ f_ultimo).</li>
-</ul>
-<p><strong>Pseudocódigo</strong></p>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION ConcederPermisosMafias(pedidos):
-    SI longitud(pedidos) = 0:
-        RETORNAR lista vacía
-
-    // 1. Ordenar por fin ascendente: pedidos[i].fin
-    ORDENAR pedidos POR fin ASCENDENTE
-
-    INICIALIZAR seleccionados como lista vacía
-    INSERTAR pedidos[0] EN seleccionados
-    ultimo_fin &lt;- pedidos[0].fin
-
-    // 2. Selección voraz de intervalos compatibles
-    PARA i &lt;- 1 HASTA longitud(pedidos) - 1:
-        SI pedidos[i].inicio &gt;= ultimo_fin:
-            INSERTAR pedidos[i] EN seleccionados
-            ultimo_fin &lt;- pedidos[i].fin
-
-    RETORNAR seleccionados
-</code></pre></div>
-<p><strong>Explicación del algoritmo</strong><br />
-El algoritmo clasifica las solicitudes de menor a mayor según el kilómetro en el que terminan. Al aceptar siempre la que termina antes y es compatible con las ya otorgadas, se minimiza el territorio retenido en cada decisión.</p>
-<p><strong>Complejidad</strong>  </p>
-<ul>
-<li>
-<p><strong>Tiempo:</strong> Ordenar n solicitudes requiere O(n log n) mediante Mergesort o Heapsort. El recorrido lineal posterior realiza una comparación O(1) por elemento en O(n). Por lo tanto, la complejidad temporal total es:</p>
-<blockquote>
-<p><strong>O(n log n)</strong></p>
-</blockquote>
-</li>
-<li>
-<p><strong>Espacio:</strong> O(n) para almacenar los pedidos seleccionados (o memoria auxiliar de ordenamiento).</p>
-</li>
-</ul>
-<p><strong>Justificación de por qué es Greedy</strong><br />
-Es un algoritmo voraz porque:</p>
-<ol>
-<li>En cada paso toma una decisión basada en una regla miope de optimización local (elegir el intervalo compatible que termine antes).</li>
-<li>La decisión es <strong>irrevocable</strong>: una vez que un permiso es otorgado, nunca se retira ni se reconsidera a la luz de los pedidos futuros.</li>
-</ol>
-<p><strong>Demostración de Optimalidad (Greedy Stays Ahead)</strong>  </p>
-<ul>
-<li>Sean G = {g_1, g_2, ..., g_k} los intervalos seleccionados por el algoritmo voraz ordenados por fin, y OPT = {o_1, o_2, ..., o_m} los intervalos de una solución óptima arbitraria también ordenados por fin, con m ≥ k.</li>
-<li>
-<p><strong>Proposición inductiva:</strong> Para todo r ≤ k, el tiempo de fin del r-ésimo elemento voraz es menor o igual al del r-ésimo elemento óptimo:</p>
-<blockquote>
-<p><strong>f(g_r) ≤ f(o_r)</strong></p>
-</blockquote>
-</li>
-<li>
-<p><strong>Caso Base (r = 1):</strong> El algoritmo voraz elige el intervalo con el menor tiempo de fin absoluto en todo el conjunto. Por lo tanto, f(g_1) ≤ f(o_1).</p>
-</li>
-<li><strong>Paso Inductivo:</strong> Asumimos f(g_{r-1}) ≤ f(o_{r-1}). Como o_r es compatible con o_{r-1}, sabemos que s(o_r) ≥ f(o_{r-1}). Por hipótesis inductiva:<blockquote>
-<p>s(o_r) ≥ f(o_{r-1}) ≥ f(g_{r-1})</p>
-</blockquote>
-</li>
-</ul>
-<p>Esto prueba que o_r era una opción válida y compatible para el algoritmo voraz al buscar su r-ésimo elemento. Dado que el algoritmo voraz selecciona el que tiene el menor tiempo de fin entre todos los compatibles disponibles, necesariamente:</p>
-<blockquote>
-<p>f(g_r) ≤ f(o_r)</p>
-</blockquote>
-<ul>
-<li><strong>Conclusión:</strong> Si la solución óptima tuviera más elementos que el voraz (m &gt; k), existiría un elemento o_{k+1} en OPT. Por la propiedad anterior, s(o_{k+1}) ≥ f(o_k) ≥ f(g_k), lo cual significa que o_{k+1} era compatible con g_k. Pero el algoritmo voraz terminó en g_k porque ya no quedaba ningún intervalo compatible. Contradicción. Por lo tanto, k = m y la solución voraz es <strong>óptima</strong>.</li>
-</ul>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
-<ul>
-<li>Permitir solapamiento estricto si dos intervalos comparten un borde (chequear si el enunciado dice s_j ≥ f_i o s_j &gt; f_i).</li>
-<li>Ordenar por tiempo de inicio o por duración, los cuales no son óptimos.</li>
-</ul>
-<p><strong>Variación típica de parcial</strong>  </p>
-<ul>
-<li><em>Interval Scheduling Ponderado:</em> Cada intervalo tiene un valor o peso v_i. En este caso, <strong>Greedy NO funciona</strong> y se debe resolver con Programación Dinámica (ver Ejercicio 18).</li>
-<li><em>Interval Partitioning:</em> Se pide determinar la cantidad mínima de salas/recursos necesarios para programar todas las charlas sin solapamiento (se resuelve ordenando por inicio y usando una cola de prioridad).</li>
-</ul>
-<hr />
-<h3>Patrón de Ejercicio 2.2: Mochila Fraccionaria vs 0-1 con Garantía de Calidad 1/2</h3>
-<p>En las evaluaciones teóricas y en los TPs de la cátedra se examina la relación entre la solución fraccionaria (óptima con greedy) y la versión entera 0-1, demostrando cómo una regla greedy corregida otorga una cota de aproximación constante.</p>
-<hr />
+        
       </div>
     </details>
   </div>
@@ -1974,16 +2112,179 @@ Es un algoritmo voraz porque:</p>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      <p><strong>Enunciado</strong><br />
-Se tiene una mochila de capacidad de peso W y n objetos indivisibles (0-1), donde cada objeto i tiene peso w_i y valor v_i.  </p>
+      
+
+<p><strong>Enunciado</strong><br />
+Se tiene una mochila de capacidad de peso $W$ y $n$ objetos indivisibles (0-1), donde cada objeto $i$ tiene peso $w_i$ y valor $v_i$.  </p>
 <ol>
-<li>Explicar por qué la regla voraz estándar basada en ordenar por densidad de valor (v_i / w_i) puede fallar de forma arbitraria en la mochila 0-1.  </li>
-<li>Diseñar un algoritmo greedy modificado que garantice una calidad de al menos 1/2 respecto a la solución óptima global.  </li>
-<li>Demostrar formalmente que Sol / OPT &gt; 1/2.  </li>
+<li>Explicar por qué la regla voraz estándar basada en ordenar por densidad de valor ($v_i / w_i$) puede fallar de forma arbitraria en la mochila 0-1.  </li>
+<li>Diseñar un algoritmo greedy modificado que garantice una calidad de al menos $1/2$ respecto a la solución óptima global ($V_{\text{aprox}} \ge \frac{1}{2} OPT$).  </li>
+<li>Demostrar formalmente que $V_{\text{aprox}} / OPT &gt; 1/2$.  </li>
 <li>Indicar la complejidad temporal del algoritmo.</li>
 </ol>
-<p><strong>Qué está evaluando</strong><br />
-Capacidad de analizar por qué un algoritmo voraz falla, cómo corregirlo mediante la detección del <em>elemento crítico</em>, y el cálculo de factores de aproximación comparando contra la relajación continua.</p>
+<p><strong>Qué está evaluando la cátedra</strong><br />
+Capacidad de analizar por qué un algoritmo voraz falla en problemas NP-Hard, diseño de heurísticas con garantías formales de aproximación y uso de la relajación continua como cota superior de optimalidad.</p>
+<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+<ol>
+<li>
+<p><strong>Paso 1: Análisis del Fallo de la Densidad Voraz Pura:</strong>
+   Consideremos $W = 100$, un objeto 1 con $w_1 = 1, v_1 = 2$ (densidad $2$) y un objeto 2 con $w_2 = 100, v_2 = 100$ (densidad $1$). La regla voraz elige el objeto 1 y llena la mochila hasta $w=1$, impidiendo que entre el objeto 2. Obtiene valor 2 en vez del óptimo 100 (eficiencia tan mala como $2/100 \to 0$).</p>
+</li>
+<li>
+<p><strong>Paso 2: Filtrado Previo de Factibilidad:</strong>
+   Se descartan de inmediato todos los ítems cuyo peso individual sea mayor a la capacidad ($w_i &gt; W$).</p>
+</li>
+<li>
+<p><strong>Paso 3: Identificación del Elemento Crítico:</strong>
+   Se ordenan los elementos restantes por ratio de densidad decreciente:
+   $$\frac{v_1}{w_1} \ge \frac{v_2}{w_2} \ge \dots \ge \frac{v_n}{w_n}$$
+   Se introducen ítems vorazmente hasta que el primer elemento no entra por exceso de peso. A este ítem lo llamamos <strong>Elemento Crítico ($k$)</strong> con valor $v_k$ y peso $w_k$.</p>
+</li>
+<li>
+<p><strong>Paso 4: Corrección de Cota Dual:</strong>
+   Sea $V_{\text{greedy}}$ el valor acumulado antes de topar con el elemento crítico. Se define la solución aproximada como el máximo entre la solución voraz y el elemento crítico en solitario:
+   $$V_{\text{aprox}} = \max(V_{\text{greedy}}, \; v_k)$$</p>
+</li>
+<li>
+<p><strong>Paso 5: Complejidad:</strong></p>
+</li>
+<li>Filtrado inicial en $O(n)$.</li>
+<li>Ordenamiento por densidad en $O(n \log n)$.</li>
+<li>Barrido voraz en $O(n)$.</li>
+<li>Complejidad total: $\Theta(n \log n)$ en tiempo y $O(n)$ en espacio auxiliar.</li>
+</ol>
+<h4>2. Demostración Formal de la Garantía de Aproximación 1/2</h4>
+<ul>
+<li>
+<p><strong>Paso A (Cota Superior por Relajación Continua):</strong>
+  Sea $OPT$ el valor de la solución óptima del problema entero 0-1, y sea $OPT_{\text{frac}}$ el valor de la solución óptima del problema de la mochila fraccionaria (donde se permiten fracciones de ítems).
+  Como toda solución entera es una solución fraccionaria factible, se cumple:
+  $$OPT \le OPT_{\text{frac}}$$</p>
+</li>
+<li>
+<p><strong>Paso B (Composición de la Solución Fraccionaria):</strong>
+  La solución fraccionaria óptima coincide exactamente con los primeros $k-1$ elementos enteros tomados por el greedy ($V_{\text{greedy}}$) más una fracción estricta $\alpha \in [0, 1)$ del elemento crítico $k$:
+  $$OPT_{\text{frac}} = V_{\text{greedy}} + \alpha \cdot v_k &lt; V_{\text{greedy}} + v_k$$</p>
+</li>
+<li>
+<p><strong>Paso C (Desigualdad Fundamental):</strong>
+  Por transitividad de las cotas anteriores:
+  $$OPT &lt; V_{\text{greedy}} + v_k$$</p>
+</li>
+<li>
+<p><strong>Paso D (Cota del Máximo):</strong>
+  Dado que $V_{\text{aprox}} = \max(V_{\text{greedy}}, v_k)$, es inmediato que:
+  $$V_{\text{greedy}} \le V_{\text{aprox}} \quad \text{y} \quad v_k \le V_{\text{aprox}}$$
+  Sumando ambas desigualdades:
+  $$V_{\text{greedy}} + v_k \le 2 \cdot V_{\text{aprox}}$$</p>
+</li>
+<li>
+<p><strong>Paso E (Conclusión de la Garantía 1/2):</strong>
+  Sustituyendo en la cota de $OPT$:
+  $$OPT &lt; 2 \cdot V_{\text{aprox}} \implies \frac{V_{\text{aprox}}}{OPT} &gt; \frac{1}{2}$$
+  El algoritmo garantiza estrictamente más del $50\%$ del valor óptimo global en tiempo $O(n \log n)$. $\blacksquare$</p>
+</li>
+</ul>
+<h4>3. Ejemplo Concreto y Tabla de Traza Paso a Paso</h4>
+<p>Capacidad $W = 50$. Tres elementos candidatos:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Ítem</th>
+<th style="text-align: center;">Peso ($w_i$)</th>
+<th style="text-align: center;">Valor ($v_i$)</th>
+<th style="text-align: center;">Densidad ($v_i / w_i$)</th>
+<th style="text-align: left;">¿Entra en Greedy?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;">$10$</td>
+<td style="text-align: center;">$60$</td>
+<td style="text-align: center;">$6.0$</td>
+<td style="text-align: left;">Sí (Peso acumulado: $10$, Valor: $60$)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: center;">$20$</td>
+<td style="text-align: center;">$100$</td>
+<td style="text-align: center;">$5.0$</td>
+<td style="text-align: left;">Sí (Peso acumulado: $30$, Valor: $160$)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;">$30$</td>
+<td style="text-align: center;">$120$</td>
+<td style="text-align: center;">$4.0$</td>
+<td style="text-align: left;">No cabe ($30 + 30 = 60 &gt; 50$). <strong>¡ELEMENTO CRÍTICO!</strong></td>
+</tr>
+</tbody>
+</table>
+<p><em>Comparación:</em></p>
+<ul>
+<li>$V_{\text{greedy}} = 60 + 100 = 160$ (elementos ${1, 2}$, peso 30).</li>
+<li>Elemento Crítico en solitario: Ítem 3 ($v_3 = 120$, peso $30 \le 50$).</li>
+<li>$V_{\text{aprox}} = \max(160, 120) = 160$.</li>
+<li><em>Óptimo entero real (DP):</em> Ítems ${2, 3}$ con peso $20 + 30 = 50$, valor $100 + 120 = 220$.</li>
+<li><em>Ratio obtenido:</em> $160 / 220 \approx 72.7\% &gt; 50\%$ (satisface holgadamente la cota $\ge 1/2$).</li>
+</ul>
+<h4>4. Diagrama del Proceso de Selección</h4>
+<div class="mermaid-wrapper"><pre class="mermaid">graph TD
+    A["Ordenar ítems por densidad v_i / w_i"] --> B["Llenado voraz hasta agotar capacidad"]
+    B --> C["¿Quedó capacidad para el siguiente ítem?"]
+    C -- No --> D["Identificar Elemento Crítico k"]
+    D --> E{"¿v_k es mayor que V_greedy?"}
+    E -- Sí --> F["Solución = {Elemento Crítico k}"]:::opt
+    E -- No --> G["Solución = Conjunto Voraz"]:::opt
+    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
+</pre></div>
+<h4>5. Implementación en Python (Tipada y Ejecutable)</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-python">def mochila_aprox_medio(items: list[tuple[str, int, int]], w_max: int) -&gt; tuple[int, list[tuple[str, int, int]]]:
+    # items: lista de (nombre, peso, valor)
+    # 1. Filtrar los que no caben por sí solos
+    candidatos = [it for it in items if it[1] &lt;= w_max]
+    if not candidatos:
+        return 0, []
+
+    # 2. Ordenar por densidad decreciente
+    candidatos.sort(key=lambda x: x[2] / x[1], reverse=True)
+
+    v_greedy = 0
+    w_greedy = 0
+    sol_greedy = []
+    elemento_critico = None
+
+    # 3. Llenado voraz
+    for it in candidatos:
+        nombre, peso, valor = it
+        if w_greedy + peso &lt;= w_max:
+            sol_greedy.append(it)
+            w_greedy += peso
+            v_greedy += valor
+        elif elemento_critico is None:
+            elemento_critico = it
+
+    # 4. Cota dual max(V_greedy, v_critico)
+    if elemento_critico is not None and elemento_critico[2] &gt; v_greedy:
+        return elemento_critico[2], [elemento_critico]
+
+    return v_greedy, sol_greedy
+</code></pre></div>
+<div class="trap-callout">
+  <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
+  <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
+  <ul>
+    <li><strong>Olvidar el filtrado inicial $w_i \le W$:</strong> Si un objeto pesa 150 y la mochila es de 100, jamás puede ser candidato ni elemento crítico. Si lo seleccionas como solución única cometes una infracción de factibilidad.</li>
+    <li><strong>No usar la relajación fraccionaria en la demostración:</strong> Decir que "el elemento que no entró más lo que entró supera al óptimo" exige justificar formalmente que $OPT \le OPT_{\text{frac}} = V_{\text{greedy}} + \alpha v_k$. Sin la relajación continua no hay demostración válida.</li>
+  </ul>
+</div>
+
+<hr />
+<h3>Patrón de Ejercicio 2.3: Minimización de Latencia y Deadlines (EDF)</h3>
+<p>Se tienen tareas con tiempos de procesamiento y fechas límite de entrega (deadlines). El objetivo es ordenar las tareas para minimizar la latencia máxima que experimenta cualquier tarea.</p>
+<hr />
+
     </div>
 
     <details open class="exercise-solution-drawer" id="solution-drawer-5">
@@ -1993,94 +2294,7 @@ Capacidad de analizar por qué un algoritmo voraz falla, cómo corregirlo median
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong>  </p>
-<ol>
-<li>Descartamos elementos que individualmente pesen más que W.</li>
-<li>Ordenamos por ratio r_i = v_i / w_i descendente.</li>
-<li>Llenamos vorazmente. El primer objeto que no entra lo denominamos <strong>Elemento Crítico (c)</strong> con peso w_c y valor v_c.</li>
-<li>La solución voraz acumulada tiene valor P_1.</li>
-<li>Comparamos P_1 contra el elemento crítico en solitario v_c. Devolvemos max(P_1, v_c).</li>
-</ol>
-<p><strong>Pseudocódigo</strong></p>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MochilaGreedyConGarantia(objetos, W):
-    INICIALIZAR candidatos como lista vacía
-
-    // 1. Filtrar objetos que no entran por sí solos
-    PARA CADA obj EN objetos:
-        SI obj.peso &lt;= W:
-            INSERTAR obj EN candidatos
-
-    SI longitud(candidatos) = 0:
-        RETORNAR (0, lista vacía)
-
-    // 2. Ordenar por densidad valor/peso descendente
-    ORDENAR candidatos POR (valor / peso) DESCENDENTE
-
-    INICIALIZAR solucion_greedy como lista vacía
-    peso_acumulado &lt;- 0
-    valor_acumulado &lt;- 0
-    elemento_critico &lt;- NULO
-
-    // 3. Llenado voraz e identificación del elemento crítico
-    PARA CADA obj EN candidatos:
-        SI peso_acumulado + obj.peso &lt;= W:
-            INSERTAR obj EN solucion_greedy
-            peso_acumulado &lt;- peso_acumulado + obj.peso
-            valor_acumulado &lt;- valor_acumulado + obj.valor
-        SINO:
-            SI elemento_critico = NULO:
-                elemento_critico &lt;- obj
-
-    // 4. Aplicación de la cota 1/2
-    SI elemento_critico != NULO Y elemento_critico.valor &gt; valor_acumulado:
-        INICIALIZAR sol_critica como lista con elemento_critico
-        RETORNAR (elemento_critico.valor, sol_critica)
-
-    RETORNAR (valor_acumulado, solucion_greedy)
-</code></pre></div>
-<p><strong>Explicación del algoritmo</strong><br />
-La debilidad de la densidad v_i / w_i es que puede tomar objetos muy densos pero diminutos, dejando capacidad insuficiente para un objeto pesado que vale mucho más. Al comparar la solución greedy acumulada contra el valor del primer objeto rechazado (v_c), nos cubrimos de ese peor caso.</p>
-<p><strong>Demostración Formal de la Cota 1/2</strong>  </p>
-<ol>
-<li>Sea OPT el valor de la solución óptima del problema entero 0-1.</li>
-<li>Sea OPT_frac el valor de la solución óptima fraccionaria. Es inmediato que OPT ≤ OPT_frac.</li>
-<li>
-<p>La solución fraccionaria óptima toma exactamente los elementos de la solución greedy entera (P_1) más una fracción α ∈ [0, 1) del elemento crítico c:</p>
-<blockquote>
-<p>OPT_frac = P_1 + α · v_c &lt; P_1 + v_c</p>
-</blockquote>
-</li>
-<li>
-<p>Por transitividad: OPT &lt; P_1 + v_c.</p>
-</li>
-<li>
-<p>Nuestro algoritmo devuelve Sol = max(P_1, v_c). Por propiedad del promedio aritmético:</p>
-<blockquote>
-<p>max(P_1, v_c) ≥ (P_1 + v_c) / 2</p>
-</blockquote>
-</li>
-<li>
-<p>Sustituyendo la cota de OPT:</p>
-<blockquote>
-<p>Sol ≥ (P_1 + v_c) / 2 &gt; OPT / 2  ⟹  Sol / OPT &gt; 1/2</p>
-</blockquote>
-</li>
-</ol>
-<p><strong>Complejidad</strong>  </p>
-<ul>
-<li><strong>Tiempo:</strong> Filtrado en O(n), ordenamiento de n elementos en O(n log n), recorrido voraz en O(n). Total: O(n log n).</li>
-<li><strong>Espacio adicional:</strong> O(n) para almacenar la lista de candidatos y la solución seleccionada.</li>
-</ul>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
-<ul>
-<li>No descartar previamente los elementos con w_i &gt; W. Si el elemento crítico pesa más que W, no puede incluirse en solitario.</li>
-</ul>
-<p><strong>Variación típica de parcial</strong><br />
-Preguntar por qué la mochila fraccionaria sí es óptima con greedy y la 0-1 requiere Programación Dinámica (subestructura óptima con superposición vs subproblemas fraccionarios independientes).</p>
-<hr />
-<h3>Patrón de Ejercicio 2.3: Minimización de Latencia y Deadlines (EDF)</h3>
-<p>Se tienen tareas con tiempos de procesamiento y fechas límite de entrega (deadlines). El objetivo es ordenar las tareas para minimizar la latencia máxima que experimenta cualquier tarea.</p>
-<hr />
+        
       </div>
     </details>
   </div>
@@ -2111,10 +2325,207 @@ Preguntar por qué la mochila fraccionaria sí es óptima con greedy y la 0-1 re
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      <p><strong>Enunciado</strong><br />
-Se tienen n tareas que deben procesarse secuencialmente en una única máquina. Cada tarea i tiene una duración t_i y una fecha límite de entrega d_i. Si una tarea comienza en el tiempo s_i, finaliza en f_i = s_i + t_i. La latencia de la tarea i se define como L_i = max(0, f_i - d_i). Diseñar un algoritmo greedy que programe las tareas minimizando la latencia máxima L_max = max_i L_i. Demostrar su optimalidad.</p>
-<p><strong>Qué está evaluando</strong><br />
-Técnica de ordenamiento por fecha de vencimiento más temprana (<em>Earliest Deadline First</em>) y demostración por argumento de intercambio de inversiones adyacentes.</p>
+      
+
+<p><strong>Enunciado</strong><br />
+Se tienen $n$ tareas que deben procesarse secuencialmente en una única máquina que comienza en el tiempo $t = 0$. Cada tarea $i$ tiene una duración $t_i$ y una fecha límite de entrega (deadline) $d_i$. Si una tarea comienza en el tiempo $s_i$, finaliza en $f_i = s_i + t_i$. La latencia de la tarea $i$ se define como $L_i = \max(0, f_i - d_i)$. Diseñar un algoritmo greedy que programe las tareas minimizando la latencia máxima $L_{\max} = \max_i L_i$. Demostrar formalmente su optimalidad.</p>
+<p><strong>Qué está evaluando la cátedra</strong><br />
+Técnica de ordenamiento por fecha de vencimiento más temprana (<em>Earliest Deadline First</em>) y demostración formal por argumento de intercambio de inversiones adyacentes (<em>Exchange Argument</em>).</p>
+<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+<ol>
+<li><strong>Paso 1: Análisis de Reglas Voraces Alternativas y sus Fallas:</strong></li>
+<li><em>Menor duración primero ($t_i$):</em> Falla si una tarea corta tiene un deadline muy lejano y desplaza a una tarea larga con vencimiento inmediato.</li>
+<li><em>Menor holgura primero ($d_i - t_i$):</em> Falla si una tarea corta tiene holgura 1 pero vence en $t=100$, bloqueando a una con holgura 2 que vence en $t=2$.</li>
+<li><em>Criterio Óptimo (EDF):</em> Ordenar las tareas en orden creciente de sus fechas límites: $d_1 \le d_2 \le \dots \le d_n$.</li>
+<li>
+<p><strong>Paso 2: Ausencia de Tiempo Ocioso:</strong>
+   La máquina procesa las tareas de forma continua sin pausas entre tareas consecutivas. El tiempo de inicio de cada tarea es igual al tiempo de fin de la tarea previa.</p>
+</li>
+<li>
+<p><strong>Paso 3: Algoritmo Voraz:</strong>
+   Ordenar por deadline $d_i$ ascendente en $O(n \log n)$ y asignar tiempos $s_i, f_i$ en un único recorrido de $O(n)$.</p>
+</li>
+<li>
+<p><strong>Paso 4: Complejidad:</strong></p>
+</li>
+<li><strong>Tiempo:</strong> $\Theta(n \log n)$ por el ordenamiento inicial.</li>
+<li><strong>Espacio:</strong> $O(n)$ para la lista del cronograma.</li>
+</ol>
+<h4>2. Demostración Formal de Optimalidad (Argumento de Intercambio)</h4>
+<ul>
+<li><strong>Definición de Inversión:</strong> Decimos que un cronograma $S$ tiene una inversión si existen dos tareas $i$ y $j$ tales que $i$ se ejecuta antes que $j$, pero $d_i &gt; d_j$ (la tarea que vence más tarde se ejecuta antes).</li>
+<li><strong>Propiedad de la Solución Voraz:</strong> La solución voraz $S_{\text{greedy}}$ no tiene inversiones por definición (está ordenada por $d$ ascendente).</li>
+<li><strong>Existencia de Inversión Adyacente:</strong> Si un cronograma tiene inversiones, necesariamente contiene al menos un par de tareas <strong>adyacentes y consecutivas</strong> $i$ y $j$ con $d_i &gt; d_j$.</li>
+<li>
+<p><strong>Efecto del Intercambio Adyacente:</strong>
+  Sea $S$ un cronograma óptimo con la menor cantidad de inversiones. Si $S$ tiene inversiones, tomamos un par adyacente $i, j$ tal que $i$ precede inmediatamente a $j$ con $d_i &gt; d_j$. Intercambiamos el orden de ejecución de $i$ y $j$, obteniendo un nuevo cronograma $S'$.</p>
+<ul>
+<li>Las tareas programadas antes de $i$ y después de $j$ no modifican sus tiempos de inicio ni fin. Sus latencias permanecen idénticas.</li>
+<li>La tarea $j$ se ejecuta antes en $S'$ que en $S$: su tiempo de finalización se reduce de $f_j$ a $f'_j = f_j - t_i$. Por ende, su latencia $L'_j \le L_j$.</li>
+<li>
+<p>La tarea $i$ finaliza en $S'$ exactamente en el instante en que antes finalizaba $j$: $f'_i = f_j$.
+Calculamos su nueva latencia:
+$$L'_i = \max(0, f'_i - d_i) = \max(0, f_j - d_i)$$
+Como $d_i &gt; d_j$, se cumple:
+$$f_j - d_i &lt; f_j - d_j \le L_j$$
+Por lo tanto, $L'_i \le L_j$.</p>
+</li>
+<li>
+<p>La nueva latencia máxima del par es:
+$$\max(L'_i, L'_j) \le \max(L_i, L_j)$$</p>
+</li>
+<li>
+<p>Por consiguiente, la latencia máxima global del cronograma $S'$ <strong>no aumentó</strong>:
+$$L_{\max}(S') \le L_{\max}(S)$$</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Conclusión:</strong> Mediante intercambios de pares adyacentes invertidos, se puede transformar cualquier solución óptima $OPT$ en la solución voraz $S_{\text{greedy}}$ sin incrementar jamás la latencia máxima. Esto prueba que $S_{\text{greedy}}$ es <strong>estrictamente óptima</strong>. $\blacksquare$</p>
+</li>
+</ul>
+<h4>3. Ejemplo Concreto y Tabla de Traza Paso a Paso</h4>
+<p>Consideremos 4 tareas:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Tarea ($i$)</th>
+<th style="text-align: center;">Duración ($t_i$)</th>
+<th style="text-align: center;">Deadline ($d_i$)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>A</strong></td>
+<td style="text-align: center;">$3$</td>
+<td style="text-align: center;">$6$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>B</strong></td>
+<td style="text-align: center;">$2$</td>
+<td style="text-align: center;">$4$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>C</strong></td>
+<td style="text-align: center;">$1$</td>
+<td style="text-align: center;">$9$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>D</strong></td>
+<td style="text-align: center;">$4$</td>
+<td style="text-align: center;">$8$</td>
+</tr>
+</tbody>
+</table>
+<p><em>Paso 1: Ordenar por deadline ascendente (EDF):</em></p>
+<ol>
+<li>Tarea <strong>B</strong>: $d_B = 4$</li>
+<li>Tarea <strong>A</strong>: $d_A = 6$</li>
+<li>Tarea <strong>D</strong>: $d_D = 8$</li>
+<li>Tarea <strong>C</strong>: $d_C = 9$</li>
+</ol>
+<p><em>Paso 2: Traza temporal continua:</em></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Orden</th>
+<th style="text-align: center;">Tarea</th>
+<th style="text-align: center;">Duración ($t_i$)</th>
+<th style="text-align: center;">Inicio ($s_i$)</th>
+<th style="text-align: center;">Fin ($f_i$)</th>
+<th style="text-align: center;">Deadline ($d_i$)</th>
+<th style="text-align: center;">Retraso ($f_i - d_i$)</th>
+<th style="text-align: center;">Latencia ($L_i$)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;"><strong>B</strong></td>
+<td style="text-align: center;">$2$</td>
+<td style="text-align: center;">$0$</td>
+<td style="text-align: center;">$2$</td>
+<td style="text-align: center;">$4$</td>
+<td style="text-align: center;">$2 - 4 = -2$</td>
+<td style="text-align: center;"><strong>$0$</strong></td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: center;"><strong>A</strong></td>
+<td style="text-align: center;">$3$</td>
+<td style="text-align: center;">$2$</td>
+<td style="text-align: center;">$5$</td>
+<td style="text-align: center;">$6$</td>
+<td style="text-align: center;">$5 - 6 = -1$</td>
+<td style="text-align: center;"><strong>$0$</strong></td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;"><strong>D</strong></td>
+<td style="text-align: center;">$4$</td>
+<td style="text-align: center;">$5$</td>
+<td style="text-align: center;">$9$</td>
+<td style="text-align: center;">$8$</td>
+<td style="text-align: center;">$9 - 8 = +1$</td>
+<td style="text-align: center;"><strong>$1$</strong></td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;"><strong>C</strong></td>
+<td style="text-align: center;">$1$</td>
+<td style="text-align: center;">$9$</td>
+<td style="text-align: center;">$10$</td>
+<td style="text-align: center;">$9$</td>
+<td style="text-align: center;">$10 - 9 = +1$</td>
+<td style="text-align: center;"><strong>$1$</strong></td>
+</tr>
+</tbody>
+</table>
+<p><em>Latencia máxima alcanzada:</em> $L_{\max} = \max(0, 0, 1, 1) = 1$. Es imposible lograr latencia 0 porque el trabajo total acumulado supera los plazos.</p>
+<h4>4. Diagrama Visual de Cronograma</h4>
+<div class="mermaid-wrapper"><pre class="mermaid">graph LR
+    B["B: [0 -> 2] (L=0)"]:::ontime --> A["A: [2 -> 5] (L=0)"]:::ontime --> D["D: [5 -> 9] (L=1)"]:::late --> C["C: [9 -> 10] (L=1)"]:::late
+    classDef ontime fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
+    classDef late fill:#b45309,stroke:#92400e,stroke-width:2px,color:#fff
+</pre></div>
+<h4>5. Implementación en Python (Tipada y Ejecutable)</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-python">def minimizar_latencia_edf(tareas: list[tuple[str, int, int]]) -&gt; tuple[int, list[tuple[str, int, int, int]]]:
+    # tareas: lista de (nombre, duracion, deadline)
+    if not tareas:
+        return 0, []
+
+    # 1. Ordenar vorazmente por deadline ascendente
+    tareas_ordenadas = sorted(tareas, key=lambda x: x[2])
+
+    tiempo_actual = 0
+    latencia_maxima = 0
+    cronograma = []
+
+    for nombre, duracion, deadline in tareas_ordenadas:
+        inicio = tiempo_actual
+        fin = tiempo_actual + duracion
+        latencia = max(0, fin - deadline)
+        if latencia &gt; latencia_maxima:
+            latencia_maxima = latencia
+        cronograma.append((nombre, inicio, fin, latencia))
+        tiempo_actual = fin
+
+    return latencia_maxima, cronograma
+</code></pre></div>
+<div class="trap-callout">
+  <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
+  <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
+  <ul>
+    <li><strong>Definición de Latencia vs Retraso negativo:</strong> La latencia nunca es negativa ($L_i = \max(0, f_i - d_i)$). Si entregas una tarea antes del deadline, su latencia es $0$, no un número negativo que compense a otras tareas.</li>
+    <li><strong>Tiempos de arribo ($r_i$):</strong> Este algoritmo asume que todas las tareas están disponibles en $t = 0$. Si el enunciado incluye tiempos de llegada diferentes ($r_i \neq 0$), el problema se convierte en NP-Duro y EDF simple deja de ser óptimo.</li>
+  </ul>
+</div>
+
+<hr />
+<h3>Patrón de Ejercicio 2.4: Heurísticas Voraces de Cobertura (Set Cover Greedy)</h3>
+<p>Aparece cuando el problema exacto es NP-Hard (como Set Cover o Dominating Set) y el enunciado solicita explícitamente: <em>"Diseñar un algoritmo greedy de costo/beneficio marginal..."</em>.</p>
+<hr />
+
     </div>
 
     <details open class="exercise-solution-drawer" id="solution-drawer-6">
@@ -2124,67 +2535,7 @@ Técnica de ordenamiento por fecha de vencimiento más temprana (<em>Earliest De
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong>  </p>
-<ul>
-<li>¿Por qué otros criterios fallan?<ul>
-<li><em>Menor duración primero (t_i):</em> Ignora fechas límites urgentes.</li>
-<li><em>Menor holgura (d_i - t_i):</em> Falla si una tarea corta tiene menor holgura pero fecha límite lejana y bloquea una urgente.</li>
-</ul>
-</li>
-<li><em>Criterio óptimo (EDF):</em> Ordenar las tareas en orden creciente de sus fechas límites: d_1 ≤ d_2 ≤ ... ≤ d_n.</li>
-<li>No dejar tiempo ocioso en la máquina entre tareas consecutivas.</li>
-</ul>
-<p><strong>Pseudocódigo</strong></p>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MinimizarLatenciaMaxima(tareas):
-    // Cada tarea tiene id, duracion, deadline
-    ORDENAR tareas POR deadline ASCENDENTE
-
-    tiempo_actual &lt;- 0
-    latencia_maxima &lt;- 0
-    INICIALIZAR programacion como lista vacía
-
-    PARA CADA tarea EN tareas:
-        inicio &lt;- tiempo_actual
-        fin &lt;- tiempo_actual + tarea.duracion
-        latencia &lt;- maximo(0, fin - tarea.deadline)
-
-        SI latencia &gt; latencia_maxima:
-            latencia_maxima &lt;- latencia
-
-        INSERTAR (tarea.id, inicio, fin, latencia) EN programacion
-        tiempo_actual &lt;- fin
-
-    RETORNAR (latencia_maxima, programacion)
-</code></pre></div>
-<p><strong>Explicación del algoritmo</strong><br />
-Al atender siempre la tarea cuyo vencimiento está más próximo, se previene que las fechas límites inminentes acumulen retrasos catastróficos causados por tareas menos urgentes.</p>
-<p><strong>Demostración de Optimalidad (Argumento de Intercambio)</strong>  </p>
-<ol>
-<li>Decimos que una programación tiene una <strong>inversión</strong> si existe un par de tareas adyacentes i seguida inmediatamente por j tal que d_i &gt; d_j (la tarea i vence más tarde que j, pero se ejecuta antes).</li>
-<li>La solución greedy por definición no tiene inversiones.</li>
-<li>Sea OPT una solución óptima sin tiempo ocioso con la menor cantidad de inversiones. Si OPT tiene cero inversiones, coincide con la programación greedy.</li>
-<li>Si OPT tiene al menos una inversión, deben existir dos tareas contiguas invertidas i y j con d_i &gt; d_j.</li>
-<li>Al intercambiar i y j en el cronograma:</li>
-<li>Las tareas distintas de i y j no modifican sus tiempos de inicio ni fin, por lo que sus latencias no cambian.</li>
-<li>La tarea j se adelanta, por lo que su latencia estrictamente no aumenta.</li>
-<li>La nueva latencia de i finaliza en el mismo tiempo que antes finalizaba j. Como d_i &gt; d_j, su latencia nueva es menor que la latencia previa que tenía j.</li>
-<li>Por lo tanto, la latencia máxima tras el intercambio no aumentó. Esto reduce la cantidad de inversiones sin empeorar la solución óptima. Repitiendo el proceso se llega a la solución greedy, probando que es <strong>óptima</strong>.</li>
-</ol>
-<p><strong>Complejidad</strong>  </p>
-<ul>
-<li><strong>Tiempo:</strong> O(n log n) por el ordenamiento inicial y O(n) en el barrido temporal. Total: O(n log n).</li>
-<li><strong>Espacio adicional:</strong> O(n) para almacenar el cronograma resultante.</li>
-</ul>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
-<ul>
-<li>Dejar huecos ociosos entre tareas. Una programación con tiempo ocioso siempre puede comprimirse hacia la izquierda sin aumentar la latencia.</li>
-</ul>
-<p><strong>Variación típica de parcial</strong><br />
-Considerar que las tareas tienen tiempos de arribo r_i diferentes. En este caso el problema se vuelve NP-Duro y EDF simple no garantiza el óptimo.</p>
-<hr />
-<h3>Patrón de Ejercicio 2.4: Heurísticas Voraces de Cobertura (Set Cover Greedy)</h3>
-<p>Aparece cuando el problema exacto es NP-Hard (como Set Cover o Dominating Set) y el enunciado solicita explícitamente: <em>"El personal no conoce programación lineal, diseñar un algoritmo greedy..."</em>.</p>
-<hr />
+        
       </div>
     </details>
   </div>
@@ -2215,10 +2566,135 @@ Considerar que las tareas tienen tiempos de arribo r_i diferentes. En este caso 
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      <p><strong>Enunciado</strong><br />
-Una empresa de telefonía celular desea colocar antenas en una grilla de celdas para brindar cobertura a un conjunto de vecindarios distribuidos en la zona. Cada antena colocada en una celda (i, j) da cobertura a esa celda y a las 8 que la rodean (un bloque de 3 × 3). El costo de instalar una antena en la celda (i, j) es de CTO_ij pesos. Se desea cubrir todos los vecindarios (o un porcentaje requerido) minimizando el costo total. Diseñar un algoritmo Greedy que determine en qué celdas colocar antenas. Justificar la regla de elección voraz y la complejidad del algoritmo.</p>
-<p><strong>Qué está evaluando</strong><br />
-Modelado del problema de <em>Weighted Set Cover</em> mediante una heurística voraz de costo/beneficio marginal.</p>
+      
+
+<p><strong>Enunciado</strong><br />
+Una empresa de telefonía celular desea colocar antenas en una grilla de celdas para brindar cobertura a un conjunto de vecindarios distribuidos en la zona. Cada antena colocada en una celda $(i, j)$ da cobertura a esa celda y a las 8 que la rodean (un bloque de $3 \times 3$). El costo de instalar una antena en la celda $(i, j)$ es de $CTO_{ij}$ pesos. Se desea cubrir todos los vecindarios minimizando el costo total. Diseñar un algoritmo Greedy que determine en qué celdas colocar antenas. Justificar la regla de elección voraz, la cota de aproximación y la complejidad del algoritmo.</p>
+<p><strong>Qué está evaluando la cátedra</strong><br />
+Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heurística voraz de costo/beneficio marginal, junto con el análisis de su factor de aproximación logarítmico de Chvátal.</p>
+<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+<ol>
+<li>
+<p><strong>Paso 1: Formulación como Weighted Set Cover:</strong>
+   Sea $U$ el universo de todos los vecindarios a cubrir ($|U| = V$). Cada celda candidata $c = (i, j)$ cubre un subconjunto $S_c \subseteq U$ de vecindarios y tiene costo $CTO_c$.</p>
+</li>
+<li>
+<p><strong>Paso 2: Métrica de Selección Voraz (Costo Marginal por Elemento Nuevo):</strong>
+   En cada paso, sea $U_{\text{restantes}}$ el conjunto de vecindarios aún no cubiertos. Para cada celda candidata $c$, calculamos la ganancia marginal:
+   $$\Delta(c) = |S_c \cap U_{\text{restantes}}|$$
+   Definimos el ratio voraz:
+   $$\text{Ratio}(c) = \frac{CTO_c}{\Delta(c)}$$
+   Se selecciona vorazmente la celda $c^<em>$ que <strong>minimiza el costo por cada nuevo vecindario cubierto</strong>:
+   $$c^</em> = \arg\min_{c: \Delta(c) &gt; 0} \frac{CTO_c}{\Delta(c)}$$</p>
+</li>
+<li>
+<p><strong>Paso 3: Actualización y Terminación:</strong>
+   Se incorpora $c^<em>$ a la solución y se actualiza $U_{\text{restantes}} = U_{\text{restantes}} \setminus S_{c^</em>}$. Se repite hasta que $U_{\text{restantes}} = \emptyset$.</p>
+</li>
+<li>
+<p><strong>Paso 4: Factor de Garantía de Aproximación (Teorema de Chvátal):</strong>
+   Como Set Cover es NP-Duro, ningún algoritmo polinomial garantiza el óptimo global a menos que $P = NP$. El algoritmo voraz garantiza una cota de aproximación armónica:
+   $$\text{Costo}(\text{Greedy}) \le H(d_{\max}) \cdot OPT \le (\ln |U| + 1) \cdot OPT$$
+   donde $H(k) = \sum_{i=1}^k \frac{1}{i}$ es el $k$-ésimo número armónico.</p>
+</li>
+<li>
+<p><strong>Paso 5: Complejidad:</strong></p>
+</li>
+<li>En cada iteración se evalúan a lo sumo $M$ celdas candidatas. La inspección de las 9 celdas vecinas toma $O(1)$.</li>
+<li>Se realizan a lo sumo $V$ iteraciones (en cada una se cubre al menos 1 vecindario nuevo).</li>
+<li>Complejidad temporal: $O(V \cdot M)$. Espacio: $O(V + M)$.</li>
+</ol>
+<h4>2. Ejemplo Concreto y Traza Paso a Paso</h4>
+<p>Sean 4 vecindarios ${v_1, v_2, v_3, v_4}$ y 3 antenas candidatas:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Antena</th>
+<th style="text-align: center;">Cobertura ($S_c$)</th>
+<th style="text-align: center;">Costo ($CTO$)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>A1</strong></td>
+<td style="text-align: center;">${v_1, v_2}$</td>
+<td style="text-align: center;">$\$10$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>A2</strong></td>
+<td style="text-align: center;">${v_2, v_3, v_4}$</td>
+<td style="text-align: center;">$\$24$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>A3</strong></td>
+<td style="text-align: center;">${v_3, v_4}$</td>
+<td style="text-align: center;">$\$12$</td>
+</tr>
+</tbody>
+</table>
+<p><em>Iteración 1 ($U_{\text{restantes}} = {v_1, v_2, v_3, v_4}$):</em></p>
+<ul>
+<li>A1: cubre $2$ nuevos $\implies$ Ratio $= 10 / 2 = 5.0$.</li>
+<li>A2: cubre $3$ nuevos $\implies$ Ratio $= 24 / 3 = 8.0$.</li>
+<li>A3: cubre $2$ nuevos $\implies$ Ratio $= 12 / 2 = 6.0$.</li>
+<li><strong>Elección voraz:</strong> Se instala <strong>A1</strong> (costo $\$10$). Quedan sin cubrir ${v_3, v_4}$.</li>
+</ul>
+<p><em>Iteración 2 ($U_{\text{restantes}} = {v_3, v_4}$):</em></p>
+<ul>
+<li>A2: cubre ${v_3, v_4}$ ($2$ nuevos) $\implies$ Ratio $= 24 / 2 = 12.0$.</li>
+<li>A3: cubre ${v_3, v_4}$ ($2$ nuevos) $\implies$ Ratio $= 12 / 2 = 6.0$.</li>
+<li><strong>Elección voraz:</strong> Se instala <strong>A3</strong> (costo $\$12$). Quedan sin cubrir $\emptyset$.</li>
+</ul>
+<p><em>Resultado Greedy:</em> Antenas ${A1, A3}$ con Costo Total $= 10 + 12 = \$22$. (En este caso coincide con el óptimo global).</p>
+<h4>3. Diagrama Visual de Cobertura de Conjuntos</h4>
+<div class="mermaid-wrapper"><pre class="mermaid">graph TD
+    U["Vecindarios No Cubiertos: {v1, v2, v3, v4}"] --> A1["Instalar A1: Cubre {v1, v2} a $5/vecino"]:::opt
+    A1 --> U2["Vecindarios Restantes: {v3, v4}"]
+    U2 --> A3["Instalar A3: Cubre {v3, v4} a $6/vecino"]:::opt
+    A3 --> FIN(["Cobertura 100% Completada por $22"]):::done
+    classDef opt fill:#1d4ed8,stroke:#1e40af,stroke-width:2px,color:#fff
+    classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
+</pre></div>
+<h4>4. Implementación en Python (Tipada y Ejecutable)</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-python">def set_cover_antenas_greedy(vecindarios: set[str], antenas: dict[str, tuple[int, set[str]]]) -&gt; list[str]:
+    # antenas: dict con nombre -&gt; (costo, set_de_vecindarios_cubiertos)
+    no_cubiertos = set(vecindarios)
+    elegidas = []
+
+    while no_cubiertos:
+        mejor_antena = None
+        mejor_ratio = float(&quot;inf&quot;)
+
+        for nombre, (costo, cobertura) in antenas.items():
+            nuevos = len(cobertura &amp; no_cubiertos)
+            if nuevos &gt; 0:
+                ratio = costo / nuevos
+                if ratio &lt; mejor_ratio:
+                    mejor_ratio = ratio
+                    mejor_antena = nombre
+
+        if mejor_antena is None:
+            break  # Infactible cubrir los restantes
+
+        elegidas.append(mejor_antena)
+        no_cubiertos -= antenas[mejor_antena][1]
+
+    return elegidas
+</code></pre></div>
+<div class="trap-callout">
+  <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
+  <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
+  <ul>
+    <li><strong>Calcular el ratio sobre la cobertura total histórica:</strong> El denominador del ratio DEBE ser exclusivamente los vecindarios <em>no cubiertos hasta el momento</em> ($\Delta(c) = |S_c \cap U_{\text{restantes}}|$). Si divides por $|S_c|$ fijo, una antena que cubre celdas ya satisfechas parecerá falsamente rentable.</li>
+    <li><strong>Afirmar que es óptimo:</strong> Set Cover es NP-Completo. Cualquier afirmación de que este greedy es siempre óptimo se califica con 0 puntos. Es una heurística con cota de aproximación armónica $\ln |U| + 1$.</li>
+  </ul>
+</div>
+
+<hr />
+<h3>Patrón de Ejercicio 2.5: Greedy en Caminos y Etapas (Demostración de No-Optimalidad)</h3>
+<p>Aparece cuando se plantea un problema de etapas secuenciales y se pide evaluar si un enfoque voraz local alcanza el óptimo global.</p>
+<hr />
+
     </div>
 
     <details open class="exercise-solution-drawer" id="solution-drawer-7">
@@ -2228,75 +2704,7 @@ Modelado del problema de <em>Weighted Set Cover</em> mediante una heurística vo
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong>  </p>
-<ul>
-<li>En cada paso, evaluamos todas las celdas candidatas donde aún no hay antena.</li>
-<li>Para cada celda candidata (i, j), calculamos cuántos <strong>nuevos vecindarios no cubiertos previamente</strong> aportaría instalar una antena allí: NuevosCobertura(i, j).</li>
-<li>
-<p>Definimos el ratio de costo por beneficio marginal:</p>
-<blockquote>
-<p><strong>Ratio(i, j) = CTO_ij / NuevosCobertura(i, j)</strong></p>
-</blockquote>
-</li>
-<li>
-<p>Elegimos vorazmente la celda que tenga el <strong>menor ratio de costo por vecindario nuevo cubierto</strong>.</p>
-</li>
-<li>Marcamos los vecindarios como cubiertos y repetimos hasta que todos los vecindarios estén cubiertos.</li>
-</ul>
-<p><strong>Pseudocódigo</strong></p>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION ColocarAntenasGreedy(grilla, vecindarios, CTO):
-    INICIALIZAR no_cubiertos como conjunto con todos los vecindarios
-    INICIALIZAR antenas_elegidas como lista vacía
-
-    MIENTRAS longitud(no_cubiertos) &gt; 0:
-        mejor_celda &lt;- NULO
-        mejor_ratio &lt;- INFINITO
-
-        // Evaluar todas las celdas posibles de la grilla
-        PARA CADA celda (i, j) EN grilla:
-            vecinos_nuevos &lt;- 0
-            PARA CADA v EN Cobertura(i, j):
-                SI v PERTENECE A no_cubiertos:
-                    vecinos_nuevos &lt;- vecinos_nuevos + 1
-
-            // Solo consideramos celdas que aportan cobertura nueva
-            SI vecinos_nuevos &gt; 0:
-                ratio &lt;- CTO[i][j] / vecinos_nuevos
-                SI ratio &lt; mejor_ratio:
-                    mejor_ratio &lt;- ratio
-                    mejor_celda &lt;- (i, j)
-
-        // Si no encontramos celda que cubra los restantes, es infactible
-        SI mejor_celda = NULO:
-            ROMPER // No se pueden cubrir todos los vecindarios restantes
-
-        INSERTAR mejor_celda EN antenas_elegidas
-        // Actualizar vecindarios cubiertos
-        PARA CADA v EN Cobertura(mejor_celda):
-            ELIMINAR v DE no_cubiertos
-
-    RETORNAR antenas_elegidas
-</code></pre></div>
-<p><strong>Explicación del algoritmo</strong><br />
-El algoritmo aplica la regla clásica de Chvátal para Set Cover. En cada iteración maximiza la eficiencia económica por cada elemento nuevo incorporado al universo cubierto.</p>
-<p><strong>Complejidad</strong>  </p>
-<ul>
-<li>Si la grilla tiene M celdas y hay V vecindarios, en el peor caso se seleccionan hasta V antenas. En cada paso se evalúan las M celdas inspeccionando las 9 celdas cubiertas (O(1)).</li>
-<li>Tiempo total: O(V · M).</li>
-<li>Espacio adicional: O(V) para mantener el conjunto de vecindarios no cubiertos.</li>
-</ul>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
-<ul>
-<li>Elegir la celda con menor costo absoluto CTO_ij (podría no cubrir ningún vecindario o muy pocos).</li>
-<li>Elegir la celda que cubre más vecindarios sin considerar el costo (podría ser extremadamente cara).</li>
-<li>El cociente debe ser siempre costo / nuevos vecindarios, no sobre el total histórico de celdas que abarca.</li>
-</ul>
-<p><strong>Variación típica de parcial</strong><br />
-Preguntar si este algoritmo garantiza la solución óptima. <strong>Respuesta:</strong> No, porque Set Cover es NP-Duro. Este algoritmo voraz es una aproximación con factor de garantía ln |V| + 1.</p>
-<hr />
-<h3>Patrón de Ejercicio 2.5: Greedy en Caminos y Etapas (Demostración de No-Optimalidad)</h3>
-<p>Aparece cuando se plantea un problema de etapas secuenciales y se pide evaluar si un enfoque voraz local alcanza el óptimo global.</p>
-<hr />
+        
       </div>
     </details>
   </div>
@@ -2327,14 +2735,120 @@ Preguntar si este algoritmo garantiza la solución óptima. <strong>Respuesta:</
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      <p><strong>Enunciado</strong><br />
+      
+
+<p><strong>Enunciado</strong><br />
 Para el traslado de una carga peligrosa del INVAP de Ezeiza a Bariloche a través de etapas diarias (con alternativas de ciudades intermedias y costos de seguro asociados a cada tramo):  </p>
 <ol>
 <li>Diseñar un algoritmo Greedy que decida el itinerario.  </li>
-<li>Indicar si la solución obtenida será óptima o no. Fundamentar con un contraejemplo riguroso.</li>
+<li>Indicar si la solución obtenida será óptima o no. Fundamentar con un contraejemplo riguroso con datos numéricos explícitos.</li>
 </ol>
-<p><strong>Qué está evaluando</strong><br />
+<p><strong>Qué está evaluando la cátedra</strong><br />
 Construcción de heurísticas paso a paso y formulación de contraejemplos matemáticos claros para refutar la optimalidad de algoritmos voraces en grafos de decisión multietapa.</p>
+<h4>1. Deducción Metodológica Formal</h4>
+<ol>
+<li>
+<p><strong>Paso 1: Regla Voraz Local:</strong>
+   Estando en la ciudad actual en la etapa $t$, el algoritmo voraz selecciona como siguiente parada aquella ciudad conectada en la etapa $t+1$ que tenga el <strong>menor costo de seguro inmediato</strong>.</p>
+</li>
+<li>
+<p><strong>Paso 2: Veredicto de Optimalidad:</strong>
+   <strong>El algoritmo NO es óptimo</strong>. Un ahorro mínimo en el tramo inicial puede forzar al convoy a quedar atrapado en una ciudad cuyas únicas salidas hacia el destino tengan costos astronómicos.</p>
+</li>
+<li>
+<p><strong>Paso 3: Protocolo de Contraejemplo de Cátedra:</strong>
+   Para refutar formalmente un algoritmo voraz se deben definir:</p>
+</li>
+<li>
+<p>Los nodos y aristas de una red pequeña pero completa.</p>
+</li>
+<li>La traza paso a paso de la decisión voraz y su costo total acumulado.</li>
+<li>Una ruta alternativa factible con costo estrictamente inferior.</li>
+<li>Conclusión formal matemática: $\text{Costo}(\text{Voraz}) &gt; \text{Costo}(\text{Alternativa})$.</li>
+</ol>
+<h4>2. Contraejemplo Formal Numérico</h4>
+<p>Sea el traslado desde <strong>Origen $E$ (Ezeiza)</strong> hasta <strong>Destino $B$ (Bariloche)</strong> a través de dos ciudades intermedias en la Etapa 1 ($V_1$ y $V_2$):</p>
+<div class="mermaid-wrapper"><pre class="mermaid">graph LR
+    E(["E (Ezeiza)"]) -->|Costo: 10| V1["V1"]
+    E -->|Costo: 20| V2["V2"]
+    V1 -->|Costo: 100| B(["B (Bariloche)"])
+    V2 -->|Costo: 5| B
+</pre></div>
+<ul>
+<li>
+<p><strong>Traza del Algoritmo Greedy:</strong></p>
+<ol>
+<li>En el nodo inicial $E$, evalúa las aristas salientes:</li>
+<li>Tramo $E \to V_1$: costo $10$.</li>
+<li>Tramo $E \to V_2$: costo $20$.</li>
+<li>Elige vorazmente el tramo de menor costo inmediato: $E \to V_1$ ($10$ pesos).</li>
+<li>Desde $V_1$, la única conexión hacia el destino es $V_1 \to B$ con costo $100$ pesos.</li>
+<li><strong>Costo total obtenido por Greedy:</strong>
+ $$\text{Costo}_{\text{greedy}} = 10 + 100 = 110 \text{ pesos}$$</li>
+</ol>
+</li>
+<li>
+<p><strong>Solución Alternativa Factible:</strong></p>
+<ol>
+<li>Tramo inicial $E \to V_2$ con costo $20$ pesos (rechazado por el voraz).</li>
+<li>Tramo final $V_2 \to B$ con costo $5$ pesos.</li>
+<li><strong>Costo total alternativo:</strong>
+ $$\text{Costo}_{\text{alternativo}} = 20 + 5 = 25 \text{ pesos}$$</li>
+</ol>
+</li>
+<li>
+<p><strong>Conclusión Formal:</strong>
+  $$\text{Costo}<em>{\text{greedy}} = 110 &gt; 25 = \text{Costo}</em>{\text{alternativo}}$$
+  Como la solución voraz es estrictamente peor que la alternativa factible, queda demostrado que <strong>el enfoque greedy no garantiza la solución óptima</strong>.
+  <em>Paradigma adecuado:</em> Este problema exhibe subestructura óptima con superposición de subproblemas y debe modelarse mediante <strong>Programación Dinámica</strong> en tiempo $O(V + E)$ (ver Ejercicio 32). $\blacksquare$</p>
+</li>
+</ul>
+<h4>3. Implementación en Python del Greedy y Validación del Contraejemplo</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-python">def traslado_invap_greedy(origen: str, destino: str, grafo: dict[str, list[tuple[str, int]]]) -&gt; tuple[int, list[str]]:
+    actual = origen
+    camino = [actual]
+    costo_total = 0
+
+    while actual != destino:
+        vecinos = grafo.get(actual, [])
+        if not vecinos:
+            return float(&quot;inf&quot;), []
+
+        # Elección voraz: mínimo costo en la arista inmediata
+        mejor_sig, menor_costo = min(vecinos, key=lambda x: x[1])
+        camino.append(mejor_sig)
+        costo_total += menor_costo
+        actual = mejor_sig
+
+    return costo_total, camino
+
+# Demostración del contraejemplo
+grafo_invap = {
+    &quot;E&quot;: [(&quot;V1&quot;, 10), (&quot;V2&quot;, 20)],
+    &quot;V1&quot;: [(&quot;B&quot;, 100)],
+    &quot;V2&quot;: [(&quot;B&quot;, 5)],
+    &quot;B&quot;: []
+}
+
+# Costo greedy = 110, Costo optimo = 25
+</code></pre></div>
+<div class="trap-callout">
+  <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
+  <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
+  <ul>
+    <li><strong>Contraejemplos sin valores numéricos:</strong> Escribir <em>"podría ser que después de la primera ciudad los caminos sean muy caros"</em> no es un contraejemplo válido para la cátedra y recibe 0 puntos. Se exige un grafo explícito con etiquetas de costos y sumatorias numéricas comparativas.</li>
+    <li><strong>Afirmar que Dijkstra es greedy:</strong> Si bien Dijkstra utiliza una cola de prioridad voraz sobre la distancia acumulada, **no toma decisiones miopes por arista individual**. Evalúa la distancia total acumulada desde la fuente $d[u] + w(u, v)$, lo que pertenece conceptualmente a la programación dinámica sobre grafos dirigidos acíclicos.</li>
+  </ul>
+</div>
+
+<hr />
+<h3>Errores Frecuentes en Exámenes sobre Greedy</h3>
+<ol>
+<li><strong>Afirmar que Greedy es óptimo sin demostrarlo:</strong> Poner <em>"es óptimo porque siempre elijo lo mejor en cada paso"</em> es causal de pérdida total de puntos. Se debe presentar <em>Greedy Stays Ahead</em> o <em>Argumento de Intercambio</em>.</li>
+<li><strong>Dar un contraejemplo sin números:</strong> Un contraejemplo exige nodos, aristas y costos numéricos explícitos.</li>
+<li><strong>No justificar por qué el algoritmo es voraz:</strong> Se debe explicitar que la decisión es local, miope e irrevocable.</li>
+<li><strong>Confundir Interval Scheduling con Interval Scheduling Ponderado:</strong> Si las tareas tienen valores o beneficios distintos, ordenar por tiempo de fin no es óptimo.</li>
+</ol>
     </div>
 
     <details open class="exercise-solution-drawer" id="solution-drawer-8">
@@ -2344,81 +2858,7 @@ Construcción de heurísticas paso a paso y formulación de contraejemplos matem
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong>  </p>
-<ul>
-<li><em>Regla voraz:</em> Estando en la ciudad actual, elegir como siguiente parada aquella ciudad accesible en la etapa que tenga el <strong>menor costo de seguro inmediato</strong>.</li>
-<li><em>Optimalidad:</em> <strong>NO es óptimo</strong>. Un tramo inicial barato puede forzar a tomar en la siguiente etapa rutas con costos astronómicos o sin salida barata.</li>
-</ul>
-<p><strong>Pseudocódigo</strong></p>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION TrasladoInvapGreedy(origen, destino, grafo_etapas):
-    ciudad_actual &lt;- origen
-    costo_total &lt;- 0
-    INICIALIZAR camino como lista con origen
-
-    MIENTRAS ciudad_actual != destino:
-        siguientes_opciones &lt;- ObtenerVecinos(grafo_etapas, ciudad_actual)
-        SI longitud(siguientes_opciones) = 0:
-            RETORNAR (&quot;Error: camino bloqueado&quot;, INFINITO)
-
-        // Elección voraz: mínimo costo en el tramo inmediato
-        mejor_siguiente &lt;- NULO
-        menor_costo_tramo &lt;- INFINITO
-
-        PARA CADA (ciudad_sig, costo_seguro) EN siguientes_opciones:
-            SI costo_seguro &lt; menor_costo_tramo:
-                menor_costo_tramo &lt;- costo_seguro
-                mejor_siguiente &lt;- ciudad_sig
-
-        INSERTAR mejor_siguiente EN camino
-        costo_total &lt;- costo_total + menor_costo_tramo
-        ciudad_actual &lt;- mejor_siguiente
-
-    RETORNAR (camino, costo_total)
-</code></pre></div>
-<p><strong>Contraejemplo Formal de No-Optimalidad</strong><br />
-Consideremos el siguiente grafo de etapas desde el origen E (Ezeiza) hasta el destino B (Bariloche):</p>
-<ul>
-<li>Etapa 1 desde E:<ul>
-<li>Tramo E → V1 con costo de seguro de 10 pesos.</li>
-<li>Tramo E → V2 con costo de seguro de 20 pesos.</li>
-</ul>
-</li>
-<li>
-<p>Etapa 2 hacia el destino B:</p>
-<ul>
-<li>Desde V1 → B con costo de seguro de 100 pesos.</li>
-<li>Desde V2 → B con costo de seguro de 5 pesos.</li>
-</ul>
-</li>
-<li>
-<p><strong>Ejecución del algoritmo Greedy:</strong></p>
-<ul>
-<li>En E, compara las opciones inmediatas: 10 pesos (a V1) vs 20 pesos (a V2).</li>
-<li>Elige vorazmente E → V1 por costar 10 pesos.</li>
-<li>En V1, la única opción hacia el destino es V1 → B con costo de 100 pesos.</li>
-<li><strong>Costo total obtenido por Greedy:</strong> 10 + 100 = 110 pesos.</li>
-</ul>
-</li>
-<li><strong>Solución alternativa factible:</strong><ul>
-<li>Ruta E → V2 → B.</li>
-<li>Costo total: 20 + 5 = 25 pesos.</li>
-</ul>
-</li>
-<li><strong>Conclusión:</strong> Como 110 &gt; 25, el algoritmo voraz no encuentra la solución óptima. Los problemas de caminos mínimos en grafos por etapas requieren <strong>Programación Dinámica</strong> (ver Ejercicio 32).</li>
-</ul>
-<p><strong>Complejidad</strong>  </p>
-<ul>
-<li><strong>Tiempo:</strong> O(V + E) en el peor caso si recorre las aristas de las etapas.</li>
-<li><strong>Espacio:</strong> O(V) para la lista de ciudades del camino.</li>
-</ul>
-<hr />
-<h3>Errores Frecuentes en Exámenes sobre Greedy</h3>
-<ol>
-<li><strong>Afirmar que Greedy es óptimo sin demostrarlo:</strong> Poner "es óptimo porque siempre elijo lo mejor" es causal de pérdida total de puntos. Se debe presentar <em>Greedy Stays Ahead</em> o <em>Argumento de Intercambio</em>.</li>
-<li><strong>Dar un contraejemplo sin números:</strong> Decir "podría pasar que después sea más caro" no es un contraejemplo. Un contraejemplo exige nodos, aristas y costos numéricos explícitos.</li>
-<li><strong>No justificar por qué el algoritmo es voraz:</strong> Se debe explicitar que la decisión es local, miope e irrevocable.</li>
-<li><strong>Confundir Interval Scheduling con Interval Scheduling Ponderado:</strong> Si las tareas tienen valores o beneficios distintos, ordenar por tiempo de fin no es óptimo.</li>
-</ol>
+        
       </div>
     </details>
   </div>
@@ -2540,17 +2980,19 @@ let trainerScore = 0;
 let trainerAnswered = false;
 
 // Initialization on DOM ready
-document.addEventListener("DOMContentLoaded", () => {
-  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall
-  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = false;
-  });
-
+document.addEventListener("DOMContentLoaded", async () => {
   loadSavedState();
   updateModeUI();
   applyFilters();
-  initMermaidDiagrams();
+  if (typeof initMermaidDiagrams === "function") {
+    await initMermaidDiagrams();
+  }
   initMathRendering();
+
+  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall (post-render)
+  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
+    drawer.open = false;
+  });
 });
 
 function initMathRendering() {
@@ -2567,7 +3009,7 @@ function initMathRendering() {
   }
 }
 
-function initMermaidDiagrams() {
+async function initMermaidDiagrams() {
   if (typeof mermaid === "undefined") return;
   const isDark = document.body.classList.contains("dark-mode");
   mermaid.initialize({
@@ -2578,7 +3020,11 @@ function initMermaidDiagrams() {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }
   });
-  mermaid.run({ querySelector: ".mermaid" });
+  try {
+    await mermaid.run({ querySelector: ".mermaid" });
+  } catch (e) {
+    console.warn("Mermaid render notice:", e);
+  }
 }
 
 // Al imprimir desde el navegador (Ctrl+P), expandir todas las soluciones

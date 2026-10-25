@@ -98,7 +98,7 @@ def format_exercise_card(num, title, body_html):
             clean_content = html.unescape(code_content)
             return (
                 f'<div class="mermaid-wrapper">'
-                f'<div class="mermaid">{clean_content}</div>'
+                f'<pre class="mermaid">{clean_content}</pre>'
                 f'</div>'
             )
         return (
@@ -2165,17 +2165,19 @@ let trainerScore = 0;
 let trainerAnswered = false;
 
 // Initialization on DOM ready
-document.addEventListener("DOMContentLoaded", () => {
-  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall
-  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = false;
-  });
-
+document.addEventListener("DOMContentLoaded", async () => {
   loadSavedState();
   updateModeUI();
   applyFilters();
-  initMermaidDiagrams();
+  if (typeof initMermaidDiagrams === "function") {
+    await initMermaidDiagrams();
+  }
   initMathRendering();
+
+  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall (post-render)
+  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
+    drawer.open = false;
+  });
 });
 
 function initMathRendering() {
@@ -2192,7 +2194,7 @@ function initMathRendering() {
   }
 }
 
-function initMermaidDiagrams() {
+async function initMermaidDiagrams() {
   if (typeof mermaid === "undefined") return;
   const isDark = document.body.classList.contains("dark-mode");
   mermaid.initialize({
@@ -2203,7 +2205,11 @@ function initMermaidDiagrams() {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }
   });
-  mermaid.run({ querySelector: ".mermaid" });
+  try {
+    await mermaid.run({ querySelector: ".mermaid" });
+  } catch (e) {
+    console.warn("Mermaid render notice:", e);
+  }
 }
 
 // Al imprimir desde el navegador (Ctrl+P), expandir todas las soluciones

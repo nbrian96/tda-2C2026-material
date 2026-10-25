@@ -126,18 +126,17 @@ $$C = \begin{pmatrix} 19 & 22 \\ 43 & 50 \end{pmatrix}$$
 #### 4. Diagrama del Árbol de Recursión
 
 ```mermaid
-graph TD
-    R["Raíz: T(n) = 8 llamadas con tamaño n/2 | Costo combinación: n²"]
-    R --> L1["M1 (n/2)"]
-    R --> L2["M2 (n/2)"]
-    R --> L3["M3 (n/2)"]
-    R --> L4["M4 (n/2)"]
-    R --> L5["M5 (n/2)"]
-    R --> L6["M6 (n/2)"]
-    R --> L7["M7 (n/2)"]
-    R --> L8["M8 (n/2)"]
-    L1 --> H1["... 8 hojas de 1x1"]
-    L8 --> H8["... 8 hojas de 1x1"]
+flowchart TD
+    R["Raiz: T(n)"] --> L1["Submatriz M1"]
+    R --> L2["Submatriz M2"]
+    R --> L3["Submatriz M3"]
+    R --> L4["Submatriz M4"]
+    R --> L5["Submatriz M5"]
+    R --> L6["Submatriz M6"]
+    R --> L7["Submatriz M7"]
+    R --> L8["Submatriz M8"]
+    L1 --> H1["Hojas caso base"]
+    L8 --> H8["Hojas caso base"]
 ```
 
 #### 5. Implementación en Python (Tipada y Ejecutable)
@@ -261,10 +260,10 @@ $$A = [1, 2, 1, 3, 5, 6, 4]$$
 
 ```mermaid
 graph TD
-    A["Rango [0, 6]: A[3] = 3 < A[4] = 5 (Pendiente Sube)"] -->|Descartar mitad izq| B["Rango [4, 6]: A[5] = 6 > A[6] = 4 (Pendiente Baja)"]
-    B -->|Conservar m=5| C["Rango [4, 5]: A[4] = 5 < A[5] = 6 (Pendiente Sube)"]
-    C -->|Descartar m=4| D["Rango [5, 5]: Caso Base!"]
-    D --> E(["Retorna Índice 5: Elemento Pico = 6"]):::opt
+    A["Rango (0 a 6): A(3)=3 sube hacia A(4)=5"] -->|Descartar mitad izq| B["Rango (4 a 6): A(5)=6 baja hacia A(6)=4"]
+    B -->|Conservar m=5| C["Rango (4 a 5): A(4)=5 sube hacia A(5)=6"]
+    C -->|Descartar m=4| D["Rango (5 a 5): Caso Base"]
+    D --> E["Retorna Indice 5: Elemento Pico = 6"]:::opt
     classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
@@ -366,7 +365,7 @@ graph LR
     subgraph Ceros [Zona de 0s]
         N4["A[4] = 0 (PRIMER CERO)"]:::primer --> N5["A[5] = 0"] --> N6["A[6] = 0"] --> N7["A[7] = 0"]
     end
-    N3 -.->|Frontera de Transición| N4
+    N3 -. Frontera de Transición .-> N4
     classDef primer fill:#15803d,stroke:#166534,stroke-width:3px,color:#fff
 ```
 

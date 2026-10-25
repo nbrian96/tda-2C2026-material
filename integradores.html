@@ -2375,13 +2375,13 @@ Como la fila $i$ solo depende estrictamente de la fila inmediata anterior $i - 1
 <ol>
 <li>
 <p><strong>Poda por Factibilidad (Feasibility):</strong>
- Si $\text{peso_actual} + w_i &gt; W$, podar la rama de inclusión de $i$.</p>
+ Si $\text{peso actual} + w_i &gt; W$, podar la rama de inclusión de $i$.</p>
 </li>
 <li>
 <p><strong>Poda por Optimalidad (Branch and Bound con Relajación Continua Fraccionaria):</strong>
  Para el estado actual en el elemento $i$, calculamos una <strong>cota superior (Upper Bound)</strong> del máximo valor que podría obtenerse en el subárbol:
- $$\text{CotaSuperior} = \text{valor_actual} + \text{MochilaFraccionaria}(\text{elementos restantes desde } i+1, \; W - \text{peso_actual})$$
- Si $\text{CotaSuperior} \le \text{mejor_valor_global}$, es matemáticamente imposible que este subárbol supere el récord actual ya hallado $\implies$ <strong>podar inmediatamente toda la rama</strong>.</p>
+ $$\text{CotaSuperior} = \text{valor actual} + \text{MochilaFraccionaria}(\text{elementos restantes desde } i+1, \; W - \text{peso actual})$$
+ Si $\text{CotaSuperior} \le \text{mejor valor global}$, es matemáticamente imposible que este subárbol supere el récord actual ya hallado $\implies$ <strong>podar inmediatamente toda la rama</strong>.</p>
 </li>
 </ol>
 </li>
@@ -2621,14 +2621,14 @@ Resolver y comparar este problema a través de todos los paradigmas algorítmico
 <li><strong>Poda por Factibilidad:</strong> Si entre la ciudad actual $u$ y la candidata $v$ no existe arista conectiva ($c_{uv} = \infty$), descartar $v$.</li>
 <li>
 <p><strong>Poda por Cota Superior:</strong> Mantener el mejor costo de tour cerrado completo hallado hasta el momento (<code>mejor_costo</code>). Si en el camino parcial actual:
- $$\text{costo_parcial} \ge \text{mejor_costo}$$
+ $$\text{costo parcial} \ge \text{mejor costo}$$
  podar inmediatamente la rama (ningún costo de arista es negativo).</p>
 </li>
 <li>
 <p><strong>Poda por Cota Inferior (Branch &amp; Bound con MST / 1-Tree):</strong>
  Para el conjunto de ciudades restantes aún no visitadas $V_{restantes}$, cualquier tour válido debe conectar estas ciudades formando al menos un árbol. Por ende:
- $$\text{CotaInferior} = \text{costo_parcial} + \text{CostoMST}(V_{restantes}) + \min_{r \in V_{restantes}} c_{\text{actual}, r} + \min_{r \in V_{restantes}} c_{r, 1}$$
- Si $\text{CotaInferior} \ge \text{mejor_costo} \implies$ podar toda la rama.</p>
+ $$\text{CotaInferior} = \text{costo parcial} + \text{CostoMST}(V_{restantes}) + \min_{r \in V_{restantes}} c_{\text{actual}, r} + \min_{r \in V_{restantes}} c_{r, 1}$$
+ Si $\text{CotaInferior} \ge \text{mejor costo} \implies$ podar toda la rama.</p>
 </li>
 </ol>
 </li>
@@ -2702,12 +2702,12 @@ PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO
 <li>
 <p><strong>Ecuación de Recurrencia:</strong>
   Para cualquier subconjunto $S$ de tamaño $|S| \ge 2$ y cualquier ciudad de llegada $j \in S$:
-  $$C(S, j) = \min_{k \in S \setminus {j}} \Big{ C(S \setminus {j}, k) + c_{kj} \Big}$$</p>
+  $$C(S, j) = \min_{k \in S \setminus {j}} \left[ C(S \setminus {j}, k) + c_{kj} \right]$$</p>
 </li>
 <li>
 <p><strong>Cálculo del Tour Cerrado Óptimo:</strong>
   Una vez calculada la tabla para el conjunto completo $V' = {2, 3, \dots, n}$:
-  $$OPT = \min_{j \in {2, \dots, n}} \Big{ C({2, \dots, n}, j) + c_{j, 1} \Big}$$</p>
+  $$OPT = \min_{j \in {2, \dots, n}} \left[ C({2, \dots, n}, j) + c_{j, 1} \right]$$</p>
 </li>
 </ul>
 <p><strong>Pseudocódigo de Held-Karp</strong></p>
@@ -3116,17 +3116,19 @@ let trainerScore = 0;
 let trainerAnswered = false;
 
 // Initialization on DOM ready
-document.addEventListener("DOMContentLoaded", () => {
-  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall
-  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = false;
-  });
-
+document.addEventListener("DOMContentLoaded", async () => {
   loadSavedState();
   updateModeUI();
   applyFilters();
-  initMermaidDiagrams();
+  if (typeof initMermaidDiagrams === "function") {
+    await initMermaidDiagrams();
+  }
   initMathRendering();
+
+  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall (post-render)
+  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
+    drawer.open = false;
+  });
 });
 
 function initMathRendering() {
@@ -3143,7 +3145,7 @@ function initMathRendering() {
   }
 }
 
-function initMermaidDiagrams() {
+async function initMermaidDiagrams() {
   if (typeof mermaid === "undefined") return;
   const isDark = document.body.classList.contains("dark-mode");
   mermaid.initialize({
@@ -3154,7 +3156,11 @@ function initMermaidDiagrams() {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }
   });
-  mermaid.run({ querySelector: ".mermaid" });
+  try {
+    await mermaid.run({ querySelector: ".mermaid" });
+  } catch (e) {
+    console.warn("Mermaid render notice:", e);
+  }
 }
 
 // Al imprimir desde el navegador (Ctrl+P), expandir todas las soluciones

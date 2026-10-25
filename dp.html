@@ -1910,7 +1910,7 @@ Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguro
 
 <h4>Diagrama de Flujo y Grafo Acíclico (DAG) de Decisiones</h4>
 <p>A continuación se representa el flujo de decisión iterativo y el grafo de transiciones óptimas para $K = 10$:</p>
-<div class="mermaid-wrapper"><div class="mermaid">flowchart TD
+<div class="mermaid-wrapper"><pre class="mermaid">flowchart TD
     A(["Inicio: K = 10"]) --> B["DP[0] = 0"]
     B --> C["Bucle i de 1 hasta K"]
     C --> D["Candidato 1: DP[i-1] + 1 (Sumar 1)"]
@@ -1924,8 +1924,8 @@ Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguro
     I -- No --> C
     I -- Sí --> J["Backtracking desde K = 10 hasta 0"]
     J --> K(["Retornar DP[10] = 5 y secuencia"])
-</div></div>
-<div class="mermaid-wrapper"><div class="mermaid">graph LR
+</pre></div>
+<div class="mermaid-wrapper"><pre class="mermaid">graph LR
     classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
     classDef normal fill:#475569,stroke:#334155,stroke-width:1px,color:#fff
 
@@ -1942,7 +1942,7 @@ Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguro
     N6 -->|+1| N7["7"]:::normal
     N8 -->|+1| N9["9"]:::normal
     N9 -->|+1| N10
-</div></div>
+</pre></div>
 <div class="visual-trace-container">
   <span class="trace-node start-node">0</span>
   <span class="trace-arrow"><span class="arrow-op">+1</span>➜</span>
@@ -2920,17 +2920,19 @@ let trainerScore = 0;
 let trainerAnswered = false;
 
 // Initialization on DOM ready
-document.addEventListener("DOMContentLoaded", () => {
-  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall
-  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = false;
-  });
-
+document.addEventListener("DOMContentLoaded", async () => {
   loadSavedState();
   updateModeUI();
   applyFilters();
-  initMermaidDiagrams();
+  if (typeof initMermaidDiagrams === "function") {
+    await initMermaidDiagrams();
+  }
   initMathRendering();
+
+  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall (post-render)
+  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
+    drawer.open = false;
+  });
 });
 
 function initMathRendering() {
@@ -2947,7 +2949,7 @@ function initMathRendering() {
   }
 }
 
-function initMermaidDiagrams() {
+async function initMermaidDiagrams() {
   if (typeof mermaid === "undefined") return;
   const isDark = document.body.classList.contains("dark-mode");
   mermaid.initialize({
@@ -2958,7 +2960,11 @@ function initMermaidDiagrams() {
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }
   });
-  mermaid.run({ querySelector: ".mermaid" });
+  try {
+    await mermaid.run({ querySelector: ".mermaid" });
+  } catch (e) {
+    console.warn("Mermaid render notice:", e);
+  }
 }
 
 // Al imprimir desde el navegador (Ctrl+P), expandir todas las soluciones

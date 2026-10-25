@@ -368,11 +368,11 @@ Cuando $W$ es gigantesco pero $n$ es moderado ($n \le 40$), la Programación Din
   Árbol binario de profundidad $n$. En el nivel $i$, decidimos si incluimos o no el elemento $i$ ($x_i \in \{0, 1\}$).
 * **Las Dos Clases de Podas Obligatorias en Parcial:**
   1. **Poda por Factibilidad (Feasibility):**
-     Si $\text{peso\_actual} + w_i > W$, podar la rama de inclusión de $i$.
+     Si $\text{peso actual} + w_i > W$, podar la rama de inclusión de $i$.
   2. **Poda por Optimalidad (Branch and Bound con Relajación Continua Fraccionaria):**
      Para el estado actual en el elemento $i$, calculamos una **cota superior (Upper Bound)** del máximo valor que podría obtenerse en el subárbol:
-     $$\text{CotaSuperior} = \text{valor\_actual} + \text{MochilaFraccionaria}(\text{elementos restantes desde } i+1, \; W - \text{peso\_actual})$$
-     Si $\text{CotaSuperior} \le \text{mejor\_valor\_global}$, es matemáticamente imposible que este subárbol supere el récord actual ya hallado $\implies$ **podar inmediatamente toda la rama**.
+     $$\text{CotaSuperior} = \text{valor actual} + \text{MochilaFraccionaria}(\text{elementos restantes desde } i+1, \; W - \text{peso actual})$$
+     Si $\text{CotaSuperior} \le \text{mejor valor global}$, es matemáticamente imposible que este subárbol supere el récord actual ya hallado $\implies$ **podar inmediatamente toda la rama**.
 
 **Pseudocódigo de Backtracking con Branch & Bound**
 
@@ -505,12 +505,12 @@ Resolver y comparar este problema a través de todos los paradigmas algorítmico
 * **Podas Esenciales en Parcial:**
   1. **Poda por Factibilidad:** Si entre la ciudad actual $u$ y la candidata $v$ no existe arista conectiva ($c_{uv} = \infty$), descartar $v$.
   2. **Poda por Cota Superior:** Mantener el mejor costo de tour cerrado completo hallado hasta el momento (`mejor_costo`). Si en el camino parcial actual:
-     $$\text{costo\_parcial} \ge \text{mejor\_costo}$$
+     $$\text{costo parcial} \ge \text{mejor costo}$$
      podar inmediatamente la rama (ningún costo de arista es negativo).
   3. **Poda por Cota Inferior (Branch & Bound con MST / 1-Tree):**
      Para el conjunto de ciudades restantes aún no visitadas $V_{restantes}$, cualquier tour válido debe conectar estas ciudades formando al menos un árbol. Por ende:
-     $$\text{CotaInferior} = \text{costo\_parcial} + \text{CostoMST}(V_{restantes}) + \min_{r \in V_{restantes}} c_{\text{actual}, r} + \min_{r \in V_{restantes}} c_{r, 1}$$
-     Si $\text{CotaInferior} \ge \text{mejor\_costo} \implies$ podar toda la rama.
+     $$\text{CotaInferior} = \text{costo parcial} + \text{CostoMST}(V_{restantes}) + \min_{r \in V_{restantes}} c_{\text{actual}, r} + \min_{r \in V_{restantes}} c_{r, 1}$$
+     Si $\text{CotaInferior} \ge \text{mejor costo} \implies$ podar toda la rama.
 
 **Pseudocódigo de TSP por Backtracking con Branch and Bound**
 
@@ -575,10 +575,10 @@ PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO
   $$C(\{j\}, j) = c_{1, j} \quad \forall j \in \{2, \dots, n\}$$
 * **Ecuación de Recurrencia:**
   Para cualquier subconjunto $S$ de tamaño $|S| \ge 2$ y cualquier ciudad de llegada $j \in S$:
-  $$C(S, j) = \min_{k \in S \setminus \{j\}} \Big\{ C(S \setminus \{j\}, k) + c_{kj} \Big\}$$
+  $$C(S, j) = \min_{k \in S \setminus \{j\}} \left[ C(S \setminus \{j\}, k) + c_{kj} \right]$$
 * **Cálculo del Tour Cerrado Óptimo:**
   Una vez calculada la tabla para el conjunto completo $V' = \{2, 3, \dots, n\}$:
-  $$OPT = \min_{j \in \{2, \dots, n\}} \Big\{ C(\{2, \dots, n\}, j) + c_{j, 1} \Big\}$$
+  $$OPT = \min_{j \in \{2, \dots, n\}} \left[ C(\{2, \dots, n\}, j) + c_{j, 1} \right]$$
 
 **Pseudocódigo de Held-Karp**
 
