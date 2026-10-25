@@ -370,10 +370,10 @@ $$\sum_{i \in R} G_i = \sum_{i \in R} D_i$$
 #### 4. Diagrama Visual de Red de Flujo con Costos
 
 ```mermaid
-graph LR
-    R1["Región 1 (G1=100, D1=20)"] -->|x12 (C=5, Cap=50)| R2["Región 2 (G2=10, D2=80)"]
-    R1 -->|x13 (C=8, Cap=40)| R3["Región 3 (G3=30, D3=40)"]
-    R2 -->|x23 (C=3, Cap=30)| R3
+flowchart LR
+    R1["Region 1: G1=100 D1=20"] -->|x12 Costo 5 Cap 50| R2["Region 2: G2=10 D2=80"]
+    R1 -->|x13 Costo 8 Cap 40| R3["Region 3: G3=30 D3=40"]
+    R2 -->|x23 Costo 3 Cap 30| R3
 ```
 
 #### 5. Ejemplo Numérico y Traza de Balance
@@ -617,18 +617,12 @@ Sea $(x^*, Z^*)$ una solución óptima del modelo linealizado.
 #### 4. Diagrama Visual de Acotamiento de la Variable Z
 
 ```mermaid
-graph TD
-    subgraph DecisionesBinarias [Particion de Tareas]
-        T1["T1"] --> P1["Carga P1"]
-        T2["T2"] --> P2["Carga P2"]
-    end
-    subgraph LinealizacionZ [Variable Auxiliar Continua]
-        Z["Variable Z (Makespan)"]
-        MinZ["min Z"]
-    end
-    P1 -->|Cota L1| Z
+flowchart LR
+    T1["Tarea 1"] --> P1["Carga P1"]
+    T2["Tarea 2"] --> P2["Carga P2"]
+    P1 -->|Cota L1| Z["Variable Z Makespan"]
     P2 -->|Cota L2| Z
-    MinZ -. Presiona Z hacia abajo .-> Z
+    MinZ["min Z"] -->|Presiona| Z
 ```
 
 #### 5. Ejemplo Numérico y Traza

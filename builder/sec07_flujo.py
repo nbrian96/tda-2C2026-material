@@ -436,18 +436,18 @@ Construyamos la red más simple posible con $V = \{s, a, b, t\}$:
 #### 4. Diagrama Visual del Contraejemplo
 
 ```mermaid
-graph LR
-    s((s)) -->|c=2 (+1)| u1["u1"]
-    s -->|c=2 (+1)| u2["u2"]
-    s -->|c=2 (+1)| u3["u3"]
-    s -->|c=2 (+1)| u4["u4"]
-    s -->|c=2 (+1)| u5["u5"]
+flowchart LR
+    S_SRC["Fuente s"] -->|c=2 mas 1| u1["u1"]
+    S_SRC -->|c=2 mas 1| u2["u2"]
+    S_SRC -->|c=2 mas 1| u3["u3"]
+    S_SRC -->|c=2 mas 1| u4["u4"]
+    S_SRC -->|c=2 mas 1| u5["u5"]
     u1 -->|c=10| v["Hub v"]
     u2 -->|c=10| v
     u3 -->|c=10| v
     u4 -->|c=10| v
     u5 -->|c=10| v
-    v -->|c=11 (+1)| t((t))
+    v -->|c=11 mas 1| T_SNK["Sumidero t"]
 ```
 
 #### 5. Tabla Comparativa de Capacidades de Corte
@@ -510,13 +510,12 @@ Dada una red de flujo $G = (V, E)$ con capacidades enteras positivas, se ha calc
 #### 4. Diagrama Visual del Proceso de Actualización
 
 ```mermaid
-flowchart TD
-    A["Capacidad c(u,v) aumenta en 1"] --> B["Red residual: capacidad residual aumenta en 1"]
-    B --> C["Buscar camino residual con BFS"]
-    C -->|Hay camino| D["Aumentar 1 unidad a lo largo del camino"]
-    D --> E["Nuevo Flujo Maximo = Flujo previo + 1"]
-    C -->|No hay camino| F["El flujo maximo no cambia"]
-    F --> G["Nuevo Flujo Maximo = Flujo previo"]
+flowchart LR
+    A["Capacidad c de u a v mas 1"] --> B["Red residual mas 1"]
+    B --> C["BFS busca camino"]
+    C -->|Si| D["Aumentar flujo en 1"]
+    D --> E["Flujo previo mas 1"]
+    C -->|No| F["Flujo no cambia"]
 ```
 
 #### 5. Ejemplo Numérico y Traza

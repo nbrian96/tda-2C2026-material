@@ -259,12 +259,11 @@ $$A = [1, 2, 1, 3, 5, 6, 4]$$
 #### 4. Diagrama Visual de Búsqueda Binaria de la Pendiente
 
 ```mermaid
-graph TD
-    A["Rango (0 a 6): A(3)=3 sube hacia A(4)=5"] -->|Descartar mitad izq| B["Rango (4 a 6): A(5)=6 baja hacia A(6)=4"]
-    B -->|Conservar m=5| C["Rango (4 a 5): A(4)=5 sube hacia A(5)=6"]
-    C -->|Descartar m=4| D["Rango (5 a 5): Caso Base"]
-    D --> E["Retorna Indice 5: Elemento Pico = 6"]:::opt
-    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
+flowchart LR
+    A["Rango 0 a 6: A3 sube a A4"] -->|Descartar izq| B["Rango 4 a 6: A5 baja a A6"]
+    B -->|Conservar m 5| C["Rango 4 a 5: A4 sube a A5"]
+    C -->|Descartar m 4| D["Rango 5 a 5: Caso Base"]
+    D --> E["Elemento Pico: Indice 5"]
 ```
 
 #### 5. Implementación en Python (Tipada y Ejecutable)

@@ -414,12 +414,11 @@ $$A = [1, 2, 1, 3, 5, 6, 4]$$
 #### 4. Diagrama Visual de Búsqueda Binaria de la Pendiente
 
 ```mermaid
-graph TD
-    A["Rango (0 a 6): A(3)=3 sube hacia A(4)=5"] -->|Descartar mitad izq| B["Rango (4 a 6): A(5)=6 baja hacia A(6)=4"]
-    B -->|Conservar m=5| C["Rango (4 a 5): A(4)=5 sube hacia A(5)=6"]
-    C -->|Descartar m=4| D["Rango (5 a 5): Caso Base"]
-    D --> E["Retorna Indice 5: Elemento Pico = 6"]:::opt
-    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
+flowchart LR
+    A["Rango 0 a 6: A3 sube a A4"] -->|Descartar izq| B["Rango 4 a 6: A5 baja a A6"]
+    B -->|Conservar m 5| C["Rango 4 a 5: A4 sube a A5"]
+    C -->|Descartar m 4| D["Rango 5 a 5: Caso Base"]
+    D --> E["Elemento Pico: Indice 5"]
 ```
 
 #### 5. Implementación en Python (Tipada y Ejecutable)
@@ -2938,10 +2937,10 @@ $$\sum_{i \in R} G_i = \sum_{i \in R} D_i$$
 #### 4. Diagrama Visual de Red de Flujo con Costos
 
 ```mermaid
-graph LR
-    R1["Región 1 (G1=100, D1=20)"] -->|x12 (C=5, Cap=50)| R2["Región 2 (G2=10, D2=80)"]
-    R1 -->|x13 (C=8, Cap=40)| R3["Región 3 (G3=30, D3=40)"]
-    R2 -->|x23 (C=3, Cap=30)| R3
+flowchart LR
+    R1["Region 1: G1=100 D1=20"] -->|x12 Costo 5 Cap 50| R2["Region 2: G2=10 D2=80"]
+    R1 -->|x13 Costo 8 Cap 40| R3["Region 3: G3=30 D3=40"]
+    R2 -->|x23 Costo 3 Cap 30| R3
 ```
 
 #### 5. Ejemplo Numérico y Traza de Balance
@@ -3197,18 +3196,12 @@ Sea $(x^*, Z^*)$ una solución óptima del modelo linealizado.
 #### 4. Diagrama Visual de Acotamiento de la Variable Z
 
 ```mermaid
-graph TD
-    subgraph DecisionesBinarias [Particion de Tareas]
-        T1["T1"] --> P1["Carga P1"]
-        T2["T2"] --> P2["Carga P2"]
-    end
-    subgraph LinealizacionZ [Variable Auxiliar Continua]
-        Z["Variable Z (Makespan)"]
-        MinZ["min Z"]
-    end
-    P1 -->|Cota L1| Z
+flowchart LR
+    T1["Tarea 1"] --> P1["Carga P1"]
+    T2["Tarea 2"] --> P2["Carga P2"]
+    P1 -->|Cota L1| Z["Variable Z Makespan"]
     P2 -->|Cota L2| Z
-    MinZ -. Presiona Z hacia abajo .-> Z
+    MinZ["min Z"] -->|Presiona| Z
 ```
 
 #### 5. Ejemplo Numérico y Traza
@@ -3766,18 +3759,18 @@ Construyamos la red más simple posible con $V = \{s, a, b, t\}$:
 #### 4. Diagrama Visual del Contraejemplo
 
 ```mermaid
-graph LR
-    s((s)) -->|c=2 (+1)| u1["u1"]
-    s -->|c=2 (+1)| u2["u2"]
-    s -->|c=2 (+1)| u3["u3"]
-    s -->|c=2 (+1)| u4["u4"]
-    s -->|c=2 (+1)| u5["u5"]
+flowchart LR
+    S_SRC["Fuente s"] -->|c=2 mas 1| u1["u1"]
+    S_SRC -->|c=2 mas 1| u2["u2"]
+    S_SRC -->|c=2 mas 1| u3["u3"]
+    S_SRC -->|c=2 mas 1| u4["u4"]
+    S_SRC -->|c=2 mas 1| u5["u5"]
     u1 -->|c=10| v["Hub v"]
     u2 -->|c=10| v
     u3 -->|c=10| v
     u4 -->|c=10| v
     u5 -->|c=10| v
-    v -->|c=11 (+1)| t((t))
+    v -->|c=11 mas 1| T_SNK["Sumidero t"]
 ```
 
 #### 5. Tabla Comparativa de Capacidades de Corte
@@ -3843,13 +3836,12 @@ Dada una red de flujo $G = (V, E)$ con capacidades enteras positivas, se ha calc
 #### 4. Diagrama Visual del Proceso de Actualización
 
 ```mermaid
-flowchart TD
-    A["Capacidad c(u,v) aumenta en 1"] --> B["Red residual: capacidad residual aumenta en 1"]
-    B --> C["Buscar camino residual con BFS"]
-    C -->|Hay camino| D["Aumentar 1 unidad a lo largo del camino"]
-    D --> E["Nuevo Flujo Maximo = Flujo previo + 1"]
-    C -->|No hay camino| F["El flujo maximo no cambia"]
-    F --> G["Nuevo Flujo Maximo = Flujo previo"]
+flowchart LR
+    A["Capacidad c de u a v mas 1"] --> B["Red residual mas 1"]
+    B --> C["BFS busca camino"]
+    C -->|Si| D["Aumentar flujo en 1"]
+    D --> E["Flujo previo mas 1"]
+    C -->|No| F["Flujo no cambia"]
 ```
 
 #### 5. Ejemplo Numérico y Traza
@@ -4399,12 +4391,8 @@ $$G \text{ tiene un Independent Set de tamaño } \ge k \iff G \text{ tiene un Ve
 #### 5. Diagrama Visual de la Dualidad
 
 ```mermaid
-graph TD
-    subgraph VerticesGrafo [Conjunto Total de Vertices V]
-        IS["Independent Set S: tamano al menos k"]
-        VC["Vertex Cover: V sin S, tamano a lo sumo V-k"]
-        IS ---|Complemento Exacto| VC
-    end
+flowchart LR
+    IS["Independent Set S: tamano al menos k"] ---|Complemento Exacto en V| VC["Vertex Cover: V sin S, tamano a lo sumo V-k"]
 ```
 
 <div class="trap-callout">

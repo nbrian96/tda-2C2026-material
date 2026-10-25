@@ -432,12 +432,8 @@ $$G \text{ tiene un Independent Set de tamaño } \ge k \iff G \text{ tiene un Ve
 #### 5. Diagrama Visual de la Dualidad
 
 ```mermaid
-graph TD
-    subgraph VerticesGrafo [Conjunto Total de Vertices V]
-        IS["Independent Set S: tamano al menos k"]
-        VC["Vertex Cover: V sin S, tamano a lo sumo V-k"]
-        IS ---|Complemento Exacto| VC
-    end
+flowchart LR
+    IS["Independent Set S: tamano al menos k"] ---|Complemento Exacto en V| VC["Vertex Cover: V sin S, tamano a lo sumo V-k"]
 ```
 
 <div class="trap-callout">

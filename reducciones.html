@@ -2403,12 +2403,8 @@ En cualquier grafo no dirigido $G = (V, E)$, un subconjunto de vértices $S \sub
 </li>
 </ul>
 <h4>5. Diagrama Visual de la Dualidad</h4>
-<div class="mermaid-wrapper"><pre class="mermaid">graph TD
-    subgraph VerticesGrafo [Conjunto Total de Vertices V]
-        IS["Independent Set S: tamano al menos k"]
-        VC["Vertex Cover: V sin S, tamano a lo sumo V-k"]
-        IS ---|Complemento Exacto| VC
-    end
+<div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
+    IS["Independent Set S: tamano al menos k"] ---|Complemento Exacto en V| VC["Vertex Cover: V sin S, tamano a lo sumo V-k"]
 </pre></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
