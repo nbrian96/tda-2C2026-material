@@ -1784,11 +1784,17 @@ body.dark-mode .warning-box {
 <li><strong>Definiciones y Leyes Fundamentales:</strong></li>
 <li><strong>Red de Transporte:</strong> Grafo dirigido G = (V, E) con un nodo fuente s, un nodo sumidero t, y capacidades no negativas c(u, v) ≥ 0 en cada arista.</li>
 <li><strong>Restricción de Capacidad:</strong> Para toda arista (u, v) ∈ E: 0 ≤ f(u, v) ≤ c(u, v).</li>
-<li><strong>Conservación de Flujo:</strong> Para todo vértice intermedio u ∈ V \ {s, t}:
-     &gt; <strong>∑<em>{v ∈ V} f(v, u) = ∑</em>{w ∈ V} f(u, w)</strong> (lo que entra es igual a lo que sale)</li>
-<li><strong>Red Residual (G_f) y Aristas Hacia Atrás:</strong>
-   La red residual modela la capacidad disponible para empujar más flujo o para <strong>deshacer</strong> flujo previamente enviado:</li>
-<li>Arista hacia adelante (forward): capacidad residual c_f(u, v) = c(u, v) - f(u, v).</li>
+<li>
+<p><strong>Conservación de Flujo:</strong> Para todo vértice intermedio u ∈ V \ {s, t}:
+     &gt; <strong>∑<em>{v ∈ V} f(v, u) = ∑</em>{w ∈ V} f(u, w)</strong> (lo que entra es igual a lo que sale)</p>
+</li>
+<li>
+<p><strong>Red Residual (G_f) y Aristas Hacia Atrás:</strong>
+   La red residual modela la capacidad disponible para empujar más flujo o para <strong>deshacer</strong> flujo previamente enviado:</p>
+</li>
+<li>
+<p>Arista hacia adelante (forward): capacidad residual c_f(u, v) = c(u, v) - f(u, v).</p>
+</li>
 <li>Arista hacia atrás (backward): capacidad residual c_f(v, u) = f(u, v) (permite reencaminar flujo cancelando compromisos previos).</li>
 <li><strong>Algoritmos de Resolución:</strong></li>
 <li><strong>Ford-Fulkerson:</strong> Busca caminos de aumento arbitrarios en G_f. Complejidad O(E · |f*|) (pseudo-polinomial con capacidades enteras).</li>
@@ -1830,10 +1836,12 @@ body.dark-mode .warning-box {
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado</strong><br />
-En un hospital se tiene un conjunto de M médicos y un conjunto de P pacientes. Cada médico m dispone de un conjunto de franjas horarias libres H_m para citas médicas. Cada paciente p necesita a lo sumo una cita y tiene un listado de médicos y franjas horarias en las cuales puede ser atendido. Nuestro objetivo es emparejar médicos con pacientes de manera que se maximice el número total de citas médicas programadas, asegurando que ningún médico atienda a más de un paciente en una misma franja horaria y ningún paciente tenga más de una cita.<br />
-1. Implementar un algoritmo que resuelva dicho problema de manera eficiente mediante redes de flujo.<br />
-2. Detallar la construcción formal de la red (nodos, aristas, fuentes, sumideros y capacidades).<br />
-3. Indicar y justificar la complejidad del algoritmo implementado.</p>
+En un hospital se tiene un conjunto de M médicos y un conjunto de P pacientes. Cada médico m dispone de un conjunto de franjas horarias libres H_m para citas médicas. Cada paciente p necesita a lo sumo una cita y tiene un listado de médicos y franjas horarias en las cuales puede ser atendido. Nuestro objetivo es emparejar médicos con pacientes de manera que se maximice el número total de citas médicas programadas, asegurando que ningún médico atienda a más de un paciente en una misma franja horaria y ningún paciente tenga más de una cita.  </p>
+<ol>
+<li>Implementar un algoritmo que resuelva dicho problema de manera eficiente mediante redes de flujo.  </li>
+<li>Detallar la construcción formal de la red (nodos, aristas, fuentes, sumideros y capacidades).  </li>
+<li>Indicar y justificar la complejidad del algoritmo implementado.</li>
+</ol>
 <p><strong>Qué está evaluando</strong><br />
 Modelado de asignación con capacidades unitarias mediante Redes de Flujo, creación de capas intermedias para franjas horarias, y aplicación del Teorema de Integralidad.</p>
     </div>
@@ -1845,17 +1853,23 @@ Modelado de asignación con capacidades unitarias mediante Redes de Flujo, creac
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* Construimos un grafo dirigido con 4 capas de nodos:
-  1. Nodo super-fuente s.
-  2. Capa de pacientes: un nodo p por cada paciente p ∈ P.
-  3. Capa de turnos específicos: un nodo (m, h) por cada médico m y franja horaria disponible h ∈ H_m.
-  4. Nodo super-sumidero t.
-* <strong>Aristas y Capacidades:</strong>
-  * Desde s a cada paciente p: capacidad c(s, p) = 1 (cada paciente recibe a lo sumo 1 cita).
-  * Desde cada paciente p al turno (m, h) si el paciente es compatible con ese médico y horario: capacidad c(p, (m, h)) = 1.
-  * Desde cada turno (m, h) al sumidero t: capacidad c((m, h), t) = 1 (un médico solo atiende a un paciente en esa franja horaria).
-* Corremos Edmonds-Karp o Ford-Fulkerson para hallar el flujo máximo de s a t. Por el Teorema de Integralidad, cada arista tendrá flujo 0 o 1, definiendo el emparejamiento óptimo sin conflictos.</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>Construimos un grafo dirigido con 4 capas de nodos:<ol>
+<li>Nodo super-fuente s.</li>
+<li>Capa de pacientes: un nodo p por cada paciente p ∈ P.</li>
+<li>Capa de turnos específicos: un nodo (m, h) por cada médico m y franja horaria disponible h ∈ H_m.</li>
+<li>Nodo super-sumidero t.</li>
+</ol>
+</li>
+<li><strong>Aristas y Capacidades:</strong><ul>
+<li>Desde s a cada paciente p: capacidad c(s, p) = 1 (cada paciente recibe a lo sumo 1 cita).</li>
+<li>Desde cada paciente p al turno (m, h) si el paciente es compatible con ese médico y horario: capacidad c(p, (m, h)) = 1.</li>
+<li>Desde cada turno (m, h) al sumidero t: capacidad c((m, h), t) = 1 (un médico solo atiende a un paciente en esa franja horaria).</li>
+</ul>
+</li>
+<li>Corremos Edmonds-Karp o Ford-Fulkerson para hallar el flujo máximo de s a t. Por el Teorema de Integralidad, cada arista tendrá flujo 0 o 1, definiendo el emparejamiento óptimo sin conflictos.</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION AsignarCitasMedicas(pacientes, medicos_horarios, compatibilidades):
     // 1. Construcción de la Red de Flujo G
@@ -1891,14 +1905,18 @@ Modelado de asignación con capacidades unitarias mediante Redes de Flujo, creac
 </code></pre></div>
 <p><strong>Explicación del algoritmo</strong><br />
 La red fuerza a que cada paciente consuma a lo sumo 1 unidad de flujo desde s, y que cada turno de médico expulse a lo sumo 1 unidad hacia t. La conservación de flujo en los nodos intermedios asegura que un paciente solo se vincule con un médico en un horario compatible. Al ser todas las capacidades enteras, el flujo máximo equivale al matching máximo.</p>
-<p><strong>Complejidad</strong><br />
-* La cantidad total de nodos es |V| = 2 + |P| + ∑ |H_m| = O(|P| + |Turnos|).
-* El flujo máximo está acotado superiormente por el número de pacientes: |f*| ≤ |P|.
-* Cada camino de aumento encontrado por BFS toma O(E).
-* Complejidad total con Ford-Fulkerson: <strong>O(|P| · |E|)</strong>, lo cual es estrictamente polinomial y muy eficiente para capacidades unitarias.</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* Conectar al médico directamente con capacidad infinita en lugar de separar por franja horaria (m, h), lo que permitiría que un médico atienda a varios pacientes a la misma hora.
-* Olvidar justificar por qué la solución es entera (debe citarse el <strong>Teorema de Integralidad de Flujo</strong>).</p></div>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li>La cantidad total de nodos es |V| = 2 + |P| + ∑ |H_m| = O(|P| + |Turnos|).</li>
+<li>El flujo máximo está acotado superiormente por el número de pacientes: |f*| ≤ |P|.</li>
+<li>Cada camino de aumento encontrado por BFS toma O(E).</li>
+<li>Complejidad total con Ford-Fulkerson: <strong>O(|P| · |E|)</strong>, lo cual es estrictamente polinomial y muy eficiente para capacidades unitarias.</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>Conectar al médico directamente con capacidad infinita en lugar de separar por franja horaria (m, h), lo que permitiría que un médico atienda a varios pacientes a la misma hora.</li>
+<li>Olvidar justificar por qué la solución es entera (debe citarse el <strong>Teorema de Integralidad de Flujo</strong>).</li>
+</ul>
 <hr />
 <h3>Patrón de Ejercicio 6.2: Redes de Demanda y Suministro con Super-Nodos</h3>
 <p>Sistemas de transporte o energía con múltiples fuentes de generación y múltiples centros de consumo, requiriendo super-fuente y super-sumidero para balancear el sistema.</p>
@@ -1946,16 +1964,18 @@ Modelado de problemas con múltiples fuentes y múltiples sumideros mediante la 
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-1. <strong>Construcción de la Red:</strong>
-   * Nodos: las 9 regiones más un super-nodo fuente S y un super-nodo sumidero T.
-   * Para cada región i con generación G_i &gt; 0: agregamos una arista dirigida S → i con capacidad c(S, i) = G_i.
-   * Para cada región j con demanda D_j &gt; 0: agregamos una arista dirigida j → T con capacidad c(j, T) = D_j.
-   * Para cada par de regiones con línea de transmisión: arista i → j con capacidad CAP_ij.
-2. <strong>Determinación de Factibilidad:</strong>
-   * La demanda total requerida es D_total = ∑_j D_j.
-   * Calculamos el flujo máximo de S a T.
-   * Si FlujoMax = D_total, la demanda de todas las regiones queda completamente satisfecha y los flujos en las aristas i → j indican la energía a transportar. Si es menor, el sistema tiene un déficit insalvable por cuello de botella de transmisión o falta de generación.</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ol>
+<li><strong>Construcción de la Red:</strong></li>
+<li>Nodos: las 9 regiones más un super-nodo fuente S y un super-nodo sumidero T.</li>
+<li>Para cada región i con generación G_i &gt; 0: agregamos una arista dirigida S → i con capacidad c(S, i) = G_i.</li>
+<li>Para cada región j con demanda D_j &gt; 0: agregamos una arista dirigida j → T con capacidad c(j, T) = D_j.</li>
+<li>Para cada par de regiones con línea de transmisión: arista i → j con capacidad CAP_ij.</li>
+<li><strong>Determinación de Factibilidad:</strong></li>
+<li>La demanda total requerida es D_total = ∑_j D_j.</li>
+<li>Calculamos el flujo máximo de S a T.</li>
+<li>Si FlujoMax = D_total, la demanda de todas las regiones queda completamente satisfecha y los flujos en las aristas i → j indican la energía a transportar. Si es menor, el sistema tiene un déficit insalvable por cuello de botella de transmisión o falta de generación.</li>
+</ol>
 <p><strong>Pseudocódigo del Algoritmo de Ford-Fulkerson</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION ResolverFlujoEnergetico(regiones, G, D, CAP):
     // 1. Construir red con super-fuente S y super-sumidero T
@@ -2000,8 +2020,10 @@ Modelado de problemas con múltiples fuentes y múltiples sumideros mediante la 
 
     RETORNAR (flujo_total, flujo)
 </code></pre></div>
-<p><strong>Complejidad</strong><br />
-* Si usamos Edmonds-Karp (BFS para el camino de aumento), la complejidad es estrictamente polinomial: O(V · E²). Con 9 regiones, |V| = 11 y |E| ≤ 90, corriendo en menos de 1 milisegundo.</p>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li>Si usamos Edmonds-Karp (BFS para el camino de aumento), la complejidad es estrictamente polinomial: O(V · E²). Con 9 regiones, |V| = 11 y |E| ≤ 90, corriendo en menos de 1 milisegundo.</li>
+</ul>
 <hr />
 <h3>Patrón de Ejercicio 6.3: Análisis Teórico y Propiedades de Cortes Mínimos</h3>
 <p>Preguntas conceptuales de Verdadero/Falso con justificación formal o construcción de contraejemplos minimales sobre perturbaciones en las capacidades de las aristas.</p>
@@ -2053,30 +2075,42 @@ Comprensión de la definición matemática de la capacidad de un corte: C(A, B) 
         <p><strong>Respuesta y Demostración</strong><br />
 <strong>La afirmación es FALSA.</strong></p>
 <p><strong>Contraejemplo Formal Minimal</strong><br />
-Consideremos la siguiente red con 4 vértices: V = {s, v, u, t}.
-* Aristas y capacidades originales:
-  * Arista (s, v) con capacidad c(s, v) = 10.
-  * Arista (v, t) con capacidad c(v, t) = 10.
-  * Aristas paralelas o por caminos alternativos:
-    * Arista (s, u) con capacidad c(s, u) = 3.
-    * Arista (u, t) con capacidad c(u, t) = 3.
-* Para hacerlo aún más simple y canónico:
-  Sea un grafo con fuente s, sumidero t y dos nodos intermedios a, b:
-  * Corte 1 (Corte₁): Formado por una <strong>única arista</strong> de capacidad 10 (C₁ = 10).
-  * Corte 2 (Corte₂): Formado por <strong>tres aristas distintas</strong> de capacidad 4 cada una (C₂ = 4 + 4 + 4 = 12).
-  * Inicialmente: C₁ = 10 &lt; C₂ = 12, por lo que Corte₁ es el <strong>corte mínimo</strong>.
-* <strong>Perturbación (+1 en cada arista):</strong>
-  * Nueva capacidad de la arista de Corte₁: 10 + 1 = 11. Como tiene 1 arista, la nueva capacidad del corte es: <strong>C'₁ = 11</strong>.
-  * Nuevas capacidades de las aristas de Corte₂: cada una pasa de 4 a 5. Como Corte₂ tiene 3 aristas, su nueva capacidad de corte es: <strong>C'₂ = (4 + 1) + (4 + 1) + (4 + 1) = 5 + 5 + 5 = 15</strong>.
-  * <em>Para que el corte mínimo cambie, invertimos la desigualdad original:</em><br />
-    Supongamos que originalmente:
-    * Corte_A tiene <strong>5 aristas</strong> de capacidad 2 cada una: <strong>C(A) = 2 + 2 + 2 + 2 + 2 = 10</strong>.
-    * Corte_B tiene <strong>1 sola arista</strong> de capacidad 11: <strong>C(B) = 11</strong>.
-    * Como 10 &lt; 11, el corte mínimo original es Corte_A.
-  * <strong>Ahora sumamos 1 a cada arista:</strong>
-    * Para Corte_A, al tener 5 aristas, cada una aumenta en 1: <strong>C'(A) = (2 + 1) · 5 = 3 · 5 = 15</strong>.
-    * Para Corte_B, al tener 1 arista, aumenta en 1: <strong>C'(B) = 11 + 1 = 12</strong>.
-  * <strong>Conclusión:</strong> Bajo las nuevas capacidades, C'(B) = 12 &lt; 15 = C'(A). El corte mínimo pasa a ser Corte_B, dejando de serlo Corte_A. <strong>Queda refutada la afirmación.</strong></p>
+Consideremos la siguiente red con 4 vértices: V = {s, v, u, t}.</p>
+<ul>
+<li>Aristas y capacidades originales:<ul>
+<li>Arista (s, v) con capacidad c(s, v) = 10.</li>
+<li>Arista (v, t) con capacidad c(v, t) = 10.</li>
+<li>Aristas paralelas o por caminos alternativos:</li>
+<li>Arista (s, u) con capacidad c(s, u) = 3.</li>
+<li>Arista (u, t) con capacidad c(u, t) = 3.</li>
+</ul>
+</li>
+<li>
+<p>Para hacerlo aún más simple y canónico:
+  Sea un grafo con fuente s, sumidero t y dos nodos intermedios a, b:</p>
+<ul>
+<li>Corte 1 (Corte₁): Formado por una <strong>única arista</strong> de capacidad 10 (C₁ = 10).</li>
+<li>Corte 2 (Corte₂): Formado por <strong>tres aristas distintas</strong> de capacidad 4 cada una (C₂ = 4 + 4 + 4 = 12).</li>
+<li>Inicialmente: C₁ = 10 &lt; C₂ = 12, por lo que Corte₁ es el <strong>corte mínimo</strong>.</li>
+<li><strong>Perturbación (+1 en cada arista):</strong></li>
+<li>Nueva capacidad de la arista de Corte₁: 10 + 1 = 11. Como tiene 1 arista, la nueva capacidad del corte es: <strong>C'₁ = 11</strong>.</li>
+<li>Nuevas capacidades de las aristas de Corte₂: cada una pasa de 4 a 5. Como Corte₂ tiene 3 aristas, su nueva capacidad de corte es: <strong>C'₂ = (4 + 1) + (4 + 1) + (4 + 1) = 5 + 5 + 5 = 15</strong>.</li>
+<li>
+<p><em>Para que el corte mínimo cambie, invertimos la desigualdad original:</em><br />
+Supongamos que originalmente:</p>
+</li>
+<li>
+<p>Corte_A tiene <strong>5 aristas</strong> de capacidad 2 cada una: <strong>C(A) = 2 + 2 + 2 + 2 + 2 = 10</strong>.</p>
+</li>
+<li>Corte_B tiene <strong>1 sola arista</strong> de capacidad 11: <strong>C(B) = 11</strong>.</li>
+<li>Como 10 &lt; 11, el corte mínimo original es Corte_A.</li>
+<li><strong>Ahora sumamos 1 a cada arista:</strong></li>
+<li>Para Corte_A, al tener 5 aristas, cada una aumenta en 1: <strong>C'(A) = (2 + 1) · 5 = 3 · 5 = 15</strong>.</li>
+<li>Para Corte_B, al tener 1 arista, aumenta en 1: <strong>C'(B) = 11 + 1 = 12</strong>.</li>
+<li><strong>Conclusión:</strong> Bajo las nuevas capacidades, C'(B) = 12 &lt; 15 = C'(A). El corte mínimo pasa a ser Corte_B, dejando de serlo Corte_A. <strong>Queda refutada la afirmación.</strong></li>
+</ul>
+</li>
+</ul>
 <hr />
 <h3>Patrón de Ejercicio 6.4: Actualización Dinámica de Flujo Máximo</h3>
 <p>Se dispone del flujo máximo ya calculado y se incrementa la capacidad de una única arista en 1 unidad. Se pide recalcular el nuevo flujo máximo en tiempo lineal O(V + E).</p>
@@ -2122,13 +2156,17 @@ Dado el flujo máximo de una red y su red residual asociada, implementar un algo
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* Al aumentar la capacidad de (u, v) en 1, en la red residual G_f la capacidad residual de (u, v) aumenta exactamente en 1 unidad.
-* Por el Teorema de Flujo Máximo, el flujo máximo de la red o bien <strong>se mantiene igual</strong>, o bien <strong>aumenta a lo sumo en 1 unidad</strong>.
-* Por lo tanto, alcanza con buscar <strong>un único camino de aumento</strong> desde s hasta t en la nueva red residual G_f' mediante una búsqueda en anchura (BFS) o profundidad (DFS):
-  * Si existe un camino de aumento, aumentamos 1 unidad de flujo a lo largo de dicho camino en O(V). El nuevo flujo máximo es f* + 1.
-  * Si no existe ningún camino de aumento, el flujo máximo original sigue siendo óptimo: el nuevo flujo máximo es f*.
-* Un único BFS/DFS sobre la red toma O(V + E).</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>Al aumentar la capacidad de (u, v) en 1, en la red residual G_f la capacidad residual de (u, v) aumenta exactamente en 1 unidad.</li>
+<li>Por el Teorema de Flujo Máximo, el flujo máximo de la red o bien <strong>se mantiene igual</strong>, o bien <strong>aumenta a lo sumo en 1 unidad</strong>.</li>
+<li>Por lo tanto, alcanza con buscar <strong>un único camino de aumento</strong> desde s hasta t en la nueva red residual G_f' mediante una búsqueda en anchura (BFS) o profundidad (DFS):<ul>
+<li>Si existe un camino de aumento, aumentamos 1 unidad de flujo a lo largo de dicho camino en O(V). El nuevo flujo máximo es f* + 1.</li>
+<li>Si no existe ningún camino de aumento, el flujo máximo original sigue siendo óptimo: el nuevo flujo máximo es f*.</li>
+</ul>
+</li>
+<li>Un único BFS/DFS sobre la red toma O(V + E).</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION ActualizarFlujoCapacidadMasUno(RedResidual, s, t, u, v, flujo_actual):
     // 1. Aumentar en 1 la capacidad residual de la arista modificada
@@ -2147,9 +2185,11 @@ Dado el flujo máximo de una red y su red residual asociada, implementar un algo
     SINO:
         RETORNAR (flujo_actual, &quot;El flujo maximo no cambio&quot;)
 </code></pre></div>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> O(V + E) por una única ejecución de BFS.
-* <strong>Espacio:</strong> O(V) para la cola y vector de visitados del BFS.</p>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> O(V + E) por una única ejecución de BFS.</li>
+<li><strong>Espacio:</strong> O(V) para la cola y vector de visitados del BFS.</li>
+</ul>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Redes de Flujo</h3>
 <ol>

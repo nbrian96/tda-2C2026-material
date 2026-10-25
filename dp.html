@@ -1784,9 +1784,13 @@ body.dark-mode .warning-box {
 <li><strong>Cuándo Usar Programación Dinámica:</strong></li>
 <li>El problema exhibe <strong>Subestructura Óptima</strong>: la solución óptima global se compone de soluciones óptimas a sus subproblemas.</li>
 <li>El problema tiene <strong>Subproblemas Superpuestos</strong>: los mismos subproblemas se resuelven una y otra vez (a diferencia de División y Conquista, donde los subproblemas son disjuntos).</li>
-<li><strong>Los Cinco Pasos Obligatorios en el Examen de TDA:</strong>
-   Para obtener el puntaje completo en un ejercicio de Programación Dinámica, tu respuesta debe contener explícitamente:</li>
-<li><strong>Definición Formal del Estado:</strong> ¿Qué significa exactamente OPT(i, w) en el contexto del enunciado? (Ej: <em>"Valor máximo obtenible considerando un subconjunto de los primeros i elementos con una capacidad restante de w kilos"</em>).</li>
+<li>
+<p><strong>Los Cinco Pasos Obligatorios en el Examen de TDA:</strong>
+   Para obtener el puntaje completo en un ejercicio de Programación Dinámica, tu respuesta debe contener explícitamente:</p>
+</li>
+<li>
+<p><strong>Definición Formal del Estado:</strong> ¿Qué significa exactamente OPT(i, w) en el contexto del enunciado? (Ej: <em>"Valor máximo obtenible considerando un subconjunto de los primeros i elementos con una capacidad restante de w kilos"</em>).</p>
+</li>
 <li><strong>Casos Base:</strong> Valores donde la solución es trivial o inmediata (ej: OPT(0, w) = 0, OPT(i, 0) = 0).</li>
 <li><strong>Ecuación de Recurrencia:</strong> La fórmula matemática cerrada que computa OPT a partir de subproblemas más chicos, detallando las opciones consideradas y la función objetivo (min o max).</li>
 <li><strong>Orden de Llenado de la Tabla:</strong> Justificación de la dirección en que se itera la matriz (ej: <em>"De menor a mayor índice i, y para cada i de menor a mayor capacidad w, asegurando que los valores requeridos ya hayan sido calculados"</em>).</li>
@@ -1838,11 +1842,15 @@ Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguro
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución y Perspectiva Inversa</strong><br />
-* <em>Perspectiva hacia atrás ($i \to 0$):</em> Pensar cómo llegar a un número $i$:
-  * Siempre podemos llegar desde $i - 1$ aplicando la operación $+1$.
-  * Si $i$ es par, también podemos llegar desde $i / 2$ aplicando la operación $\times 2$. Si $i$ es impar, es imposible haber llegado duplicando un entero.
-* <em>Casos trampa iniciales:</em> Desde $0$, la operación $\times 2$ no genera avance ($0 \times 2 = 0$). El primer paso hacia adelante siempre debe ser $+1$ (hacia 1).</p>
+        <p><strong>Idea de resolución y Perspectiva Inversa</strong>  </p>
+<ul>
+<li><em>Perspectiva hacia atrás ($i \to 0$):</em> Pensar cómo llegar a un número $i$:<ul>
+<li>Siempre podemos llegar desde $i - 1$ aplicando la operación $+1$.</li>
+<li>Si $i$ es par, también podemos llegar desde $i / 2$ aplicando la operación $\times 2$. Si $i$ es impar, es imposible haber llegado duplicando un entero.</li>
+</ul>
+</li>
+<li><em>Casos trampa iniciales:</em> Desde $0$, la operación $\times 2$ no genera avance ($0 \times 2 = 0$). El primer paso hacia adelante siempre debe ser $+1$ (hacia 1).</li>
+</ul>
 <h4>Los Cinco Pasos Obligatorios de Programación Dinámica (Criterio FIUBA)</h4>
 <ol>
 <li>
@@ -2064,14 +2072,16 @@ Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguro
 </tr>
 </tbody>
 </table>
-<p><strong>Detalle de Reconstrucción (Backtracking desde $K = 10$):</strong>
-1. En $10$: <code>padre[10] = 5</code>, operación = $\times 2$.
-2. En $5$: <code>padre[5] = 4</code>, operación = $+1$.
-3. En $4$: <code>padre[4] = 2</code>, operación = $\times 2$.
-4. En $2$: <code>padre[2] = 1</code>, operación = $\times 2$.
-5. En $1$: <code>padre[1] = 0</code>, operación = $+1$.
-6. En $0$: Fin del recorrido.
-* <strong>Resultado exacto:</strong> $5$ operaciones mínimas: <code>[+1, ×2, ×2, +1, ×2]</code>.</p>
+<p><strong>Detalle de Reconstrucción (Backtracking desde $K = 10$):</strong></p>
+<ol>
+<li>En $10$: <code>padre[10] = 5</code>, operación = $\times 2$.</li>
+<li>En $5$: <code>padre[5] = 4</code>, operación = $+1$.</li>
+<li>En $4$: <code>padre[4] = 2</code>, operación = $\times 2$.</li>
+<li>En $2$: <code>padre[2] = 1</code>, operación = $\times 2$.</li>
+<li>En $1$: <code>padre[1] = 0</code>, operación = $+1$.</li>
+<li>En $0$: Fin del recorrido.</li>
+<li><strong>Resultado exacto:</strong> $5$ operaciones mínimas: <code>[+1, ×2, ×2, +1, ×2]</code>.</li>
+</ol>
 <p><strong>Pseudocódigo Formal para Examen</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MinimasOperacionesAK(K):
     SI K = 0:
@@ -2146,21 +2156,33 @@ def minimas_operaciones_a_k(k: int) -&gt; Tuple[int, List[str]]:
     secuencia.reverse()
     return dp[k], secuencia
 </code></pre></div>
-<p><strong>Complejidad</strong><br />
-* <strong>Temporal:</strong> $\mathcal{O}(K)$. La tabla tiene $K + 1$ posiciones y cada una se calcula en tiempo constante $\mathcal{O}(1)$ comparando a lo sumo dos candidatos aritméticos. La reconstrucción realiza a lo sumo $K$ saltos (en la práctica $\le 2 \log_2 K$ saltos), lo que toma $\mathcal{O}(\log K) \subseteq \mathcal{O}(K)$.
-* <strong>Espacial:</strong> $\mathcal{O}(K)$. Arreglos contiguos de tamaño $K + 1$ para almacenar los costos óptimos y punteros de retroceso.</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme (Trampas de Corrección)</strong><br />
-* <strong>Intentar duplicar desde 0:</strong> $0 \times 2 = 0$. Duplicar solo genera avance a partir de $x \ge 1$.
-* <strong>No incluir la reconstrucción de operaciones:</strong> Si el enunciado pide explícitamente <em>"y cómo son dichas operaciones"</em>, no devolver la secuencia descuenta la mitad del puntaje del ejercicio.
-* <strong>No justificar la paridad:</strong> Es indispensable explicitar en la recurrencia que la opción $\times 2$ solo se evalúa cuando $(i \pmod 2) = 0$.</p></div>
-<p><strong>Variación típica de parcial (Pregunta Clave: DP vs Greedy)</strong><br />
-* <em>¿Se puede resolver con Greedy en tiempo $\mathcal{O}(\log K)$?</em><br />
-<strong>Sí:</strong> Pensando de $K$ hacia $0$, si $K$ es par siempre conviene dividir por $2$; si es impar, restar $1$. Esto toma $\mathcal{O}(\log K)$ pasos.
-* <em>¿Por qué entonces la cátedra exige Programación Dinámica?</em><br />
-  1. <strong>Consigna estricta:</strong> Si el enunciado impone DP, usar Greedy anula el ejercicio.<br />
-  2. <strong>Generalización ante variantes:</strong> La formulación de DP es genérica y se adapta de inmediato si se introducen reglas más complejas donde Greedy fracasa (por ejemplo, si existieran transiciones como $+3$, $\times 3$, o costos no unitarios para cada operación). Con DP, simplemente se agrega un nuevo término a la función $\min()$:
-     $$OPT(i) = \min\big(OPT(i-1) + c_{+1}, \; OPT(i/2) + c_{\times 2}, \; OPT(i-3) + c_{+3}\big)$$
-     En cambio, un enfoque voraz requeriraría una demostración formal de elección voraz (<em>Greedy Choice Property</em>) que con múltiples operaciones adicionales suele ser falsa.</p>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Temporal:</strong> $\mathcal{O}(K)$. La tabla tiene $K + 1$ posiciones y cada una se calcula en tiempo constante $\mathcal{O}(1)$ comparando a lo sumo dos candidatos aritméticos. La reconstrucción realiza a lo sumo $K$ saltos (en la práctica $\le 2 \log_2 K$ saltos), lo que toma $\mathcal{O}(\log K) \subseteq \mathcal{O}(K)$.</li>
+<li><strong>Espacial:</strong> $\mathcal{O}(K)$. Arreglos contiguos de tamaño $K + 1$ para almacenar los costos óptimos y punteros de retroceso.</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme (Trampas de Corrección)</strong>  </p></div>
+<ul>
+<li><strong>Intentar duplicar desde 0:</strong> $0 \times 2 = 0$. Duplicar solo genera avance a partir de $x \ge 1$.</li>
+<li><strong>No incluir la reconstrucción de operaciones:</strong> Si el enunciado pide explícitamente <em>"y cómo son dichas operaciones"</em>, no devolver la secuencia descuenta la mitad del puntaje del ejercicio.</li>
+<li><strong>No justificar la paridad:</strong> Es indispensable explicitar en la recurrencia que la opción $\times 2$ solo se evalúa cuando $(i \pmod 2) = 0$.</li>
+</ul>
+<p><strong>Variación típica de parcial (Pregunta Clave: DP vs Greedy)</strong>  </p>
+<ul>
+<li>
+<p><em>¿Se puede resolver con Greedy en tiempo $\mathcal{O}(\log K)$?</em><br />
+<strong>Sí:</strong> Pensando de $K$ hacia $0$, si $K$ es par siempre conviene dividir por $2$; si es impar, restar $1$. Esto toma $\mathcal{O}(\log K)$ pasos.</p>
+</li>
+<li>
+<p><em>¿Por qué entonces la cátedra exige Programación Dinámica?</em>  </p>
+<ol>
+<li><strong>Consigna estricta:</strong> Si el enunciado impone DP, usar Greedy anula el ejercicio.  </li>
+<li><strong>Generalización ante variantes:</strong> La formulación de DP es genérica y se adapta de inmediato si se introducen reglas más complejas donde Greedy fracasa (por ejemplo, si existieran transiciones como $+3$, $\times 3$, o costos no unitarios para cada operación). Con DP, simplemente se agrega un nuevo término a la función $\min()$:
+ $$OPT(i) = \min\big(OPT(i-1) + c_{+1}, \; OPT(i/2) + c_{\times 2}, \; OPT(i-3) + c_{+3}\big)$$
+ En cambio, un enfoque voraz requeriraría una demostración formal de elección voraz (<em>Greedy Choice Property</em>) que con múltiples operaciones adicionales suele ser falsa.</li>
+</ol>
+</li>
+</ul>
 <hr />
 <h3>Patrón de Ejercicio 4.2: Mochila 2D con Restricciones Lógicas</h3>
 <p>Aparece cuando la mochila tiene múltiples recursos acoplados (peso y volumen) y condiciones lógicas adicionales sobre subconjuntos específicos de elementos (exclusión mutua y obligatoriedad).</p>
@@ -2208,13 +2230,17 @@ Mochila 2D (estado tridimensional elemento × peso × volumen) y manejo riguroso
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* Una mochila con peso y volumen clásica tiene estado OPT(i, c, l): beneficio máximo con los primeros i elementos, peso máximo c y volumen máximo l.
-* Restricción lógica: Debe estar exactamente el ítem 1 O el ítem 2.
-* <em>Estrategia limpia y robusta:</em>
-  1. <strong>Caso A:</strong> Asumimos que elegimos la Guía 1. Incorporamos obligatoriamente la Guía 1 (consumiendo w₁ de peso y v₁ de volumen, aportando b₁). Descartamos la Guía 2. Resolvemos la mochila 2D estándar para los ítems restantes 3, 4, ..., n con capacidades remanentes C - w₁ y L - v₁.
-  2. <strong>Caso B:</strong> Asumimos que elegimos la Guía 2. Incorporamos obligatoriamente la Guía 2 (consumiendo w₂ y v₂, aportando b₂). Descartamos la Guía 1. Resolvemos la mochila 2D estándar para los ítems restantes 3, 4, ..., n con capacidades remanentes C - w₂ y L - v₂.
-  3. Comparamos el beneficio total máximo de ambos casos y nos quedamos con el mejor.</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>Una mochila con peso y volumen clásica tiene estado OPT(i, c, l): beneficio máximo con los primeros i elementos, peso máximo c y volumen máximo l.</li>
+<li>Restricción lógica: Debe estar exactamente el ítem 1 O el ítem 2.</li>
+<li><em>Estrategia limpia y robusta:</em><ol>
+<li><strong>Caso A:</strong> Asumimos que elegimos la Guía 1. Incorporamos obligatoriamente la Guía 1 (consumiendo w₁ de peso y v₁ de volumen, aportando b₁). Descartamos la Guía 2. Resolvemos la mochila 2D estándar para los ítems restantes 3, 4, ..., n con capacidades remanentes C - w₁ y L - v₁.</li>
+<li><strong>Caso B:</strong> Asumimos que elegimos la Guía 2. Incorporamos obligatoriamente la Guía 2 (consumiendo w₂ y v₂, aportando b₂). Descartamos la Guía 1. Resolvemos la mochila 2D estándar para los ítems restantes 3, 4, ..., n con capacidades remanentes C - w₂ y L - v₂.</li>
+<li>Comparamos el beneficio total máximo de ambos casos y nos quedamos con el mejor.</li>
+</ol>
+</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MochilaPaoloCasanova(items, C, L):
     // items[0] es Guia 1, items[1] es Guia 2, items[2..n-1] son el resto
@@ -2289,12 +2315,16 @@ FUNCION Mochila2DEstandar(elementos, MaxPeso, MaxVol):
 <strong>OPT(i, p, v) = OPT(i - 1, p, v)</strong> (si w_i &gt; p o v_i &gt; v)<br />
 <strong>OPT(i, p, v) = max(OPT(i - 1, p, v), OPT(i - 1, p - w_i, v - v_i) + b_i)</strong> (en otro caso)</p>
 </blockquote>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> Resolvemos la tabla 3D dos veces (una para cada guía obligatoria). Cada llenado tiene dimensiones n × C × L y operaciones O(1) por celda: <strong>O(n · C · L)</strong>.
-* <strong>Espacio:</strong> Tabla 3D de tamaño <strong>O(n · C · L)</strong>.</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* Permitir que la mochila quede vacía de guías o que se lleven ambas.
-* No chequear si individualmente la Guía 1 o Guía 2 caben en la mochila antes de iniciar la recursión.</p></div>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> Resolvemos la tabla 3D dos veces (una para cada guía obligatoria). Cada llenado tiene dimensiones n × C × L y operaciones O(1) por celda: <strong>O(n · C · L)</strong>.</li>
+<li><strong>Espacio:</strong> Tabla 3D de tamaño <strong>O(n · C · L)</strong>.</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>Permitir que la mochila quede vacía de guías o que se lleven ambas.</li>
+<li>No chequear si individualmente la Guía 1 o Guía 2 caben en la mochila antes de iniciar la recursión.</li>
+</ul>
 <p><strong>Variación típica de parcial</strong><br />
 Agregar una tercera restricción, como un límite en el costo económico de los objetos asegurados (problema del Delivery, ver Ejercicio 16).</p>
 <hr />
@@ -2352,21 +2382,33 @@ DP sobre prefijos de secuencias (1 ... i), evaluación de la última línea como
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* <em>Definición del Estado:</em><br />
-  OPT(i): Mínimo costo total (suma de cuadrados de sobrantes) de formatear el prefijo de palabras W₁, ..., W_i.
-* <em>Decisión en el paso i:</em><br />
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>
+<p><em>Definición del Estado:</em><br />
+  OPT(i): Mínimo costo total (suma de cuadrados de sobrantes) de formatear el prefijo de palabras W₁, ..., W_i.</p>
+</li>
+<li>
+<p><em>Decisión en el paso i:</em><br />
   ¿Dónde empieza la última línea que contiene a W_i?
   Si la última línea empieza en la palabra j (con 1 ≤ j ≤ i), esa línea agrupa a W_j, ..., W_i.
   El costo de esa última línea es Sobrante(j, i)².
-  El costo de las líneas previas es el costo óptimo de formatear las palabras hasta j - 1, es decir, OPT(j - 1).
-* <em>Caso Base:</em><br />
-  OPT(0) = 0 (cero palabras tienen costo cero).
-* <em>Ecuación de Recurrencia:</em>  </p>
+  El costo de las líneas previas es el costo óptimo de formatear las palabras hasta j - 1, es decir, OPT(j - 1).</p>
+</li>
+<li>
+<p><em>Caso Base:</em><br />
+  OPT(0) = 0 (cero palabras tienen costo cero).</p>
+</li>
+<li>
+<p><em>Ecuación de Recurrencia:</em>  </p>
 <blockquote>
-<p><strong>OPT(i) = min_{1 ≤ j ≤ i, Longitud(j, i) ≤ L} { OPT(j - 1) + (L - Longitud(j, i))² }</strong>
-* <em>Reconstrucción:</em> Guardamos en <code>corte[i]</code> el índice j óptimo que minimizó la expresión para i.</p>
+<p><strong>OPT(i) = min_{1 ≤ j ≤ i, Longitud(j, i) ≤ L} { OPT(j - 1) + (L - Longitud(j, i))² }</strong></p>
 </blockquote>
+</li>
+<li>
+<p><em>Reconstrucción:</em> Guardamos en <code>corte[i]</code> el índice j óptimo que minimizó la expresión para i.</p>
+</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION JustificarTextoWordWrap(longitudes_palabras, L):
     n &lt;- longitud(longitudes_palabras)
@@ -2411,12 +2453,16 @@ DP sobre prefijos de secuencias (1 ... i), evaluación de la última línea como
 </code></pre></div>
 <p><strong>Explicación del algoritmo</strong><br />
 Para cada palabra i, retrocedemos evaluando posibles inicios de la línea actual j. Apenas el largo acumulado supera L, cortamos el bucle interno con <code>ROMPER</code> gracias a la monotonía de la suma de palabras. Cada línea se almacena como el rango de palabras [inicio, fin].</p>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> Hay n estados. Para cada estado i, el bucle interno evalúa a lo sumo i palabras (y en la práctica a lo sumo L palabras, ya que cada palabra tiene longitud ≥ 1). En el peor caso la complejidad es <strong>O(n²) o bien O(n · L)</strong>.
-* <strong>Espacio:</strong> Arreglos 1D de tamaño n + 1 para <code>DP</code> y <code>corte</code>: <strong>O(n)</strong>.</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* Olvidar sumar 1 por cada espacio intermedio entre palabras consecutivas (k - i).
-* No penalizar adecuadamente las líneas que superan L: si una combinación supera L, debe ser descartada o tratada como costo ∞, nunca permitir sobrantes negativos.</p></div>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> Hay n estados. Para cada estado i, el bucle interno evalúa a lo sumo i palabras (y en la práctica a lo sumo L palabras, ya que cada palabra tiene longitud ≥ 1). En el peor caso la complejidad es <strong>O(n²) o bien O(n · L)</strong>.</li>
+<li><strong>Espacio:</strong> Arreglos 1D de tamaño n + 1 para <code>DP</code> y <code>corte</code>: <strong>O(n)</strong>.</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>Olvidar sumar 1 por cada espacio intermedio entre palabras consecutivas (k - i).</li>
+<li>No penalizar adecuadamente las líneas que superan L: si una combinación supera L, debe ser descartada o tratada como costo ∞, nunca permitir sobrantes negativos.</li>
+</ul>
 <p><strong>Variación típica de parcial</strong><br />
 No penalizar los sobrantes de la última línea del texto (convención tipográfica habitual). En ese caso, para la línea que llega a n, el costo de la línea se fija en 0 en lugar de Sobrante².</p>
 <hr />
@@ -2466,17 +2512,25 @@ Generalización formal de la mochila 0-1 a tres dimensiones de capacidad acumula
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* <em>Definición del Estado:</em><br />
-  OPT(i, w, v, m): Beneficio máximo considerando un subconjunto de los primeros i paquetes (1 ≤ i ≤ n), con un peso disponible de hasta w (0 ≤ w ≤ C), un volumen disponible de hasta v (0 ≤ v ≤ T), y un límite de costo de seguro disponible de hasta m (0 ≤ m ≤ M).
-* <em>Casos Base:</em><br />
-  OPT(0, w, v, m) = 0 para todo w, v, m.
-* <em>Ecuación de Recurrencia:</em><br />
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>
+<p><em>Definición del Estado:</em><br />
+  OPT(i, w, v, m): Beneficio máximo considerando un subconjunto de los primeros i paquetes (1 ≤ i ≤ n), con un peso disponible de hasta w (0 ≤ w ≤ C), un volumen disponible de hasta v (0 ≤ v ≤ T), y un límite de costo de seguro disponible de hasta m (0 ≤ m ≤ M).</p>
+</li>
+<li>
+<p><em>Casos Base:</em><br />
+  OPT(0, w, v, m) = 0 para todo w, v, m.</p>
+</li>
+<li>
+<p><em>Ecuación de Recurrencia:</em><br />
   Para el paquete i, evaluamos si cabe simultáneamente en los tres recursos (W_i ≤ w, V_i ≤ v, C_i ≤ m):  </p>
 <blockquote>
 <p><strong>OPT(i, w, v, m) = OPT(i - 1, w, v, m)</strong> (si no entra en algún recurso)<br />
 <strong>OPT(i, w, v, m) = max(OPT(i - 1, w, v, m), OPT(i - 1, w - W_i, v - V_i, m - C_i) + B_i)</strong> (si entra en los tres)</p>
 </blockquote>
+</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION ResolverDeliveryMochila3D(paquetes, C, T, M):
     n &lt;- longitud(paquetes)
@@ -2515,12 +2569,16 @@ Generalización formal de la mochila 0-1 a tres dimensiones de capacidad acumula
 
     RETORNAR (DP[n][C][T][M], seleccionados)
 </code></pre></div>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> Se llenan (n + 1) · (C + 1) · (T + 1) · (M + 1) celdas con O(1) operaciones por celda: <strong>O(n · C · T · M)</strong> (Complejidad pseudo-polinomial).
-* <strong>Espacio:</strong> <strong>O(n · C · T · M)</strong> para la matriz completa (u O(C · T · M) si solo se pide el valor máximo iterando en reversa sobre una única tabla tridimensional).</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* Olvidar una de las tres dimensiones en la condición de inclusión (<code>SI p.peso &lt;= w Y p.volumen &lt;= v Y p.costo &lt;= m</code>).
-* No aclarar que es un algoritmo pseudo-polinomial dependiente del valor numérico de las capacidades.</p></div>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> Se llenan (n + 1) · (C + 1) · (T + 1) · (M + 1) celdas con O(1) operaciones por celda: <strong>O(n · C · T · M)</strong> (Complejidad pseudo-polinomial).</li>
+<li><strong>Espacio:</strong> <strong>O(n · C · T · M)</strong> para la matriz completa (u O(C · T · M) si solo se pide el valor máximo iterando en reversa sobre una única tabla tridimensional).</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>Olvidar una de las tres dimensiones en la condición de inclusión (<code>SI p.peso &lt;= w Y p.volumen &lt;= v Y p.costo &lt;= m</code>).</li>
+<li>No aclarar que es un algoritmo pseudo-polinomial dependiente del valor numérico de las capacidades.</li>
+</ul>
 <hr />
 <h3>Patrón de Ejercicio 4.5: Exclusión Adyacente (House Robber / Juan el Vago)</h3>
 <p>Decisión sobre elementos consecutivos donde elegir un elemento prohíbe elegir a su vecino inmediato.</p>
@@ -2566,18 +2624,28 @@ Juan dispone de ofertas de trabajo para los próximos n días. Cada día i le of
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* <em>Definición del Estado:</em><br />
-  OPT(i): Ganancia máxima considerando los primeros i días (1 ≤ i ≤ n).
-* <em>Recurrencia:</em><br />
-  En el día i:
-  * No trabaja el día i: Ganancia = OPT(i - 1).
-  * Trabaja el día i: Gana G[i], pero no pudo haber trabajado el día i - 1, por lo que suma OPT(i - 2).  </p>
-<blockquote>
-<p><strong>OPT(i) = max(OPT(i - 1), OPT(i - 2) + G[i])</strong>
-* <em>Casos Base:</em><br />
-  OPT(0) = 0, OPT(1) = G[1].</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>
+<p><em>Definición del Estado:</em><br />
+  OPT(i): Ganancia máxima considerando los primeros i días (1 ≤ i ≤ n).</p>
+</li>
+<li>
+<p><em>Recurrencia:</em><br />
+  En el día i:</p>
+<ul>
+<li>No trabaja el día i: Ganancia = OPT(i - 1).</li>
+<li>Trabaja el día i: Gana G[i], pero no pudo haber trabajado el día i - 1, por lo que suma OPT(i - 2).  <blockquote>
+<p><strong>OPT(i) = max(OPT(i - 1), OPT(i - 2) + G[i])</strong></p>
 </blockquote>
+</li>
+</ul>
+</li>
+<li>
+<p><em>Casos Base:</em><br />
+  OPT(0) = 0, OPT(1) = G[1].</p>
+</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION JuanElVago(G):
     n &lt;- longitud(G)
@@ -2608,9 +2676,11 @@ Juan dispone de ofertas de trabajo para los próximos n días. Cada día i le of
 
     RETORNAR (DP[n], dias)
 </code></pre></div>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> O(n) pues llena una tabla lineal de n posiciones con operaciones O(1).
-* <strong>Espacio:</strong> O(n) (u O(1) con variables temporales si no se requiere reconstrucción).</p>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> O(n) pues llena una tabla lineal de n posiciones con operaciones O(1).</li>
+<li><strong>Espacio:</strong> O(n) (u O(1) con variables temporales si no se requiere reconstrucción).</li>
+</ul>
 <hr />
 <h3>Patrón de Ejercicio 4.6: Interval Scheduling Ponderado (DP con Búsqueda Binaria)</h3>
 <p>Selección de intervalos con pesos o beneficios arbitrarios donde Greedy falla y se requiere DP con búsqueda logarítmica del predecesor compatible.</p>
@@ -2656,14 +2726,20 @@ Se tiene un conjunto de n intervalos [s_i, f_i], cada uno con un beneficio v_i. 
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-1. Ordenar los intervalos por tiempo de fin creciente: f₁ ≤ f₂ ≤ ... ≤ fₙ.
-2. Para cada intervalo i, precalcular mediante <strong>búsqueda binaria</strong> el índice p(i) del último intervalo compatible anterior (f_{p(i)} ≤ s_i).
-3. <em>Recurrencia:</em>  </p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ol>
+<li>Ordenar los intervalos por tiempo de fin creciente: f₁ ≤ f₂ ≤ ... ≤ fₙ.</li>
+<li>Para cada intervalo i, precalcular mediante <strong>búsqueda binaria</strong> el índice p(i) del último intervalo compatible anterior (f_{p(i)} ≤ s_i).</li>
+<li>
+<p><em>Recurrencia:</em>  </p>
 <blockquote>
-<p><strong>OPT(i) = max(OPT(i - 1), OPT(p(i)) + v_i)</strong>
-4. Caso base: OPT(0) = 0.</p>
+<p><strong>OPT(i) = max(OPT(i - 1), OPT(p(i)) + v_i)</strong></p>
 </blockquote>
+</li>
+<li>
+<p>Caso base: OPT(0) = 0.</p>
+</li>
+</ol>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION IntervalSchedulingPonderado(intervalos):
     n &lt;- longitud(intervalos)
@@ -2710,9 +2786,11 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
 
     RETORNAR res
 </code></pre></div>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> Ordenamiento en O(n log n). Búsqueda binaria de p(i) para los n intervalos en O(n log n). Llenado de DP en O(n). Total: <strong>O(n log n)</strong>.
-* <strong>Espacio:</strong> O(n) para los arreglos <code>DP</code>, <code>P</code> y la reconstrucción.</p>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> Ordenamiento en O(n log n). Búsqueda binaria de p(i) para los n intervalos en O(n log n). Llenado de DP en O(n). Total: <strong>O(n log n)</strong>.</li>
+<li><strong>Espacio:</strong> O(n) para los arreglos <code>DP</code>, <code>P</code> y la reconstrucción.</li>
+</ul>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Programación Dinámica</h3>
 <ol>

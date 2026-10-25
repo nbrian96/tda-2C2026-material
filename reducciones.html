@@ -1790,15 +1790,25 @@ body.dark-mode .warning-box {
 <li>Para todo A ∈ NP, A ≤_P B (es decir, B es NP-Hard).</li>
 </ol>
 </li>
-<li><strong>El Esquema Sagrado de 4 Pasos Obligatorios para Demostrar que B ∈ NPC:</strong>
-   En las correcciones de la cátedra, omitir cualquiera de estos 4 pasos implica la pérdida automática de la mayor parte del puntaje:</li>
-<li><strong>Paso 1: Demostrar que B ∈ NP.</strong><br />
-     Definir el certificado C de tamaño polinomial. Presentar el algoritmo verificador V(I_B, C) en pseudocódigo y justificar que corre en tiempo polinomial O(P(n)).</li>
-<li><strong>Paso 2: Elegir un problema conocido A ∈ NPC.</strong><br />
-     Elegir un problema cuya NP-Completitud ya sea conocida (Vertex Cover, 3-SAT, Ciclo Hamiltoniano, Independent Set, Subset Sum). <strong>ATENCIÓN:</strong> Se debe reducir <strong>DESDE</strong> el problema conocido <strong>HACIA</strong> el problema nuevo (A ≤_P B). Reducir al revés (B ≤_P A) es un error fatal.</li>
-<li><strong>Paso 3: Definir la transformación polinomial f: I_A → I_B.</strong><br />
-     Explicar cómo convertir cualquier instancia I_A del problema conocido en una instancia válida I_B del nuevo problema. Demostrar que la construcción de I_B toma tiempo polinomial.</li>
-<li><strong>Paso 4: Demostración Bidireccional (Equivalencia Lógica):</strong>  <ul>
+<li>
+<p><strong>El Esquema Sagrado de 4 Pasos Obligatorios para Demostrar que B ∈ NPC:</strong>
+   En las correcciones de la cátedra, omitir cualquiera de estos 4 pasos implica la pérdida automática de la mayor parte del puntaje:</p>
+</li>
+<li>
+<p><strong>Paso 1: Demostrar que B ∈ NP.</strong><br />
+     Definir el certificado C de tamaño polinomial. Presentar el algoritmo verificador V(I_B, C) en pseudocódigo y justificar que corre en tiempo polinomial O(P(n)).</p>
+</li>
+<li>
+<p><strong>Paso 2: Elegir un problema conocido A ∈ NPC.</strong><br />
+     Elegir un problema cuya NP-Completitud ya sea conocida (Vertex Cover, 3-SAT, Ciclo Hamiltoniano, Independent Set, Subset Sum). <strong>ATENCIÓN:</strong> Se debe reducir <strong>DESDE</strong> el problema conocido <strong>HACIA</strong> el problema nuevo (A ≤_P B). Reducir al revés (B ≤_P A) es un error fatal.</p>
+</li>
+<li>
+<p><strong>Paso 3: Definir la transformación polinomial f: I_A → I_B.</strong><br />
+     Explicar cómo convertir cualquier instancia I_A del problema conocido en una instancia válida I_B del nuevo problema. Demostrar que la construcción de I_B toma tiempo polinomial.</p>
+</li>
+<li>
+<p><strong>Paso 4: Demostración Bidireccional (Equivalencia Lógica):</strong>  </p>
+<ul>
 <li>(⟹) <strong>Si I_A ∈ YES_A, entonces f(I_A) ∈ YES_B (Ida).</strong></li>
 <li>(⟸) <strong>Si f(I_A) ∈ YES_B, entonces I_A ∈ YES_A (Vuelta).</strong></li>
 </ul>
@@ -1851,15 +1861,15 @@ Ejecución rigurosa del esquema de 4 pasos, diseño de <em>gadgets</em> de arist
 <h4>Paso 1: Dominating Set ∈ NP</h4>
 <ul>
 <li><strong>Certificado C:</strong> Un subconjunto de vértices D ⊆ V. Tamaño del certificado: |D| ≤ |V| (tamaño polinomial).</li>
-<li><strong>Verificador V(G, k, D):</strong></li>
+<li><strong>Verificador V(G, k, D):</strong><ol>
 <li>Verifica que |D| ≤ k en O(1).</li>
 <li>Inicializa un arreglo booleano <code>dominado</code> de tamaño |V| en <code>FALSO</code>.</li>
-<li>Para cada vértice u ∈ D:<ul>
+<li>Para cada vértice u ∈ D:</li>
 <li>Marca <code>dominado[u] = VERDADERO</code>.</li>
 <li>Para cada vecino v de u: marca <code>dominado[v] = VERDADERO</code>.</li>
-</ul>
-</li>
 <li>Recorre el arreglo: si todos los vértices están marcados como <code>VERDADERO</code>, retorna <code>SI</code>; en caso contrario, retorna <code>NO</code>.</li>
+</ol>
+</li>
 <li><strong>Complejidad del Verificador:</strong> Recorrer D y sus adyacencias toma a lo sumo ∑_{u ∈ D} (1 + grado(u)) ≤ O(|V| + |E|). Como corre en tiempo polinomial, <strong>Dominating Set ∈ NP</strong>.</li>
 </ul>
 <h4>Paso 2: Selección del Problema Conocido</h4>
@@ -1870,49 +1880,53 @@ Queremos demostrar:</p>
 <p><strong>Vertex Cover ≤_P Dominating Set</strong></p>
 </blockquote>
 <h4>Paso 3: Transformación Polinomial f(G, k) → (G', k')</h4>
-<p>Dada una instancia de Vertex Cover (G = (V, E), k):
-1. Si G tiene aristas aisladas o vértices desconectados sin aristas, estos deben ser incluidos en el análisis. Asumimos sin pérdida de generalidad que G no tiene vértices aislados (un vértice aislado en VC no cubre aristas, en DS requiere dominarse a sí mismo).
-2. Construimos un grafo G' = (V', E') de la siguiente manera:
-   * Conservamos todos los vértices originales de G: V' = V ∪ V_aristas.
-   * Para cada arista e = (u, v) ∈ E, agregamos un <strong>nuevo vértice</strong> w_e a V'.
-   * Conectamos w_e mediante aristas con los dos extremos originales u y v: agregamos las aristas (u, w_e) y (v, w_e) a E'.
-   * Mantenemos las aristas originales (u, v) ∈ E en E' (o bien un triángulo u - v - w_e).
-3. Fijamos el tamaño objetivo del set dominante:</p>
+<p>Dada una instancia de Vertex Cover (G = (V, E), k):</p>
+<ol>
+<li>Si G tiene aristas aisladas o vértices desconectados sin aristas, estos deben ser incluidos en el análisis. Asumimos sin pérdida de generalidad que G no tiene vértices aislados (un vértice aislado en VC no cubre aristas, en DS requiere dominarse a sí mismo).</li>
+<li>Construimos un grafo G' = (V', E') de la siguiente manera:</li>
+<li>Conservamos todos los vértices originales de G: V' = V ∪ V_aristas.</li>
+<li>Para cada arista e = (u, v) ∈ E, agregamos un <strong>nuevo vértice</strong> w_e a V'.</li>
+<li>Conectamos w_e mediante aristas con los dos extremos originales u y v: agregamos las aristas (u, w_e) y (v, w_e) a E'.</li>
+<li>Mantenemos las aristas originales (u, v) ∈ E en E' (o bien un triángulo u - v - w_e).</li>
+<li>
+<p>Fijamos el tamaño objetivo del set dominante:</p>
 <blockquote>
-<p><strong>k' = k</strong>
-* <strong>Complejidad de la Transformación:</strong> |V'| = |V| + |E| y |E'| = |E| + 2|E| = 3|E|. La construcción agrega un vértice y dos aristas por cada arista original, lo cual se realiza en tiempo O(|V| + |E|), que es estrictamente polinomial.</p>
+<p><strong>k' = k</strong></p>
 </blockquote>
-<h4>Paso 4: Demostración de Equivalencia Bidireccional</h4>
-<ul>
-<li><strong>(⟹) Si G tiene un Vertex Cover S de tamaño ≤ k, entonces G' tiene un Dominating Set D de tamaño ≤ k:</strong></li>
-<li>Elegimos D = S. Como |S| ≤ k, tenemos que |D| ≤ k.</li>
-<li>Veamos que D domina todos los vértices de G':<ol>
-<li><strong>Vértices nuevos w_e (asociados a aristas e = (u, v)):</strong> Como S es un Vertex Cover de G, al menos uno de los extremos u o v pertenece a S. Dado que w_e es adyacente a u y a v en G', y al menos uno está en D, el vértice w_e está dominado.</li>
-<li><strong>Vértices originales u ∈ V:</strong> Como no hay vértices aislados en G, u tiene al menos una arista incidente e = (u, v). Si u ∈ S, u ∈ D (se domina a sí mismo). Si u ∉ S, necesariamente v ∈ S = D (porque (u, v) debía estar cubierta), y como (u, v) ∈ E', u es adyacente a v ∈ D, por lo que u está dominado.</li>
-</ol>
 </li>
 <li>
-<p>Por lo tanto, D es un Dominating Set válido de tamaño ≤ k.</p>
+<p><strong>Complejidad de la Transformación:</strong> |V'| = |V| + |E| y |E'| = |E| + 2|E| = 3|E|. La construcción agrega un vértice y dos aristas por cada arista original, lo cual se realiza en tiempo O(|V| + |E|), que es estrictamente polinomial.</p>
+</li>
+</ol>
+<h4>Paso 4: Demostración de Equivalencia Bidireccional</h4>
+<ul>
+<li>
+<p><strong>(⟹) Si G tiene un Vertex Cover S de tamaño ≤ k, entonces G' tiene un Dominating Set D de tamaño ≤ k:</strong></p>
+<ul>
+<li>Elegimos D = S. Como |S| ≤ k, tenemos que |D| ≤ k.</li>
+<li>Veamos que D domina todos los vértices de G':</li>
+<li><strong>Vértices nuevos w_e (asociados a aristas e = (u, v)):</strong> Como S es un Vertex Cover de G, al menos uno de los extremos u o v pertenece a S. Dado que w_e es adyacente a u y a v en G', y al menos uno está en D, el vértice w_e está dominado.</li>
+<li><strong>Vértices originales u ∈ V:</strong> Como no hay vértices aislados en G, u tiene al menos una arista incidente e = (u, v). Si u ∈ S, u ∈ D (se domina a sí mismo). Si u ∉ S, necesariamente v ∈ S = D (porque (u, v) debía estar cubierta), y como (u, v) ∈ E', u es adyacente a v ∈ D, por lo que u está dominado.</li>
+<li>Por lo tanto, D es un Dominating Set válido de tamaño ≤ k.</li>
+</ul>
 </li>
 <li>
 <p><strong>(⟸) Si G' tiene un Dominating Set D' de tamaño ≤ k, entonces G tiene un Vertex Cover S de tamaño ≤ k:</strong></p>
-</li>
+<ul>
 <li>Supongamos que D' contiene algún vértice auxiliar w_e correspondiente a la arista e = (u, v).</li>
-<li>El vértice w_e solo tiene dos vecinos en G': u y v. Si reemplazamos w_e en D' por u (o por v):<ul>
+<li>El vértice w_e solo tiene dos vecinos en G': u y v. Si reemplazamos w_e en D' por u (o por v):</li>
 <li>El nodo w_e sigue dominado (porque u ∈ D').</li>
 <li>El nodo u ahora se domina a sí mismo.</li>
 <li>Cualquier otro nodo dominado por w_e (que solo podían ser u o v) sigue dominado. Además, u podría dominar a otros vecinos originales en G.</li>
 <li>Por lo tanto, el nuevo conjunto sigue siendo un Dominating Set y su tamaño no aumentó.</li>
-</ul>
-</li>
 <li>Realizando este reemplazo para todos los vértices auxiliares, obtenemos un set dominante D'' ⊆ V compuesto <strong>exclusivamente por vértices originales de G</strong>, con |D''| ≤ |D'| ≤ k.</li>
-<li>Veamos que D'' es un Vertex Cover de G:<ul>
+<li>Veamos que D'' es un Vertex Cover de G:</li>
 <li>Para cada arista e = (u, v) ∈ E, el nodo auxiliar w_e en G' debía estar dominado por D''.</li>
 <li>Los únicos vecinos de w_e en G' son u y v. Como w_e ∉ D'', necesariamente al menos u ∈ D'' o v ∈ D''.</li>
 <li>Esto implica que toda arista (u, v) tiene al menos un extremo en D''.</li>
+<li>Por lo tanto, S = D'' es un Vertex Cover de G de tamaño ≤ k.</li>
 </ul>
 </li>
-<li>Por lo tanto, S = D'' es un Vertex Cover de G de tamaño ≤ k.</li>
 </ul>
 <p><strong>Conclusión Final</strong><br />
 Habiendo probado que Dominating Set ∈ NP y que Vertex Cover ≤_P Dominating Set con equivalencia lógica en ambos sentidos, queda formalmente demostrado que <strong>Dominating Set es NP-Completo</strong>.</p>
@@ -1952,10 +1966,12 @@ Habiendo probado que Dominating Set ∈ NP y que Vertex Cover ≤_P Dominating S
     <div class="exercise-statement-box">
       <p><strong>Enunciado</strong><br />
 Marco, el cadete de la empresa, compró un software que resuelve el problema del Viajante de Comercio (TSP en su versión de decisión) cuando le habían pedido un software para resolver Ciclo Hamiltoniano. El vendedor afirmó: <em>"Si puedes resolver TSP de decisión, puedes resolver fácilmente Ciclo Hamiltoniano"</em>.<br />
-Recordemos:<br />
-* <strong>Ciclo Hamiltoniano:</strong> Dado un grafo incompleto no dirigido G = (V, E), determinar si existe un ciclo simple que visite todos los vértices exactamente una vez y regrese al origen.<br />
-* <strong>TSP (Decisión):</strong> Dado un grafo completo G' = (V', E') con pesos enteros w(e) en las aristas y un entero k, determinar si existe un tour que recorra todos los vértices sin repetir y vuelva al origen con costo total ≤ k.<br />
-Determinar si el vendedor tiene razón o hay que despedir a Marco. Fundamentar construyendo la reducción polinomial formal.</p>
+Recordemos:  </p>
+<ul>
+<li><strong>Ciclo Hamiltoniano:</strong> Dado un grafo incompleto no dirigido G = (V, E), determinar si existe un ciclo simple que visite todos los vértices exactamente una vez y regrese al origen.  </li>
+<li><strong>TSP (Decisión):</strong> Dado un grafo completo G' = (V', E') con pesos enteros w(e) en las aristas y un entero k, determinar si existe un tour que recorra todos los vértices sin repetir y vuelva al origen con costo total ≤ k.<br />
+Determinar si el vendedor tiene razón o hay que despedir a Marco. Fundamentar construyendo la reducción polinomial formal.</li>
+</ul>
 <p><strong>Qué está evaluando</strong><br />
 Construcción de un grafo completo con ponderación de penalización (1 para aristas existentes, 2 o ∞ para inexistentes) y equivalencia lógica con cota k = |V|.</p>
     </div>
@@ -1973,36 +1989,56 @@ Construcción de un grafo completo con ponderación de penalización (1 para ari
 <p><strong>Ciclo Hamiltoniano ≤_P TSP (Decisión)</strong></p>
 </blockquote>
 <h4>1. Transformación Polinomial f(G) → (G', w, k)</h4>
-<p>Dada una instancia de Ciclo Hamiltoniano G = (V, E) con n = |V| vértices:
-1. Construimos un grafo completo G' = (V, E') con el mismo conjunto de vértices V, donde existe una arista entre todo par de vértices distintos u, v ∈ V.
-2. Asignamos pesos w(u, v) a cada arista de G':</p>
+<p>Dada una instancia de Ciclo Hamiltoniano G = (V, E) con n = |V| vértices:</p>
+<ol>
+<li>Construimos un grafo completo G' = (V, E') con el mismo conjunto de vértices V, donde existe una arista entre todo par de vértices distintos u, v ∈ V.</li>
+<li>
+<p>Asignamos pesos w(u, v) a cada arista de G':</p>
 <blockquote>
 <p><strong>w(u, v) = 1</strong> si (u, v) ∈ E (la arista existía en el grafo original)<br />
-<strong>w(u, v) = 2</strong> si (u, v) ∉ E (la arista no existía)
-3. Fijamos el valor objetivo de costo del tour:
-<strong>k = n = |V|</strong>
-* <strong>Costo de la Transformación:</strong> Generar las C(n, 2) = O(n²) aristas y asignarles pesos 1 o 2 toma tiempo O(n²), que es polinomial.</p>
+<strong>w(u, v) = 2</strong> si (u, v) ∉ E (la arista no existía)</p>
 </blockquote>
+</li>
+<li>
+<p>Fijamos el valor objetivo de costo del tour:</p>
+<blockquote>
+<p><strong>k = n = |V|</strong></p>
+</blockquote>
+</li>
+<li>
+<p><strong>Costo de la Transformación:</strong> Generar las C(n, 2) = O(n²) aristas y asignarles pesos 1 o 2 toma tiempo O(n²), que es polinomial.</p>
+</li>
+</ol>
 <h4>2. Equivalencia Bidireccional</h4>
 <ul>
-<li><strong>(⟹) Si G tiene un Ciclo Hamiltoniano ⟹ G' tiene un tour TSP de costo ≤ n:</strong></li>
+<li>
+<p><strong>(⟹) Si G tiene un Ciclo Hamiltoniano ⟹ G' tiene un tour TSP de costo ≤ n:</strong></p>
+<ul>
 <li>Sea C = (v₁, v₂, ..., vₙ, v₁) un ciclo hamiltoniano en G.</li>
 <li>Como todas las aristas de C pertenecen a E, cada arista (v_i, v_{i+1}) tiene peso w(v_i, v_{i+1}) = 1 en G'.</li>
 <li>El ciclo C visita los n vértices una sola vez y tiene n aristas.</li>
 <li>Costo total del tour en G': ∑_{i=1}^n 1 = n ≤ k.</li>
-<li>
-<p>Por lo tanto, (G', w, k) es una instancia YES de TSP.</p>
+<li>Por lo tanto, (G', w, k) es una instancia YES de TSP.</li>
+</ul>
 </li>
 <li>
 <p><strong>(⟸) Si G' tiene un tour TSP de costo ≤ n ⟹ G tiene un Ciclo Hamiltoniano:</strong></p>
-</li>
+<ul>
 <li>Sea T = (u₁, u₂, ..., uₙ, u₁) un tour que visita todos los vértices en G' con costo ≤ n.</li>
 <li>El tour consta de exactamente n aristas.</li>
 <li>Por construcción, los pesos posibles son únicamente 1 o 2.</li>
-<li>Si el tour utilizara al menos una arista que no pertenecía a E (peso 2), el costo total sería al menos:
-    &gt; <strong>Costo(T) ≥ 1 · (n - 1) + 2 = n + 1 &gt; n</strong></li>
-<li>Para que el costo total sea ≤ n, <strong>todas las n aristas del tour deben tener obligatoriamente peso 1</strong>.</li>
+<li>
+<p>Si el tour utilizara al menos una arista que no pertenecía a E (peso 2), el costo total sería al menos:</p>
+<blockquote>
+<p><strong>Costo(T) ≥ 1 · (n - 1) + 2 = n + 1 &gt; n</strong></p>
+</blockquote>
+</li>
+<li>
+<p>Para que el costo total sea ≤ n, <strong>todas las n aristas del tour deben tener obligatoriamente peso 1</strong>.</p>
+</li>
 <li>Por lo tanto, todas las aristas de T pertenecen a E, lo que implica que T es un Ciclo Hamiltoniano válido en G.</li>
+</ul>
+</li>
 </ul>
 <p><strong>Conclusión:</strong> Marco puede usar el software de TSP para resolver Ciclo Hamiltoniano en tiempo polinomial. Por lo tanto, <strong>el vendedor tiene razón y no hay que despedir a Marco</strong>.</p>
 <hr />
@@ -2050,18 +2086,28 @@ Demostrar que el problema del cambio de monedas (en su versión de decisión: da
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Resolución y Demostración</strong><br />
-* La frase <em>"el problema A no es más difícil que B"</em> equivale a demostrar:</p>
+        <p><strong>Resolución y Demostración</strong>  </p>
+<ul>
+<li>
+<p>La frase <em>"el problema A no es más difícil que B"</em> equivale a demostrar:</p>
 <blockquote>
-<p><strong>Cambio de Monedas ≤_P Subset Sum</strong>
-* En Subset Sum clásico cada elemento puede usarse a lo sumo <strong>una sola vez</strong>. En Cambio de Monedas, cada denominación puede usarse múltiples veces (hasta k veces).
-* <strong>Transformación:</strong>
-  1. Si permitimos usar hasta k monedas de cada denominación d ∈ D, creamos un multiconjunto de enteros L donde cada denominación d se replica k veces: L = {d^(1), d^(2), ..., d^(k) | ∀ d ∈ D}.
-  2. Para controlar que la cantidad total de monedas usadas sea ≤ k, expandimos la representación o agregamos variables auxiliares con base alta.
-  3. Fijamos el objetivo S = V.
-* <strong>¿Es posible demostrarlo en sentido opuesto (Subset Sum ≤_P Cambio de Monedas)?</strong>
-  * <strong>Sí, es perfectamente posible:</strong> Como Subset Sum es NP-Completo y Cambio de Monedas de decisión pertenece a NP, por definición de NP-Completitud, <strong>todo problema en NP se reduce polinomialmente a Subset Sum y viceversa</strong> (ambos son NP-Completos bajo codificación binaria de números).</p>
+<p><strong>Cambio de Monedas ≤_P Subset Sum</strong></p>
 </blockquote>
+</li>
+<li>
+<p>En Subset Sum clásico cada elemento puede usarse a lo sumo <strong>una sola vez</strong>. En Cambio de Monedas, cada denominación puede usarse múltiples veces (hasta k veces).</p>
+</li>
+<li><strong>Transformación:</strong><ol>
+<li>Si permitimos usar hasta k monedas de cada denominación d ∈ D, creamos un multiconjunto de enteros L donde cada denominación d se replica k veces: L = {d^(1), d^(2), ..., d^(k) | ∀ d ∈ D}.</li>
+<li>Para controlar que la cantidad total de monedas usadas sea ≤ k, expandimos la representación o agregamos variables auxiliares con base alta.</li>
+<li>Fijamos el objetivo S = V.</li>
+</ol>
+</li>
+<li><strong>¿Es posible demostrarlo en sentido opuesto (Subset Sum ≤_P Cambio de Monedas)?</strong><ul>
+<li><strong>Sí, es perfectamente posible:</strong> Como Subset Sum es NP-Completo y Cambio de Monedas de decisión pertenece a NP, por definición de NP-Completitud, <strong>todo problema en NP se reduce polinomialmente a Subset Sum y viceversa</strong> (ambos son NP-Completos bajo codificación binaria de números).</li>
+</ul>
+</li>
+</ul>
 <hr />
 <h3>Patrón de Ejercicio 7.4: La Reducción Dual Canónica (Independent Set a Vertex Cover)</h3>
 <hr />
@@ -2096,9 +2142,11 @@ Demostrar que el problema del cambio de monedas (en su versión de decisión: da
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado</strong><br />
-Dados los problemas de decisión de Independent Set y Vertex Cover:<br />
-1. Reducir Independent Set a Vertex Cover.<br />
-2. Demostrar la equivalencia lógica fundamentando el teorema del complemento en teoría de grafos.</p>
+Dados los problemas de decisión de Independent Set y Vertex Cover:  </p>
+<ol>
+<li>Reducir Independent Set a Vertex Cover.  </li>
+<li>Demostrar la equivalencia lógica fundamentando el teorema del complemento en teoría de grafos.</li>
+</ol>
     </div>
 
     <details open class="exercise-solution-drawer" id="solution-drawer-31">
@@ -2108,15 +2156,19 @@ Dados los problemas de decisión de Independent Set y Vertex Cover:<br />
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Demostración Formal</strong><br />
-* <strong>Teorema Fundamental:</strong> En cualquier grafo no dirigido G = (V, E), un subconjunto S ⊆ V es un <strong>Independent Set</strong> si y solo si su complemento V \ S es un <strong>Vertex Cover</strong>.
-* <strong>Demostración del Lema:</strong>
-  * (⟹) Si S es Independent Set, ningún par de vértices en S comparte arista. Por ende, para cualquier arista (u, v) ∈ E, es imposible que ambos extremos pertenezcan a S. Por lo tanto, al menos uno de los extremos debe pertenecer a V \ S. Esto prueba que V \ S cubre todas las aristas y es un Vertex Cover.
-  * (⟸) Si V \ S es un Vertex Cover, cubre toda arista (u, v). Por ende, ninguna arista puede tener ambos extremos fuera de V \ S (es decir, en S). Por lo tanto, no hay aristas entre nodos de S, lo que prueba que S es un Independent Set.
-* <strong>Reducción Independent Set ≤_P Vertex Cover:</strong><br />
+        <p><strong>Demostración Formal</strong>  </p>
+<ul>
+<li><strong>Teorema Fundamental:</strong> En cualquier grafo no dirigido G = (V, E), un subconjunto S ⊆ V es un <strong>Independent Set</strong> si y solo si su complemento V \ S es un <strong>Vertex Cover</strong>.</li>
+<li><strong>Demostración del Lema:</strong><ul>
+<li>(⟹) Si S es Independent Set, ningún par de vértices en S comparte arista. Por ende, para cualquier arista (u, v) ∈ E, es imposible que ambos extremos pertenezcan a S. Por lo tanto, al menos uno de los extremos debe pertenecer a V \ S. Esto prueba que V \ S cubre todas las aristas y es un Vertex Cover.</li>
+<li>(⟸) Si V \ S es un Vertex Cover, cubre toda arista (u, v). Por ende, ninguna arista puede tener ambos extremos fuera de V \ S (es decir, en S). Por lo tanto, no hay aristas entre nodos de S, lo que prueba que S es un Independent Set.</li>
+</ul>
+</li>
+<li><strong>Reducción Independent Set ≤_P Vertex Cover:</strong><br />
   Dada la instancia (G, k) de IS: construimos la instancia de VC (G, k') con el mismo grafo G y fijamos k' = |V| - k.<br />
   G tiene un IS de tamaño ≥ k ⟺ G tiene un VC de tamaño ≤ |V| - k.<br />
-  La transformación copia el grafo y resta enteros en tiempo O(1).</p>
+  La transformación copia el grafo y resta enteros en tiempo O(1).</li>
+</ul>
 <hr />
 <h3>Errores Fatales en Exámenes sobre Reducciones NP</h3>
 <ol>

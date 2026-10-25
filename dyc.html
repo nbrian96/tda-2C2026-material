@@ -1786,20 +1786,26 @@ body.dark-mode .warning-box {
 <p>Este documento fue diseñado con un único objetivo en mente: <strong>aprobar el parcial de Teoría de Algoritmos optimizando cada minuto de estudio</strong>. No es un compendio enciclopédico de teoría ni una transcripción de diapositivas. Es un manual de ingeniería algorítmica para el examen, estructurado a partir del análisis riguroso de los parciales reales tomados por la cátedra (Curso Echevarría) en 2024 y 2025, cruzados con la guía práctica oficial.</p>
 <h3>Planes de preparación según tu tiempo disponible</h3>
 <ul>
-<li><strong>Plan de Emergencia (48 a 72 horas antes del examen):</strong></li>
+<li><strong>Plan de Emergencia (48 a 72 horas antes del examen):</strong><ol>
 <li>Leé la <strong>Sección 3: Guía mental para reconocer el ejercicio en 30 segundos</strong>.</li>
 <li>Resolvé exclusivamente los ejercicios marcados como 🔴 <strong>IMPRESCINDIBLE</strong>.</li>
 <li>Memorizá el esquema de 4 pasos obligatorios para <strong>Reducciones NP-Completas</strong> (Sección 10).</li>
 <li>Revisá el <strong>Catálogo de Errores Típicos</strong> y la <strong>Checklist antes de entrar al parcial</strong>.</li>
-<li><strong>Plan Táctico (1 semana antes del examen):</strong></li>
+</ol>
+</li>
+<li><strong>Plan Táctico (1 semana antes del examen):</strong><ol>
 <li>Realizá el Plan de Emergencia completo.</li>
 <li>Sumá todos los ejercicios marcados como 🟡 <strong>IMPORTANTE</strong>.</li>
 <li>Escribí en papel (sin mirar la solución) el pseudocódigo de cada ejercicio de Programación Dinámica, Backtracking y Greedy.</li>
 <li>Resolvé los <strong>Ejercicios Integradores Multi-Paradigma</strong> (Sección 11, destacando <strong>La Mochila — Ej 35</strong> y <strong>El Viajante TSP — Ej 36</strong> en todos los paradigmas) y los <strong>Ejercicios Tipo Parcial Generados</strong> (Sección 12).</li>
-<li><strong>Plan Integral (2 o más semanas):</strong></li>
+</ol>
+</li>
+<li><strong>Plan Integral (2 o más semanas):</strong><ol>
 <li>Recorré la guía completa incluyendo ejercicios 🟢 <strong>COMPLEMENTARIO</strong>.</li>
 <li>Implementá en tu computadora los algoritmos más sensibles (o revisá las implementaciones en Python de la carpeta <code>Practicas/</code>).</li>
 <li>Dominá las demostraciones formales de optimalidad por <em>Greedy Stays Ahead</em> y las recurrencias del Teorema Maestro.</li>
+</ol>
+</li>
 </ul>
 <h3>Reglas de oro para rendir el examen</h3>
 <ol>
@@ -2051,21 +2057,27 @@ body.dark-mode .warning-box {
 <h2>4. Tema 1: División y Conquista (DyC)</h2>
 <h3>Conceptos Mínimos de Supervivencia</h3>
 <ol>
-<li><strong>Definición del Paradigma:</strong>
-   Un algoritmo de División y Conquista divide un problema de tamaño n en a subproblemas independientes de tamaño n/b, resuelve cada subproblema recursivamente (conquista), y luego combina sus soluciones con un costo f(n) (combinación).</li>
-<li><strong>Teorema Maestro (Master Theorem):</strong>
-   Para recurrencias de la forma:<blockquote>
+<li>
+<p><strong>Definición del Paradigma:</strong>
+   Un algoritmo de División y Conquista divide un problema de tamaño n en a subproblemas independientes de tamaño n/b, resuelve cada subproblema recursivamente (conquista), y luego combina sus soluciones con un costo f(n) (combinación).</p>
+</li>
+<li>
+<p><strong>Teorema Maestro (Master Theorem):</strong>
+   Para recurrencias de la forma:</p>
+<blockquote>
 <p><strong>T(n) = a · T(n/b) + O(nᶜ)</strong></p>
 </blockquote>
 </li>
 </ol>
-<p>con a ≥ 1, b &gt; 1, c ≥ 0:
-   * <strong>Caso 1 (Dominio de Hojas):</strong> Si log_b a &gt; c ⟹ T(n) = O(n^(log_b a)). El costo está concentrado en las hojas del árbol de recursión.
-   * <strong>Caso 2 (Balance Equitativo):</strong> Si log_b a = c ⟹ T(n) = O(nᶜ log n). Cada nivel del árbol recursivo aporta la misma cantidad de trabajo.
-   * <strong>Caso 3 (Dominio de la Raíz):</strong> Si log_b a &lt; c ⟹ T(n) = O(nᶜ) (sujeto a la condición de regularidad a · f(n/b) ≤ k · f(n) con k &lt; 1). El costo de combinar en la raíz domina todo el proceso.
-3. <strong>Requisitos de Factibilidad:</strong>
-   * Los subproblemas deben ser <strong>estrictamente disjuntos</strong> (sin superposición; si hay superposición, corresponde Programación Dinámica).
-   * La reducción del tamaño debe ser multiplicativa (n/b), no sustractiva (n - 1). Si es sustractiva (T(n) = T(n - 1) + O(1)), no aplica Teorema Maestro y la complejidad es lineal o cuadrática.</p>
+<p>con a ≥ 1, b &gt; 1, c ≥ 0:</p>
+<ul>
+<li><strong>Caso 1 (Dominio de Hojas):</strong> Si log_b a &gt; c ⟹ T(n) = O(n^(log_b a)). El costo está concentrado en las hojas del árbol de recursión.</li>
+<li><strong>Caso 2 (Balance Equitativo):</strong> Si log_b a = c ⟹ T(n) = O(nᶜ log n). Cada nivel del árbol recursivo aporta la misma cantidad de trabajo.</li>
+<li><strong>Caso 3 (Dominio de la Raíz):</strong> Si log_b a &lt; c ⟹ T(n) = O(nᶜ) (sujeto a la condición de regularidad a · f(n/b) ≤ k · f(n) con k &lt; 1). El costo de combinar en la raíz domina todo el proceso.</li>
+<li><strong>Requisitos de Factibilidad:</strong></li>
+<li>Los subproblemas deben ser <strong>estrictamente disjuntos</strong> (sin superposición; si hay superposición, corresponde Programación Dinámica).</li>
+<li>La reducción del tamaño debe ser multiplicativa (n/b), no sustractiva (n - 1). Si es sustractiva (T(n) = T(n - 1) + O(1)), no aplica Teorema Maestro y la complejidad es lineal o cuadrática.</li>
+</ul>
 <hr />
 <h3>Patrón de Ejercicio 1.1: Álgebra Matricial y Partición en Bloques</h3>
 <p>En los parciales aparece el requerimiento de formular algoritmos multiplicativos dividiendo estructuras bidimensionales en cuadrantes y deduciendo la complejidad formal con el Teorema Maestro.</p>
@@ -2109,18 +2121,24 @@ Partición de matrices en 4 bloques de orden n/2, formulación de las llamadas r
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-1. Si n = 1, multiplicamos los dos escalares directamente en O(1).
-2. Si n &gt; 1, dividimos cada matriz A y B en 4 submatrices cuadradas de tamaño n/2 × n/2:
+        <p><strong>Idea de resolución</strong>  </p>
+<ol>
+<li>Si n = 1, multiplicamos los dos escalares directamente en O(1).</li>
+<li>
+<p>Si n &gt; 1, dividimos cada matriz A y B en 4 submatrices cuadradas de tamaño n/2 × n/2:
    <code>text
    A = [ A11  A12 ]        B = [ B11  B12 ]
-       [ A21  A22 ]            [ B21  B22 ]</code>
-3. Los bloques resultantes de C = A × B se calculan como:
-   * C11 = A11 · B11 + A12 · B21
-   * C12 = A11 · B12 + A12 · B22
-   * C21 = A21 · B11 + A22 · B21
-   * C22 = A21 · B12 + A22 · B22
-4. Esto requiere 8 multiplicaciones de matrices de tamaño n/2 y 4 sumas matriciales de tamaño n/2. Sumar dos matrices de n/2 × n/2 toma O(n²) operaciones.</p>
+       [ A21  A22 ]            [ B21  B22 ]</code></p>
+</li>
+<li>
+<p>Los bloques resultantes de C = A × B se calculan como:</p>
+</li>
+<li>C11 = A11 · B11 + A12 · B21</li>
+<li>C12 = A11 · B12 + A12 · B22</li>
+<li>C21 = A21 · B11 + A22 · B21</li>
+<li>C22 = A21 · B12 + A22 · B22</li>
+<li>Esto requiere 8 multiplicaciones de matrices de tamaño n/2 y 4 sumas matriciales de tamaño n/2. Sumar dos matrices de n/2 × n/2 toma O(n²) operaciones.</li>
+</ol>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MultiplicarMatricesDyC(A, B, n):
     // Caso base: matriz de 1x1
@@ -2182,22 +2200,28 @@ FUNCION SumarMatrices(X, Y, m):
 </code></pre></div>
 <p><strong>Explicación del algoritmo</strong><br />
 El algoritmo parte las matrices en 4 cuadrantes. La partición y el copiado de submatrices toman O(n²). Luego se disparan 8 llamadas recursivas con submatrices de tamaño n/2. Finalmente, las sumas de bloques y el ensamblado en la matriz C toman 4 × O((n/2)²) = O(n²).</p>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> La ecuación de recurrencia es:</p>
-<blockquote>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> La ecuación de recurrencia es:<blockquote>
 <p>T(n) = 8 · T(n/2) + O(n²)</p>
 </blockquote>
+</li>
+</ul>
 <p>Aplicando el Teorema Maestro con a = 8, b = 2, c = 2:
   log_b a = log₂ 8 = 3.
   Como log_b a = 3 &gt; 2 = c, estamos en el <strong>Caso 1 (domina la recursión)</strong>:</p>
 <blockquote>
-<p>T(n) = O(n^(log₂ 8)) = O(n³)
-* <strong>Espacio:</strong> En cada nivel se crean submatrices por un total de O(n²). La profundidad del árbol es log₂ n. Con paso por copia el espacio total es O(n²). Si se usan punteros o índices sobre la matriz original sin copiar, el espacio auxiliar de la pila recursiva es O(log n).</p>
+<p>T(n) = O(n^(log₂ 8)) = O(n³)</p>
 </blockquote>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* Pensar que la división y conquista ingenua mejora a O(n²). No lo hace sin el truco algebraico de Strassen (a = 7), que logra O(n^(log₂ 7)) ≈ O(n^2.81).
-* Olvidar sumar las parejas de matrices resultantes de las llamadas recursivas.
-* Confundir los índices de los bloques (por ejemplo, hacer A12 × B12 en lugar de A12 × B21).</p></div>
+<ul>
+<li><strong>Espacio:</strong> En cada nivel se crean submatrices por un total de O(n²). La profundidad del árbol es log₂ n. Con paso por copia el espacio total es O(n²). Si se usan punteros o índices sobre la matriz original sin copiar, el espacio auxiliar de la pila recursiva es O(log n).</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>Pensar que la división y conquista ingenua mejora a O(n²). No lo hace sin el truco algebraico de Strassen (a = 7), que logra O(n^(log₂ 7)) ≈ O(n^2.81).</li>
+<li>Olvidar sumar las parejas de matrices resultantes de las llamadas recursivas.</li>
+<li>Confundir los índices de los bloques (por ejemplo, hacer A12 × B12 en lugar de A12 × B21).</li>
+</ul>
 <p><strong>Variación típica de parcial</strong><br />
 Pedir que se explique cómo el algoritmo de Strassen reduce la cantidad de multiplicaciones de 8 a 7 mediante combinaciones lineales inteligentes, derivando en T(n) = 7 · T(n/2) + O(n²) ⟹ O(n^2.807).</p>
 <hr />
@@ -2247,12 +2271,14 @@ Descarte de mitades en tiempo logarítmico aprovechando la dirección de la pend
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-1. Calculamos el índice medio m = ⌊(ini + fin) / 2⌋.
-2. Comparamos A[m] con su vecino derecho A[m+1]:
-   * Si A[m] &lt; A[m+1], la secuencia está subiendo hacia la derecha. Por lo tanto, <strong>garantizadamente existe al menos un pico en la mitad derecha</strong> [m+1, fin].
-   * Si A[m] &gt; A[m+1], la secuencia está bajando hacia la derecha (o subiendo hacia la izquierda). Por lo tanto, <strong>garantizadamente existe un pico en la mitad izquierda</strong> [ini, m] (el propio m podría ser el pico).
-3. Reducimos el espacio de búsqueda a la mitad en cada paso.</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ol>
+<li>Calculamos el índice medio m = ⌊(ini + fin) / 2⌋.</li>
+<li>Comparamos A[m] con su vecino derecho A[m+1]:</li>
+<li>Si A[m] &lt; A[m+1], la secuencia está subiendo hacia la derecha. Por lo tanto, <strong>garantizadamente existe al menos un pico en la mitad derecha</strong> [m+1, fin].</li>
+<li>Si A[m] &gt; A[m+1], la secuencia está bajando hacia la derecha (o subiendo hacia la izquierda). Por lo tanto, <strong>garantizadamente existe un pico en la mitad izquierda</strong> [ini, m] (el propio m podría ser el pico).</li>
+<li>Reducimos el espacio de búsqueda a la mitad en cada paso.</li>
+</ol>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION EncontrarPico(A):
     SI longitud(A) = 0:
@@ -2275,13 +2301,21 @@ FUNCION EncontrarPicoRec(A, ini, fin):
 </code></pre></div>
 <p><strong>Explicación del algoritmo</strong><br />
 El algoritmo inspecciona dos elementos centrales contiguos (m y m+1). Como todos los elementos adyacentes son distintos, siempre hay una dirección de ascenso. Seguir la pendiente ascendente asegura chocar contra un pico local o alcanzar el extremo del arreglo, el cual actúa como pico.</p>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> T(n) = 1 · T(n/2) + O(1). Con a = 1, b = 2, c = 0:
-  log_b a = log₂ 1 = 0 = c ⟹ T(n) = O(n⁰ log n) = O(log n).
-* <strong>Espacio adicional:</strong> O(log n) de memoria en la pila de llamadas recursivas (u O(1) si se formula con un bucle MIENTRAS).</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* Llamar a la recursión izquierda con <code>m - 1</code>. Si A[m] &gt; A[m+1], A[m] podría ser el pico; si descartamos m, perdemos la solución. Por eso la llamada debe ser <code>[ini, m]</code>.
-* Acceder a <code>A[m+1]</code> cuando ini = fin (desbordamiento de índice). El caso base <code>ini = fin</code> previene esto porque con ini &lt; fin, m &lt; fin, asegurando que m + 1 ≤ fin.</p></div>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li>
+<p><strong>Tiempo:</strong> T(n) = 1 · T(n/2) + O(1). Con a = 1, b = 2, c = 0:
+  log_b a = log₂ 1 = 0 = c ⟹ T(n) = O(n⁰ log n) = O(log n).</p>
+</li>
+<li>
+<p><strong>Espacio adicional:</strong> O(log n) de memoria en la pila de llamadas recursivas (u O(1) si se formula con un bucle MIENTRAS).</p>
+</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>Llamar a la recursión izquierda con <code>m - 1</code>. Si A[m] &gt; A[m+1], A[m] podría ser el pico; si descartamos m, perdemos la solución. Por eso la llamada debe ser <code>[ini, m]</code>.</li>
+<li>Acceder a <code>A[m+1]</code> cuando ini = fin (desbordamiento de índice). El caso base <code>ini = fin</code> previene esto porque con ini &lt; fin, m &lt; fin, asegurando que m + 1 ≤ fin.</li>
+</ul>
 <p><strong>Variación típica de parcial</strong><br />
 Buscar un pico en una matriz de n × n en tiempo O(n log n) o O(n) (buscar el máximo de la columna central y verificar sus vecinos izquierdo y derecho).</p>
 <hr />
@@ -2328,10 +2362,12 @@ Búsqueda binaria modificada para encontrar el primer elemento que satisface una
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-1. Si en la posición media m hay un 1, el primer cero debe estar estrictamente a la derecha (m + 1 ... fin).
-2. Si en la posición media m hay un 0, este podría ser el primer cero, o bien el primer cero ocurrió antes (ini ... m).
-3. Condición de corte directo: Si A[m] = 0 y (m = 0 o A[m-1] = 1), encontramos exactamente el primer 0.</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ol>
+<li>Si en la posición media m hay un 1, el primer cero debe estar estrictamente a la derecha (m + 1 ... fin).</li>
+<li>Si en la posición media m hay un 0, este podría ser el primer cero, o bien el primer cero ocurrió antes (ini ... m).</li>
+<li>Condición de corte directo: Si A[m] = 0 y (m = 0 o A[m-1] = 1), encontramos exactamente el primer 0.</li>
+</ol>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION BuscarPrimerCero(A):
     SI longitud(A) = 0:
@@ -2357,15 +2393,21 @@ FUNCION BuscarPrimerCeroRec(A, ini, fin):
 </code></pre></div>
 <p><strong>Explicación del algoritmo</strong><br />
 En cada paso se evalúa el elemento central. Si es 1, se descarta toda la mitad izquierda junto con la posición central. Si es 0, se chequea si es el primer cero mirando el elemento anterior. Si no lo es, se explora recursivamente hacia la izquierda.</p>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> En cada llamada se divide el espacio de búsqueda exactamente por 2 y se realizan comparaciones O(1). T(n) = T(n/2) + O(1) ⟹ O(log n).
-* <strong>Espacio adicional:</strong> O(log n) por la pila recursiva (O(1) si es iterativo).</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* No chequear si m = 0 antes de acceder a A[m-1], lo que provoca un error de índice fuera de rango.
-* Si no hay ceros en todo el arreglo, caer en un ciclo infinito en lugar de devolver -1.</p></div>
-<p><strong>Variación típica de parcial</strong><br />
-* Encontrar el punto fijo en un arreglo ordenado tal que A[i] = i.
-* Determinar la raíz de una función monótona continua aplicando el teorema de Bolzano por bisección.</p>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> En cada llamada se divide el espacio de búsqueda exactamente por 2 y se realizan comparaciones O(1). T(n) = T(n/2) + O(1) ⟹ O(log n).</li>
+<li><strong>Espacio adicional:</strong> O(log n) por la pila recursiva (O(1) si es iterativo).</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>No chequear si m = 0 antes de acceder a A[m-1], lo que provoca un error de índice fuera de rango.</li>
+<li>Si no hay ceros en todo el arreglo, caer en un ciclo infinito en lugar de devolver -1.</li>
+</ul>
+<p><strong>Variación típica de parcial</strong>  </p>
+<ul>
+<li>Encontrar el punto fijo en un arreglo ordenado tal que A[i] = i.</li>
+<li>Determinar la raíz de una función monótona continua aplicando el teorema de Bolzano por bisección.</li>
+</ul>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre División y Conquista</h3>
 <ol>

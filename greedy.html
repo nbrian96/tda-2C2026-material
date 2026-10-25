@@ -1781,18 +1781,28 @@ body.dark-mode .warning-box {
 <h2>5. Tema 2: Algoritmos Greedy (Voraces)</h2>
 <h3>Conceptos Mínimos de Supervivencia</h3>
 <ol>
-<li><strong>Naturaleza de un Algoritmo Greedy:</strong>
-   En cada paso, toma la decisión que parece mejor en ese momento específico (óptimo local) bajo una regla de selección fija, sin mirar atrás ni reconsiderar elecciones previas (elección irrevocable).</li>
-<li><strong>Propiedad de la Elección Voraz y Subestructura Óptima:</strong>
-   Para que un algoritmo greedy sea <strong>óptimo</strong>, debe cumplirse que:</li>
-<li>Una elección voraz inicial conduce a una solución globalmente óptima (propiedad de elección voraz).</li>
+<li>
+<p><strong>Naturaleza de un Algoritmo Greedy:</strong>
+   En cada paso, toma la decisión que parece mejor en ese momento específico (óptimo local) bajo una regla de selección fija, sin mirar atrás ni reconsiderar elecciones previas (elección irrevocable).</p>
+</li>
+<li>
+<p><strong>Propiedad de la Elección Voraz y Subestructura Óptima:</strong>
+   Para que un algoritmo greedy sea <strong>óptimo</strong>, debe cumplirse que:</p>
+</li>
+<li>
+<p>Una elección voraz inicial conduce a una solución globalmente óptima (propiedad de elección voraz).</p>
+</li>
 <li>La solución óptima del problema global contiene dentro de sí soluciones óptimas a los subproblemas resultantes (subestructura óptima).</li>
 <li><strong>Las Dos Técnicas Canónicas de Demostración de Optimalidad:</strong></li>
 <li><strong>Greedy Stays Ahead ("El voraz se mantiene adelante"):</strong> Se define una métrica de progreso m(i). Se demuestra por inducción que en cada paso k, la solución voraz aventaja o iguala a cualquier solución óptima OPT (m(G_k) ≤ m(OPT_k) o m(G_k) ≥ m(OPT_k)), garantizando que al finalizar no puede ser superada.</li>
 <li><strong>Argumento de Intercambio (Exchange Argument):</strong> Se toma una solución óptima hipotética OPT que difiere de la solución greedy G. Se identifica la primera inversión o discrepancia y se demuestra que al intercambiar el elemento de OPT por el elemento elegido por G, la calidad de la solución no empeora. Repitiendo el proceso, OPT se transforma en G sin perder valor, probando que G también es óptima.</li>
-<li><strong>Cómo Probar que una Idea Greedy es Incorrecta (El Contraejemplo):</strong>
-   Si en un examen te preguntan <em>"¿El algoritmo greedy propuesto es óptimo siempre? Indicar si es óptimo o dar un contraejemplo"</em>, <strong>NUNCA</strong> respondas con explicaciones vagas. Debes presentar un contraejemplo concreto:</li>
-<li>Definir una instancia pequeña con datos numéricos explícitos.</li>
+<li>
+<p><strong>Cómo Probar que una Idea Greedy es Incorrecta (El Contraejemplo):</strong>
+   Si en un examen te preguntan <em>"¿El algoritmo greedy propuesto es óptimo siempre? Indicar si es óptimo o dar un contraejemplo"</em>, <strong>NUNCA</strong> respondas con explicaciones vagas. Debes presentar un contraejemplo concreto:</p>
+</li>
+<li>
+<p>Definir una instancia pequeña con datos numéricos explícitos.</p>
+</li>
 <li>Mostrar paso a paso qué elige el algoritmo greedy y cuál es su costo/beneficio obtenido.</li>
 <li>Mostrar una solución alternativa factible y su costo/beneficio estrictamente superior.</li>
 <li>Concluir formalmente: <em>Como Valor(Alternativa) &gt; Valor(Greedy), el algoritmo no garantiza la solución óptima.</em></li>
@@ -1828,11 +1838,13 @@ body.dark-mode .warning-box {
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado</strong><br />
-Trabajamos para el mafioso Arnook, quien organiza los pedidos de pequeñas mafias locales por el control de diferentes kilómetros de la ruta costera de Ciudad República. Cada mafia le pide control sobre un rango de kilómetros [s_i, f_i] (por ejemplo, del kilómetro 1 al 5, del 3 al 8, etc.). Si una mafia toma control de un kilómetro, ninguna otra puede ocupar ese mismo tramo (no pueden solaparse). Arnook cobra una tarifa fija por otorgar el permiso, independientemente de los kilómetros pedidos, por lo que su objetivo es maximizar la cantidad total de permisos otorgados sin conflictos de territorio.<br />
-1. Implementar un algoritmo Greedy que determine a qué mafias otorgar el permiso.<br />
-2. Indicar y justificar la complejidad temporal y espacial.<br />
-3. Justificar por qué el algoritmo planteado es Greedy.<br />
-4. ¿El algoritmo da la solución óptima siempre? Demostrarlo formalmente.</p>
+Trabajamos para el mafioso Arnook, quien organiza los pedidos de pequeñas mafias locales por el control de diferentes kilómetros de la ruta costera de Ciudad República. Cada mafia le pide control sobre un rango de kilómetros [s_i, f_i] (por ejemplo, del kilómetro 1 al 5, del 3 al 8, etc.). Si una mafia toma control de un kilómetro, ninguna otra puede ocupar ese mismo tramo (no pueden solaparse). Arnook cobra una tarifa fija por otorgar el permiso, independientemente de los kilómetros pedidos, por lo que su objetivo es maximizar la cantidad total de permisos otorgados sin conflictos de territorio.  </p>
+<ol>
+<li>Implementar un algoritmo Greedy que determine a qué mafias otorgar el permiso.  </li>
+<li>Indicar y justificar la complejidad temporal y espacial.  </li>
+<li>Justificar por qué el algoritmo planteado es Greedy.  </li>
+<li>¿El algoritmo da la solución óptima siempre? Demostrarlo formalmente.</li>
+</ol>
 <p><strong>Qué está evaluando</strong><br />
 Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio voraz correcto (ordenamiento por punto final más temprano), y la demostración formal de optimalidad vía <em>Greedy Stays Ahead</em>.</p>
     </div>
@@ -1844,12 +1856,16 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* ¿Por qué descartar otros criterios?
-  * <em>Ordenar por inicio más temprano (s_i):</em> Falla si un pedido empieza muy temprano y ocupa toda la ruta ([1, 100] vs [2, 3] y [4, 5]).
-  * <em>Ordenar por menor longitud (f_i - s_i):</em> Falla si un pedido corto bloquea a dos pedidos compatibles a sus costados ([10, 20], [19, 21], [20, 30]).
-* <em>Criterio óptimo:</em> Ordenar las solicitudes por su <strong>kilómetro de finalización más temprano (f_i)</strong>. Esto deja libre la mayor cantidad de ruta posible hacia adelante para futuras mafias.
-* Seleccionamos el primer pedido que termine más temprano. Luego, iteramos seleccionando el próximo pedido cuyo inicio s_j sea mayor o igual al fin del último pedido aceptado (s_j ≥ f_ultimo).</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>¿Por qué descartar otros criterios?<ul>
+<li><em>Ordenar por inicio más temprano (s_i):</em> Falla si un pedido empieza muy temprano y ocupa toda la ruta ([1, 100] vs [2, 3] y [4, 5]).</li>
+<li><em>Ordenar por menor longitud (f_i - s_i):</em> Falla si un pedido corto bloquea a dos pedidos compatibles a sus costados ([10, 20], [19, 21], [20, 30]).</li>
+</ul>
+</li>
+<li><em>Criterio óptimo:</em> Ordenar las solicitudes por su <strong>kilómetro de finalización más temprano (f_i)</strong>. Esto deja libre la mayor cantidad de ruta posible hacia adelante para futuras mafias.</li>
+<li>Seleccionamos el primer pedido que termine más temprano. Luego, iteramos seleccionando el próximo pedido cuyo inicio s_j sea mayor o igual al fin del último pedido aceptado (s_j ≥ f_ultimo).</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION ConcederPermisosMafias(pedidos):
     SI longitud(pedidos) = 0:
@@ -1872,36 +1888,58 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 </code></pre></div>
 <p><strong>Explicación del algoritmo</strong><br />
 El algoritmo clasifica las solicitudes de menor a mayor según el kilómetro en el que terminan. Al aceptar siempre la que termina antes y es compatible con las ya otorgadas, se minimiza el territorio retenido en cada decisión.</p>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> Ordenar n solicitudes requiere O(n log n) mediante Mergesort o Heapsort. El recorrido lineal posterior realiza una comparación O(1) por elemento en O(n). Por lo tanto, la complejidad temporal total es:</p>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li>
+<p><strong>Tiempo:</strong> Ordenar n solicitudes requiere O(n log n) mediante Mergesort o Heapsort. El recorrido lineal posterior realiza una comparación O(1) por elemento en O(n). Por lo tanto, la complejidad temporal total es:</p>
 <blockquote>
-<p><strong>O(n log n)</strong>
-* <strong>Espacio:</strong> O(n) para almacenar los pedidos seleccionados (o memoria auxiliar de ordenamiento).</p>
+<p><strong>O(n log n)</strong></p>
 </blockquote>
+</li>
+<li>
+<p><strong>Espacio:</strong> O(n) para almacenar los pedidos seleccionados (o memoria auxiliar de ordenamiento).</p>
+</li>
+</ul>
 <p><strong>Justificación de por qué es Greedy</strong><br />
-Es un algoritmo voraz porque:
-1. En cada paso toma una decisión basada en una regla miope de optimización local (elegir el intervalo compatible que termine antes).
-2. La decisión es <strong>irrevocable</strong>: una vez que un permiso es otorgado, nunca se retira ni se reconsidera a la luz de los pedidos futuros.</p>
-<p><strong>Demostración de Optimalidad (Greedy Stays Ahead)</strong><br />
-* Sean G = {g_1, g_2, ..., g_k} los intervalos seleccionados por el algoritmo voraz ordenados por fin, y OPT = {o_1, o_2, ..., o_m} los intervalos de una solución óptima arbitraria también ordenados por fin, con m ≥ k.
-* <strong>Proposición inductiva:</strong> Para todo r ≤ k, el tiempo de fin del r-ésimo elemento voraz es menor o igual al del r-ésimo elemento óptimo:</p>
+Es un algoritmo voraz porque:</p>
+<ol>
+<li>En cada paso toma una decisión basada en una regla miope de optimización local (elegir el intervalo compatible que termine antes).</li>
+<li>La decisión es <strong>irrevocable</strong>: una vez que un permiso es otorgado, nunca se retira ni se reconsidera a la luz de los pedidos futuros.</li>
+</ol>
+<p><strong>Demostración de Optimalidad (Greedy Stays Ahead)</strong>  </p>
+<ul>
+<li>Sean G = {g_1, g_2, ..., g_k} los intervalos seleccionados por el algoritmo voraz ordenados por fin, y OPT = {o_1, o_2, ..., o_m} los intervalos de una solución óptima arbitraria también ordenados por fin, con m ≥ k.</li>
+<li>
+<p><strong>Proposición inductiva:</strong> Para todo r ≤ k, el tiempo de fin del r-ésimo elemento voraz es menor o igual al del r-ésimo elemento óptimo:</p>
 <blockquote>
-<p><strong>f(g_r) ≤ f(o_r)</strong>
-* <strong>Caso Base (r = 1):</strong> El algoritmo voraz elige el intervalo con el menor tiempo de fin absoluto en todo el conjunto. Por lo tanto, f(g_1) ≤ f(o_1).
-* <strong>Paso Inductivo:</strong> Asumimos f(g_{r-1}) ≤ f(o_{r-1}). Como o_r es compatible con o_{r-1}, sabemos que s(o_r) ≥ f(o_{r-1}). Por hipótesis inductiva:
-s(o_r) ≥ f(o_{r-1}) ≥ f(g_{r-1})</p>
+<p><strong>f(g_r) ≤ f(o_r)</strong></p>
 </blockquote>
+</li>
+<li>
+<p><strong>Caso Base (r = 1):</strong> El algoritmo voraz elige el intervalo con el menor tiempo de fin absoluto en todo el conjunto. Por lo tanto, f(g_1) ≤ f(o_1).</p>
+</li>
+<li><strong>Paso Inductivo:</strong> Asumimos f(g_{r-1}) ≤ f(o_{r-1}). Como o_r es compatible con o_{r-1}, sabemos que s(o_r) ≥ f(o_{r-1}). Por hipótesis inductiva:<blockquote>
+<p>s(o_r) ≥ f(o_{r-1}) ≥ f(g_{r-1})</p>
+</blockquote>
+</li>
+</ul>
 <p>Esto prueba que o_r era una opción válida y compatible para el algoritmo voraz al buscar su r-ésimo elemento. Dado que el algoritmo voraz selecciona el que tiene el menor tiempo de fin entre todos los compatibles disponibles, necesariamente:</p>
 <blockquote>
-<p>f(g_r) ≤ f(o_r)
-* <strong>Conclusión:</strong> Si la solución óptima tuviera más elementos que el voraz (m &gt; k), existiría un elemento o_{k+1} en OPT. Por la propiedad anterior, s(o_{k+1}) ≥ f(o_k) ≥ f(g_k), lo cual significa que o_{k+1} era compatible con g_k. Pero el algoritmo voraz terminó en g_k porque ya no quedaba ningún intervalo compatible. Contradicción. Por lo tanto, k = m y la solución voraz es <strong>óptima</strong>.</p>
+<p>f(g_r) ≤ f(o_r)</p>
 </blockquote>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* Permitir solapamiento estricto si dos intervalos comparten un borde (chequear si el enunciado dice s_j ≥ f_i o s_j &gt; f_i).
-* Ordenar por tiempo de inicio o por duración, los cuales no son óptimos.</p></div>
-<p><strong>Variación típica de parcial</strong><br />
-* <em>Interval Scheduling Ponderado:</em> Cada intervalo tiene un valor o peso v_i. En este caso, <strong>Greedy NO funciona</strong> y se debe resolver con Programación Dinámica (ver Ejercicio 18).
-* <em>Interval Partitioning:</em> Se pide determinar la cantidad mínima de salas/recursos necesarios para programar todas las charlas sin solapamiento (se resuelve ordenando por inicio y usando una cola de prioridad).</p>
+<ul>
+<li><strong>Conclusión:</strong> Si la solución óptima tuviera más elementos que el voraz (m &gt; k), existiría un elemento o_{k+1} en OPT. Por la propiedad anterior, s(o_{k+1}) ≥ f(o_k) ≥ f(g_k), lo cual significa que o_{k+1} era compatible con g_k. Pero el algoritmo voraz terminó en g_k porque ya no quedaba ningún intervalo compatible. Contradicción. Por lo tanto, k = m y la solución voraz es <strong>óptima</strong>.</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>Permitir solapamiento estricto si dos intervalos comparten un borde (chequear si el enunciado dice s_j ≥ f_i o s_j &gt; f_i).</li>
+<li>Ordenar por tiempo de inicio o por duración, los cuales no son óptimos.</li>
+</ul>
+<p><strong>Variación típica de parcial</strong>  </p>
+<ul>
+<li><em>Interval Scheduling Ponderado:</em> Cada intervalo tiene un valor o peso v_i. En este caso, <strong>Greedy NO funciona</strong> y se debe resolver con Programación Dinámica (ver Ejercicio 18).</li>
+<li><em>Interval Partitioning:</em> Se pide determinar la cantidad mínima de salas/recursos necesarios para programar todas las charlas sin solapamiento (se resuelve ordenando por inicio y usando una cola de prioridad).</li>
+</ul>
 <hr />
 <h3>Patrón de Ejercicio 2.2: Mochila Fraccionaria vs 0-1 con Garantía de Calidad 1/2</h3>
 <p>En las evaluaciones teóricas y en los TPs de la cátedra se examina la relación entre la solución fraccionaria (óptima con greedy) y la versión entera 0-1, demostrando cómo una regla greedy corregida otorga una cota de aproximación constante.</p>
@@ -1937,11 +1975,13 @@ s(o_r) ≥ f(o_{r-1}) ≥ f(g_{r-1})</p>
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado</strong><br />
-Se tiene una mochila de capacidad de peso W y n objetos indivisibles (0-1), donde cada objeto i tiene peso w_i y valor v_i.<br />
-1. Explicar por qué la regla voraz estándar basada en ordenar por densidad de valor (v_i / w_i) puede fallar de forma arbitraria en la mochila 0-1.<br />
-2. Diseñar un algoritmo greedy modificado que garantice una calidad de al menos 1/2 respecto a la solución óptima global.<br />
-3. Demostrar formalmente que Sol / OPT &gt; 1/2.<br />
-4. Indicar la complejidad temporal del algoritmo.</p>
+Se tiene una mochila de capacidad de peso W y n objetos indivisibles (0-1), donde cada objeto i tiene peso w_i y valor v_i.  </p>
+<ol>
+<li>Explicar por qué la regla voraz estándar basada en ordenar por densidad de valor (v_i / w_i) puede fallar de forma arbitraria en la mochila 0-1.  </li>
+<li>Diseñar un algoritmo greedy modificado que garantice una calidad de al menos 1/2 respecto a la solución óptima global.  </li>
+<li>Demostrar formalmente que Sol / OPT &gt; 1/2.  </li>
+<li>Indicar la complejidad temporal del algoritmo.</li>
+</ol>
 <p><strong>Qué está evaluando</strong><br />
 Capacidad de analizar por qué un algoritmo voraz falla, cómo corregirlo mediante la detección del <em>elemento crítico</em>, y el cálculo de factores de aproximación comparando contra la relajación continua.</p>
     </div>
@@ -1953,12 +1993,14 @@ Capacidad de analizar por qué un algoritmo voraz falla, cómo corregirlo median
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-1. Descartamos elementos que individualmente pesen más que W.
-2. Ordenamos por ratio r_i = v_i / w_i descendente.
-3. Llenamos vorazmente. El primer objeto que no entra lo denominamos <strong>Elemento Crítico (c)</strong> con peso w_c y valor v_c.
-4. La solución voraz acumulada tiene valor P_1.
-5. Comparamos P_1 contra el elemento crítico en solitario v_c. Devolvemos max(P_1, v_c).</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ol>
+<li>Descartamos elementos que individualmente pesen más que W.</li>
+<li>Ordenamos por ratio r_i = v_i / w_i descendente.</li>
+<li>Llenamos vorazmente. El primer objeto que no entra lo denominamos <strong>Elemento Crítico (c)</strong> con peso w_c y valor v_c.</li>
+<li>La solución voraz acumulada tiene valor P_1.</li>
+<li>Comparamos P_1 contra el elemento crítico en solitario v_c. Devolvemos max(P_1, v_c).</li>
+</ol>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MochilaGreedyConGarantia(objetos, W):
     INICIALIZAR candidatos como lista vacía
@@ -1998,23 +2040,41 @@ Capacidad de analizar por qué un algoritmo voraz falla, cómo corregirlo median
 </code></pre></div>
 <p><strong>Explicación del algoritmo</strong><br />
 La debilidad de la densidad v_i / w_i es que puede tomar objetos muy densos pero diminutos, dejando capacidad insuficiente para un objeto pesado que vale mucho más. Al comparar la solución greedy acumulada contra el valor del primer objeto rechazado (v_c), nos cubrimos de ese peor caso.</p>
-<p><strong>Demostración Formal de la Cota 1/2</strong><br />
-1. Sea OPT el valor de la solución óptima del problema entero 0-1.
-2. Sea OPT_frac el valor de la solución óptima fraccionaria. Es inmediato que OPT ≤ OPT_frac.
-3. La solución fraccionaria óptima toma exactamente los elementos de la solución greedy entera (P_1) más una fracción α ∈ [0, 1) del elemento crítico c:</p>
+<p><strong>Demostración Formal de la Cota 1/2</strong>  </p>
+<ol>
+<li>Sea OPT el valor de la solución óptima del problema entero 0-1.</li>
+<li>Sea OPT_frac el valor de la solución óptima fraccionaria. Es inmediato que OPT ≤ OPT_frac.</li>
+<li>
+<p>La solución fraccionaria óptima toma exactamente los elementos de la solución greedy entera (P_1) más una fracción α ∈ [0, 1) del elemento crítico c:</p>
 <blockquote>
-<p>OPT_frac = P_1 + α · v_c &lt; P_1 + v_c
-4. Por transitividad: OPT &lt; P_1 + v_c.
-5. Nuestro algoritmo devuelve Sol = max(P_1, v_c). Por propiedad del promedio aritmético:
-max(P_1, v_c) ≥ (P_1 + v_c) / 2
-6. Sustituyendo la cota de OPT:
-Sol ≥ (P_1 + v_c) / 2 &gt; OPT / 2  ⟹  Sol / OPT &gt; 1/2</p>
+<p>OPT_frac = P_1 + α · v_c &lt; P_1 + v_c</p>
 </blockquote>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> Filtrado en O(n), ordenamiento de n elementos en O(n log n), recorrido voraz en O(n). Total: O(n log n).
-* <strong>Espacio adicional:</strong> O(n) para almacenar la lista de candidatos y la solución seleccionada.</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* No descartar previamente los elementos con w_i &gt; W. Si el elemento crítico pesa más que W, no puede incluirse en solitario.</p></div>
+</li>
+<li>
+<p>Por transitividad: OPT &lt; P_1 + v_c.</p>
+</li>
+<li>
+<p>Nuestro algoritmo devuelve Sol = max(P_1, v_c). Por propiedad del promedio aritmético:</p>
+<blockquote>
+<p>max(P_1, v_c) ≥ (P_1 + v_c) / 2</p>
+</blockquote>
+</li>
+<li>
+<p>Sustituyendo la cota de OPT:</p>
+<blockquote>
+<p>Sol ≥ (P_1 + v_c) / 2 &gt; OPT / 2  ⟹  Sol / OPT &gt; 1/2</p>
+</blockquote>
+</li>
+</ol>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> Filtrado en O(n), ordenamiento de n elementos en O(n log n), recorrido voraz en O(n). Total: O(n log n).</li>
+<li><strong>Espacio adicional:</strong> O(n) para almacenar la lista de candidatos y la solución seleccionada.</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>No descartar previamente los elementos con w_i &gt; W. Si el elemento crítico pesa más que W, no puede incluirse en solitario.</li>
+</ul>
 <p><strong>Variación típica de parcial</strong><br />
 Preguntar por qué la mochila fraccionaria sí es óptima con greedy y la 0-1 requiere Programación Dinámica (subestructura óptima con superposición vs subproblemas fraccionarios independientes).</p>
 <hr />
@@ -2064,12 +2124,16 @@ Técnica de ordenamiento por fecha de vencimiento más temprana (<em>Earliest De
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* ¿Por qué otros criterios fallan?
-  * <em>Menor duración primero (t_i):</em> Ignora fechas límites urgentes.
-  * <em>Menor holgura (d_i - t_i):</em> Falla si una tarea corta tiene menor holgura pero fecha límite lejana y bloquea una urgente.
-* <em>Criterio óptimo (EDF):</em> Ordenar las tareas en orden creciente de sus fechas límites: d_1 ≤ d_2 ≤ ... ≤ d_n.
-* No dejar tiempo ocioso en la máquina entre tareas consecutivas.</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>¿Por qué otros criterios fallan?<ul>
+<li><em>Menor duración primero (t_i):</em> Ignora fechas límites urgentes.</li>
+<li><em>Menor holgura (d_i - t_i):</em> Falla si una tarea corta tiene menor holgura pero fecha límite lejana y bloquea una urgente.</li>
+</ul>
+</li>
+<li><em>Criterio óptimo (EDF):</em> Ordenar las tareas en orden creciente de sus fechas límites: d_1 ≤ d_2 ≤ ... ≤ d_n.</li>
+<li>No dejar tiempo ocioso en la máquina entre tareas consecutivas.</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MinimizarLatenciaMaxima(tareas):
     // Cada tarea tiene id, duracion, deadline
@@ -2094,21 +2158,27 @@ Técnica de ordenamiento por fecha de vencimiento más temprana (<em>Earliest De
 </code></pre></div>
 <p><strong>Explicación del algoritmo</strong><br />
 Al atender siempre la tarea cuyo vencimiento está más próximo, se previene que las fechas límites inminentes acumulen retrasos catastróficos causados por tareas menos urgentes.</p>
-<p><strong>Demostración de Optimalidad (Argumento de Intercambio)</strong><br />
-1. Decimos que una programación tiene una <strong>inversión</strong> si existe un par de tareas adyacentes i seguida inmediatamente por j tal que d_i &gt; d_j (la tarea i vence más tarde que j, pero se ejecuta antes).
-2. La solución greedy por definición no tiene inversiones.
-3. Sea OPT una solución óptima sin tiempo ocioso con la menor cantidad de inversiones. Si OPT tiene cero inversiones, coincide con la programación greedy.
-4. Si OPT tiene al menos una inversión, deben existir dos tareas contiguas invertidas i y j con d_i &gt; d_j.
-5. Al intercambiar i y j en el cronograma:
-   * Las tareas distintas de i y j no modifican sus tiempos de inicio ni fin, por lo que sus latencias no cambian.
-   * La tarea j se adelanta, por lo que su latencia estrictamente no aumenta.
-   * La nueva latencia de i finaliza en el mismo tiempo que antes finalizaba j. Como d_i &gt; d_j, su latencia nueva es menor que la latencia previa que tenía j.
-6. Por lo tanto, la latencia máxima tras el intercambio no aumentó. Esto reduce la cantidad de inversiones sin empeorar la solución óptima. Repitiendo el proceso se llega a la solución greedy, probando que es <strong>óptima</strong>.</p>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> O(n log n) por el ordenamiento inicial y O(n) en el barrido temporal. Total: O(n log n).
-* <strong>Espacio adicional:</strong> O(n) para almacenar el cronograma resultante.</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* Dejar huecos ociosos entre tareas. Una programación con tiempo ocioso siempre puede comprimirse hacia la izquierda sin aumentar la latencia.</p></div>
+<p><strong>Demostración de Optimalidad (Argumento de Intercambio)</strong>  </p>
+<ol>
+<li>Decimos que una programación tiene una <strong>inversión</strong> si existe un par de tareas adyacentes i seguida inmediatamente por j tal que d_i &gt; d_j (la tarea i vence más tarde que j, pero se ejecuta antes).</li>
+<li>La solución greedy por definición no tiene inversiones.</li>
+<li>Sea OPT una solución óptima sin tiempo ocioso con la menor cantidad de inversiones. Si OPT tiene cero inversiones, coincide con la programación greedy.</li>
+<li>Si OPT tiene al menos una inversión, deben existir dos tareas contiguas invertidas i y j con d_i &gt; d_j.</li>
+<li>Al intercambiar i y j en el cronograma:</li>
+<li>Las tareas distintas de i y j no modifican sus tiempos de inicio ni fin, por lo que sus latencias no cambian.</li>
+<li>La tarea j se adelanta, por lo que su latencia estrictamente no aumenta.</li>
+<li>La nueva latencia de i finaliza en el mismo tiempo que antes finalizaba j. Como d_i &gt; d_j, su latencia nueva es menor que la latencia previa que tenía j.</li>
+<li>Por lo tanto, la latencia máxima tras el intercambio no aumentó. Esto reduce la cantidad de inversiones sin empeorar la solución óptima. Repitiendo el proceso se llega a la solución greedy, probando que es <strong>óptima</strong>.</li>
+</ol>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> O(n log n) por el ordenamiento inicial y O(n) en el barrido temporal. Total: O(n log n).</li>
+<li><strong>Espacio adicional:</strong> O(n) para almacenar el cronograma resultante.</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>Dejar huecos ociosos entre tareas. Una programación con tiempo ocioso siempre puede comprimirse hacia la izquierda sin aumentar la latencia.</li>
+</ul>
 <p><strong>Variación típica de parcial</strong><br />
 Considerar que las tareas tienen tiempos de arribo r_i diferentes. En este caso el problema se vuelve NP-Duro y EDF simple no garantiza el óptimo.</p>
 <hr />
@@ -2158,15 +2228,21 @@ Modelado del problema de <em>Weighted Set Cover</em> mediante una heurística vo
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* En cada paso, evaluamos todas las celdas candidatas donde aún no hay antena.
-* Para cada celda candidata (i, j), calculamos cuántos <strong>nuevos vecindarios no cubiertos previamente</strong> aportaría instalar una antena allí: NuevosCobertura(i, j).
-* Definimos el ratio de costo por beneficio marginal:</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>En cada paso, evaluamos todas las celdas candidatas donde aún no hay antena.</li>
+<li>Para cada celda candidata (i, j), calculamos cuántos <strong>nuevos vecindarios no cubiertos previamente</strong> aportaría instalar una antena allí: NuevosCobertura(i, j).</li>
+<li>
+<p>Definimos el ratio de costo por beneficio marginal:</p>
 <blockquote>
-<p><strong>Ratio(i, j) = CTO_ij / NuevosCobertura(i, j)</strong>
-* Elegimos vorazmente la celda que tenga el <strong>menor ratio de costo por vecindario nuevo cubierto</strong>.
-* Marcamos los vecindarios como cubiertos y repetimos hasta que todos los vecindarios estén cubiertos.</p>
+<p><strong>Ratio(i, j) = CTO_ij / NuevosCobertura(i, j)</strong></p>
 </blockquote>
+</li>
+<li>
+<p>Elegimos vorazmente la celda que tenga el <strong>menor ratio de costo por vecindario nuevo cubierto</strong>.</p>
+</li>
+<li>Marcamos los vecindarios como cubiertos y repetimos hasta que todos los vecindarios estén cubiertos.</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION ColocarAntenasGreedy(grilla, vecindarios, CTO):
     INICIALIZAR no_cubiertos como conjunto con todos los vecindarios
@@ -2203,14 +2279,18 @@ Modelado del problema de <em>Weighted Set Cover</em> mediante una heurística vo
 </code></pre></div>
 <p><strong>Explicación del algoritmo</strong><br />
 El algoritmo aplica la regla clásica de Chvátal para Set Cover. En cada iteración maximiza la eficiencia económica por cada elemento nuevo incorporado al universo cubierto.</p>
-<p><strong>Complejidad</strong><br />
-* Si la grilla tiene M celdas y hay V vecindarios, en el peor caso se seleccionan hasta V antenas. En cada paso se evalúan las M celdas inspeccionando las 9 celdas cubiertas (O(1)).
-* Tiempo total: O(V · M).
-* Espacio adicional: O(V) para mantener el conjunto de vecindarios no cubiertos.</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* Elegir la celda con menor costo absoluto CTO_ij (podría no cubrir ningún vecindario o muy pocos).
-* Elegir la celda que cubre más vecindarios sin considerar el costo (podría ser extremadamente cara).
-* El cociente debe ser siempre costo / nuevos vecindarios, no sobre el total histórico de celdas que abarca.</p></div>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li>Si la grilla tiene M celdas y hay V vecindarios, en el peor caso se seleccionan hasta V antenas. En cada paso se evalúan las M celdas inspeccionando las 9 celdas cubiertas (O(1)).</li>
+<li>Tiempo total: O(V · M).</li>
+<li>Espacio adicional: O(V) para mantener el conjunto de vecindarios no cubiertos.</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>Elegir la celda con menor costo absoluto CTO_ij (podría no cubrir ningún vecindario o muy pocos).</li>
+<li>Elegir la celda que cubre más vecindarios sin considerar el costo (podría ser extremadamente cara).</li>
+<li>El cociente debe ser siempre costo / nuevos vecindarios, no sobre el total histórico de celdas que abarca.</li>
+</ul>
 <p><strong>Variación típica de parcial</strong><br />
 Preguntar si este algoritmo garantiza la solución óptima. <strong>Respuesta:</strong> No, porque Set Cover es NP-Duro. Este algoritmo voraz es una aproximación con factor de garantía ln |V| + 1.</p>
 <hr />
@@ -2248,9 +2328,11 @@ Preguntar si este algoritmo garantiza la solución óptima. <strong>Respuesta:</
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado</strong><br />
-Para el traslado de una carga peligrosa del INVAP de Ezeiza a Bariloche a través de etapas diarias (con alternativas de ciudades intermedias y costos de seguro asociados a cada tramo):<br />
-1. Diseñar un algoritmo Greedy que decida el itinerario.<br />
-2. Indicar si la solución obtenida será óptima o no. Fundamentar con un contraejemplo riguroso.</p>
+Para el traslado de una carga peligrosa del INVAP de Ezeiza a Bariloche a través de etapas diarias (con alternativas de ciudades intermedias y costos de seguro asociados a cada tramo):  </p>
+<ol>
+<li>Diseñar un algoritmo Greedy que decida el itinerario.  </li>
+<li>Indicar si la solución obtenida será óptima o no. Fundamentar con un contraejemplo riguroso.</li>
+</ol>
 <p><strong>Qué está evaluando</strong><br />
 Construcción de heurísticas paso a paso y formulación de contraejemplos matemáticos claros para refutar la optimalidad de algoritmos voraces en grafos de decisión multietapa.</p>
     </div>
@@ -2262,9 +2344,11 @@ Construcción de heurísticas paso a paso y formulación de contraejemplos matem
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* <em>Regla voraz:</em> Estando en la ciudad actual, elegir como siguiente parada aquella ciudad accesible en la etapa que tenga el <strong>menor costo de seguro inmediato</strong>.
-* <em>Optimalidad:</em> <strong>NO es óptimo</strong>. Un tramo inicial barato puede forzar a tomar en la siguiente etapa rutas con costos astronómicos o sin salida barata.</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li><em>Regla voraz:</em> Estando en la ciudad actual, elegir como siguiente parada aquella ciudad accesible en la etapa que tenga el <strong>menor costo de seguro inmediato</strong>.</li>
+<li><em>Optimalidad:</em> <strong>NO es óptimo</strong>. Un tramo inicial barato puede forzar a tomar en la siguiente etapa rutas con costos astronómicos o sin salida barata.</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION TrasladoInvapGreedy(origen, destino, grafo_etapas):
     ciudad_actual &lt;- origen
@@ -2292,27 +2376,41 @@ Construcción de heurísticas paso a paso y formulación de contraejemplos matem
     RETORNAR (camino, costo_total)
 </code></pre></div>
 <p><strong>Contraejemplo Formal de No-Optimalidad</strong><br />
-Consideremos el siguiente grafo de etapas desde el origen E (Ezeiza) hasta el destino B (Bariloche):
-* Etapa 1 desde E:
-  * Tramo E → V1 con costo de seguro de 10 pesos.
-  * Tramo E → V2 con costo de seguro de 20 pesos.
-* Etapa 2 hacia el destino B:
-  * Desde V1 → B con costo de seguro de 100 pesos.
-  * Desde V2 → B con costo de seguro de 5 pesos.</p>
+Consideremos el siguiente grafo de etapas desde el origen E (Ezeiza) hasta el destino B (Bariloche):</p>
 <ul>
-<li><strong>Ejecución del algoritmo Greedy:</strong></li>
+<li>Etapa 1 desde E:<ul>
+<li>Tramo E → V1 con costo de seguro de 10 pesos.</li>
+<li>Tramo E → V2 con costo de seguro de 20 pesos.</li>
+</ul>
+</li>
+<li>
+<p>Etapa 2 hacia el destino B:</p>
+<ul>
+<li>Desde V1 → B con costo de seguro de 100 pesos.</li>
+<li>Desde V2 → B con costo de seguro de 5 pesos.</li>
+</ul>
+</li>
+<li>
+<p><strong>Ejecución del algoritmo Greedy:</strong></p>
+<ul>
 <li>En E, compara las opciones inmediatas: 10 pesos (a V1) vs 20 pesos (a V2).</li>
 <li>Elige vorazmente E → V1 por costar 10 pesos.</li>
 <li>En V1, la única opción hacia el destino es V1 → B con costo de 100 pesos.</li>
 <li><strong>Costo total obtenido por Greedy:</strong> 10 + 100 = 110 pesos.</li>
-<li><strong>Solución alternativa factible:</strong></li>
+</ul>
+</li>
+<li><strong>Solución alternativa factible:</strong><ul>
 <li>Ruta E → V2 → B.</li>
 <li>Costo total: 20 + 5 = 25 pesos.</li>
+</ul>
+</li>
 <li><strong>Conclusión:</strong> Como 110 &gt; 25, el algoritmo voraz no encuentra la solución óptima. Los problemas de caminos mínimos en grafos por etapas requieren <strong>Programación Dinámica</strong> (ver Ejercicio 32).</li>
 </ul>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> O(V + E) en el peor caso si recorre las aristas de las etapas.
-* <strong>Espacio:</strong> O(V) para la lista de ciudades del camino.</p>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> O(V + E) en el peor caso si recorre las aristas de las etapas.</li>
+<li><strong>Espacio:</strong> O(V) para la lista de ciudades del camino.</li>
+</ul>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Greedy</h3>
 <ol>

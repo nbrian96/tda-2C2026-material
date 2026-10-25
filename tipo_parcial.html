@@ -1811,10 +1811,12 @@ body.dark-mode .warning-box {
 <strong>Clasificación:</strong> 🔴 IMPRESCINDIBLE<br />
 <strong>Paradigma:</strong> Redes de Flujo (Matching Bipartito con Restricción de Recursos)</p>
 <p><strong>Enunciado</strong><br />
-El sistema de emergencias médicas de una provincia dispone de una flota de D drones para transportar medicamentos urgentes a P puestos sanitarios aislados. Cada dron i tiene una base de despegue y una autonomía de batería que le permite realizar vuelos únicamente dentro de un intervalo horario específico [t_i^inicio, t_i^fin]. Además, por limitaciones de carga térmica de sus baterías, cada dron puede realizar a lo sumo 2 entregas durante su turno de operación. Por su parte, cada puesto sanitario j requiere exactamente 1 entrega de medicamentos y define una ventana horaria estricta [h_j^min, h_j^max] en la cual puede recibirla. Se conoce qué drones son compatibles con qué puestos (distancia de vuelo factible).<br />
-1. Diseñar un algoritmo mediante Redes de Flujo que determine una asignación que maximice la cantidad total de puestos sanitarios abastecidos.<br />
-2. Detallar la construcción formal de la red (nodos, aristas, fuentes, sumideros y capacidades).<br />
-3. Indicar y justificar la complejidad temporal del algoritmo.</p>
+El sistema de emergencias médicas de una provincia dispone de una flota de D drones para transportar medicamentos urgentes a P puestos sanitarios aislados. Cada dron i tiene una base de despegue y una autonomía de batería que le permite realizar vuelos únicamente dentro de un intervalo horario específico [t_i^inicio, t_i^fin]. Además, por limitaciones de carga térmica de sus baterías, cada dron puede realizar a lo sumo 2 entregas durante su turno de operación. Por su parte, cada puesto sanitario j requiere exactamente 1 entrega de medicamentos y define una ventana horaria estricta [h_j^min, h_j^max] en la cual puede recibirla. Se conoce qué drones son compatibles con qué puestos (distancia de vuelo factible).  </p>
+<ol>
+<li>Diseñar un algoritmo mediante Redes de Flujo que determine una asignación que maximice la cantidad total de puestos sanitarios abastecidos.  </li>
+<li>Detallar la construcción formal de la red (nodos, aristas, fuentes, sumideros y capacidades).  </li>
+<li>Indicar y justificar la complejidad temporal del algoritmo.</li>
+</ol>
 <p><strong>Qué está evaluando</strong><br />
 Modelado de capacidades intermedias heterogéneas (c = 2 en drones), verificación temporal de compatibilidad previa a la red, y flujo máximo con cotas unitarias en puestos.</p>
     </div>
@@ -1826,15 +1828,19 @@ Modelado de capacidades intermedias heterogéneas (c = 2 en drones), verificaci�
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* La compatibilidad temporal y geográfica se precalcula: el dron i puede atender al puesto j si la distancia es alcanzable y la ventana [h_j^min, h_j^max] cae dentro de la autonomía [t_i^inicio, t_i^fin].
-* Construcción de la red:
-  * Super-fuente s.
-  * Capa de drones: nodo d_i por cada dron. Arista s → d_i con <strong>capacidad 2</strong> (cada dron puede hacer hasta 2 entregas).
-  * Capa de puestos sanitarios: nodo p_j por cada puesto.
-  * Para cada par compatible (i, j): arista d_i → p_j con <strong>capacidad 1</strong>.
-  * Super-sumidero t: aristas desde cada puesto p_j → t con <strong>capacidad 1</strong> (cada puesto solo necesita 1 entrega).
-* Flujo máximo mediante Ford-Fulkerson o Edmonds-Karp. Por integralidad, el flujo resultante asigna cada puesto a un dron válido sin superar las 2 entregas por dron.</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>La compatibilidad temporal y geográfica se precalcula: el dron i puede atender al puesto j si la distancia es alcanzable y la ventana [h_j^min, h_j^max] cae dentro de la autonomía [t_i^inicio, t_i^fin].</li>
+<li>Construcción de la red:<ul>
+<li>Super-fuente s.</li>
+<li>Capa de drones: nodo d_i por cada dron. Arista s → d_i con <strong>capacidad 2</strong> (cada dron puede hacer hasta 2 entregas).</li>
+<li>Capa de puestos sanitarios: nodo p_j por cada puesto.</li>
+<li>Para cada par compatible (i, j): arista d_i → p_j con <strong>capacidad 1</strong>.</li>
+<li>Super-sumidero t: aristas desde cada puesto p_j → t con <strong>capacidad 1</strong> (cada puesto solo necesita 1 entrega).</li>
+</ul>
+</li>
+<li>Flujo máximo mediante Ford-Fulkerson o Edmonds-Karp. Por integralidad, el flujo resultante asigna cada puesto a un dron válido sin superar las 2 entregas por dron.</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION AsignarDronesEmergencia(drones, puestos, matriz_distancias):
     INICIALIZAR Red como grafo dirigido con capacidades
@@ -1869,11 +1875,13 @@ Modelado de capacidades intermedias heterogéneas (c = 2 en drones), verificaci�
 
     RETORNAR (max_puestos, asignacion)
 </code></pre></div>
-<p><strong>Complejidad</strong><br />
-* Nodos: |V| = 2 + D + P.<br />
-* Aristas: |E| ≤ D + D · P + P.<br />
-* Cota de flujo máximo: |f<em>| ≤ min(2D, P) ≤ P.<br />
-</em> Complejidad temporal con Ford-Fulkerson con capacidades enteras: O(|E| · |f*|) = O(D · P²) (o O(V · E²) con Edmonds-Karp).</p>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li>Nodos: |V| = 2 + D + P.  </li>
+<li>Aristas: |E| ≤ D + D · P + P.  </li>
+<li>Cota de flujo máximo: |f*| ≤ min(2D, P) ≤ P.  </li>
+<li>Complejidad temporal con Ford-Fulkerson con capacidades enteras: O(|E| · |f*|) = O(D · P²) (o O(V · E²) con Edmonds-Karp).</li>
+</ul>
 <hr />
       </div>
     </details>
@@ -1921,19 +1929,31 @@ Combinación del patrón de exclusión espaciada (i - 3) con restricción de cap
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* <em>Definición del Estado:</em><br />
-  OPT(i, p): Conversión máxima obtenible considerando los primeros i días (1 ≤ i ≤ n) con un presupuesto restante de p pesos (0 ≤ p ≤ P).
-* <em>Opciones en el día i:</em><br />
-  1. <strong>No pautar el día i:</strong> El valor es OPT(i - 1, p).
-  2. <strong>Pautar el día i:</strong> Requiere C[i] ≤ p. Otorga B[i] conversiones y obliga a que la pauta previa haya sido como máximo en el día i - 3. El valor acumulado es OPT(i - 3, p - C[i]) + B[i].
-* <em>Recurrencia:</em>  </p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>
+<p><em>Definición del Estado:</em><br />
+  OPT(i, p): Conversión máxima obtenible considerando los primeros i días (1 ≤ i ≤ n) con un presupuesto restante de p pesos (0 ≤ p ≤ P).</p>
+</li>
+<li>
+<p><em>Opciones en el día i:</em>  </p>
+<ol>
+<li><strong>No pautar el día i:</strong> El valor es OPT(i - 1, p).</li>
+<li><strong>Pautar el día i:</strong> Requiere C[i] ≤ p. Otorga B[i] conversiones y obliga a que la pauta previa haya sido como máximo en el día i - 3. El valor acumulado es OPT(i - 3, p - C[i]) + B[i].</li>
+</ol>
+</li>
+<li>
+<p><em>Recurrencia:</em>  </p>
 <blockquote>
 <p><strong>OPT(i, p) = OPT(i - 1, p)</strong> (si C[i] &gt; p)<br />
-<strong>OPT(i, p) = max(OPT(i - 1, p), OPT(max(0, i - 3), p - C[i]) + B[i])</strong> (si C[i] ≤ p)
-* <em>Casos Base:</em><br />
-  OPT(0, p) = 0 para todo 0 ≤ p ≤ P.</p>
+<strong>OPT(i, p) = max(OPT(i - 1, p), OPT(max(0, i - 3), p - C[i]) + B[i])</strong> (si C[i] ≤ p)</p>
 </blockquote>
+</li>
+<li>
+<p><em>Casos Base:</em><br />
+  OPT(0, p) = 0 para todo 0 ≤ p ≤ P.</p>
+</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION CampanaPublicitariaOptima(C, B, n, P):
     INICIALIZAR DP como matriz de (n + 1) x (P + 1) en 0
@@ -1972,9 +1992,11 @@ Combinación del patrón de exclusión espaciada (i - 3) con restricción de cap
 
     RETORNAR (DP[n][P], dias_pauta)
 </code></pre></div>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> O(n · P) operaciones (llena una tabla de (n + 1) × (P + 1) con comparaciones O(1)).<br />
-* <strong>Espacio:</strong> O(n · P) para la tabla bidimensional.</p>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> O(n · P) operaciones (llena una tabla de (n + 1) × (P + 1) con comparaciones O(1)).  </li>
+<li><strong>Espacio:</strong> O(n · P) para la tabla bidimensional.</li>
+</ul>
 <hr />
       </div>
     </details>
@@ -2047,9 +2069,11 @@ RESTRICCIONES:
   // 3. Capacidad de tráfico de cada servidor instalado
   ∑_{j ∈ U: i ∈ S_j} (d_j * x_ji) &lt;= T_i * y_i    ∀ i ∈ S
 </code></pre></div>
-<p><strong>Conteo de Variables y Restricciones</strong><br />
-* <strong>Variables:</strong> |S| variables y_i + |U| variables u_j + ∑_j |S_j| variables de asignación x_ji.
-* <strong>Restricciones:</strong> 1 de umbral + |U| de asignación + |S| de capacidad. Total: 1 + |U| + |S| restricciones.</p>
+<p><strong>Conteo de Variables y Restricciones</strong>  </p>
+<ul>
+<li><strong>Variables:</strong> |S| variables y_i + |U| variables u_j + ∑_j |S_j| variables de asignación x_ji.</li>
+<li><strong>Restricciones:</strong> 1 de umbral + |U| de asignación + |S| de capacidad. Total: 1 + |U| + |S| restricciones.</li>
+</ul>
 <hr />
       </div>
     </details>
@@ -2100,11 +2124,17 @@ Se define el problema de <strong>Asignación de Frecuencias (AF)</strong> de la 
 <li><strong>Paso 1: AF ∈ NP:</strong></li>
 <li><em>Certificado:</em> Un vector C de tamaño n donde C[i] ∈ {1, ..., k} indica la frecuencia asignada a la antena i. Tamaño polinomial O(n).</li>
 <li><em>Verificador:</em> Recorre todas las aristas de interferencia (u, v). Si para alguna arista C[u] = C[v], retorna <code>NO</code>. Si todas son distintas, retorna <code>SI</code>. Tiempo: O(V + E) (polinomial). Por ende, <strong>AF ∈ NP</strong>.</li>
-<li><strong>Paso 2: Problema Conocido:</strong><br />
-   k-Coloring de grafos (k ≥ 3), conocido NP-Completo: <em>¿Se puede colorear G = (V, E) con a lo sumo k colores sin que dos vértices adyacentes compartan color?</em></li>
-<li><strong>Paso 3: Transformación Polinomial:</strong><br />
-   Dada la instancia de k-Coloring (G = (V, E), k):</li>
-<li>Cada vértice v ∈ V representa una antena.</li>
+<li>
+<p><strong>Paso 2: Problema Conocido:</strong><br />
+   k-Coloring de grafos (k ≥ 3), conocido NP-Completo: <em>¿Se puede colorear G = (V, E) con a lo sumo k colores sin que dos vértices adyacentes compartan color?</em></p>
+</li>
+<li>
+<p><strong>Paso 3: Transformación Polinomial:</strong><br />
+   Dada la instancia de k-Coloring (G = (V, E), k):</p>
+</li>
+<li>
+<p>Cada vértice v ∈ V representa una antena.</p>
+</li>
 <li>Cada arista (u, v) ∈ E representa un par de antenas con interferencia mutua.</li>
 <li>Los k colores corresponden a los k canales de frecuencia disponibles.</li>
 <li>La transformación es la identidad estructural (f(G, k) = (G, k)) y se realiza en tiempo O(1).</li>
@@ -2163,20 +2193,20 @@ Se define el problema de <strong>Asignación de Frecuencias (AF)</strong> de la 
 <p>Utilizá esta lista de verificación durante tu última hora de repaso antes de ingresar al aula:</p>
 <h3>A. Dominio de Paradigmas</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_38512" onchange="toggleChecklistItem('chk_38512', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_27273" onchange="toggleChecklistItem('chk_27273', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_49373" onchange="toggleChecklistItem('chk_49373', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_81348" onchange="toggleChecklistItem('chk_81348', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_46935" onchange="toggleChecklistItem('chk_46935', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_10364" onchange="toggleChecklistItem('chk_10364', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_25814" onchange="toggleChecklistItem('chk_25814', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_83204" onchange="toggleChecklistItem('chk_83204', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_10517" onchange="toggleChecklistItem('chk_10517', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_12625" onchange="toggleChecklistItem('chk_12625', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_469" onchange="toggleChecklistItem('chk_469', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_45241" onchange="toggleChecklistItem('chk_45241', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_76506" onchange="toggleChecklistItem('chk_76506', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_87966" onchange="toggleChecklistItem('chk_87966', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
 </ul>
 <h3>B. Ejecución en la Hoja de Examen</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_84934" onchange="toggleChecklistItem('chk_84934', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_75575" onchange="toggleChecklistItem('chk_75575', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_50655" onchange="toggleChecklistItem('chk_50655', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_56767" onchange="toggleChecklistItem('chk_56767', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_18723" onchange="toggleChecklistItem('chk_18723', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_42905" onchange="toggleChecklistItem('chk_42905', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_46637" onchange="toggleChecklistItem('chk_46637', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_93834" onchange="toggleChecklistItem('chk_93834', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
 </ul>
 </main>
 <script>

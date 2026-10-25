@@ -101,6 +101,7 @@ def assemble_markdown():
     ]
     
     full_md = "\n\n---\n\n".join(sections)
+    full_md = html_interactive_builder.normalize_markdown_lists(full_md)
     
     with open(MD_FILE, "w", encoding="utf-8") as f:
         f.write(full_md)

@@ -2610,11 +2610,42 @@ document.addEventListener("keydown", (e) => {
 });
 """
 
+def normalize_markdown_lists(md_text):
+    lines = md_text.split("\n")
+    new_lines = []
+    in_code_block = False
+    bullet_regex = re.compile(r"^(\s*)([*\-+]|\d+\.)\s+")
+    
+    for line in lines:
+        if line.strip().startswith("```"):
+            in_code_block = not in_code_block
+            new_lines.append(line)
+            continue
+        if in_code_block:
+            new_lines.append(line)
+            continue
+            
+        m = bullet_regex.match(line)
+        if m:
+            indent = m.group(1)
+            # Normalizar indentación de sub-items (2 espacios) a 4 espacios para soporte de anidamiento
+            if indent == "  ":
+                line = "    " + line.lstrip()
+            if new_lines:
+                prev_line = new_lines[-1]
+                # Si la línea anterior no está vacía y no es ya un ítem de lista, insertar línea en blanco
+                if prev_line.strip() != "" and not bullet_regex.match(prev_line):
+                    new_lines.append("")
+                    
+        new_lines.append(line)
+    return "\n".join(new_lines)
+
 def build_interactive_html(md_text, output_file, active_paradigm="all", page_title=None):
     title_text = "Teoría de Algoritmos — Guía Interactiva de Parciales (FIUBA)"
     if page_title:
         title_text = f"Teoría de Algoritmos — {page_title} (FIUBA)"
 
+    md_text = normalize_markdown_lists(md_text)
     html_raw = markdown.markdown(md_text, extensions=['fenced_code', 'tables'])
     html_with_cards = process_html_exercises(html_raw)
     html_with_widgets = inject_interactive_widgets(html_with_cards)

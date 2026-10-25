@@ -1781,24 +1781,34 @@ body.dark-mode .warning-box {
 <h2>8. Tema 5: Programación Lineal y Entera (PL / PLI)</h2>
 <h3>Conceptos Mínimos de Supervivencia</h3>
 <ol>
-<li><strong>Estructura Formal de un Modelo de Programación Lineal:</strong>
-   Un modelo debe presentarse obligatoriamente con estos cuatro componentes:</li>
-<li><strong>Variables de Decisión:</strong> Definir claramente qué representa cada variable física o lógicamente en el problema, indicando sus índices y conjuntos.</li>
+<li>
+<p><strong>Estructura Formal de un Modelo de Programación Lineal:</strong>
+   Un modelo debe presentarse obligatoriamente con estos cuatro componentes:</p>
+</li>
+<li>
+<p><strong>Variables de Decisión:</strong> Definir claramente qué representa cada variable física o lógicamente en el problema, indicando sus índices y conjuntos.</p>
+</li>
 <li><strong>Dominios de las Variables:</strong> Restricciones de signo e integralidad (x_i ∈ {0, 1}, y_j ≥ 0, z_k ∈ ℤ⁺).</li>
 <li><strong>Función Objetivo:</strong> Maximizar o minimizar una combinación lineal exacta de las variables (nunca multiplicar variables entre sí ni usar operadores max, min o |·| directamente).</li>
 <li><strong>Restricciones Lineales:</strong> Sistema de igualdades o desigualdades lineales (≤, ≥, =) que definen la región factible.</li>
 <li><strong>Conteo Explícito de Variables y Restricciones:</strong> En la cátedra Echevarría es un requerimiento frecuente indicar el número exacto de variables y restricciones en función de los parámetros del problema.</li>
 <li><strong>Técnicas de Linealización Clásicas:</strong></li>
-<li><strong>Minimizar un Máximo (min max(f₁, f₂, ...)):</strong><br />
+<li>
+<p><strong>Minimizar un Máximo (min max(f₁, f₂, ...)):</strong><br />
      Se introduce una variable auxiliar continua Z.<br />
      Objetivo: min Z<br />
-     Sujeto a: Z ≥ f₁, Z ≥ f₂, ...</li>
-<li><strong>Relación Lógica "Al menos uno":</strong><br />
-     Para asegurar que al menos un elemento del conjunto S sea seleccionado: ∑_{j ∈ S} y_j ≥ 1.</li>
-<li><strong>Relación Lógica "Activación / Cobertura":</strong><br />
+     Sujeto a: Z ≥ f₁, Z ≥ f₂, ...</p>
+</li>
+<li>
+<p><strong>Relación Lógica "Al menos uno":</strong><br />
+     Para asegurar que al menos un elemento del conjunto S sea seleccionado: ∑_{j ∈ S} y_j ≥ 1.</p>
+</li>
+<li>
+<p><strong>Relación Lógica "Activación / Cobertura":</strong><br />
      Si la entidad i solo puede considerarse cubierta (x_i = 1) cuando al menos un proveedor j que la abastece está activo (y_j = 1):
      &gt; <strong>x_i ≤ ∑_{j ∈ Proveedores(i)} y_j</strong>
-     (Si ningún y_j = 1, la sumatoria es 0, forzando x_i = 0. Si al menos uno es 1, x_i puede ser 1).</li>
+     (Si ningún y_j = 1, la sumatoria es 0, forzando x_i = 0. Si al menos uno es 1, x_i puede ser 1).</p>
+</li>
 </ol>
 <hr />
 <h3>Patrón de Ejercicio 5.1: Máxima Cobertura con Presupuesto de Recursos</h3>
@@ -1843,12 +1853,14 @@ Modelado de <em>Maximum Coverage Problem</em> en PLI, variables de cobertura vs 
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* Definir variables binarias para cada lugar: y_j = 1 si Paolo visita el lugar j, 0 si no.
-* Definir variables binarias para cada especie: x_i = 1 si Paolo logra ver la especie i, 0 si no.
-* Función objetivo: Maximizar el total de especies distintas vistas: ∑<em>{i=1}^{10} x_i.
-* Restricción de presupuesto de tiempo: La suma de las duraciones de los lugares visitados no puede superar 2 días: ∑</em>{j=1}^6 d_j · y_j ≤ 2.
-* Restricción de enlace: La especie i solo puede considerarse vista (x_i = 1) si visita al menos un lugar j donde esa especie habita.</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>Definir variables binarias para cada lugar: y_j = 1 si Paolo visita el lugar j, 0 si no.</li>
+<li>Definir variables binarias para cada especie: x_i = 1 si Paolo logra ver la especie i, 0 si no.</li>
+<li>Función objetivo: Maximizar el total de especies distintas vistas: ∑_{i=1}^{10} x_i.</li>
+<li>Restricción de presupuesto de tiempo: La suma de las duraciones de los lugares visitados no puede superar 2 días: ∑_{j=1}^6 d_j · y_j ≤ 2.</li>
+<li>Restricción de enlace: La especie i solo puede considerarse vista (x_i = 1) si visita al menos un lugar j donde esa especie habita.</li>
+</ul>
 <p><strong>Modelo Matemático Formal</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">CONJUNTOS Y PARÁMETROS:
   E = {1, ..., 10}        // Conjunto de especies
@@ -1872,18 +1884,26 @@ RESTRICCIONES:
 </code></pre></div>
 <p><strong>Explicación del modelo</strong><br />
 Si Paolo no visita ningún lugar donde habita la especie i, todos los y_j con A_ij = 1 valen 0, por lo que la sumatoria es 0 y la restricción x_i ≤ 0 fuerza a que x_i = 0. Como el objetivo es maximizar la suma de x_i, en cuanto visite al menos un lugar con esa especie (y_j = 1), el solucionador pondrá automáticamente x_i = 1. Visitar dos lugares con la misma especie no duplica el valor porque x_i está acotada en 1.</p>
-<p><strong>Conteo de Variables y Restricciones</strong><br />
-* <strong>Variables:</strong><br />
-  * 6 variables binarias y_j (lugares).<br />
-  * 10 variables binarias x_i (especies).<br />
-  * <strong>Total de variables:</strong> 6 + 10 = 16 variables binarias.
-* <strong>Restricciones:</strong><br />
-  * 1 restricción de tiempo.<br />
-  * 10 restricciones de cobertura de especies (una por cada i ∈ E).<br />
-  * <strong>Total de restricciones:</strong> 1 + 10 = 11 restricciones lineales (más las cotas de dominio).</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* Poner x_i = ∑ A_ij · y_j con igualdad: si visita 2 lugares que tienen la misma especie, x_i tomaría el valor 2, sumando dos veces la misma especie en el objetivo.
-* Declarar y_j o x_i como continuas: daría valores fraccionarios absurdos (como visitar 0.3 de un lugar).</p></div>
+<p><strong>Conteo de Variables y Restricciones</strong>  </p>
+<ul>
+<li><strong>Variables:</strong>  <ul>
+<li>6 variables binarias y_j (lugares).  </li>
+<li>10 variables binarias x_i (especies).  </li>
+<li><strong>Total de variables:</strong> 6 + 10 = 16 variables binarias.</li>
+</ul>
+</li>
+<li><strong>Restricciones:</strong>  <ul>
+<li>1 restricción de tiempo.  </li>
+<li>10 restricciones de cobertura de especies (una por cada i ∈ E).  </li>
+<li><strong>Total de restricciones:</strong> 1 + 10 = 11 restricciones lineales (más las cotas de dominio).</li>
+</ul>
+</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>Poner x_i = ∑ A_ij · y_j con igualdad: si visita 2 lugares que tienen la misma especie, x_i tomaría el valor 2, sumando dos veces la misma especie en el objetivo.</li>
+<li>Declarar y_j o x_i como continuas: daría valores fraccionarios absurdos (como visitar 0.3 de un lugar).</li>
+</ul>
 <hr />
 <h3>Patrón de Ejercicio 5.2: Cobertura de Celdas con Umbral Porcentual</h3>
 <p>Problemas de infraestructura (antenas, sensores, cámaras) sobre grillas donde se exige cubrir una fracción mínima del total de objetivos con costo mínimo.</p>
@@ -1953,9 +1973,11 @@ RESTRICCIONES:
   // 2. Cobertura del vecindario v por al menos una antena en su rango de 3x3
   x_v &lt;= ∑_{c ∈ AntenasQueCubren(v)} y_c    ∀ v ∈ V
 </code></pre></div>
-<p><strong>Conteo de Variables y Restricciones</strong><br />
-* <strong>Variables:</strong> |C| + |V| variables binarias.
-* <strong>Restricciones:</strong> 1 restricción del umbral del 70% + |V| restricciones de cobertura. Total: |V| + 1 restricciones lineales.</p>
+<p><strong>Conteo de Variables y Restricciones</strong>  </p>
+<ul>
+<li><strong>Variables:</strong> |C| + |V| variables binarias.</li>
+<li><strong>Restricciones:</strong> 1 restricción del umbral del 70% + |V| restricciones de cobertura. Total: |V| + 1 restricciones lineales.</li>
+</ul>
 <hr />
 <h3>Patrón de Ejercicio 5.3: Flujo de Costo Mínimo / Transporte Multizona</h3>
 <p>Problemas de balance de oferta y demanda con capacidades máximas y costos de transporte por arista.</p>
@@ -2024,10 +2046,14 @@ RESTRICCIONES:
   // 2. Capacidad máxima en cada línea de transporte
   x_ij &lt;= CAP_ij    ∀ i, j ∈ R (i ≠ j)
 </code></pre></div>
-<p><strong>Conteo de Variables y Restricciones</strong><br />
-* Con 9 regiones, hay a lo sumo 9 × 8 = 72 pares de transporte posibles:
-  * <strong>Variables:</strong> 72 variables continuas x_ij ≥ 0.
-  * <strong>Restricciones:</strong> 9 restricciones de balance nodal (una por región) + 72 restricciones de capacidad de línea = 81 restricciones lineales.</p>
+<p><strong>Conteo de Variables y Restricciones</strong>  </p>
+<ul>
+<li>Con 9 regiones, hay a lo sumo 9 × 8 = 72 pares de transporte posibles:<ul>
+<li><strong>Variables:</strong> 72 variables continuas x_ij ≥ 0.</li>
+<li><strong>Restricciones:</strong> 9 restricciones de balance nodal (una por región) + 72 restricciones de capacidad de línea = 81 restricciones lineales.</li>
+</ul>
+</li>
+</ul>
 <hr />
 <h3>Patrón de Ejercicio 5.4: Camino Mínimo Formulado como Flujo Unitario</h3>
 <p>Formulación de la búsqueda de rutas óptimas en grafos de decisión multietapa como problemas de flujo de una sola unidad desde el origen hasta el destino.</p>
@@ -2074,13 +2100,17 @@ Plantear un modelo de Programación Lineal que determine la ruta de menor costo 
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* Modelamos el problema inyectando <strong>1 unidad de flujo</strong> en el nodo origen s y extrayendo <strong>1 unidad de flujo</strong> en el sumidero t.
-* Variables: x_uv ∈ {0, 1} indica si el tramo (u, v) forma parte de la ruta elegida.
-* Conservación de flujo nodal:
-  * En el origen s: ∑_v x_sv - ∑_u x_us = 1.
-  * En el destino t: ∑_v x_tv - ∑_u x_ut = -1.
-  * En cualquier ciudad intermedia k ∉ {s, t}: ∑_v x_kv - ∑_u x_uk = 0.</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>Modelamos el problema inyectando <strong>1 unidad de flujo</strong> en el nodo origen s y extrayendo <strong>1 unidad de flujo</strong> en el sumidero t.</li>
+<li>Variables: x_uv ∈ {0, 1} indica si el tramo (u, v) forma parte de la ruta elegida.</li>
+<li>Conservación de flujo nodal:<ul>
+<li>En el origen s: ∑_v x_sv - ∑_u x_us = 1.</li>
+<li>En el destino t: ∑_v x_tv - ∑_u x_ut = -1.</li>
+<li>En cualquier ciudad intermedia k ∉ {s, t}: ∑_v x_kv - ∑_u x_uk = 0.</li>
+</ul>
+</li>
+</ul>
 <p><strong>Modelo Matemático Formal</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">VARIABLES DE DECISIÓN:
   x_uv ∈ {0, 1}    ∀ (u, v) ∈ E   // 1 si se transita por el tramo (u, v), 0 si no
@@ -2095,10 +2125,12 @@ RESTRICCIONES:
      -1   si i = t (Bariloche)
       0   si i ∈ V \ {s, t} (ciudades intermedias)
 </code></pre></div>
-<p><strong>Conteo de Variables y Restricciones</strong><br />
-* <strong>Variables:</strong> |E| variables binarias (una por cada tramo factible).<br />
-* <strong>Restricciones:</strong> |V| restricciones de conservación de flujo (una por cada nodo).<br />
-<em>(Nota teórica importante: Debido a la Unimodularidad Total de la matriz de incidencia de grafos, las variables x_uv pueden relajarse a continuas 0 ≤ x_uv ≤ 1 y el método Simplex garantiza soluciones enteras automáticamente).</em></p>
+<p><strong>Conteo de Variables y Restricciones</strong>  </p>
+<ul>
+<li><strong>Variables:</strong> |E| variables binarias (una por cada tramo factible).  </li>
+<li><strong>Restricciones:</strong> |V| restricciones de conservación de flujo (una por cada nodo).<br />
+<em>(Nota teórica importante: Debido a la Unimodularidad Total de la matriz de incidencia de grafos, las variables x_uv pueden relajarse a continuas 0 ≤ x_uv ≤ 1 y el método Simplex garantiza soluciones enteras automáticamente).</em></li>
+</ul>
 <hr />
 <h3>Patrón de Ejercicio 5.5: Linealización de Funciones No Lineales (min max)</h3>
 <p>Transformación de funciones objetivo no lineales como min max o minimización de discrepancias en sistemas lineales estándar.</p>
@@ -2159,9 +2191,11 @@ RESTRICCIONES:
   // Z debe ser mayor o igual a la suma del subconjunto S_2
   Z &gt;= ∑_{i=1}^n (T_i * (1 - x_i))
 </code></pre></div>
-<p><strong>Conteo de Variables y Restricciones</strong><br />
-* <strong>Variables:</strong> n variables binarias + 1 variable continua auxiliar = n + 1 variables.<br />
-* <strong>Restricciones:</strong> 2 restricciones lineales de cota superior sobre Z.</p>
+<p><strong>Conteo de Variables y Restricciones</strong>  </p>
+<ul>
+<li><strong>Variables:</strong> n variables binarias + 1 variable continua auxiliar = n + 1 variables.  </li>
+<li><strong>Restricciones:</strong> 2 restricciones lineales de cota superior sobre Z.</li>
+</ul>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Programación Lineal</h3>
 <ol>

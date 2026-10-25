@@ -1781,15 +1781,23 @@ body.dark-mode .warning-box {
 <h2>6. Tema 3: Backtracking y Branch &amp; Bound</h2>
 <h3>Conceptos Mínimos de Supervivencia</h3>
 <ol>
-<li><strong>Definición del Paradigma:</strong>
-   Backtracking es una técnica de búsqueda exhaustiva sistemática sobre un <strong>árbol de estados combinatorios</strong>. Avanza construyendo soluciones candidatas paso a paso; en cuanto determina que el estado actual no puede completarse para dar una solución válida u óptima, retrocede (<em>backtrack</em>) al estado anterior deshaciendo los cambios.</li>
-<li><strong>Las Dos Clases Fundamentales de Podas:</strong></li>
+<li>
+<p><strong>Definición del Paradigma:</strong>
+   Backtracking es una técnica de búsqueda exhaustiva sistemática sobre un <strong>árbol de estados combinatorios</strong>. Avanza construyendo soluciones candidatas paso a paso; en cuanto determina que el estado actual no puede completarse para dar una solución válida u óptima, retrocede (<em>backtrack</em>) al estado anterior deshaciendo los cambios.</p>
+</li>
+<li>
+<p><strong>Las Dos Clases Fundamentales de Podas:</strong></p>
+</li>
 <li><strong>Poda por Factibilidad (Feasibility Pruning):</strong> Se aplica tanto en problemas de decisión como de optimización. Descarta una rama si el estado actual viola una restricción obligatoria del problema (por ejemplo, dos reinas en la misma diagonal, o la suma actual supera el valor objetivo).</li>
 <li><strong>Poda por Cota u Optimalidad (Branch and Bound):</strong> Se aplica en problemas de optimización. Se calcula una cota teórica (superior para maximización, inferior para minimización) del mejor valor que podría lograrse explorando el subárbol actual. Si esa cota no mejora a la mejor solución factible ya registrada (<code>mejor_solucion</code>), la rama entera se descarta.</li>
-<li><strong>Estructuras Auxiliares para Validación en O(1):</strong>
-   En los parciales es penalizado verificar restricciones recorriendo estructuras con bucles O(n) dentro de cada paso recursivo. Se deben emplear <strong>arreglos o tablas booleanas auxiliares</strong> para chequear y marcar ocupación en tiempo constante O(1) (ejemplo: columnas y diagonales en N-Reinas).</li>
-<li><strong>Complejidad en el Peor Caso:</strong>
-   Aunque las podas reducen drásticamente el tiempo empírico, la complejidad asintótica en el peor caso sigue siendo exponencial (O(2ⁿ), O(kⁿ)) o factorial (O(n!)), dado que los problemas resueltos típicamente son NP-Hard.</li>
+<li>
+<p><strong>Estructuras Auxiliares para Validación en O(1):</strong>
+   En los parciales es penalizado verificar restricciones recorriendo estructuras con bucles O(n) dentro de cada paso recursivo. Se deben emplear <strong>arreglos o tablas booleanas auxiliares</strong> para chequear y marcar ocupación en tiempo constante O(1) (ejemplo: columnas y diagonales en N-Reinas).</p>
+</li>
+<li>
+<p><strong>Complejidad en el Peor Caso:</strong>
+   Aunque las podas reducen drásticamente el tiempo empírico, la complejidad asintótica en el peor caso sigue siendo exponencial (O(2ⁿ), O(kⁿ)) o factorial (O(n!)), dado que los problemas resueltos típicamente son NP-Hard.</p>
+</li>
 </ol>
 <hr />
 <h3>Patrón de Ejercicio 3.1: Posicionamiento en Tableros con Estructuras O(1)</h3>
@@ -1834,13 +1842,17 @@ Realizar un algoritmo que resuelva el problema de las 8 reinas mediante backtrac
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* Colocamos exactamente una reina por fila, avanzando fila por fila (fila = 0, 1, ..., 7). Esto elimina automáticamente los conflictos de fila.
-* Para chequear columnas en O(1): vector booleano <code>col_ocupada[8]</code>.
-* Para diagonales:
-  * Diagonal Principal (): la diferencia <code>fila - col</code> es constante para todas las celdas de una misma diagonal. Varía entre -7 y +7. Con un desplazamiento de +7, mapeamos al rango [0, 14] mediante la clave <code>fila - col + 7</code>.
-  * Diagonal Secundaria (/): la suma <code>fila + col</code> es constante para todas las celdas de una misma diagonal. Varía entre 0 y 14 mediante la clave <code>fila + col</code>.
-* Al probar una columna válida en la fila actual, marcamos las estructuras, llamamos recursivamente a la fila siguiente, y al retornar <strong>desmarcamos</strong> las estructuras.</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>Colocamos exactamente una reina por fila, avanzando fila por fila (fila = 0, 1, ..., 7). Esto elimina automáticamente los conflictos de fila.</li>
+<li>Para chequear columnas en O(1): vector booleano <code>col_ocupada[8]</code>.</li>
+<li>Para diagonales:<ul>
+<li>Diagonal Principal (): la diferencia <code>fila - col</code> es constante para todas las celdas de una misma diagonal. Varía entre -7 y +7. Con un desplazamiento de +7, mapeamos al rango [0, 14] mediante la clave <code>fila - col + 7</code>.</li>
+<li>Diagonal Secundaria (/): la suma <code>fila + col</code> es constante para todas las celdas de una misma diagonal. Varía entre 0 y 14 mediante la clave <code>fila + col</code>.</li>
+</ul>
+</li>
+<li>Al probar una columna válida en la fila actual, marcamos las estructuras, llamamos recursivamente a la fila siguiente, y al retornar <strong>desmarcamos</strong> las estructuras.</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION Resolver8Reinas():
     INICIALIZAR solucion como arreglo de tamaño 8 lleno de -1
@@ -1886,13 +1898,17 @@ FUNCION ReinasBT(fila, solucion, col_ocupada, diag_prin, diag_sec):
 </code></pre></div>
 <p><strong>Explicación del algoritmo</strong><br />
 El algoritmo recorre las columnas candidatas para la fila actual. Gracias a las tres tablas booleanas, la validación de no agresión toma O(1). Si una asignación conduce a un callejón sin salida en filas posteriores, la ejecución vuelve atrás, restaura los booleanos a <code>FALSO</code> y prueba la siguiente columna.</p>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> En el peor caso para N reinas es O(N!), ya que la primera fila tiene N opciones, la segunda a lo sumo N - 1, etc. Para N = 8, el espacio de búsqueda es menor a 8! = 40.320 nodos y con podas diagonales evalúa apenas unos pocos cientos de estados.
-* <strong>Espacio:</strong> O(N) para la pila de recursión y los vectores de control booleanos (8 + 15 + 15 = 38 booleanos).</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* Olvidar desmarcar las tablas booleanas al retornar de la recursión.
-* Calcular mal el desplazamiento de la diagonal principal y provocar un índice negativo (<code>fila - col &lt; 0</code>).
-* Hacer un doble bucle para verificar si hay otra reina en el tablero, degradando el chequeo a O(N) en lugar de O(1).</p></div>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> En el peor caso para N reinas es O(N!), ya que la primera fila tiene N opciones, la segunda a lo sumo N - 1, etc. Para N = 8, el espacio de búsqueda es menor a 8! = 40.320 nodos y con podas diagonales evalúa apenas unos pocos cientos de estados.</li>
+<li><strong>Espacio:</strong> O(N) para la pila de recursión y los vectores de control booleanos (8 + 15 + 15 = 38 booleanos).</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>Olvidar desmarcar las tablas booleanas al retornar de la recursión.</li>
+<li>Calcular mal el desplazamiento de la diagonal principal y provocar un índice negativo (<code>fila - col &lt; 0</code>).</li>
+<li>Hacer un doble bucle para verificar si hay otra reina en el tablero, degradando el chequeo a O(N) en lugar de O(1).</li>
+</ul>
 <p><strong>Variación típica de parcial</strong><br />
 Pedir todas las soluciones posibles en lugar de la primera (se acumula una copia de <code>solucion</code> en una lista global y nunca se corta con <code>RETORNAR VERDADERO</code>).</p>
 <hr />
@@ -1946,17 +1962,25 @@ Diseño de un árbol de backtracking acotado a profundidad 4, imposición de ord
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* Buscamos una tupla (w, x, y, z) tal que w² + x² + y² + z² = n.
-* Para no explorar permutaciones repetidas de la misma solución, forzamos:</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>Buscamos una tupla (w, x, y, z) tal que w² + x² + y² + z² = n.</li>
+<li>
+<p>Para no explorar permutaciones repetidas de la misma solución, forzamos:</p>
 <blockquote>
-<p><strong>w ≥ x ≥ y ≥ z ≥ 0</strong>
-* Cotas y podas:
-  1. En el paso k (con k ∈ {1, 2, 3, 4}), si nos queda un remanente R, el valor actual v no puede superar ⌊√R⌋.
-  2. Además, v no puede ser mayor que el valor elegido en el paso anterior (v ≤ anterior).
-  3. Cota inferior de poda: Los (4 - k + 1) términos restantes con valor máximo v deben ser capaces de alcanzar R. Si (4 - k + 1) · v² &lt; R, es imposible llegar a R y se poda la rama.
-  4. En el paso 4, no hace falta iterar: simplemente verificamos si el remanente R es un cuadrado perfecto (z = ⌊√R⌋ y z² = R).</p>
+<p><strong>w ≥ x ≥ y ≥ z ≥ 0</strong></p>
 </blockquote>
+</li>
+<li>
+<p>Cotas y podas:</p>
+<ol>
+<li>En el paso k (con k ∈ {1, 2, 3, 4}), si nos queda un remanente R, el valor actual v no puede superar ⌊√R⌋.</li>
+<li>Además, v no puede ser mayor que el valor elegido en el paso anterior (v ≤ anterior).</li>
+<li>Cota inferior de poda: Los (4 - k + 1) términos restantes con valor máximo v deben ser capaces de alcanzar R. Si (4 - k + 1) · v² &lt; R, es imposible llegar a R y se poda la rama.</li>
+<li>En el paso 4, no hace falta iterar: simplemente verificamos si el remanente R es un cuadrado perfecto (z = ⌊√R⌋ y z² = R).</li>
+</ol>
+</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION CuatroCuadradosLagrange(n):
     INICIALIZAR solucion como arreglo de tamaño 4 en 0
@@ -1992,12 +2016,16 @@ FUNCION LagrangeBT(paso, remanente, max_limite, solucion):
 </code></pre></div>
 <p><strong>Explicación del algoritmo</strong><br />
 El algoritmo explora a lo sumo 3 niveles de profundidad, calculando el cuarto término analíticamente en O(1). La condición v ≤ anterior elimina simetrías, y la condición <code>terminos_restantes * (v * v) &lt; remanente</code> aborta inmediatamente ramas cuando los valores se vuelven demasiado pequeños para sumar n.</p>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> El primer término tiene a lo sumo √n opciones. El segundo tiene a lo sumo √n opciones. El tercero tiene a lo sumo √n opciones. El cuarto se determina en O(1). Por lo tanto, en el peor caso sin podas sería O((√n)³) = O(n^(3/2)). Con la poda de simetría w ≥ x ≥ y ≥ z y el corte temprano por cota inferior, el espacio de búsqueda se reduce a una fracción mínima de n^(3/2), resolviendo en milisegundos para números grandes.
-* <strong>Espacio:</strong> O(1) de memoria adicional más una pila de recursión fija de profundidad 4.</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* Iterar los 4 bucles hasta √n sin calcular el último término en O(1) (O(n²) vs O(n^(3/2))).
-* No imponer el orden decreciente v ≤ anterior, multiplicando el tiempo por 4! = 24.</p></div>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> El primer término tiene a lo sumo √n opciones. El segundo tiene a lo sumo √n opciones. El tercero tiene a lo sumo √n opciones. El cuarto se determina en O(1). Por lo tanto, en el peor caso sin podas sería O((√n)³) = O(n^(3/2)). Con la poda de simetría w ≥ x ≥ y ≥ z y el corte temprano por cota inferior, el espacio de búsqueda se reduce a una fracción mínima de n^(3/2), resolviendo en milisegundos para números grandes.</li>
+<li><strong>Espacio:</strong> O(1) de memoria adicional más una pila de recursión fija de profundidad 4.</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>Iterar los 4 bucles hasta √n sin calcular el último término en O(1) (O(n²) vs O(n^(3/2))).</li>
+<li>No imponer el orden decreciente v ≤ anterior, multiplicando el tiempo por 4! = 24.</li>
+</ul>
 <p><strong>Variación típica de parcial</strong><br />
 Descomponer un número como suma de cubos positivos (problema de Waring) o suma de números primos con un máximo de k términos.</p>
 <hr />
@@ -2047,13 +2075,17 @@ Estrategia de branching sobre aristas no cubiertas (al menos uno de los extremos
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* Un Vertex Cover requiere que para cada arista (u, v) ∈ E, al menos u ∈ C o v ∈ C.
-* <em>Branching inteligente:</em> En lugar de probar vértice por vértice arbitrariamente (2^|V|), buscamos una arista (u, v) que <strong>aún no esté cubierta</strong> por el conjunto actual:
-  * Rama 1: Incluimos u en la cobertura y recursamos.
-  * Rama 2: Incluimos v en la cobertura y recursamos.
-* <em>Poda Branch and Bound:</em> Mantenemos el tamaño del mejor Vertex Cover encontrado hasta el momento (<code>mejor_tamano</code>). Si en el estado actual |C| ≥ mejor_tamano, podar inmediatamente la rama, porque cualquier solución derivada tendrá tamaño mayor o igual y no puede mejorar el récord actual.
-* Caso base: Si no quedan aristas sin cubrir, C es un Vertex Cover válido y actualizamos la mejor solución.</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ul>
+<li>Un Vertex Cover requiere que para cada arista (u, v) ∈ E, al menos u ∈ C o v ∈ C.</li>
+<li><em>Branching inteligente:</em> En lugar de probar vértice por vértice arbitrariamente (2^|V|), buscamos una arista (u, v) que <strong>aún no esté cubierta</strong> por el conjunto actual:<ul>
+<li>Rama 1: Incluimos u en la cobertura y recursamos.</li>
+<li>Rama 2: Incluimos v en la cobertura y recursamos.</li>
+</ul>
+</li>
+<li><em>Poda Branch and Bound:</em> Mantenemos el tamaño del mejor Vertex Cover encontrado hasta el momento (<code>mejor_tamano</code>). Si en el estado actual |C| ≥ mejor_tamano, podar inmediatamente la rama, porque cualquier solución derivada tendrá tamaño mayor o igual y no puede mejorar el récord actual.</li>
+<li>Caso base: Si no quedan aristas sin cubrir, C es un Vertex Cover válido y actualizamos la mejor solución.</li>
+</ul>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MinimoVertexCover(G):
     mejor_cobertura &lt;- V(G) // Cota superior trivial inicial: todos los vértices
@@ -2096,16 +2128,22 @@ FUNCION BuscarAristaNoCubierta(G, cobertura):
 </code></pre></div>
 <p><strong>Explicación del algoritmo</strong><br />
 Al ramificar sobre los dos extremos de una arista no cubierta, el árbol tiene factor de ramificación 2. Si el grafo tiene un Vertex Cover de tamaño k, la profundidad máxima explorada es k. La poda por cota superior asegura que apenas se encuentra una cobertura de tamaño k, ninguna rama de tamaño ≥ k es explorada.</p>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> En el peor caso la recursión genera O(2ᵏ · |E|) operaciones, donde k es el tamaño del Vertex Cover mínimo. Comparado con el espacio ingenuo O(2^|V|), esto es exponencialmente más veloz cuando k &lt; |V|.
-* <strong>Espacio:</strong> O(|V|) para almacenar el conjunto de la cobertura actual y la pila de recursión.</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* Ramificar incluyendo ninguno de los dos extremos (eso violaría la definición de cobertura).
-* No hacer una copia profunda (<code>COPIAR</code>) de <code>actual</code> al actualizar <code>MEJOR</code>.
-* No podar con <code>&gt;= cardinal(MEJOR)</code> permitiendo explorar soluciones con igual o peor tamaño.</p></div>
-<p><strong>Variación típica de parcial</strong><br />
-* <em>Independent Set Máximo:</em> Recordar la dualidad S es Independent Set ⟺ V \ S es Vertex Cover.
-* Resolver el problema de decisión: ¿Existe un Vertex Cover de tamaño ≤ k? (Se corta la búsqueda con éxito en cuanto se halle uno de tamaño ≤ k).</p>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> En el peor caso la recursión genera O(2ᵏ · |E|) operaciones, donde k es el tamaño del Vertex Cover mínimo. Comparado con el espacio ingenuo O(2^|V|), esto es exponencialmente más veloz cuando k &lt; |V|.</li>
+<li><strong>Espacio:</strong> O(|V|) para almacenar el conjunto de la cobertura actual y la pila de recursión.</li>
+</ul>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
+<ul>
+<li>Ramificar incluyendo ninguno de los dos extremos (eso violaría la definición de cobertura).</li>
+<li>No hacer una copia profunda (<code>COPIAR</code>) de <code>actual</code> al actualizar <code>MEJOR</code>.</li>
+<li>No podar con <code>&gt;= cardinal(MEJOR)</code> permitiendo explorar soluciones con igual o peor tamaño.</li>
+</ul>
+<p><strong>Variación típica de parcial</strong>  </p>
+<ul>
+<li><em>Independent Set Máximo:</em> Recordar la dualidad S es Independent Set ⟺ V \ S es Vertex Cover.</li>
+<li>Resolver el problema de decisión: ¿Existe un Vertex Cover de tamaño ≤ k? (Se corta la búsqueda con éxito en cuanto se halle uno de tamaño ≤ k).</li>
+</ul>
 <hr />
 <h3>Patrón de Ejercicio 3.4: Suma de Subconjuntos (Subset Sum) con Podas</h3>
 <p>Exploración binaria de inclusión/exclusión de elementos para alcanzar un valor objetivo exacto.</p>
@@ -2153,14 +2191,16 @@ Dada una lista de enteros positivos L y un entero objetivo S, implementar un alg
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-1. Ordenamos L de menor a mayor.
-2. En el índice i, tenemos dos ramas:
-   * <strong>Incluir L[i]:</strong> Sumamos L[i] y avanzamos al siguiente índice.
-   * <strong>Excluir L[i]:</strong> Mantenemos la suma y avanzamos al siguiente índice.
-3. <strong>Podas:</strong>
-   * Si la suma actual supera S, podar inmediatamente (elementos positivos).
-   * Al estar ordenado, si la suma actual más L[i] supera S, ningún elemento posterior entrará; se corta el bucle de prueba.</p>
+        <p><strong>Idea de resolución</strong>  </p>
+<ol>
+<li>Ordenamos L de menor a mayor.</li>
+<li>En el índice i, tenemos dos ramas:</li>
+<li><strong>Incluir L[i]:</strong> Sumamos L[i] y avanzamos al siguiente índice.</li>
+<li><strong>Excluir L[i]:</strong> Mantenemos la suma y avanzamos al siguiente índice.</li>
+<li><strong>Podas:</strong></li>
+<li>Si la suma actual supera S, podar inmediatamente (elementos positivos).</li>
+<li>Al estar ordenado, si la suma actual más L[i] supera S, ningún elemento posterior entrará; se corta el bucle de prueba.</li>
+</ol>
 <p><strong>Pseudocódigo</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION SubsetSumBT(L, S):
     ORDENAR L ASCENDENTE
@@ -2196,9 +2236,11 @@ FUNCION SubsetSumRec(L, indice, remanente, solucion):
 
     RETORNAR FALSO
 </code></pre></div>
-<p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> O(2ⁿ) en el peor caso, pero fuertemente reducido por las podas con L ordenado.
-* <strong>Espacio:</strong> O(n) por la pila de recursión y la lista de la solución.</p>
+<p><strong>Complejidad</strong>  </p>
+<ul>
+<li><strong>Tiempo:</strong> O(2ⁿ) en el peor caso, pero fuertemente reducido por las podas con L ordenado.</li>
+<li><strong>Espacio:</strong> O(n) por la pila de recursión y la lista de la solución.</li>
+</ul>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Backtracking</h3>
 <ol>

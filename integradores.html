@@ -1808,10 +1808,12 @@ body.dark-mode .warning-box {
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado Integrador</strong><br />
-El INVAP debe transportar una carga de alta seguridad desde Ezeiza hasta Bariloche a través de un grafo de etapas donde las ciudades intermedias están agrupadas en días de viaje (máximo 400 km/día, sin viajar de noche). Para cada tramo dirigido (u, v) entre paradas consecutivas se conoce el costo de seguro C_uv &gt; 0.<br />
-1. <strong>Paradigma Greedy:</strong> Formular un algoritmo voraz. Demostrar formalmente mediante un contraejemplo por qué <strong>no garantiza</strong> la solución óptima.<br />
-2. <strong>Paradigma Programación Dinámica:</strong> Desarrollar la solución óptima definiendo el estado OPT(v), la ecuación de recurrencia, el algoritmo en pseudocódigo y la complejidad temporal.<br />
-3. <strong>Paradigma Programación Lineal:</strong> Formular un modelo de PL que encuentre la ruta de mínimo costo indicando variables, función objetivo, restricciones y recuento exacto de las mismas.</p>
+El INVAP debe transportar una carga de alta seguridad desde Ezeiza hasta Bariloche a través de un grafo de etapas donde las ciudades intermedias están agrupadas en días de viaje (máximo 400 km/día, sin viajar de noche). Para cada tramo dirigido (u, v) entre paradas consecutivas se conoce el costo de seguro C_uv &gt; 0.  </p>
+<ol>
+<li><strong>Paradigma Greedy:</strong> Formular un algoritmo voraz. Demostrar formalmente mediante un contraejemplo por qué <strong>no garantiza</strong> la solución óptima.  </li>
+<li><strong>Paradigma Programación Dinámica:</strong> Desarrollar la solución óptima definiendo el estado OPT(v), la ecuación de recurrencia, el algoritmo en pseudocódigo y la complejidad temporal.  </li>
+<li><strong>Paradigma Programación Lineal:</strong> Formular un modelo de PL que encuentre la ruta de mínimo costo indicando variables, función objetivo, restricciones y recuento exacto de las mismas.</li>
+</ol>
 <hr />
     </div>
 
@@ -1825,7 +1827,7 @@ El INVAP debe transportar una carga de alta seguridad desde Ezeiza hasta Bariloc
         <h4>1. Resolución por Algoritmo Greedy y Contraejemplo de No-Optimalidad</h4>
 <ul>
 <li><strong>Regla Voraz:</strong> Desde la ciudad actual u, avanzar hacia la ciudad siguiente v que tenga el menor costo de seguro inmediato C_uv.</li>
-<li><strong>Contraejemplo Minimal:</strong></li>
+<li><strong>Contraejemplo Minimal:</strong><ul>
 <li>Origen E (Ezeiza). Opciones etapa 1: Ciudad A (costo 10), Ciudad B (costo 20).</li>
 <li>Desde A al destino Bariloche: costo 100.</li>
 <li>Desde B al destino Bariloche: costo 5.</li>
@@ -1833,21 +1835,31 @@ El INVAP debe transportar una carga de alta seguridad desde Ezeiza hasta Bariloc
 <li><em>Ruta Óptima:</em> E → B → Bariloche. Costo Total = 20 + 5 = 25.</li>
 <li>Como 110 &gt; 25, <strong>Greedy falla</strong>.</li>
 </ul>
+</li>
+</ul>
 <hr />
 <h4>2. Resolución Óptima por Programación Dinámica</h4>
 <ul>
 <li>Como el grafo es por etapas (viajes de día sin ciclos), es un <strong>DAG (Grafo Dirigido Acíclico)</strong>.</li>
-<li><strong>Definición del Estado:</strong><br />
-  OPT(v): Mínimo costo de seguro acumulado para llegar desde Ezeiza hasta la ciudad v.</li>
-<li><strong>Casos Base:</strong><br />
+<li>
+<p><strong>Definición del Estado:</strong><br />
+  OPT(v): Mínimo costo de seguro acumulado para llegar desde Ezeiza hasta la ciudad v.</p>
+</li>
+<li>
+<p><strong>Casos Base:</strong><br />
   OPT(Ezeiza) = 0.<br />
-  OPT(v) = ∞ para todo v ≠ Ezeiza.</li>
-<li><strong>Ecuación de Recurrencia:</strong><br />
-  Para cualquier ciudad v ∈ V:<blockquote>
+  OPT(v) = ∞ para todo v ≠ Ezeiza.</p>
+</li>
+<li>
+<p><strong>Ecuación de Recurrencia:</strong><br />
+  Para cualquier ciudad v ∈ V:</p>
+<blockquote>
 <p><strong>OPT(v) = min_{u ∈ Predecesores(v)} { OPT(u) + C_uv }</strong></p>
 </blockquote>
 </li>
-<li><strong>Orden de Llenado:</strong> Orden topológico de los vértices (etapa por etapa, de día 1 a día final).</li>
+<li>
+<p><strong>Orden de Llenado:</strong> Orden topológico de los vértices (etapa por etapa, de día 1 a día final).</p>
+</li>
 </ul>
 <p><strong>Pseudocódigo de Programación Dinámica</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION InvapCaminoOptimoPD(grafo_etapas, ezeiza, bariloche):
@@ -1879,17 +1891,23 @@ El INVAP debe transportar una carga de alta seguridad desde Ezeiza hasta Bariloc
 <h4>3. Resolución por Programación Lineal</h4>
 <ul>
 <li><strong>Variables:</strong> x_uv ∈ {0, 1} para cada arista dirigida (u, v) ∈ E (1 si se viaja por ese tramo, 0 si no).</li>
-<li><strong>Función Objetivo:</strong><blockquote>
+<li>
+<p><strong>Función Objetivo:</strong></p>
+<blockquote>
 <p><strong>MINIMIZAR Z = ∑_{(u, v) ∈ E} C_uv · x_uv</strong></p>
 </blockquote>
 </li>
-<li><strong>Restricciones de Conservación de Flujo Unitario:</strong>  <blockquote>
+<li>
+<p><strong>Restricciones de Conservación de Flujo Unitario:</strong>  </p>
+<blockquote>
 <p><strong>∑<em>{w: (v, w) ∈ E} x_vw - ∑</em>{u: (u, v) ∈ E} x_uv = 1</strong> (si v = Ezeiza)<br />
 <strong>∑<em>{w: (v, w) ∈ E} x_vw - ∑</em>{u: (u, v) ∈ E} x_uv = -1</strong> (si v = Bariloche)<br />
 <strong>∑<em>{w: (v, w) ∈ E} x_vw - ∑</em>{u: (u, v) ∈ E} x_uv = 0</strong> (∀ v ∈ V \ {Ezeiza, Bariloche})</p>
 </blockquote>
 </li>
-<li><strong>Conteo:</strong> |E| variables binarias y |V| restricciones lineales.</li>
+<li>
+<p><strong>Conteo:</strong> |E| variables binarias y |V| restricciones lineales.</p>
+</li>
 </ul>
 <hr />
       </div>
@@ -1923,9 +1941,11 @@ El INVAP debe transportar una carga de alta seguridad desde Ezeiza hasta Bariloc
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado Integrador</strong><br />
-Una empresa dispone de N servidores y M tareas. Cada tarea j requiere una cantidad de memoria R_j, y cada servidor i tiene una capacidad máxima C_i. Se sabe qué tareas pueden ejecutarse en qué servidores.<br />
-1. Si todas las tareas tienen requerimiento unitario (R_j = 1), ¿qué paradigma conviene usar para maximizar tareas asignadas? Modelarlo.<br />
-2. Si las tareas tienen requerimientos heterogéneos (R_j arbitrarios), ¿por qué Redes de Flujo estándar ya no puede modelar el problema directamente y se debe recurrir a Programación Lineal Entera?</p>
+Una empresa dispone de N servidores y M tareas. Cada tarea j requiere una cantidad de memoria R_j, y cada servidor i tiene una capacidad máxima C_i. Se sabe qué tareas pueden ejecutarse en qué servidores.  </p>
+<ol>
+<li>Si todas las tareas tienen requerimiento unitario (R_j = 1), ¿qué paradigma conviene usar para maximizar tareas asignadas? Modelarlo.  </li>
+<li>Si las tareas tienen requerimientos heterogéneos (R_j arbitrarios), ¿por qué Redes de Flujo estándar ya no puede modelar el problema directamente y se debe recurrir a Programación Lineal Entera?</li>
+</ol>
     </div>
 
     <details open class="exercise-solution-drawer" id="solution-drawer-33">
@@ -1938,19 +1958,21 @@ Una empresa dispone de N servidores y M tareas. Cada tarea j requiere una cantid
         <p><strong>Resolución y Comparativa de Paradigmas</strong></p>
 <h4>1. Caso Unitario (R_j = 1): Redes de Flujo</h4>
 <ul>
-<li>Al ser las tareas de tamaño 1, el problema se modela directamente con <strong>Redes de Flujo</strong>:</li>
+<li>Al ser las tareas de tamaño 1, el problema se modela directamente con <strong>Redes de Flujo</strong>:<ul>
 <li>Super-fuente s → Tareas con capacidad 1.</li>
 <li>Tarea j → Servidor i con capacidad 1 (si es compatible).</li>
 <li>Servidor i → Super-sumidero t con capacidad C_i.</li>
+</ul>
+</li>
 <li>Se resuelve en tiempo polinomial estricto con Edmonds-Karp en O(V · E²). El Teorema de Integralidad asegura que las tareas se asignan enteras sin fraccionamiento.</li>
 </ul>
 <h4>2. Caso Heterogéneo (R_j arbitrarios): Imposibilidad de Flujo y Formulación en PLI</h4>
 <ul>
 <li><strong>Por qué falla Redes de Flujo:</strong> En una red de flujo estándar, si mandamos R_j unidades de flujo a través de una arista, el algoritmo podría <strong>partir el flujo</strong> entre dos servidores distintos (ej: enviar 3 unidades a un servidor y 2 a otro para completar una tarea de 5). El flujo continuo no puede imponer la condición de indivisibilidad de un paquete que debe ir completo a un único destino.</li>
-<li><strong>Modelo en Programación Lineal Entera (PLI):</strong></li>
+<li><strong>Modelo en Programación Lineal Entera (PLI):</strong><ul>
 <li>Variables: x_ji ∈ {0, 1} (1 si la tarea j se asigna íntegramente al servidor i, 0 si no).</li>
 <li>Maximizar ∑_j ∑_i x_ji</li>
-<li>Sujeto a:<ul>
+<li>Sujeto a:</li>
 <li>∑_i x_ji ≤ 1 para cada tarea j (a lo sumo un servidor por tarea).</li>
 <li>∑_j R_j · x_ji ≤ C_i para cada servidor i (capacidad del servidor no superada).</li>
 <li>x_ji = 0 si la tarea j no es compatible con el servidor i.</li>
@@ -1989,10 +2011,12 @@ Una empresa dispone de N servidores y M tareas. Cada tarea j requiere una cantid
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado Integrador</strong><br />
-Para el problema de Vertex Cover Mínimo en un grafo G = (V, E), comparar tres estrategias de abordaje:<br />
-1. <strong>Solución Exacta Combinatoria:</strong> Backtracking con Branch and Bound.<br />
-2. <strong>Solución Exacta Matemática:</strong> Formulación en Programación Lineal Entera.<br />
-3. <strong>Solución Heurística Polinomial:</strong> Algoritmo de Aproximación con factor 2 (basado en Maximal Matching).</p>
+Para el problema de Vertex Cover Mínimo en un grafo G = (V, E), comparar tres estrategias de abordaje:  </p>
+<ol>
+<li><strong>Solución Exacta Combinatoria:</strong> Backtracking con Branch and Bound.  </li>
+<li><strong>Solución Exacta Matemática:</strong> Formulación en Programación Lineal Entera.  </li>
+<li><strong>Solución Heurística Polinomial:</strong> Algoritmo de Aproximación con factor 2 (basado en Maximal Matching).</li>
+</ol>
 <p><strong>Comparativa Técnica Exhaustiva</strong></p>
 <table>
 <thead>
@@ -2054,15 +2078,21 @@ Para el problema de Vertex Cover Mínimo en un grafo G = (V, E), comparar tres e
 
     RETORNAR C
 </code></pre></div>
-<p><strong>Demostración de la Garantía de Aproximación 2:</strong><br />
-1. Sea M el conjunto de aristas disjuntas seleccionadas por el algoritmo. Como ninguna arista en M comparte extremos, <strong>cualquier Vertex Cover óptimo debe contener al menos un vértice distinto por cada arista en M</strong>.
-2. Por lo tanto: OPT ≥ |M|.
-3. El algoritmo incorpora exactamente ambos extremos de cada arista en M, por lo que: |C| = 2 · |M|.
-4. Combinando ambas relaciones:</p>
+<p><strong>Demostración de la Garantía de Aproximación 2:</strong>  </p>
+<ol>
+<li>Sea M el conjunto de aristas disjuntas seleccionadas por el algoritmo. Como ninguna arista en M comparte extremos, <strong>cualquier Vertex Cover óptimo debe contener al menos un vértice distinto por cada arista en M</strong>.</li>
+<li>Por lo tanto: OPT ≥ |M|.</li>
+<li>El algoritmo incorpora exactamente ambos extremos de cada arista en M, por lo que: |C| = 2 · |M|.</li>
+<li>
+<p>Combinando ambas relaciones:</p>
 <blockquote>
-<p><strong>|C| = 2 · |M| ≤ 2 · OPT</strong>
-5. El algoritmo garantiza una cobertura que nunca supera el doble del óptimo y corre en tiempo O(|V| + |E|).</p>
+<p><strong>|C| = 2 · |M| ≤ 2 · OPT</strong></p>
 </blockquote>
+</li>
+<li>
+<p>El algoritmo garantiza una cobertura que nunca supera el doble del óptimo y corre en tiempo O(|V| + |E|).</p>
+</li>
+</ol>
 <hr />
       </div>
     </details>
@@ -2096,21 +2126,23 @@ Para el problema de Vertex Cover Mínimo en un grafo G = (V, E), comparar tres e
     <div class="exercise-statement-box">
       <p><strong>Enunciado Integrador</strong><br />
 Se dispone de una mochila con capacidad entera máxima de peso $W &gt; 0$ y un conjunto de $n$ elementos disponibles, donde cada elemento $i \in {1, \dots, n}$ posee un peso entero $w_i &gt; 0$ y un valor o beneficio entero $v_i &gt; 0$.<br />
-Resolver y contrastar el problema a través de todos los paradigmas algorítmicos fundamentales evaluados en la materia:
-1. <strong>Paradigma Greedy (Algoritmo Voraz):</strong>
-   * Resolver la <strong>Mochila Fraccionaria (Continuous Knapsack)</strong>: regla voraz por densidad de valor, pseudocódigo y demostración formal de optimalidad por técnica de intercambio (<em>Greedy Stays Ahead</em>).
-   * Analizar la <strong>Mochila 0-1 (Indivisible)</strong>: contraejemplo formal de por qué la regla voraz falla arbitrariamente y desarrollo del <strong>Algoritmo 1/2-Aproximado</strong> con su demostración de cota garantizada.
-2. <strong>Paradigma Programación Dinámica (DP):</strong>
-   * Resolver la <strong>Mochila 0-1 Estándar</strong>: definición formal del subproblema $OPT(i, w)$, casos base, ecuación de recurrencia, pseudocódigo bottom-up con tabla $(n+1) \times (W+1)$, algoritmo de reconstrucción exacta de ítems y optimización de memoria espacial a $O(W)$. Demostración de su complejidad pseudo-polinomial frente al número de bits de la entrada.
-   * Resolver la <strong>Mochila No Acotada (Unbounded Knapsack)</strong> con disponibilidad infinita de cada ítem en $O(n \cdot W)$ tiempo y $O(W)$ espacio.
-3. <strong>Paradigma Backtracking y Branch &amp; Bound:</strong>
-   * Diseñar el árbol binario de decisiones, podas por factibilidad y podas por optimalidad con cota superior (<em>Branch and Bound</em>) mediante la relajación continua fraccionaria. Explicar cuándo este enfoque supera a la Programación Dinámica en la práctica.
-4. <strong>Paradigma Programación Lineal Entera (PLI):</strong>
-   * Modelar formalmente el problema indicando variables de decisión binarias, función objetivo, restricciones, conteo de variables/restricciones y su relación directa con la relajación lineal continua (LP Relaxation).
-5. <strong>Análisis de División y Conquista (DyC):</strong>
-   * Explicar teóricamente por qué División y Conquista puro fracasa o no es aplicable a la mochila 0-1 (subproblemas no disjuntos).
-6. <strong>Tabla Comparativa Maestra:</strong>
-   * Matriz comparativa multidimensional de complejidades, optimalidad y escenarios de examen.</p>
+Resolver y contrastar el problema a través de todos los paradigmas algorítmicos fundamentales evaluados en la materia:</p>
+<ol>
+<li><strong>Paradigma Greedy (Algoritmo Voraz):</strong></li>
+<li>Resolver la <strong>Mochila Fraccionaria (Continuous Knapsack)</strong>: regla voraz por densidad de valor, pseudocódigo y demostración formal de optimalidad por técnica de intercambio (<em>Greedy Stays Ahead</em>).</li>
+<li>Analizar la <strong>Mochila 0-1 (Indivisible)</strong>: contraejemplo formal de por qué la regla voraz falla arbitrariamente y desarrollo del <strong>Algoritmo 1/2-Aproximado</strong> con su demostración de cota garantizada.</li>
+<li><strong>Paradigma Programación Dinámica (DP):</strong></li>
+<li>Resolver la <strong>Mochila 0-1 Estándar</strong>: definición formal del subproblema $OPT(i, w)$, casos base, ecuación de recurrencia, pseudocódigo bottom-up con tabla $(n+1) \times (W+1)$, algoritmo de reconstrucción exacta de ítems y optimización de memoria espacial a $O(W)$. Demostración de su complejidad pseudo-polinomial frente al número de bits de la entrada.</li>
+<li>Resolver la <strong>Mochila No Acotada (Unbounded Knapsack)</strong> con disponibilidad infinita de cada ítem en $O(n \cdot W)$ tiempo y $O(W)$ espacio.</li>
+<li><strong>Paradigma Backtracking y Branch &amp; Bound:</strong></li>
+<li>Diseñar el árbol binario de decisiones, podas por factibilidad y podas por optimalidad con cota superior (<em>Branch and Bound</em>) mediante la relajación continua fraccionaria. Explicar cuándo este enfoque supera a la Programación Dinámica en la práctica.</li>
+<li><strong>Paradigma Programación Lineal Entera (PLI):</strong></li>
+<li>Modelar formalmente el problema indicando variables de decisión binarias, función objetivo, restricciones, conteo de variables/restricciones y su relación directa con la relajación lineal continua (LP Relaxation).</li>
+<li><strong>Análisis de División y Conquista (DyC):</strong></li>
+<li>Explicar teóricamente por qué División y Conquista puro fracasa o no es aplicable a la mochila 0-1 (subproblemas no disjuntos).</li>
+<li><strong>Tabla Comparativa Maestra:</strong></li>
+<li>Matriz comparativa multidimensional de complejidades, optimalidad y escenarios de examen.</li>
+</ol>
 <hr />
     </div>
 
@@ -2125,9 +2157,13 @@ Resolver y contrastar el problema a través de todos los paradigmas algorítmico
 <h5>A. Mochila Fraccionaria (Continuous Knapsack) — Solución Óptima en O(n log n)</h5>
 <p>En la versión fraccionaria se permite tomar una fracción $x_i \in [0, 1]$ de cada elemento $i$. El beneficio aportado es $x_i \cdot v_i$ y el peso consumido es $x_i \cdot w_i$.</p>
 <ul>
-<li><strong>Regla Voraz:</strong> Ordenar los elementos de forma decreciente según su <strong>densidad de valor por unidad de peso</strong>:
-  $$r_i = \frac{v_i}{w_i} \quad \text{tal que } r_1 \ge r_2 \ge \dots \ge r_n$$</li>
-<li><strong>Estrategia:</strong> Tomar la mayor cantidad posible del elemento con mayor densidad disponible. Si el elemento cabe entero ($w_i \le \text{capacidad remanente}$), se toma completo ($x_i = 1$). Si no cabe entero, se toma exactamente la fracción que satura la mochila ($x_i = \frac{\text{capacidad remanente}}{w_i}$) y se finaliza el proceso.</li>
+<li>
+<p><strong>Regla Voraz:</strong> Ordenar los elementos de forma decreciente según su <strong>densidad de valor por unidad de peso</strong>:
+  $$r_i = \frac{v_i}{w_i} \quad \text{tal que } r_1 \ge r_2 \ge \dots \ge r_n$$</p>
+</li>
+<li>
+<p><strong>Estrategia:</strong> Tomar la mayor cantidad posible del elemento con mayor densidad disponible. Si el elemento cabe entero ($w_i \le \text{capacidad remanente}$), se toma completo ($x_i = 1$). Si no cabe entero, se toma exactamente la fracción que satura la mochila ($x_i = \frac{\text{capacidad remanente}}{w_i}$) y se finaliza el proceso.</p>
+</li>
 </ul>
 <p><strong>Pseudocódigo de la Mochila Fraccionaria</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MochilaFraccionariaGreedy(pesos, valores, n, W):
@@ -2160,67 +2196,107 @@ Resolver y contrastar el problema a través de todos los paradigmas algorítmico
 
     RETORNAR (valor_total, fraccion)
 </code></pre></div>
-<p><strong>Demostración Formal de Optimalidad (Técnica de Intercambio):</strong>
-1. Sea $G = (x_1, x_2, \dots, x_n)$ la solución voraz y $O = (y_1, y_2, \dots, y_n)$ una solución óptima distinta.
-2. Como $G \neq O$, existe un primer índice $k$ donde difieren ($x_k \neq y_k$). Por diseño del algoritmo voraz, debe ser $x_k &gt; y_k$ (la voraz tomó el máximo posible del elemento de mayor densidad disponible).
-3. Como la mochila está llena en ambas soluciones (o todos los elementos entraron), para compensar el déficit en el ítem $k$, la solución óptima $O$ debe haber tomado una cantidad de elementos posteriores $j &gt; k$ donde la densidad es menor o igual ($r_j \le r_k$).
-4. Modificamos la solución óptima $O$ incrementando $y_k$ en $\Delta w$ y reduciendo elementos posteriores $y_j$ en el mismo peso $\Delta w$.
-5. La variación del beneficio en la nueva solución $O'$ es:
+<p><strong>Demostración Formal de Optimalidad (Técnica de Intercambio):</strong></p>
+<ol>
+<li>Sea $G = (x_1, x_2, \dots, x_n)$ la solución voraz y $O = (y_1, y_2, \dots, y_n)$ una solución óptima distinta.</li>
+<li>Como $G \neq O$, existe un primer índice $k$ donde difieren ($x_k \neq y_k$). Por diseño del algoritmo voraz, debe ser $x_k &gt; y_k$ (la voraz tomó el máximo posible del elemento de mayor densidad disponible).</li>
+<li>Como la mochila está llena en ambas soluciones (o todos los elementos entraron), para compensar el déficit en el ítem $k$, la solución óptima $O$ debe haber tomado una cantidad de elementos posteriores $j &gt; k$ donde la densidad es menor o igual ($r_j \le r_k$).</li>
+<li>Modificamos la solución óptima $O$ incrementando $y_k$ en $\Delta w$ y reduciendo elementos posteriores $y_j$ en el mismo peso $\Delta w$.</li>
+<li>
+<p>La variación del beneficio en la nueva solución $O'$ es:
    $$\Delta Valor = \Delta w \cdot r_k - \Delta w \cdot r_j = \Delta w \cdot (r_k - r_j) \ge 0$$
-   dado que $r_k \ge r_j$.
-6. Por ende, el valor de $O'$ no disminuye ($Valor(O') \ge Valor(O)$). Repitiendo este proceso de intercambio para todos los elementos donde difieran, podemos transformar $O$ en $G$ sin reducir nunca el valor total.
-7. Conclusión: la solución voraz $G$ es óptima.
-* <strong>Complejidad:</strong> Tiempo $O(n \log n)$ por el ordenamiento inicial; Espacio $O(n)$.</p>
+   dado que $r_k \ge r_j$.</p>
+</li>
+<li>
+<p>Por ende, el valor de $O'$ no disminuye ($Valor(O') \ge Valor(O)$). Repitiendo este proceso de intercambio para todos los elementos donde difieran, podemos transformar $O$ en $G$ sin reducir nunca el valor total.</p>
+</li>
+<li>Conclusión: la solución voraz $G$ es óptima.</li>
+<li><strong>Complejidad:</strong> Tiempo $O(n \log n)$ por el ordenamiento inicial; Espacio $O(n)$.</li>
+</ol>
 <hr />
 <h5>B. Mochila 0-1: Por qué Greedy Falla y Algoritmo 1/2-Aproximado</h5>
 <p>En la mochila 0-1 los objetos son indivisibles ($x_i \in {0, 1}$).</p>
 <ul>
-<li><strong>Contraejemplo Minimal de No-Optimalidad para Greedy por Densidad:</strong></li>
+<li>
+<p><strong>Contraejemplo Minimal de No-Optimalidad para Greedy por Densidad:</strong></p>
+<ul>
 <li>Capacidad $W = 100$.</li>
 <li>Ítem 1: peso $w_1 = 1$, valor $v_1 = 2 \implies r_1 = 2.0$.</li>
 <li>Ítem 2: peso $w_2 = 100$, valor $v_2 = 100 \implies r_2 = 1.0$.</li>
 <li><em>Resultado Greedy:</em> Toma el ítem 1 (densidad 2.0). Capacidad restante: 99. El ítem 2 no cabe. <strong>Valor Greedy = 2</strong>.</li>
 <li><em>Solución Óptima:</em> Tomar únicamente el ítem 2. Peso = 100 $\le 100$. <strong>Valor Óptimo = 100</strong>.</li>
-<li>
-<p>La solución voraz logra un valor arbitrariamente alejado del óptimo (el ratio puede tender a 0 si $v_2 \to \infty$).</p>
+<li>La solución voraz logra un valor arbitrariamente alejado del óptimo (el ratio puede tender a 0 si $v_2 \to \infty$).</li>
+</ul>
 </li>
 <li>
 <p><strong>Algoritmo Greedy 1/2-Aproximado para Mochila 0-1:</strong></p>
-</li>
+<ol>
 <li>Ejecutar la regla voraz por densidad tomando ítems completos hasta el primer ítem $k$ que no quepa entero (ítem de corte). Sea $V_{greedy}$ el valor de los ítems tomados.</li>
 <li>Hallar el ítem individual más valioso que quepa en la mochila: $v_{max} = \max { v_i : w_i \le W }$.</li>
 <li>Retornar la mejor de las dos opciones:
-     $$V_{aprox} = \max(V_{greedy}, v_{max})$$</li>
+ $$V_{aprox} = \max(V_{greedy}, v_{max})$$</li>
+</ol>
+</li>
 </ul>
-<p><strong>Demostración de la Garantía de Aproximación 1/2:</strong>
-1. Sea $V_{frac}$ el valor de la solución óptima fraccionaria sobre los mismos datos. Claramente $OPT_{01} \le V_{frac}$ (relajación).
-2. La solución fraccionaria toma exactamente los ítems enteros de $V_{greedy}$ más una fracción del ítem de corte $k$:
-   $$OPT_{01} \le V_{frac} = V_{greedy} + f \cdot v_k &lt; V_{greedy} + v_k$$
-3. Dado que el ítem $k$ cabe en una mochila vacía (si $w_k \le W$), tenemos $v_k \le v_{max}$.
-4. Por lo tanto:
-   $$OPT_{01} &lt; V_{greedy} + v_{max}$$
-5. Como $V_{aprox} = \max(V_{greedy}, v_{max})$, se cumple trivialmente que $V_{greedy} \le V_{aprox}$ y $v_{max} \le V_{aprox}$.
-6. Sumando ambas cotas:
-   $$OPT_{01} &lt; V_{aprox} + V_{aprox} = 2 \cdot V_{aprox} \implies V_{aprox} \ge \frac{1}{2} OPT_{01}$$
-* <strong>Garantía:</strong> El algoritmo garantiza al menos el <strong>50% del valor óptimo</strong> en tiempo $O(n \log n)$.</p>
+<p><strong>Demostración de la Garantía de Aproximación 1/2:</strong></p>
+<ol>
+<li>Sea $V_{frac}$ el valor de la solución óptima fraccionaria sobre los mismos datos. Claramente $OPT_{01} \le V_{frac}$ (relajación).</li>
+<li>
+<p>La solución fraccionaria toma exactamente los ítems enteros de $V_{greedy}$ más una fracción del ítem de corte $k$:
+   $$OPT_{01} \le V_{frac} = V_{greedy} + f \cdot v_k &lt; V_{greedy} + v_k$$</p>
+</li>
+<li>
+<p>Dado que el ítem $k$ cabe en una mochila vacía (si $w_k \le W$), tenemos $v_k \le v_{max}$.</p>
+</li>
+<li>
+<p>Por lo tanto:
+   $$OPT_{01} &lt; V_{greedy} + v_{max}$$</p>
+</li>
+<li>
+<p>Como $V_{aprox} = \max(V_{greedy}, v_{max})$, se cumple trivialmente que $V_{greedy} \le V_{aprox}$ y $v_{max} \le V_{aprox}$.</p>
+</li>
+<li>
+<p>Sumando ambas cotas:
+   $$OPT_{01} &lt; V_{aprox} + V_{aprox} = 2 \cdot V_{aprox} \implies V_{aprox} \ge \frac{1}{2} OPT_{01}$$</p>
+</li>
+<li>
+<p><strong>Garantía:</strong> El algoritmo garantiza al menos el <strong>50% del valor óptimo</strong> en tiempo $O(n \log n)$.</p>
+</li>
+</ol>
 <hr />
 <h4>2. Paradigma Programación Dinámica (Dynamic Programming)</h4>
 <h5>A. Mochila 0-1 Estándar — Solución Óptima Exacta</h5>
 <ul>
-<li><strong>Definición del Subproblema:</strong><blockquote>
+<li>
+<p><strong>Definición del Subproblema:</strong></p>
+<blockquote>
 <p><strong>$OPT(i, w)$:</strong> Beneficio máximo acumulable eligiendo un subconjunto de los primeros $i$ elementos ($1 \le i \le n$) tal que la suma de sus pesos no exceda la capacidad disponible $w$ ($0 \le w \le W$).</p>
 </blockquote>
 </li>
-<li><strong>Casos Base:</strong></li>
+<li>
+<p><strong>Casos Base:</strong></p>
+<ul>
 <li>$OPT(0, w) = 0$ para todo $w \in [0, W]$ (sin elementos disponibles, beneficio 0).</li>
 <li>$OPT(i, 0) = 0$ para todo $i \in [0, n]$ (con capacidad 0, no se puede cargar peso positivo).</li>
-<li><strong>Ecuación de Recurrencia:</strong>
-  Para el elemento $i$ con peso $w_i$ y valor $v_i$:</li>
-<li>Si $w_i &gt; w$: el elemento $i$ no cabe con la capacidad actual.
-     $$OPT(i, w) = OPT(i - 1, w)$$</li>
-<li>Si $w_i \le w$: se elige el máximo entre excluir el elemento o incluirlo:
-     $$OPT(i, w) = \max \Big( OPT(i - 1, w), \; OPT(i - 1, w - w_i) + v_i \Big)$$</li>
-<li><strong>Orden de Llenado:</strong> Celdas calculadas fila por fila ($i$ de 1 a $n$), y para cada fila capacidad $w$ de 0 a $W$.</li>
+</ul>
+</li>
+<li>
+<p><strong>Ecuación de Recurrencia:</strong>
+  Para el elemento $i$ con peso $w_i$ y valor $v_i$:</p>
+<ol>
+<li>
+<p>Si $w_i &gt; w$: el elemento $i$ no cabe con la capacidad actual.
+ $$OPT(i, w) = OPT(i - 1, w)$$</p>
+</li>
+<li>
+<p>Si $w_i \le w$: se elige el máximo entre excluir el elemento o incluirlo:
+ $$OPT(i, w) = \max \Big( OPT(i - 1, w), \; OPT(i - 1, w - w_i) + v_i \Big)$$</p>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>Orden de Llenado:</strong> Celdas calculadas fila por fila ($i$ de 1 a $n$), y para cada fila capacidad $w$ de 0 a $W$.</p>
+</li>
 </ul>
 <p><strong>Pseudocódigo de Programación Dinámica con Reconstrucción</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION Mochila01ProgramacionDinamica(pesos, valores, n, W):
@@ -2266,31 +2342,49 @@ Como la fila $i$ solo depende estrictamente de la fila inmediata anterior $i - 1
     RETORNAR DP[W]
 </code></pre></div>
 <ul>
-<li><strong>Complejidad:</strong></li>
+<li><strong>Complejidad:</strong><ul>
 <li><strong>Tiempo:</strong> $O(n \cdot W)$ operaciones aritméticas elementales.</li>
 <li><strong>Espacio:</strong> $O(n \cdot W)$ con matriz para reconstrucción, o $O(W)$ con vector unidimensional.</li>
 <li><strong>Análisis de Pseudo-Polinomialidad:</strong> La longitud de la entrada en bits para representar el número $W$ es $L = \lceil \log_2 W \rceil$. Por ende, $W = 2^L$. La complejidad en función del tamaño de entrada es $O(n \cdot 2^L)$, lo cual es <strong>exponencial en el tamaño de representación de $W$</strong>. Si $W$ es astronómico ($W = 10^{12}$), DP es impracticable por tiempo y memoria.</li>
 </ul>
+</li>
+</ul>
 <hr />
 <h5>B. Mochila No Acotada (Unbounded Knapsack) — Repetición Ilimitada</h5>
-<p>Si se dispone de cantidad ilimitada de cada ítem, el estado depende únicamente de la capacidad $w$:
-* <strong>Subproblema:</strong> $OPT(w) =$ beneficio máximo que se puede obtener con capacidad exacta $w$.
-* <strong>Recurrencia:</strong>
-  $$OPT(w) = \max_{i: w_i \le w} { OPT(w - w_i) + v_i }, \quad \text{con } OPT(0) = 0$$
-* En este caso, el recorrido del vector 1D se realiza <strong>de izquierda a derecha (creciente de $w_i$ a $W$)</strong>, permitiendo explícitamente reutilizar el mismo ítem múltiples veces. Tiempo: $O(n \cdot W)$, Espacio: $O(W)$.</p>
+<p>Si se dispone de cantidad ilimitada de cada ítem, el estado depende únicamente de la capacidad $w$:</p>
+<ul>
+<li><strong>Subproblema:</strong> $OPT(w) =$ beneficio máximo que se puede obtener con capacidad exacta $w$.</li>
+<li>
+<p><strong>Recurrencia:</strong>
+  $$OPT(w) = \max_{i: w_i \le w} { OPT(w - w_i) + v_i }, \quad \text{con } OPT(0) = 0$$</p>
+</li>
+<li>
+<p>En este caso, el recorrido del vector 1D se realiza <strong>de izquierda a derecha (creciente de $w_i$ a $W$)</strong>, permitiendo explícitamente reutilizar el mismo ítem múltiples veces. Tiempo: $O(n \cdot W)$, Espacio: $O(W)$.</p>
+</li>
+</ul>
 <hr />
 <h4>3. Paradigma Backtracking y Branch &amp; Bound (Búsqueda Exacta con Podas)</h4>
 <p>Cuando $W$ es gigantesco pero $n$ es moderado ($n \le 40$), la Programación Dinámica colapsa por memoria pero <strong>Backtracking con Branch &amp; Bound</strong> resuelve en milisegundos.</p>
 <ul>
-<li><strong>Estructura del Árbol de Búsqueda:</strong>
-  Árbol binario de profundidad $n$. En el nivel $i$, decidimos si incluimos o no el elemento $i$ ($x_i \in {0, 1}$).</li>
-<li><strong>Las Dos Clases de Podas Obligatorias en Parcial:</strong></li>
-<li><strong>Poda por Factibilidad (Feasibility):</strong>
-     Si $\text{peso_actual} + w_i &gt; W$, podar la rama de inclusión de $i$.</li>
-<li><strong>Poda por Optimalidad (Branch and Bound con Relajación Continua Fraccionaria):</strong>
-     Para el estado actual en el elemento $i$, calculamos una <strong>cota superior (Upper Bound)</strong> del máximo valor que podría obtenerse en el subárbol:
-     $$\text{CotaSuperior} = \text{valor_actual} + \text{MochilaFraccionaria}(\text{elementos restantes desde } i+1, \; W - \text{peso_actual})$$
-     Si $\text{CotaSuperior} \le \text{mejor_valor_global}$, es matemáticamente imposible que este subárbol supere el récord actual ya hallado $\implies$ <strong>podar inmediatamente toda la rama</strong>.</li>
+<li>
+<p><strong>Estructura del Árbol de Búsqueda:</strong>
+  Árbol binario de profundidad $n$. En el nivel $i$, decidimos si incluimos o no el elemento $i$ ($x_i \in {0, 1}$).</p>
+</li>
+<li>
+<p><strong>Las Dos Clases de Podas Obligatorias en Parcial:</strong></p>
+<ol>
+<li>
+<p><strong>Poda por Factibilidad (Feasibility):</strong>
+ Si $\text{peso_actual} + w_i &gt; W$, podar la rama de inclusión de $i$.</p>
+</li>
+<li>
+<p><strong>Poda por Optimalidad (Branch and Bound con Relajación Continua Fraccionaria):</strong>
+ Para el estado actual en el elemento $i$, calculamos una <strong>cota superior (Upper Bound)</strong> del máximo valor que podría obtenerse en el subárbol:
+ $$\text{CotaSuperior} = \text{valor_actual} + \text{MochilaFraccionaria}(\text{elementos restantes desde } i+1, \; W - \text{peso_actual})$$
+ Si $\text{CotaSuperior} \le \text{mejor_valor_global}$, es matemáticamente imposible que este subárbol supere el récord actual ya hallado $\implies$ <strong>podar inmediatamente toda la rama</strong>.</p>
+</li>
+</ol>
+</li>
 </ul>
 <p><strong>Pseudocódigo de Backtracking con Branch &amp; Bound</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MochilaBranchAndBound(pesos, valores, n, W):
@@ -2349,18 +2443,30 @@ FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
 <hr />
 <h4>4. Paradigma Programación Lineal Entera (PLI)</h4>
 <ul>
-<li><strong>Variables de Decisión:</strong>
+<li>
+<p><strong>Variables de Decisión:</strong>
   $$x_i \in {0, 1} \quad \forall i \in {1, \dots, n}$$
-  donde $x_i = 1$ si el elemento $i$ se introduce en la mochila, y $0$ en caso contrario.</li>
-<li><strong>Función Objetivo:</strong>
-  $$\text{MAXIMIZAR } Z = \sum_{i=1}^n v_i \cdot x_i$$</li>
-<li><strong>Restricción de Capacidad:</strong>
-  $$\sum_{i=1}^n w_i \cdot x_i \le W$$</li>
-<li><strong>Restricciones de Dominio:</strong>
-  $$x_i \in {0, 1} \quad \forall i \in {1, \dots, n}$$</li>
-<li><strong>Recuento Riguroso para Examen:</strong></li>
+  donde $x_i = 1$ si el elemento $i$ se introduce en la mochila, y $0$ en caso contrario.</p>
+</li>
+<li>
+<p><strong>Función Objetivo:</strong>
+  $$\text{MAXIMIZAR } Z = \sum_{i=1}^n v_i \cdot x_i$$</p>
+</li>
+<li>
+<p><strong>Restricción de Capacidad:</strong>
+  $$\sum_{i=1}^n w_i \cdot x_i \le W$$</p>
+</li>
+<li>
+<p><strong>Restricciones de Dominio:</strong>
+  $$x_i \in {0, 1} \quad \forall i \in {1, \dots, n}$$</p>
+</li>
+<li>
+<p><strong>Recuento Riguroso para Examen:</strong></p>
+<ul>
 <li><strong>Variables:</strong> Exactamente $n$ variables binarias.</li>
 <li><strong>Restricciones:</strong> Exactamente 1 restricción lineal de capacidad $+ n$ cotas de dominio binario.</li>
+</ul>
+</li>
 <li><strong>Vínculo con la Relajación Lineal (LP Relaxation):</strong>
   Si reemplazamos $x_i \in {0, 1}$ por $0 \le x_i \le 1$ (variables continuas), el problema de PL continuo resultante se resuelve en tiempo polinomial y <strong>su solución óptima es idéntica a la Mochila Fraccionaria Greedy</strong>.</li>
 </ul>
@@ -2477,20 +2583,22 @@ FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
     <div class="exercise-statement-box">
       <p><strong>Enunciado Integrador</strong><br />
 Dado un conjunto de $n$ ciudades numeradas ${1, 2, \dots, n}$ y una matriz de distancias o costos $C = [c_{ij}]$ no negativos entre cada par de ciudades, el <strong>Problema del Viajante de Comercio (TSP - Travelling Salesperson Problem)</strong> consiste en encontrar un circuito simple (tour cerrado) que visite <strong>exactamente una vez cada ciudad y retorne a la ciudad de origen</strong> minimizando la distancia total recorrida.<br />
-Resolver y comparar este problema a través de todos los paradigmas algorítmicos fundamentales:
-1. <strong>Paradigma Backtracking y Branch &amp; Bound (Búsqueda Exacta):</strong>
-   * Definir el árbol de permutaciones, podas por factibilidad, poda por cota superior actual y poda avanzada por <strong>Cota Inferior basada en Árbol Generador Mínimo (MST / 1-Tree)</strong>.
-2. <strong>Paradigma Programación Dinámica (Algoritmo de Bellman-Held-Karp):</strong>
-   * Identificar la subestructura óptima y superposición de estados. Definir formalmente el subproblema sobre subconjuntos de vértices $C(S, j)$, la ecuación de recurrencia, el algoritmo tabular y demostrar la reducción de complejidad factorial $O(n!)$ a exponencial $O(n^2 2^n)$.
-3. <strong>Paradigma Greedy y Heurísticas de Aproximación:</strong>
-   * Desarrollar la heurística voraz del <strong>Vecino más Cercano (Nearest Neighbor)</strong> y exhibir un contraejemplo demostrando por qué no es óptima.
-   * Diseñar el <strong>Algoritmo 2-Aproximado para TSP Métrico</strong> (con desigualdad triangular) basado en Árbol Generador Mínimo y recorrido en preorden con atajos (<em>shortcuts</em>). Desarrollar la demostración formal paso a paso de la cota $Costo(Tour) \le 2 \cdot OPT$.
-4. <strong>Paradigma Programación Lineal Entera (PLI):</strong>
-   * Formular el modelo matemático exacto mediante la <strong>formulación de Miller-Tucker-Zemlin (MTZ)</strong> con variables de orden continuo $u_i$ para eliminar subtours desconectados. Recuento de variables y restricciones.
-5. <strong>Reducciones Polinomiales y Complejidad NP-Completa:</strong>
-   * Enunciar la versión de decisión de TSP. Demostrar formalmente que $TSP \in NP$ y que es NP-Completo mediante una reducción polinomial desde <strong>Ciclo Hamiltoniano</strong> ($\text{Ciclo Hamiltoniano} \le_P \text{TSP}$).
-6. <strong>Tabla Comparativa Maestra:</strong>
-   * Síntesis técnica de complejidades, optimalidad, garantías y casos de uso en parcial.</p>
+Resolver y comparar este problema a través de todos los paradigmas algorítmicos fundamentales:</p>
+<ol>
+<li><strong>Paradigma Backtracking y Branch &amp; Bound (Búsqueda Exacta):</strong></li>
+<li>Definir el árbol de permutaciones, podas por factibilidad, poda por cota superior actual y poda avanzada por <strong>Cota Inferior basada en Árbol Generador Mínimo (MST / 1-Tree)</strong>.</li>
+<li><strong>Paradigma Programación Dinámica (Algoritmo de Bellman-Held-Karp):</strong></li>
+<li>Identificar la subestructura óptima y superposición de estados. Definir formalmente el subproblema sobre subconjuntos de vértices $C(S, j)$, la ecuación de recurrencia, el algoritmo tabular y demostrar la reducción de complejidad factorial $O(n!)$ a exponencial $O(n^2 2^n)$.</li>
+<li><strong>Paradigma Greedy y Heurísticas de Aproximación:</strong></li>
+<li>Desarrollar la heurística voraz del <strong>Vecino más Cercano (Nearest Neighbor)</strong> y exhibir un contraejemplo demostrando por qué no es óptima.</li>
+<li>Diseñar el <strong>Algoritmo 2-Aproximado para TSP Métrico</strong> (con desigualdad triangular) basado en Árbol Generador Mínimo y recorrido en preorden con atajos (<em>shortcuts</em>). Desarrollar la demostración formal paso a paso de la cota $Costo(Tour) \le 2 \cdot OPT$.</li>
+<li><strong>Paradigma Programación Lineal Entera (PLI):</strong></li>
+<li>Formular el modelo matemático exacto mediante la <strong>formulación de Miller-Tucker-Zemlin (MTZ)</strong> con variables de orden continuo $u_i$ para eliminar subtours desconectados. Recuento de variables y restricciones.</li>
+<li><strong>Reducciones Polinomiales y Complejidad NP-Completa:</strong></li>
+<li>Enunciar la versión de decisión de TSP. Demostrar formalmente que $TSP \in NP$ y que es NP-Completo mediante una reducción polinomial desde <strong>Ciclo Hamiltoniano</strong> ($\text{Ciclo Hamiltoniano} \le_P \text{TSP}$).</li>
+<li><strong>Tabla Comparativa Maestra:</strong></li>
+<li>Síntesis técnica de complejidades, optimalidad, garantías y casos de uso en parcial.</li>
+</ol>
 <hr />
     </div>
 
@@ -2503,17 +2611,27 @@ Resolver y comparar este problema a través de todos los paradigmas algorítmico
       <div class="solution-inner-content">
         <h4>1. Paradigma Backtracking y Branch &amp; Bound (Exacto con Podas)</h4>
 <ul>
-<li><strong>Espacio de Búsqueda:</strong>
-  Cualquier solución factible es una permutación de las $n$ ciudades que comienza y termina en la ciudad 1. Sin podas, el espacio tiene tamaño $(n - 1)! / 2$ (fijando el origen y evitando simetrías de sentido inverso).</li>
-<li><strong>Podas Esenciales en Parcial:</strong></li>
+<li>
+<p><strong>Espacio de Búsqueda:</strong>
+  Cualquier solución factible es una permutación de las $n$ ciudades que comienza y termina en la ciudad 1. Sin podas, el espacio tiene tamaño $(n - 1)! / 2$ (fijando el origen y evitando simetrías de sentido inverso).</p>
+</li>
+<li>
+<p><strong>Podas Esenciales en Parcial:</strong></p>
+<ol>
 <li><strong>Poda por Factibilidad:</strong> Si entre la ciudad actual $u$ y la candidata $v$ no existe arista conectiva ($c_{uv} = \infty$), descartar $v$.</li>
-<li><strong>Poda por Cota Superior:</strong> Mantener el mejor costo de tour cerrado completo hallado hasta el momento (<code>mejor_costo</code>). Si en el camino parcial actual:
-     $$\text{costo_parcial} \ge \text{mejor_costo}$$
-     podar inmediatamente la rama (ningún costo de arista es negativo).</li>
-<li><strong>Poda por Cota Inferior (Branch &amp; Bound con MST / 1-Tree):</strong>
-     Para el conjunto de ciudades restantes aún no visitadas $V_{restantes}$, cualquier tour válido debe conectar estas ciudades formando al menos un árbol. Por ende:
-     $$\text{CotaInferior} = \text{costo_parcial} + \text{CostoMST}(V_{restantes}) + \min_{r \in V_{restantes}} c_{\text{actual}, r} + \min_{r \in V_{restantes}} c_{r, 1}$$
-     Si $\text{CotaInferior} \ge \text{mejor_costo} \implies$ podar toda la rama.</li>
+<li>
+<p><strong>Poda por Cota Superior:</strong> Mantener el mejor costo de tour cerrado completo hallado hasta el momento (<code>mejor_costo</code>). Si en el camino parcial actual:
+ $$\text{costo_parcial} \ge \text{mejor_costo}$$
+ podar inmediatamente la rama (ningún costo de arista es negativo).</p>
+</li>
+<li>
+<p><strong>Poda por Cota Inferior (Branch &amp; Bound con MST / 1-Tree):</strong>
+ Para el conjunto de ciudades restantes aún no visitadas $V_{restantes}$, cualquier tour válido debe conectar estas ciudades formando al menos un árbol. Por ende:
+ $$\text{CotaInferior} = \text{costo_parcial} + \text{CostoMST}(V_{restantes}) + \min_{r \in V_{restantes}} c_{\text{actual}, r} + \min_{r \in V_{restantes}} c_{r, 1}$$
+ Si $\text{CotaInferior} \ge \text{mejor_costo} \implies$ podar toda la rama.</p>
+</li>
+</ol>
+</li>
 </ul>
 <p><strong>Pseudocódigo de TSP por Backtracking con Branch and Bound</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION TSP_BranchAndBound(ciudades, matriz_costos, n):
@@ -2566,21 +2684,31 @@ PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO
 <hr />
 <h4>2. Paradigma Programación Dinámica (Algoritmo de Bellman-Held-Karp)</h4>
 <ul>
-<li><strong>Principio de Subestructura Óptima:</strong>
-  Para completar el tour desde la ciudad actual $j$, no importa el orden exacto en que se visitaron las ciudades anteriores; <strong>solo importa qué ciudad es la actual y cuál es el subconjunto de ciudades ya visitadas</strong>.</li>
-<li><strong>Definición Formal del Subproblema:</strong><blockquote>
+<li>
+<p><strong>Principio de Subestructura Óptima:</strong>
+  Para completar el tour desde la ciudad actual $j$, no importa el orden exacto en que se visitaron las ciudades anteriores; <strong>solo importa qué ciudad es la actual y cuál es el subconjunto de ciudades ya visitadas</strong>.</p>
+</li>
+<li>
+<p><strong>Definición Formal del Subproblema:</strong></p>
+<blockquote>
 <p><strong>$C(S, j)$:</strong> Longitud mínima de un camino simple que comienza en la ciudad 1, visita <strong>exactamente</strong> todas las ciudades del subconjunto $S \subseteq {2, 3, \dots, n}$ y finaliza en la ciudad $j \in S$.</p>
 </blockquote>
 </li>
-<li><strong>Casos Base:</strong>
+<li>
+<p><strong>Casos Base:</strong>
   Para subconjuntos de tamaño 1 ($S = {j}$):
-  $$C({j}, j) = c_{1, j} \quad \forall j \in {2, \dots, n}$$</li>
-<li><strong>Ecuación de Recurrencia:</strong>
+  $$C({j}, j) = c_{1, j} \quad \forall j \in {2, \dots, n}$$</p>
+</li>
+<li>
+<p><strong>Ecuación de Recurrencia:</strong>
   Para cualquier subconjunto $S$ de tamaño $|S| \ge 2$ y cualquier ciudad de llegada $j \in S$:
-  $$C(S, j) = \min_{k \in S \setminus {j}} \Big{ C(S \setminus {j}, k) + c_{kj} \Big}$$</li>
-<li><strong>Cálculo del Tour Cerrado Óptimo:</strong>
+  $$C(S, j) = \min_{k \in S \setminus {j}} \Big{ C(S \setminus {j}, k) + c_{kj} \Big}$$</p>
+</li>
+<li>
+<p><strong>Cálculo del Tour Cerrado Óptimo:</strong>
   Una vez calculada la tabla para el conjunto completo $V' = {2, 3, \dots, n}$:
-  $$OPT = \min_{j \in {2, \dots, n}} \Big{ C({2, \dots, n}, j) + c_{j, 1} \Big}$$</li>
+  $$OPT = \min_{j \in {2, \dots, n}} \Big{ C({2, \dots, n}, j) + c_{j, 1} \Big}$$</p>
+</li>
 </ul>
 <p><strong>Pseudocódigo de Held-Karp</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION TSP_HeldKarp(C, n):
@@ -2630,11 +2758,17 @@ PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO
     RETORNAR (optimo, tour)
 </code></pre></div>
 <ul>
-<li><strong>Complejidad:</strong></li>
-<li><strong>Tiempo:</strong> Hay $\binom{n-1}{k}$ subconjuntos de tamaño $k$. Para cada par $(S, j)$, hay $k$ transiciones posibles. El tiempo total es:
-    $$\sum_{k=1}^{n-1} k \binom{n-1}{k} (n-1) = O(n^2 2^n)$$</li>
-<li><strong>Espacio:</strong> $O(n \cdot 2^n)$ para almacenar los estados de la tabla DP.</li>
-<li><strong>Comparativa con Fuerza Bruta:</strong> Para $n = 20$:<ul>
+<li>
+<p><strong>Complejidad:</strong></p>
+<ul>
+<li>
+<p><strong>Tiempo:</strong> Hay $\binom{n-1}{k}$ subconjuntos de tamaño $k$. Para cada par $(S, j)$, hay $k$ transiciones posibles. El tiempo total es:
+$$\sum_{k=1}^{n-1} k \binom{n-1}{k} (n-1) = O(n^2 2^n)$$</p>
+</li>
+<li>
+<p><strong>Espacio:</strong> $O(n \cdot 2^n)$ para almacenar los estados de la tabla DP.</p>
+</li>
+<li><strong>Comparativa con Fuerza Bruta:</strong> Para $n = 20$:</li>
 <li>$n! = 20! \approx 2.43 \times 10^{18}$ operaciones (imposible en milenios).</li>
 <li>$n^2 2^n = 20^2 \cdot 2^{20} \approx 4.19 \times 10^8$ operaciones (corre en <strong>menos de 1 segundo</strong> en una PC moderna).</li>
 </ul>
@@ -2646,26 +2780,28 @@ PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO
 <ul>
 <li><strong>Regla:</strong> Comenzar en una ciudad inicial y en cada paso viajar a la <strong>ciudad no visitada más cercana</strong>. Al visitar las $n$ ciudades, regresar al inicio.</li>
 <li><strong>Complejidad:</strong> $O(n^2)$ en tiempo y $O(n)$ en espacio.</li>
-<li><strong>Contraejemplo de Falla Catastrófica (No es óptimo ni acotado en general):</strong></li>
+<li><strong>Contraejemplo de Falla Catastrófica (No es óptimo ni acotado en general):</strong><ul>
 <li>Consideremos 4 ciudades en línea: $A, B, C, D$ con distancias: $dist(A, B) = 1$, $dist(B, C) = 2$, $dist(C, D) = 4$, y $dist(A, D) = 100$.</li>
-<li>Iniciando en $B$:<ul>
+<li>Iniciando en $B$:</li>
 <li>El vecino más cercano es $A$ (costo 1).</li>
 <li>Desde $A$, las no visitadas son $C$ y $D$. La más cercana es $C$ (costo $dist(A, C) = 3$).</li>
 <li>Desde $C$, la única no visitada es $D$ (costo 4).</li>
 <li>Finalmente, desde $D$ debe regresar a $B$ (costo $dist(D, B) = 6$ o arista de retorno forzosa).</li>
 <li>Si la última arista de retorno cuesta $M = 10.000$, la voracidad inicial queda atrapada en un costo astronómico.</li>
+<li><em>Conclusión:</em> En grafos generales, ninguna heurística voraz puede garantizar una cota de aproximación constante a menos que $P = NP$.</li>
 </ul>
 </li>
-<li><em>Conclusión:</em> En grafos generales, ninguna heurística voraz puede garantizar una cota de aproximación constante a menos que $P = NP$.</li>
 </ul>
 <hr />
 <h5>B. Algoritmo 2-Aproximado para TSP Métrico (con Desigualdad Triangular)</h5>
 <p>Cuando las distancias cumplen la <strong>desigualdad triangular</strong> ($c_{uw} \le c_{uv} + c_{vw}$ para todo $u, v, w$), existe un algoritmo polinomial que garantiza que el costo del tour es a lo sumo <strong>el doble del óptimo ($Tour \le 2 \cdot OPT$)</strong>.</p>
 <ul>
-<li><strong>Pasos del Algoritmo:</strong></li>
+<li><strong>Pasos del Algoritmo:</strong><ol>
 <li><strong>Árbol Generador Mínimo (MST):</strong> Construir un MST del grafo completo usando Kruskal o Prim en $O(n^2)$.</li>
 <li><strong>Duplicación de Aristas:</strong> Duplicar cada arista del MST. El grafo resultante es euleriano (todos los vértices tienen grado par).</li>
 <li><strong>Recorrido en Preorden con Atajos (<em>Shortcuts</em>):</strong> Realizar un recorrido DFS en preorden sobre el MST. Si un nodo ya fue visitado previamente, <strong>se saltea tomando un atajo directo</strong> hacia la siguiente ciudad no visitada, regresando finalmente al origen.</li>
+</ol>
+</li>
 </ul>
 <p><strong>Pseudocódigo del Algoritmo 2-Aproximado</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION TSP_Metrico2Aproximado(grafo_completo_con_pesos, n):
@@ -2689,63 +2825,111 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
         SI NO visitado[v]:
             DFS_Preorden(mst, v, visitado, tour)
 </code></pre></div>
-<p><strong>Demostración Rigurosa de la Garantía de Aproximación 2:</strong>
-1. Sea $T^<em>$ el tour óptimo de TSP y sea $OPT = Costo(T^</em>)$.
-2. Si removemos una arista cualquiera del tour óptimo $T^<em>$, obtenemos un camino simple que conecta todos los vértices del grafo. Todo camino que conecta todos los vértices es, por definición, un árbol generador.
-3. Como el MST es el árbol generador de <strong>mínimo costo posible</strong>, se cumple estrictamente:
-   $$Costo(MST) \le Costo(\text{camino simple}) \le Costo(T^</em>) = OPT$$
-4. El paseo euleriano que recorre cada arista del MST dos veces tiene un costo exacto de:
-   $$Costo(\text{Paseo}) = 2 \cdot Costo(MST) \le 2 \cdot OPT$$
-5. El algoritmo construye el tour final $T$ reemplazando secuencias de aristas del paseo por una arista directa (atajo) hacia la próxima ciudad no visitada.
-6. Gracias a la <strong>desigualdad triangular</strong> ($c_{uw} \le c_{uv} + c_{vw}$), cualquier atajo directo tiene un costo menor o igual al camino alternativo recorrido.
-7. Por ende:
-   $$Costo(T) \le Costo(\text{Paseo}) = 2 \cdot Costo(MST) \le 2 \cdot OPT$$
-8. <strong>Conclusión:</strong> El algoritmo corre en $O(n^2)$ y garantiza que $Costo(T) \le 2 \cdot OPT$.</p>
+<p><strong>Demostración Rigurosa de la Garantía de Aproximación 2:</strong></p>
+<ol>
+<li>Sea $T^<em>$ el tour óptimo de TSP y sea $OPT = Costo(T^</em>)$.</li>
+<li>Si removemos una arista cualquiera del tour óptimo $T^*$, obtenemos un camino simple que conecta todos los vértices del grafo. Todo camino que conecta todos los vértices es, por definición, un árbol generador.</li>
+<li>
+<p>Como el MST es el árbol generador de <strong>mínimo costo posible</strong>, se cumple estrictamente:
+   $$Costo(MST) \le Costo(\text{camino simple}) \le Costo(T^*) = OPT$$</p>
+</li>
+<li>
+<p>El paseo euleriano que recorre cada arista del MST dos veces tiene un costo exacto de:
+   $$Costo(\text{Paseo}) = 2 \cdot Costo(MST) \le 2 \cdot OPT$$</p>
+</li>
+<li>
+<p>El algoritmo construye el tour final $T$ reemplazando secuencias de aristas del paseo por una arista directa (atajo) hacia la próxima ciudad no visitada.</p>
+</li>
+<li>Gracias a la <strong>desigualdad triangular</strong> ($c_{uw} \le c_{uv} + c_{vw}$), cualquier atajo directo tiene un costo menor o igual al camino alternativo recorrido.</li>
+<li>
+<p>Por ende:
+   $$Costo(T) \le Costo(\text{Paseo}) = 2 \cdot Costo(MST) \le 2 \cdot OPT$$</p>
+</li>
+<li>
+<p><strong>Conclusión:</strong> El algoritmo corre en $O(n^2)$ y garantiza que $Costo(T) \le 2 \cdot OPT$.</p>
+</li>
+</ol>
 <hr />
 <h4>4. Paradigma Programación Lineal Entera (PLI) — Formulación MTZ</h4>
 <p>Para formular TSP en PLI, no basta con exigir que cada nodo tenga grado de entrada 1 y grado de salida 1 (eso admitiría <strong>subtours desconectados</strong>, por ejemplo dos triángulos aislados de 3 nodos en vez de un ciclo de 6). Se utiliza la <strong>formulación de Miller-Tucker-Zemlin (MTZ)</strong>:</p>
 <ul>
-<li><strong>Variables de Decisión:</strong></li>
+<li><strong>Variables de Decisión:</strong><ul>
 <li>$x_{ij} \in {0, 1}$ para todo $i, j \in {1, \dots, n}$ con $i \neq j$ (1 si se viaja directamente de la ciudad $i$ a la $j$, 0 si no).</li>
 <li>$u_i \in \mathbb{R}$ para $i \in {2, \dots, n}$: variable continua auxiliar que representa el <strong>orden de visita</strong> de la ciudad $i$ a lo largo del tour.</li>
-<li><strong>Función Objetivo:</strong>
-  $$\text{MINIMIZAR } Z = \sum_{i=1}^n \sum_{j=1, j \neq i}^n c_{ij} \cdot x_{ij}$$</li>
-<li><strong>Restricciones de Grado (Asignación):</strong></li>
-<li>Salir exactamente una vez de cada ciudad:
-     $$\sum_{j=1, j \neq i}^n x_{ij} = 1 \quad \forall i \in {1, \dots, n}$$</li>
-<li>Llegar exactamente una vez a cada ciudad:
-     $$\sum_{i=1, i \neq j}^n x_{ij} = 1 \quad \forall j \in {1, \dots, n}$$</li>
-<li><strong>Restricciones de Eliminación de Subtours (MTZ):</strong>
+</ul>
+</li>
+<li>
+<p><strong>Función Objetivo:</strong>
+  $$\text{MINIMIZAR } Z = \sum_{i=1}^n \sum_{j=1, j \neq i}^n c_{ij} \cdot x_{ij}$$</p>
+</li>
+<li>
+<p><strong>Restricciones de Grado (Asignación):</strong></p>
+<ol>
+<li>
+<p>Salir exactamente una vez de cada ciudad:
+ $$\sum_{j=1, j \neq i}^n x_{ij} = 1 \quad \forall i \in {1, \dots, n}$$</p>
+</li>
+<li>
+<p>Llegar exactamente una vez a cada ciudad:
+ $$\sum_{i=1, i \neq j}^n x_{ij} = 1 \quad \forall j \in {1, \dots, n}$$</p>
+</li>
+</ol>
+</li>
+<li>
+<p><strong>Restricciones de Eliminación de Subtours (MTZ):</strong>
   Para cada par de ciudades $i, j \in {2, \dots, n}$ con $i \neq j$:
-  $$u_i - u_j + n \cdot x_{ij} \le n - 1$$</li>
-<li><strong>Demostración de por qué MTZ Elimina Subtours:</strong></li>
+  $$u_i - u_j + n \cdot x_{ij} \le n - 1$$</p>
+</li>
+<li>
+<p><strong>Demostración de por qué MTZ Elimina Subtours:</strong></p>
+<ul>
 <li>Si $x_{ij} = 1$ (la arista pertenece al tour), la restricción impone $u_j \ge u_i + 1$.</li>
 <li>Si existiera un subtour desconectado que no pasa por la ciudad 1 con $k$ ciudades ($2 \le k &lt; n$), al sumar las restricciones a lo largo de las aristas del ciclo obtendríamos $n \cdot k \le (n - 1) \cdot k$, lo cual implica $n \le n - 1$ (una <strong>contradicción matemática absoluta</strong>). Por ende, ningún subtour desconectado es factible.</li>
-<li><strong>Recuento Riguroso para Examen:</strong></li>
+</ul>
+</li>
+<li><strong>Recuento Riguroso para Examen:</strong><ul>
 <li><strong>Variables:</strong> $n(n - 1)$ variables binarias $x_{ij} + (n - 1)$ variables continuas $u_i$. Total: $n^2 - 1$ variables.</li>
 <li><strong>Restricciones:</strong> $n$ de salida $+ n$ de entrada $+ (n - 1)(n - 2)$ restricciones MTZ. Total: $2n + n^2 - 3n + 2 = n^2 - n + 2$ restricciones (orden $O(n^2)$, frente a las $O(2^n)$ de la formulación DFJ).</li>
+</ul>
+</li>
 </ul>
 <hr />
 <h4>5. Reducciones Polinomiales y Complejidad NP-Completa</h4>
 <ul>
-<li><strong>Problema de Decisión de TSP:</strong>
-  Dado un grafo ponderado $G = (V, E)$, matriz de costos $C = [c_{uv}]$ y un entero $K$, ¿existe un tour cerrado que visite cada ciudad exactamente una vez con costo total $\le K$?</li>
-<li><strong>Paso 1: TSP $\in$ NP:</strong></li>
+<li>
+<p><strong>Problema de Decisión de TSP:</strong>
+  Dado un grafo ponderado $G = (V, E)$, matriz de costos $C = [c_{uv}]$ y un entero $K$, ¿existe un tour cerrado que visite cada ciudad exactamente una vez con costo total $\le K$?</p>
+</li>
+<li>
+<p><strong>Paso 1: TSP $\in$ NP:</strong></p>
+<ul>
 <li><em>Certificado:</em> Una permutación ordenada de vértices $(v_1, v_2, \dots, v_n)$. Tamaño $O(n)$ (polinomial).</li>
 <li><em>Verificador:</em> Comprueba que todas las ciudades sean distintas, que existan las aristas $(v_i, v_{i+1})$ y $(v_n, v_1)$, y suma sus costos verificando que $\sum c \le K$. Corre en tiempo $O(n)$ (polinomial). Por lo tanto, <strong>TSP $\in$ NP</strong>.</li>
-<li><strong>Paso 2: Problema Conocido NP-Completo:</strong>
-  <strong>Ciclo Hamiltoniano (HC)</strong>: Dado un grafo no dirigido $G = (V, E)$, determinar si existe un ciclo simple que pase por todos los vértices.</li>
-<li><strong>Paso 3: Transformación Polinomial ($\text{HC} \le_P \text{TSP}$):</strong>
-  Dada una instancia de HC con grafo $G = (V, E)$:</li>
+</ul>
+</li>
+<li>
+<p><strong>Paso 2: Problema Conocido NP-Completo:</strong>
+  <strong>Ciclo Hamiltoniano (HC)</strong>: Dado un grafo no dirigido $G = (V, E)$, determinar si existe un ciclo simple que pase por todos los vértices.</p>
+</li>
+<li>
+<p><strong>Paso 3: Transformación Polinomial ($\text{HC} \le_P \text{TSP}$):</strong>
+  Dada una instancia de HC con grafo $G = (V, E)$:</p>
+<ol>
 <li>Construimos un grafo completo $G' = (V, E')$ con el mismo conjunto de vértices.</li>
-<li>Asignamos pesos a las aristas de $G'$:
-     $$c_{uv} = \begin{cases} 1 &amp; \text{si } (u, v) \in E \ 2 &amp; \text{si } (u, v) \notin E \end{cases}$$</li>
-<li>Fijamos la cota $K = |V|$.</li>
+<li>
+<p>Asignamos pesos a las aristas de $G'$:
+ $$c_{uv} = \begin{cases} 1 &amp; \text{si } (u, v) \in E \ 2 &amp; \text{si } (u, v) \notin E \end{cases}$$</p>
+</li>
+<li>
+<p>Fijamos la cota $K = |V|$.</p>
+</li>
 <li>La construcción se realiza en tiempo $O(|V|^2)$, estrictamente polinomial.</li>
 <li><strong>Paso 4: Equivalencia Lógica Bidireccional:</strong></li>
 <li>($\implies$) Si $G$ tiene un Ciclo Hamiltoniano, ese ciclo utiliza únicamente aristas que pertenecían a $E$, las cuales tienen peso 1 en $G'$. El costo total del ciclo en $G'$ es exactamente $1 \cdot |V| = |V| \le K$. Por lo tanto, existe un tour de TSP con costo $\le K$.</li>
 <li>($\impliedby$) Si $G'$ tiene un tour de TSP con costo total $\le |V|$: como el tour recorre exactamente $|V|$ aristas y cada arista cuesta al menos 1, la <strong>única forma</strong> de que la suma sea $\le |V|$ es que <strong>cada arista del tour cueste exactamente 1</strong>. Como solo las aristas originales de $E$ tienen costo 1, todas las aristas del tour pertenecen a $E$, constituyendo un Ciclo Hamiltoniano válido en $G$.</li>
 <li><strong>Conclusión:</strong> TSP es <strong>NP-Completo</strong>.</li>
+</ol>
+</li>
 </ul>
 <hr />
 <h4>6. Tabla Comparativa Maestra: El Viajante de Comercio en los 5 Paradigmas</h4>
