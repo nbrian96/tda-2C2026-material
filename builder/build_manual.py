@@ -156,14 +156,19 @@ def verify_pdf():
         print("      Herramienta pdftotext no detectada; validación por tamaño completada con éxito.")
 
 def main():
+    skip_pdf = "--no-pdf" in sys.argv
     print("=" * 70)
     print("INICIANDO CONSTRUCCIÓN DEL MANUAL DE PARCIALES DE TDA")
     print("=" * 70)
     md_text = assemble_markdown()
     verify_markdown(md_text)
     convert_to_html(md_text)
-    generate_pdf()
-    verify_pdf()
+    if not skip_pdf:
+        generate_pdf()
+        verify_pdf()
+    else:
+        print("[4/5] Omitiendo compilación de PDF (--no-pdf solicitado).")
+        print("[5/5] Omitiendo verificación de PDF.")
     print("=" * 70)
     print("CONSTRUCCIÓN COMPLETADA CON ÉXITO")
     print("=" * 70)

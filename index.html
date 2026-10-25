@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Teoría de Algoritmos — Guía Interactiva de Parciales (FIUBA)</title>
+<!-- KaTeX para renderizado matemático ultra veloz -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<!-- Mermaid para diagramas de flujo y grafos dinámicos -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <style>
 
 :root {
@@ -231,6 +237,134 @@ blockquote {
   padding: 10px 14px;
   margin: 12px 0;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* KaTeX Mathematical Formulas */
+.katex {
+  font-size: 1.05em;
+}
+.katex-display {
+  margin: 16px 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 0;
+}
+body.dark-mode .katex {
+  color: #e2e8f0;
+}
+
+/* Proof & Theoretical Cards */
+.proof-card {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-left: 4px solid #3b82f6;
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin: 14px 0;
+}
+body.dark-mode .proof-card {
+  background: #1e293b;
+  border-color: #334155;
+  border-left-color: #60a5fa;
+}
+.proof-card-header {
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Visual Decision & Flow Nodes */
+.visual-trace-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+.trace-node {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  border: 2px solid var(--accent-color);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: 700;
+  font-size: 9.5pt;
+  color: var(--primary-color);
+  min-width: 44px;
+  box-shadow: var(--shadow-sm);
+}
+body.dark-mode .trace-node {
+  background: #0f172a;
+  border-color: #63b3ed;
+  color: #90cdf4;
+}
+.trace-node.start-node {
+  border-color: #10b981;
+  color: #065f46;
+}
+body.dark-mode .trace-node.start-node {
+  border-color: #34d399;
+  color: #6ee7b7;
+}
+.trace-node.end-node {
+  border-color: #8b5cf6;
+  color: #5b21b6;
+}
+body.dark-mode .trace-node.end-node {
+  border-color: #a78bfa;
+  color: #c4b5fd;
+}
+.trace-arrow {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 8pt;
+  font-weight: 700;
+  color: #059669;
+  padding: 0 4px;
+}
+body.dark-mode .trace-arrow {
+  color: #34d399;
+}
+.trace-arrow .arrow-op {
+  background: rgba(16, 185, 129, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+}
+body.dark-mode .trace-arrow .arrow-op {
+  background: rgba(52, 211, 153, 0.2);
+}
+
+/* Mermaid Wrapper */
+.mermaid-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin: 16px 0;
+  overflow-x: auto;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+body.dark-mode .mermaid-wrapper {
+  background: #1e293b;
+  border-color: #334155;
+}
+.mermaid {
+  display: flex;
+  justify-content: center;
 }
 
 /* HUD Top Bar */
@@ -3270,12 +3404,12 @@ FUNCION SubsetSumRec(L, indice, remanente, solucion):
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado</strong><br />
-Dado un número natural K, se desea obtener la mínima cantidad de operaciones para llegar desde 0 hasta K, sabiendo que las operaciones permitidas son:<br />
-(i) Aumentar el valor del operando en 1 (x ← x + 1).<br />
-(ii) Duplicar el valor del operando (x ← 2x).<br />
+Dado un número natural $K$, se desea obtener la mínima cantidad de operaciones para llegar desde $0$ hasta $K$, sabiendo que las operaciones permitidas son:<br />
+(i) Aumentar el valor del operando en 1 ($x \leftarrow x + 1$).<br />
+(ii) Duplicar el valor del operando ($x \leftarrow 2x$).<br />
 Implementar un algoritmo que, por programación dinámica, obtenga la menor cantidad de operaciones a realizar y detalle la secuencia exacta de dichas operaciones. Desarrollar la ecuación de recurrencia. Indicar y justificar la complejidad temporal y espacial.</p>
 <p><strong>Qué está evaluando</strong><br />
-Modelado del estado en 1D, razonamiento hacia adelante o hacia atrás (K → 0), planteo de la recurrencia con paridad y reconstrucción de la secuencia de pasos.</p>
+Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguroso de la recurrencia con análisis de paridad, demostración formal de optimalidad y reconstrucción exacta de la secuencia de operaciones.</p>
     </div>
 
     <details open class="exercise-solution-drawer" id="solution-drawer-13">
@@ -3285,48 +3419,270 @@ Modelado del estado en 1D, razonamiento hacia adelante o hacia atrás (K → 0),
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong><br />
-* <em>Perspectiva inversa (i → 0):</em> Pensar cómo llegar a un número i:
-  * Siempre podemos llegar desde i - 1 aplicando la operación +1.
-  * Si i es par, también podemos llegar desde i / 2 aplicando la operación × 2.
-* <em>Definición del Estado:</em><br />
-  OPT(i): Mínima cantidad de operaciones necesarias para alcanzar el valor i partiendo desde 0.
-* <em>Casos Base:</em><br />
-  OPT(0) = 0 (ya estamos en 0, 0 operaciones).
-* <em>Ecuación de Recurrencia:</em><br />
-  Para i ≥ 1:  </p>
-<blockquote>
-<p><strong>OPT(i) = OPT(i - 1) + 1</strong> (si i es impar)<br />
-<strong>OPT(i) = min(OPT(i - 1) + 1, OPT(i / 2) + 1)</strong> (si i es par)
-* <em>Reconstrucción:</em> Retrocedemos desde K hasta 0: si K es par y OPT(K) = OPT(K/2) + 1, la última operación fue duplicar; si no, fue sumar 1.</p>
-</blockquote>
-<p><strong>Pseudocódigo</strong></p>
+        <p><strong>Idea de resolución y Perspectiva Inversa</strong><br />
+* <em>Perspectiva hacia atrás ($i \to 0$):</em> Pensar cómo llegar a un número $i$:
+  * Siempre podemos llegar desde $i - 1$ aplicando la operación $+1$.
+  * Si $i$ es par, también podemos llegar desde $i / 2$ aplicando la operación $\times 2$. Si $i$ es impar, es imposible haber llegado duplicando un entero.
+* <em>Casos trampa iniciales:</em> Desde $0$, la operación $\times 2$ no genera avance ($0 \times 2 = 0$). El primer paso hacia adelante siempre debe ser $+1$ (hacia 1).</p>
+<h4>Los Cinco Pasos Obligatorios de Programación Dinámica (Criterio FIUBA)</h4>
+<ol>
+<li>
+<p><strong>Definición Formal del Estado:</strong><br />
+   $$OPT(i) = \text{Mínima cantidad de operaciones necesarias para alcanzar el valor } i \text{ partiendo desde } 0.$$</p>
+</li>
+<li>
+<p><strong>Casos Base:</strong>  </p>
+</li>
+<li>$OPT(0) = 0$: Ya estamos en el origen, se requieren $0$ operaciones.  </li>
+<li>
+<p>$OPT(1) = 1$: Única transición válida es $0 + 1 = 1$, pues $0 \times 2 = 0$ no avanza.</p>
+</li>
+<li>
+<p><strong>Ecuación de Recurrencia:</strong><br />
+   Para todo $i \ge 1$:
+   $$OPT(i) = \begin{cases} 
+   OPT(i - 1) + 1 &amp; \text{si } i \text{ es impar} \
+   \min\Big(OPT(i - 1) + 1, \; OPT\left(\frac{i}{2}\right) + 1\Big) &amp; \text{si } i \text{ es par}
+   \end{cases}$$</p>
+</li>
+<li>
+<p><strong>Orden de Llenado de la Tabla:</strong><br />
+   Iteración unidireccional creciente (Bottom-Up) desde $i = 1$ hasta $K$.<br />
+<em>Justificación:</em> Cada estado $i$ solo depende de $i - 1$ y $i / 2$. Como ambos predecesores son estrictamente menores que $i$, todos los subproblemas necesarios ya habrán sido resueltos y almacenados previamente en el DAG de dependencias.</p>
+</li>
+<li>
+<p><strong>Algoritmo de Reconstrucción de la Secuencia:</strong><br />
+   Retrocedemos desde $K$ hasta $0$ consultando el arreglo de predecesores <code>padre[i]</code>. Si $padre[i] = i / 2$, la operación fue $\times 2$; en caso contrario, fue $+1$. Se invierte la lista resultante para presentar la secuencia en orden cronológico de $0$ a $K$.</p>
+</li>
+</ol>
+<h4>Demostración Rigurosa de Correctitud (Por qué la solución es la correcta)</h4>
+<div class="proof-card">
+  <div class="proof-card-header">🛡️ 1. Exhaustividad en el Espacio de Decisiones</div>
+  <p>Dado que las únicas operaciones permitidas en el universo del problema son $+1$ y $\times 2$:</p>
+  <ul>
+    <li>Si el último paso fue $+1$, el estado predecesor fue necesariamente $(i - 1)$. Opción válida para todo $i \ge 1$.</li>
+    <li>Si el último paso fue $\times 2$, el estado predecesor fue necesariamente $(i / 2)$. Esta opción <strong>solo existe si $i$ es par</strong>, ya que ningún número entero multiplicado por $2$ produce un entero impar.</li>
+  </ul>
+  <p>Por lo tanto, el conjunto de predecesores posibles es exhaustivo: $\{i - 1\}$ si $i$ es impar, o $\{i - 1, i/2\}$ si $i$ es par. No existe ningún otro camino admisible.</p>
+</div>
+
+<div class="proof-card">
+  <div class="proof-card-header">🛡️ 2. Subestructura Óptima (Demostración por Reducción al Absurdo / Cut-and-Paste)</div>
+  <p>Supongamos que el camino óptimo global para llegar a $i$ termina con la operación $+1$, viniendo de $i - 1$, con costo $C = \text{costo}(0 \to i-1) + 1$.</p>
+  <p>Si el subcamino $(0 \to i - 1)$ no fuera óptimo, existiría un camino alternativo con menor costo $C' < \text{costo}(0 \to i - 1)$. Reemplazando dicho subcamino, obtendríamos un camino a $i$ con costo $C' + 1 < C$, lo cual contradice que $C$ era la cantidad mínima de operaciones para $i$.</p>
+  <p>El mismo razonamiento aplica si el último paso fue $\times 2$ desde $i / 2$. En consecuencia, $OPT(i)$ se construye necesariamente a partir de la solución óptima de uno de sus predecesores inmediatos.</p>
+</div>
+
+<div class="proof-card">
+  <div class="proof-card-header">🛡️ 3. Ausencia de Ciclos y Orden Topológico</div>
+  <p>Para todo $i \ge 1$, se cumple estrictamente que $i - 1 < i$ y $i / 2 < i$. El grafo de dependencias de subproblemas es un <strong>DAG (Grafo Acíclico Dirigido)</strong>, garantizando que el llenado secuencial $1, 2, \dots, K$ respeta el orden topológico sin generar llamadas recursivas circulares.</p>
+</div>
+
+<div class="proof-card">
+  <div class="proof-card-header">🛡️ 4. Inducción Fuerte sobre K</div>
+  <p><strong>Base ($K=0, K=1$):</strong> $OPT(0)=0$ y $OPT(1)=1$ son óptimos triviales comprobables de forma directa.</p>
+  <p><strong>Paso Inductivo:</strong> Asumiendo como hipótesis inductiva que $DP[j] = OPT(j)$ para todo $0 \le j < i$, el cálculo $DP[i] = \min_{p \in \text{Pred}(i)}(DP[p] + 1)$ evalúa exhaustivamente el óptimo sobre todos los predecesores válidos, garantizando por inducción matemática que $DP[i] = OPT(i)$ para todo $i \ge 0$.</p>
+</div>
+
+<h4>Diagrama de Flujo y Grafo Acíclico (DAG) de Decisiones</h4>
+<p>A continuación se representa el flujo de decisión iterativo y el grafo de transiciones óptimas para $K = 10$:</p>
+<div class="mermaid-wrapper"><div class="mermaid">flowchart TD
+    A(["Inicio: K = 10"]) --> B["DP[0] = 0"]
+    B --> C["Bucle i de 1 hasta K"]
+    C --> D["Candidato 1: DP[i-1] + 1 (Sumar 1)"]
+    D --> E{"¿i es par? (i % 2 == 0)"}
+    E -- No --> F["DP[i] = DP[i-1] + 1<br/>padre[i] = i - 1<br/>op[i] = '+1'"]
+    E -- Sí --> G{"¿DP[i/2] + 1 < DP[i]?"}
+    G -- Sí --> H["DP[i] = DP[i/2] + 1<br/>padre[i] = i / 2<br/>op[i] = '*2'"]
+    G -- No --> F
+    F --> I{"¿i == K?"}
+    H --> I
+    I -- No --> C
+    I -- Sí --> J["Backtracking desde K = 10 hasta 0 usando padre[actual]"]
+    J --> K(["Retornar DP[10] = 5 y secuencia"])
+</div></div>
+<div class="mermaid-wrapper"><div class="mermaid">graph LR
+    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff;
+    classDef normal fill:#475569,stroke:#334155,stroke-width:1px,color:#fff;
+
+    N0["0"]:::opt -->|"+1"| N1["1"]:::opt
+    N1 -->|"×2"| N2["2"]:::opt
+    N2 -->|"+1"| N3["3"]:::normal
+    N2 -->|"×2"| N4["4"]:::opt
+    N3 -->|"+1"| N4
+    N3 -->|"×2"| N6["6"]:::normal
+    N4 -->|"+1"| N5["5"]:::opt
+    N4 -->|"×2"| N8["8"]:::normal
+    N5 -->|"+1"| N6
+    N5 -->|"×2"| N10["10"]:::opt
+    N6 -->|"+1"| N7["7"]:::normal
+    N8 -->|"+1"| N9["9"]:::normal
+    N9 -->|"+1"| N10
+</div></div>
+<div class="visual-trace-container">
+  <span class="trace-node start-node">0</span>
+  <span class="trace-arrow"><span class="arrow-op">+1</span>➜</span>
+  <span class="trace-node">1</span>
+  <span class="trace-arrow"><span class="arrow-op">×2</span>➜</span>
+  <span class="trace-node">2</span>
+  <span class="trace-arrow"><span class="arrow-op">×2</span>➜</span>
+  <span class="trace-node">4</span>
+  <span class="trace-arrow"><span class="arrow-op">+1</span>➜</span>
+  <span class="trace-node">5</span>
+  <span class="trace-arrow"><span class="arrow-op">×2</span>➜</span>
+  <span class="trace-node end-node">10</span>
+</div>
+
+<h4>Tabla de Seguimiento Paso a Paso (Trace Table para $K = 10$)</h4>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">$i$</th>
+<th style="text-align: center;">Paridad</th>
+<th style="text-align: center;">Opción $+1$ ($DP[i-1]+1$)</th>
+<th style="text-align: center;">Opción $\times 2$ ($DP[i/2]+1$)</th>
+<th style="text-align: center;">$DP[i]$ Óptimo</th>
+<th style="text-align: center;">Decisión Tomada</th>
+<th style="text-align: center;"><code>padre[i]</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;">Par</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;">—</td>
+<td style="text-align: center;"><strong>0</strong></td>
+<td style="text-align: center;">Estado Inicial</td>
+<td style="text-align: center;">—</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;">Impar</td>
+<td style="text-align: center;">$DP[0] + 1 = 0 + 1 = \mathbf{1}$</td>
+<td style="text-align: center;">No aplica ($1$ es impar)</td>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;">$+1$ desde $0$</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: center;">Par</td>
+<td style="text-align: center;">$DP[1] + 1 = 1 + 1 = 2$</td>
+<td style="text-align: center;">$DP[1] + 1 = 1 + 1 = \mathbf{2}$</td>
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: center;">$\times 2$ desde $1$</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;">Impar</td>
+<td style="text-align: center;">$DP[2] + 1 = 2 + 1 = \mathbf{3}$</td>
+<td style="text-align: center;">No aplica ($3$ es impar)</td>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;">$+1$ desde $2$</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;">Par</td>
+<td style="text-align: center;">$DP[3] + 1 = 3 + 1 = 4$</td>
+<td style="text-align: center;">$DP[2] + 1 = 2 + 1 = \mathbf{3}$</td>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;">$\times 2$ desde $2$</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>5</strong></td>
+<td style="text-align: center;">Impar</td>
+<td style="text-align: center;">$DP[4] + 1 = 3 + 1 = \mathbf{4}$</td>
+<td style="text-align: center;">No aplica ($5$ es impar)</td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;">$+1$ desde $4$</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>6</strong></td>
+<td style="text-align: center;">Par</td>
+<td style="text-align: center;">$DP[5] + 1 = 4 + 1 = 5$</td>
+<td style="text-align: center;">$DP[3] + 1 = 3 + 1 = \mathbf{4}$</td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;">$\times 2$ desde $3$</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>7</strong></td>
+<td style="text-align: center;">Impar</td>
+<td style="text-align: center;">$DP[6] + 1 = 4 + 1 = \mathbf{5}$</td>
+<td style="text-align: center;">No aplica ($7$ es impar)</td>
+<td style="text-align: center;"><strong>5</strong></td>
+<td style="text-align: center;">$+1$ desde $6$</td>
+<td style="text-align: center;">6</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>8</strong></td>
+<td style="text-align: center;">Par</td>
+<td style="text-align: center;">$DP[7] + 1 = 5 + 1 = 6$</td>
+<td style="text-align: center;">$DP[4] + 1 = 3 + 1 = \mathbf{4}$</td>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;">$\times 2$ desde $4$</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>9</strong></td>
+<td style="text-align: center;">Impar</td>
+<td style="text-align: center;">$DP[8] + 1 = 4 + 1 = \mathbf{5}$</td>
+<td style="text-align: center;">No aplica ($9$ es impar)</td>
+<td style="text-align: center;"><strong>5</strong></td>
+<td style="text-align: center;">$+1$ desde $8$</td>
+<td style="text-align: center;">8</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>10</strong></td>
+<td style="text-align: center;">Par</td>
+<td style="text-align: center;">$DP[9] + 1 = 5 + 1 = 6$</td>
+<td style="text-align: center;">$DP[5] + 1 = 4 + 1 = \mathbf{5}$</td>
+<td style="text-align: center;"><strong>5</strong></td>
+<td style="text-align: center;">$\times 2$ desde $5$</td>
+<td style="text-align: center;">5</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Detalle de Reconstrucción (Backtracking desde $K = 10$):</strong>
+1. En $10$: <code>padre[10] = 5</code>, operación = $\times 2$.
+2. En $5$: <code>padre[5] = 4</code>, operación = $+1$.
+3. En $4$: <code>padre[4] = 2</code>, operación = $\times 2$.
+4. En $2$: <code>padre[2] = 1</code>, operación = $\times 2$.
+5. En $1$: <code>padre[1] = 0</code>, operación = $+1$.
+6. En $0$: Fin del recorrido.
+* <strong>Resultado exacto:</strong> $5$ operaciones mínimas: <code>[+1, ×2, ×2, +1, ×2]</code>.</p>
+<p><strong>Pseudocódigo Formal para Examen</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MinimasOperacionesAK(K):
     SI K = 0:
         RETORNAR (0, lista vacía)
 
-    // 1. Inicialización de la tabla DP y tabla de operaciones
+    // 1. Inicialización de la tabla DP y estructuras de reconstrucción
     INICIALIZAR DP como arreglo de tamaño (K + 1) en 0
     INICIALIZAR padre como arreglo de tamaño (K + 1) en 0
     INICIALIZAR op como arreglo de tamaño (K + 1) en cadenas vacías
 
     DP[0] &lt;- 0
 
-    // 2. Llenado bottom-up
+    // 2. Llenado Bottom-Up
     PARA i &lt;- 1 HASTA K:
-        // Opción 1: Sumar 1 desde (i - 1)
+        // Opción por defecto: Sumar 1 desde (i - 1)
         DP[i] &lt;- DP[i - 1] + 1
         padre[i] &lt;- i - 1
         op[i] &lt;- &quot;SUMAR_1&quot;
 
-        // Opción 2: Duplicar desde (i / 2) si i es par
+        // Opción alternativa: Duplicar desde (i / 2) si i es par
         SI (i MOD 2) = 0:
             SI DP[i / 2] + 1 &lt; DP[i]:
                 DP[i] &lt;- DP[i / 2] + 1
                 padre[i] &lt;- i / 2
                 op[i] &lt;- &quot;DUPLICAR&quot;
 
-    // 3. Reconstrucción de la secuencia de operaciones
+    // 3. Reconstrucción en reversa del camino óptimo
     INICIALIZAR secuencia como lista vacía
     actual &lt;- K
     MIENTRAS actual &gt; 0:
@@ -3335,16 +3691,60 @@ Modelado del estado en 1D, razonamiento hacia adelante o hacia atrás (K → 0),
 
     RETORNAR (DP[K], secuencia)
 </code></pre></div>
-<p><strong>Explicación del algoritmo</strong><br />
-El algoritmo construye una tabla lineal de tamaño K + 1. Cada celda i se resuelve en tiempo constante O(1) comparando a lo sumo dos estados previos (i - 1 y i / 2). El vector <code>padre</code> y <code>op</code> almacena el camino óptimo para reconstruir la secuencia en reversa.</p>
+<p><strong>Implementación en Python con Tipado Estricto</strong></p>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-python">from typing import List, Tuple
+
+def minimas_operaciones_a_k(k: int) -&gt; Tuple[int, List[str]]:
+    # Calcula la mínima cantidad de operaciones para llegar de 0 a K (+1, *2)
+    # utilizando Programación Dinámica en O(K).
+    if k == 0:
+        return 0, []
+
+    dp = [0] * (k + 1)
+    padre = [0] * (k + 1)
+    op = [&quot;&quot;] * (k + 1)
+
+    dp[0] = 0
+
+    for i in range(1, k + 1):
+        # Opción 1: Sumar 1
+        dp[i] = dp[i - 1] + 1
+        padre[i] = i - 1
+        op[i] = &quot;+1&quot;
+
+        # Opción 2: Duplicar si es par
+        if i % 2 == 0:
+            candidato = dp[i // 2] + 1
+            if candidato &lt; dp[i]:
+                dp[i] = candidato
+                padre[i] = i // 2
+                op[i] = &quot;*2&quot;
+
+    # Reconstrucción de la secuencia óptima
+    secuencia = []
+    actual = k
+    while actual &gt; 0:
+        secuencia.append(op[actual])
+        actual = padre[actual]
+
+    secuencia.reverse()
+    return dp[k], secuencia
+</code></pre></div>
 <p><strong>Complejidad</strong><br />
-* <strong>Tiempo:</strong> La tabla tiene K + 1 posiciones y cada una se calcula en O(1) comparaciones aritméticas. La reconstrucción hace a lo sumo K saltos. Complejidad temporal: <strong>O(K)</strong>.
-* <strong>Espacio:</strong> Arreglos de tamaño K + 1 para almacenar los costos y predecesores: <strong>O(K)</strong>.</p>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong><br />
-* Intentar duplicar desde 0: 0 × 2 = 0, duplicar solo tiene sentido a partir de x ≥ 1.
-* No guardar la reconstrucción de las operaciones cuando el enunciado pide explícitamente <em>"y cómo son dichas operaciones"</em>.</p></div>
-<p><strong>Variación típica de parcial</strong><br />
-* ¿Se puede resolver con Greedy en tiempo O(log K)? <strong>Sí:</strong> Partiendo de K hacia 0, si K es par siempre conviene dividir por 2; si es impar, restar 1. Pero el enunciado pide resolverlo obligatoriamente por Programación Dinámica.</p>
+* <strong>Temporal:</strong> $\mathcal{O}(K)$. La tabla tiene $K + 1$ posiciones y cada una se calcula en tiempo constante $\mathcal{O}(1)$ comparando a lo sumo dos candidatos aritméticos. La reconstrucción realiza a lo sumo $K$ saltos (en la práctica $\le 2 \log_2 K$ saltos), lo que toma $\mathcal{O}(\log K) \subseteq \mathcal{O}(K)$.
+* <strong>Espacial:</strong> $\mathcal{O}(K)$. Arreglos contiguos de tamaño $K + 1$ para almacenar los costos óptimos y punteros de retroceso.</p>
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme (Trampas de Corrección)</strong><br />
+* <strong>Intentar duplicar desde 0:</strong> $0 \times 2 = 0$. Duplicar solo genera avance a partir de $x \ge 1$.
+* <strong>No incluir la reconstrucción de operaciones:</strong> Si el enunciado pide explícitamente <em>"y cómo son dichas operaciones"</em>, no devolver la secuencia descuenta la mitad del puntaje del ejercicio.
+* <strong>No justificar la paridad:</strong> Es indispensable explicitar en la recurrencia que la opción $\times 2$ solo se evalúa cuando $(i \pmod 2) = 0$.</p></div>
+<p><strong>Variación típica de parcial (Pregunta Clave: DP vs Greedy)</strong><br />
+* <em>¿Se puede resolver con Greedy en tiempo $\mathcal{O}(\log K)$?</em><br />
+<strong>Sí:</strong> Pensando de $K$ hacia $0$, si $K$ es par siempre conviene dividir por $2$; si es impar, restar $1$. Esto toma $\mathcal{O}(\log K)$ pasos.
+* <em>¿Por qué entonces la cátedra exige Programación Dinámica?</em><br />
+  1. <strong>Consigna estricta:</strong> Si el enunciado impone DP, usar Greedy anula el ejercicio.<br />
+  2. <strong>Generalización ante variantes:</strong> La formulación de DP es genérica y se adapta de inmediato si se introducen reglas más complejas donde Greedy fracasa (por ejemplo, si existieran transiciones como $+3$, $\times 3$, o costos no unitarios para cada operación). Con DP, simplemente se agrega un nuevo término a la función $\min()$:
+     $$OPT(i) = \min\big(OPT(i-1) + c_{+1}, \; OPT(i/2) + c_{\times 2}, \; OPT(i-3) + c_{+3}\big)$$
+     En cambio, un enfoque voraz requeriraría una demostración formal de elección voraz (<em>Greedy Choice Property</em>) que con múltiples operaciones adicionales suele ser falsa.</p>
 <hr />
 <h3>Patrón de Ejercicio 4.2: Mochila 2D con Restricciones Lógicas</h3>
 <p>Aparece cuando la mochila tiene múltiples recursos acoplados (peso y volumen) y condiciones lógicas adicionales sobre subconjuntos específicos de elementos (exclusión mutua y obligatoriedad).</p>
@@ -6465,20 +6865,20 @@ Se define el problema de <strong>Asignación de Frecuencias (AF)</strong> de la 
 <p>Utilizá esta lista de verificación durante tu última hora de repaso antes de ingresar al aula:</p>
 <h3>A. Dominio de Paradigmas</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_27860" onchange="toggleChecklistItem('chk_27860', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_69578" onchange="toggleChecklistItem('chk_69578', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_22004" onchange="toggleChecklistItem('chk_22004', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_38679" onchange="toggleChecklistItem('chk_38679', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_42063" onchange="toggleChecklistItem('chk_42063', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_91395" onchange="toggleChecklistItem('chk_91395', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_22202" onchange="toggleChecklistItem('chk_22202', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_74358" onchange="toggleChecklistItem('chk_74358', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_45231" onchange="toggleChecklistItem('chk_45231', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_9963" onchange="toggleChecklistItem('chk_9963', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_51389" onchange="toggleChecklistItem('chk_51389', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_48040" onchange="toggleChecklistItem('chk_48040', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_75255" onchange="toggleChecklistItem('chk_75255', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_46960" onchange="toggleChecklistItem('chk_46960', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
 </ul>
 <h3>B. Ejecución en la Hoja de Examen</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_33637" onchange="toggleChecklistItem('chk_33637', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_35415" onchange="toggleChecklistItem('chk_35415', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_58604" onchange="toggleChecklistItem('chk_58604', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_39259" onchange="toggleChecklistItem('chk_39259', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_9946" onchange="toggleChecklistItem('chk_9946', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_87963" onchange="toggleChecklistItem('chk_87963', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_77929" onchange="toggleChecklistItem('chk_77929', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_29962" onchange="toggleChecklistItem('chk_29962', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
 </ul>
 </main>
 <script>
@@ -6606,7 +7006,38 @@ document.addEventListener("DOMContentLoaded", () => {
   updateModeUI();
   applyFilters();
   initTrainer();
+  initMathRendering();
+  initMermaidDiagrams();
 });
+
+function initMathRendering() {
+  if (typeof renderMathInElement === "function") {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\(", right: "\)", display: false },
+        { left: "\[", right: "\]", display: true }
+      ],
+      ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+      throwOnError: false
+    });
+  }
+}
+
+function initMermaidDiagrams() {
+  if (typeof mermaid === "undefined") return;
+  const isDark = document.body.classList.contains("dark-mode");
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: isDark ? "dark" : "neutral",
+    securityLevel: "loose",
+    themeVariables: {
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    }
+  });
+  mermaid.run({ querySelector: ".mermaid" });
+}
 
 // Al imprimir desde el navegador (Ctrl+P), expandir todas las soluciones
 window.addEventListener("beforeprint", () => {

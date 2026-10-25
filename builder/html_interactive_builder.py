@@ -48,7 +48,7 @@ PARADIGMS = {
 }
 
 SOLUTION_MARKERS = [
-    r"<p><strong>Idea de resolución</strong>",
+    r"<p><strong>Idea de resolución",
     r"<p><strong>Pseudocódigo",
     r"<p><strong>Modelo Matemático",
     r"<p><strong>Resolución",
@@ -91,8 +91,16 @@ def format_exercise_card(num, title, body_html):
     code_pattern = r"(<pre><code(?:\s+class=\"([^\"]*)\")?>)(.*?)(</code></pre>)"
     def replace_code_block(match):
         code_tag_start = match.group(1)
+        code_class = match.group(2) or ""
         code_content = match.group(3)
         code_tag_end = match.group(4)
+        if "mermaid" in code_class:
+            clean_content = html.unescape(code_content)
+            return (
+                f'<div class="mermaid-wrapper">'
+                f'<div class="mermaid">{clean_content}</div>'
+                f'</div>'
+            )
         return (
             f'<div class="code-container">'
             f'<button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button>'
@@ -100,10 +108,13 @@ def format_exercise_card(num, title, body_html):
             f'</div>'
         )
     
+    if statement_html:
+        statement_html = re.sub(code_pattern, replace_code_block, statement_html, flags=re.DOTALL)
+
     if solution_html:
         solution_html = re.sub(code_pattern, replace_code_block, solution_html, flags=re.DOTALL)
         
-        trap_pattern = r"(<p><strong>(?:Trampas habituales de corrección|Puntos donde puedo equivocarme)</strong>.*?</p>(?:<ul>.*?</ul>)?)"
+        trap_pattern = r"(<p><strong>(?:Trampas habituales de corrección|Puntos donde puedo equivocarme).*?</strong>.*?</p>(?:<ul>.*?</ul>)?)"
         def replace_trap(m):
             return f'<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>{m.group(1)}</div>'
         solution_html = re.sub(trap_pattern, replace_trap, solution_html, flags=re.DOTALL)
@@ -676,6 +687,134 @@ blockquote {
   padding: 10px 14px;
   margin: 12px 0;
   border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+
+/* KaTeX Mathematical Formulas */
+.katex {
+  font-size: 1.05em;
+}
+.katex-display {
+  margin: 16px 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 8px 0;
+}
+body.dark-mode .katex {
+  color: #e2e8f0;
+}
+
+/* Proof & Theoretical Cards */
+.proof-card {
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  border-left: 4px solid #3b82f6;
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin: 14px 0;
+}
+body.dark-mode .proof-card {
+  background: #1e293b;
+  border-color: #334155;
+  border-left-color: #60a5fa;
+}
+.proof-card-header {
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Visual Decision & Flow Nodes */
+.visual-trace-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 16px 0;
+  padding: 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+.trace-node {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f1f5f9;
+  border: 2px solid var(--accent-color);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-weight: 700;
+  font-size: 9.5pt;
+  color: var(--primary-color);
+  min-width: 44px;
+  box-shadow: var(--shadow-sm);
+}
+body.dark-mode .trace-node {
+  background: #0f172a;
+  border-color: #63b3ed;
+  color: #90cdf4;
+}
+.trace-node.start-node {
+  border-color: #10b981;
+  color: #065f46;
+}
+body.dark-mode .trace-node.start-node {
+  border-color: #34d399;
+  color: #6ee7b7;
+}
+.trace-node.end-node {
+  border-color: #8b5cf6;
+  color: #5b21b6;
+}
+body.dark-mode .trace-node.end-node {
+  border-color: #a78bfa;
+  color: #c4b5fd;
+}
+.trace-arrow {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 8pt;
+  font-weight: 700;
+  color: #059669;
+  padding: 0 4px;
+}
+body.dark-mode .trace-arrow {
+  color: #34d399;
+}
+.trace-arrow .arrow-op {
+  background: rgba(16, 185, 129, 0.12);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+}
+body.dark-mode .trace-arrow .arrow-op {
+  background: rgba(52, 211, 153, 0.2);
+}
+
+/* Mermaid Wrapper */
+.mermaid-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  margin: 16px 0;
+  overflow-x: auto;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+body.dark-mode .mermaid-wrapper {
+  background: #1e293b;
+  border-color: #334155;
+}
+.mermaid {
+  display: flex;
+  justify-content: center;
 }
 
 /* HUD Top Bar */
@@ -2023,7 +2162,38 @@ document.addEventListener("DOMContentLoaded", () => {
   updateModeUI();
   applyFilters();
   initTrainer();
+  initMathRendering();
+  initMermaidDiagrams();
 });
+
+function initMathRendering() {
+  if (typeof renderMathInElement === "function") {
+    renderMathInElement(document.body, {
+      delimiters: [
+        { left: "$$", right: "$$", display: true },
+        { left: "$", right: "$", display: false },
+        { left: "\\(", right: "\\)", display: false },
+        { left: "\\[", right: "\\]", display: true }
+      ],
+      ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code"],
+      throwOnError: false
+    });
+  }
+}
+
+function initMermaidDiagrams() {
+  if (typeof mermaid === "undefined") return;
+  const isDark = document.body.classList.contains("dark-mode");
+  mermaid.initialize({
+    startOnLoad: false,
+    theme: isDark ? "dark" : "neutral",
+    securityLevel: "loose",
+    themeVariables: {
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    }
+  });
+  mermaid.run({ querySelector: ".mermaid" });
+}
 
 // Al imprimir desde el navegador (Ctrl+P), expandir todas las soluciones
 window.addEventListener("beforeprint", () => {
@@ -2449,6 +2619,12 @@ def build_interactive_html(md_text, output_file):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Teoría de Algoritmos — Guía Interactiva de Parciales (FIUBA)</title>
+<!-- KaTeX para renderizado matemático ultra veloz -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+<!-- Mermaid para diagramas de flujo y grafos dinámicos -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <style>
 {css_styles}
 </style>

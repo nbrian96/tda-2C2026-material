@@ -1239,57 +1239,182 @@ Problemas de cálculo de pasos mínimos o secuencias de transformación entre do
 **Origen:** Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 2 / Guía 04 Ejercicio 11
 
 **Enunciado**  
-Dado un número natural K, se desea obtener la mínima cantidad de operaciones para llegar desde 0 hasta K, sabiendo que las operaciones permitidas son:  
-(i) Aumentar el valor del operando en 1 (x ← x + 1).  
-(ii) Duplicar el valor del operando (x ← 2x).  
+Dado un número natural $K$, se desea obtener la mínima cantidad de operaciones para llegar desde $0$ hasta $K$, sabiendo que las operaciones permitidas son:  
+(i) Aumentar el valor del operando en 1 ($x \leftarrow x + 1$).  
+(ii) Duplicar el valor del operando ($x \leftarrow 2x$).  
 Implementar un algoritmo que, por programación dinámica, obtenga la menor cantidad de operaciones a realizar y detalle la secuencia exacta de dichas operaciones. Desarrollar la ecuación de recurrencia. Indicar y justificar la complejidad temporal y espacial.
 
 **Qué está evaluando**  
-Modelado del estado en 1D, razonamiento hacia adelante o hacia atrás (K → 0), planteo de la recurrencia con paridad y reconstrucción de la secuencia de pasos.
+Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguroso de la recurrencia con análisis de paridad, demostración formal de optimalidad y reconstrucción exacta de la secuencia de operaciones.
 
-**Idea de resolución**  
-* *Perspectiva inversa (i → 0):* Pensar cómo llegar a un número i:
-  * Siempre podemos llegar desde i - 1 aplicando la operación +1.
-  * Si i es par, también podemos llegar desde i / 2 aplicando la operación × 2.
-* *Definición del Estado:*  
-  OPT(i): Mínima cantidad de operaciones necesarias para alcanzar el valor i partiendo desde 0.
-* *Casos Base:*  
-  OPT(0) = 0 (ya estamos en 0, 0 operaciones).
-* *Ecuación de Recurrencia:*  
-  Para i ≥ 1:  
-  > **OPT(i) = OPT(i - 1) + 1** (si i es impar)  
-  > **OPT(i) = min(OPT(i - 1) + 1, OPT(i / 2) + 1)** (si i es par)
-* *Reconstrucción:* Retrocedemos desde K hasta 0: si K es par y OPT(K) = OPT(K/2) + 1, la última operación fue duplicar; si no, fue sumar 1.
+**Idea de resolución y Perspectiva Inversa**  
+* *Perspectiva hacia atrás ($i \to 0$):* Pensar cómo llegar a un número $i$:
+  * Siempre podemos llegar desde $i - 1$ aplicando la operación $+1$.
+  * Si $i$ es par, también podemos llegar desde $i / 2$ aplicando la operación $\times 2$. Si $i$ es impar, es imposible haber llegado duplicando un entero.
+* *Casos trampa iniciales:* Desde $0$, la operación $\times 2$ no genera avance ($0 \times 2 = 0$). El primer paso hacia adelante siempre debe ser $+1$ (hacia 1).
 
-**Pseudocódigo**
+#### Los Cinco Pasos Obligatorios de Programación Dinámica (Criterio FIUBA)
+
+1. **Definición Formal del Estado:**  
+   $$OPT(i) = \text{Mínima cantidad de operaciones necesarias para alcanzar el valor } i \text{ partiendo desde } 0.$$
+
+2. **Casos Base:**  
+   * $OPT(0) = 0$: Ya estamos en el origen, se requieren $0$ operaciones.  
+   * $OPT(1) = 1$: Única transición válida es $0 + 1 = 1$, pues $0 \times 2 = 0$ no avanza.
+
+3. **Ecuación de Recurrencia:**  
+   Para todo $i \ge 1$:
+   $$OPT(i) = \begin{cases} 
+   OPT(i - 1) + 1 & \text{si } i \text{ es impar} \\
+   \min\Big(OPT(i - 1) + 1, \; OPT\left(\frac{i}{2}\right) + 1\Big) & \text{si } i \text{ es par}
+   \end{cases}$$
+
+4. **Orden de Llenado de la Tabla:**  
+   Iteración unidireccional creciente (Bottom-Up) desde $i = 1$ hasta $K$.  
+   *Justificación:* Cada estado $i$ solo depende de $i - 1$ y $i / 2$. Como ambos predecesores son estrictamente menores que $i$, todos los subproblemas necesarios ya habrán sido resueltos y almacenados previamente en el DAG de dependencias.
+
+5. **Algoritmo de Reconstrucción de la Secuencia:**  
+   Retrocedemos desde $K$ hasta $0$ consultando el arreglo de predecesores `padre[i]`. Si $padre[i] = i / 2$, la operación fue $\times 2$; en caso contrario, fue $+1$. Se invierte la lista resultante para presentar la secuencia en orden cronológico de $0$ a $K$.
+
+#### Demostración Rigurosa de Correctitud (Por qué la solución es la correcta)
+
+<div class="proof-card">
+  <div class="proof-card-header">🛡️ 1. Exhaustividad en el Espacio de Decisiones</div>
+  <p>Dado que las únicas operaciones permitidas en el universo del problema son $+1$ y $\times 2$:</p>
+  <ul>
+    <li>Si el último paso fue $+1$, el estado predecesor fue necesariamente $(i - 1)$. Opción válida para todo $i \ge 1$.</li>
+    <li>Si el último paso fue $\times 2$, el estado predecesor fue necesariamente $(i / 2)$. Esta opción <strong>solo existe si $i$ es par</strong>, ya que ningún número entero multiplicado por $2$ produce un entero impar.</li>
+  </ul>
+  <p>Por lo tanto, el conjunto de predecesores posibles es exhaustivo: $\{i - 1\}$ si $i$ es impar, o $\{i - 1, i/2\}$ si $i$ es par. No existe ningún otro camino admisible.</p>
+</div>
+
+<div class="proof-card">
+  <div class="proof-card-header">🛡️ 2. Subestructura Óptima (Demostración por Reducción al Absurdo / Cut-and-Paste)</div>
+  <p>Supongamos que el camino óptimo global para llegar a $i$ termina con la operación $+1$, viniendo de $i - 1$, con costo $C = \text{costo}(0 \to i-1) + 1$.</p>
+  <p>Si el subcamino $(0 \to i - 1)$ no fuera óptimo, existiría un camino alternativo con menor costo $C' < \text{costo}(0 \to i - 1)$. Reemplazando dicho subcamino, obtendríamos un camino a $i$ con costo $C' + 1 < C$, lo cual contradice que $C$ era la cantidad mínima de operaciones para $i$.</p>
+  <p>El mismo razonamiento aplica si el último paso fue $\times 2$ desde $i / 2$. En consecuencia, $OPT(i)$ se construye necesariamente a partir de la solución óptima de uno de sus predecesores inmediatos.</p>
+</div>
+
+<div class="proof-card">
+  <div class="proof-card-header">🛡️ 3. Ausencia de Ciclos y Orden Topológico</div>
+  <p>Para todo $i \ge 1$, se cumple estrictamente que $i - 1 < i$ y $i / 2 < i$. El grafo de dependencias de subproblemas es un <strong>DAG (Grafo Acíclico Dirigido)</strong>, garantizando que el llenado secuencial $1, 2, \dots, K$ respeta el orden topológico sin generar llamadas recursivas circulares.</p>
+</div>
+
+<div class="proof-card">
+  <div class="proof-card-header">🛡️ 4. Inducción Fuerte sobre K</div>
+  <p><strong>Base ($K=0, K=1$):</strong> $OPT(0)=0$ y $OPT(1)=1$ son óptimos triviales comprobables de forma directa.</p>
+  <p><strong>Paso Inductivo:</strong> Asumiendo como hipótesis inductiva que $DP[j] = OPT(j)$ para todo $0 \le j < i$, el cálculo $DP[i] = \min_{p \in \text{Pred}(i)}(DP[p] + 1)$ evalúa exhaustivamente el óptimo sobre todos los predecesores válidos, garantizando por inducción matemática que $DP[i] = OPT(i)$ para todo $i \ge 0$.</p>
+</div>
+
+#### Diagrama de Flujo y Grafo Acíclico (DAG) de Decisiones
+
+A continuación se representa el flujo de decisión iterativo y el grafo de transiciones óptimas para $K = 10$:
+
+```mermaid
+flowchart TD
+    A(["Inicio: K = 10"]) --> B["DP[0] = 0"]
+    B --> C["Bucle i de 1 hasta K"]
+    C --> D["Candidato 1: DP[i-1] + 1 (Sumar 1)"]
+    D --> E{"¿i es par? (i % 2 == 0)"}
+    E -- No --> F["DP[i] = DP[i-1] + 1<br/>padre[i] = i - 1<br/>op[i] = '+1'"]
+    E -- Sí --> G{"¿DP[i/2] + 1 < DP[i]?"}
+    G -- Sí --> H["DP[i] = DP[i/2] + 1<br/>padre[i] = i / 2<br/>op[i] = '*2'"]
+    G -- No --> F
+    F --> I{"¿i == K?"}
+    H --> I
+    I -- No --> C
+    I -- Sí --> J["Backtracking desde K = 10 hasta 0 usando padre[actual]"]
+    J --> K(["Retornar DP[10] = 5 y secuencia"])
+```
+
+```mermaid
+graph LR
+    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff;
+    classDef normal fill:#475569,stroke:#334155,stroke-width:1px,color:#fff;
+
+    N0["0"]:::opt -->|"+1"| N1["1"]:::opt
+    N1 -->|"×2"| N2["2"]:::opt
+    N2 -->|"+1"| N3["3"]:::normal
+    N2 -->|"×2"| N4["4"]:::opt
+    N3 -->|"+1"| N4
+    N3 -->|"×2"| N6["6"]:::normal
+    N4 -->|"+1"| N5["5"]:::opt
+    N4 -->|"×2"| N8["8"]:::normal
+    N5 -->|"+1"| N6
+    N5 -->|"×2"| N10["10"]:::opt
+    N6 -->|"+1"| N7["7"]:::normal
+    N8 -->|"+1"| N9["9"]:::normal
+    N9 -->|"+1"| N10
+```
+
+<div class="visual-trace-container">
+  <span class="trace-node start-node">0</span>
+  <span class="trace-arrow"><span class="arrow-op">+1</span>➜</span>
+  <span class="trace-node">1</span>
+  <span class="trace-arrow"><span class="arrow-op">×2</span>➜</span>
+  <span class="trace-node">2</span>
+  <span class="trace-arrow"><span class="arrow-op">×2</span>➜</span>
+  <span class="trace-node">4</span>
+  <span class="trace-arrow"><span class="arrow-op">+1</span>➜</span>
+  <span class="trace-node">5</span>
+  <span class="trace-arrow"><span class="arrow-op">×2</span>➜</span>
+  <span class="trace-node end-node">10</span>
+</div>
+
+#### Tabla de Seguimiento Paso a Paso (Trace Table para $K = 10$)
+
+| $i$ | Paridad | Opción $+1$ ($DP[i-1]+1$) | Opción $\times 2$ ($DP[i/2]+1$) | $DP[i]$ Óptimo | Decisión Tomada | `padre[i]` |
+|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| **0** | Par | — | — | **0** | Estado Inicial | — |
+| **1** | Impar | $DP[0] + 1 = 0 + 1 = \mathbf{1}$ | No aplica ($1$ es impar) | **1** | $+1$ desde $0$ | 0 |
+| **2** | Par | $DP[1] + 1 = 1 + 1 = 2$ | $DP[1] + 1 = 1 + 1 = \mathbf{2}$ | **2** | $\times 2$ desde $1$ | 1 |
+| **3** | Impar | $DP[2] + 1 = 2 + 1 = \mathbf{3}$ | No aplica ($3$ es impar) | **3** | $+1$ desde $2$ | 2 |
+| **4** | Par | $DP[3] + 1 = 3 + 1 = 4$ | $DP[2] + 1 = 2 + 1 = \mathbf{3}$ | **3** | $\times 2$ desde $2$ | 2 |
+| **5** | Impar | $DP[4] + 1 = 3 + 1 = \mathbf{4}$ | No aplica ($5$ es impar) | **4** | $+1$ desde $4$ | 4 |
+| **6** | Par | $DP[5] + 1 = 4 + 1 = 5$ | $DP[3] + 1 = 3 + 1 = \mathbf{4}$ | **4** | $\times 2$ desde $3$ | 3 |
+| **7** | Impar | $DP[6] + 1 = 4 + 1 = \mathbf{5}$ | No aplica ($7$ es impar) | **5** | $+1$ desde $6$ | 6 |
+| **8** | Par | $DP[7] + 1 = 5 + 1 = 6$ | $DP[4] + 1 = 3 + 1 = \mathbf{4}$ | **4** | $\times 2$ desde $4$ | 4 |
+| **9** | Impar | $DP[8] + 1 = 4 + 1 = \mathbf{5}$ | No aplica ($9$ es impar) | **5** | $+1$ desde $8$ | 8 |
+| **10** | Par | $DP[9] + 1 = 5 + 1 = 6$ | $DP[5] + 1 = 4 + 1 = \mathbf{5}$ | **5** | $\times 2$ desde $5$ | 5 |
+
+**Detalle de Reconstrucción (Backtracking desde $K = 10$):**
+1. En $10$: `padre[10] = 5`, operación = $\times 2$.
+2. En $5$: `padre[5] = 4`, operación = $+1$.
+3. En $4$: `padre[4] = 2`, operación = $\times 2$.
+4. En $2$: `padre[2] = 1`, operación = $\times 2$.
+5. En $1$: `padre[1] = 0`, operación = $+1$.
+6. En $0$: Fin del recorrido.
+* **Resultado exacto:** $5$ operaciones mínimas: `[+1, ×2, ×2, +1, ×2]`.
+
+**Pseudocódigo Formal para Examen**
 
 ```text
 FUNCION MinimasOperacionesAK(K):
     SI K = 0:
         RETORNAR (0, lista vacía)
 
-    // 1. Inicialización de la tabla DP y tabla de operaciones
+    // 1. Inicialización de la tabla DP y estructuras de reconstrucción
     INICIALIZAR DP como arreglo de tamaño (K + 1) en 0
     INICIALIZAR padre como arreglo de tamaño (K + 1) en 0
     INICIALIZAR op como arreglo de tamaño (K + 1) en cadenas vacías
 
     DP[0] <- 0
 
-    // 2. Llenado bottom-up
+    // 2. Llenado Bottom-Up
     PARA i <- 1 HASTA K:
-        // Opción 1: Sumar 1 desde (i - 1)
+        // Opción por defecto: Sumar 1 desde (i - 1)
         DP[i] <- DP[i - 1] + 1
         padre[i] <- i - 1
         op[i] <- "SUMAR_1"
 
-        // Opción 2: Duplicar desde (i / 2) si i es par
+        // Opción alternativa: Duplicar desde (i / 2) si i es par
         SI (i MOD 2) = 0:
             SI DP[i / 2] + 1 < DP[i]:
                 DP[i] <- DP[i / 2] + 1
                 padre[i] <- i / 2
                 op[i] <- "DUPLICAR"
 
-    // 3. Reconstrucción de la secuencia de operaciones
+    // 3. Reconstrucción en reversa del camino óptimo
     INICIALIZAR secuencia como lista vacía
     actual <- K
     MIENTRAS actual > 0:
@@ -1299,19 +1424,65 @@ FUNCION MinimasOperacionesAK(K):
     RETORNAR (DP[K], secuencia)
 ```
 
-**Explicación del algoritmo**  
-El algoritmo construye una tabla lineal de tamaño K + 1. Cada celda i se resuelve en tiempo constante O(1) comparando a lo sumo dos estados previos (i - 1 y i / 2). El vector `padre` y `op` almacena el camino óptimo para reconstruir la secuencia en reversa.
+**Implementación en Python con Tipado Estricto**
+
+```python
+from typing import List, Tuple
+
+def minimas_operaciones_a_k(k: int) -> Tuple[int, List[str]]:
+    # Calcula la mínima cantidad de operaciones para llegar de 0 a K (+1, *2)
+    # utilizando Programación Dinámica en O(K).
+    if k == 0:
+        return 0, []
+    
+    dp = [0] * (k + 1)
+    padre = [0] * (k + 1)
+    op = [""] * (k + 1)
+    
+    dp[0] = 0
+    
+    for i in range(1, k + 1):
+        # Opción 1: Sumar 1
+        dp[i] = dp[i - 1] + 1
+        padre[i] = i - 1
+        op[i] = "+1"
+        
+        # Opción 2: Duplicar si es par
+        if i % 2 == 0:
+            candidato = dp[i // 2] + 1
+            if candidato < dp[i]:
+                dp[i] = candidato
+                padre[i] = i // 2
+                op[i] = "*2"
+                
+    # Reconstrucción de la secuencia óptima
+    secuencia = []
+    actual = k
+    while actual > 0:
+        secuencia.append(op[actual])
+        actual = padre[actual]
+        
+    secuencia.reverse()
+    return dp[k], secuencia
+```
 
 **Complejidad**  
-* **Tiempo:** La tabla tiene K + 1 posiciones y cada una se calcula en O(1) comparaciones aritméticas. La reconstrucción hace a lo sumo K saltos. Complejidad temporal: **O(K)**.
-* **Espacio:** Arreglos de tamaño K + 1 para almacenar los costos y predecesores: **O(K)**.
+* **Temporal:** $\mathcal{O}(K)$. La tabla tiene $K + 1$ posiciones y cada una se calcula en tiempo constante $\mathcal{O}(1)$ comparando a lo sumo dos candidatos aritméticos. La reconstrucción realiza a lo sumo $K$ saltos (en la práctica $\le 2 \log_2 K$ saltos), lo que toma $\mathcal{O}(\log K) \subseteq \mathcal{O}(K)$.
+* **Espacial:** $\mathcal{O}(K)$. Arreglos contiguos de tamaño $K + 1$ para almacenar los costos óptimos y punteros de retroceso.
 
-**Puntos donde puedo equivocarme**  
-* Intentar duplicar desde 0: 0 × 2 = 0, duplicar solo tiene sentido a partir de x ≥ 1.
-* No guardar la reconstrucción de las operaciones cuando el enunciado pide explícitamente *"y cómo son dichas operaciones"*.
+**Puntos donde puedo equivocarme (Trampas de Corrección)**  
+* **Intentar duplicar desde 0:** $0 \times 2 = 0$. Duplicar solo genera avance a partir de $x \ge 1$.
+* **No incluir la reconstrucción de operaciones:** Si el enunciado pide explícitamente *"y cómo son dichas operaciones"*, no devolver la secuencia descuenta la mitad del puntaje del ejercicio.
+* **No justificar la paridad:** Es indispensable explicitar en la recurrencia que la opción $\times 2$ solo se evalúa cuando $(i \pmod 2) = 0$.
 
-**Variación típica de parcial**  
-* ¿Se puede resolver con Greedy en tiempo O(log K)? **Sí:** Partiendo de K hacia 0, si K es par siempre conviene dividir por 2; si es impar, restar 1. Pero el enunciado pide resolverlo obligatoriamente por Programación Dinámica.
+**Variación típica de parcial (Pregunta Clave: DP vs Greedy)**  
+* *¿Se puede resolver con Greedy en tiempo $\mathcal{O}(\log K)$?*  
+  **Sí:** Pensando de $K$ hacia $0$, si $K$ es par siempre conviene dividir por $2$; si es impar, restar $1$. Esto toma $\mathcal{O}(\log K)$ pasos.
+* *¿Por qué entonces la cátedra exige Programación Dinámica?*  
+  1. **Consigna estricta:** Si el enunciado impone DP, usar Greedy anula el ejercicio.  
+  2. **Generalización ante variantes:** La formulación de DP es genérica y se adapta de inmediato si se introducen reglas más complejas donde Greedy fracasa (por ejemplo, si existieran transiciones como $+3$, $\times 3$, o costos no unitarios para cada operación). Con DP, simplemente se agrega un nuevo término a la función $\min()$:
+     $$OPT(i) = \min\big(OPT(i-1) + c_{+1}, \; OPT(i/2) + c_{\times 2}, \; OPT(i-3) + c_{+3}\big)$$
+     En cambio, un enfoque voraz requeriraría una demostración formal de elección voraz (*Greedy Choice Property*) que con múltiples operaciones adicionales suele ser falsa.
 
 ---
 
