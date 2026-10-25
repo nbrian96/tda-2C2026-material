@@ -2059,24 +2059,28 @@ body.dark-mode .warning-box {
 <ol>
 <li>
 <p><strong>Definición del Paradigma:</strong>
-   Un algoritmo de División y Conquista divide un problema de tamaño n en a subproblemas independientes de tamaño n/b, resuelve cada subproblema recursivamente (conquista), y luego combina sus soluciones con un costo f(n) (combinación).</p>
+   Un algoritmo de División y Conquista divide un problema de tamaño $n$ en $a$ subproblemas independientes de tamaño $n/b$, resuelve cada subproblema recursivamente (conquista), y luego combina sus soluciones con un costo $f(n)$ (combinación).</p>
 </li>
 <li>
 <p><strong>Teorema Maestro (Master Theorem):</strong>
    Para recurrencias de la forma:</p>
 <blockquote>
-<p><strong>T(n) = a · T(n/b) + O(nᶜ)</strong></p>
+<p>$$T(n) = a \cdot T(n/b) + \Theta(n^c)$$</p>
 </blockquote>
 </li>
 </ol>
-<p>con a ≥ 1, b &gt; 1, c ≥ 0:</p>
+<p>con $a \ge 1, b &gt; 1, c \ge 0$:</p>
 <ul>
-<li><strong>Caso 1 (Dominio de Hojas):</strong> Si log_b a &gt; c ⟹ T(n) = O(n^(log_b a)). El costo está concentrado en las hojas del árbol de recursión.</li>
-<li><strong>Caso 2 (Balance Equitativo):</strong> Si log_b a = c ⟹ T(n) = O(nᶜ log n). Cada nivel del árbol recursivo aporta la misma cantidad de trabajo.</li>
-<li><strong>Caso 3 (Dominio de la Raíz):</strong> Si log_b a &lt; c ⟹ T(n) = O(nᶜ) (sujeto a la condición de regularidad a · f(n/b) ≤ k · f(n) con k &lt; 1). El costo de combinar en la raíz domina todo el proceso.</li>
-<li><strong>Requisitos de Factibilidad:</strong></li>
-<li>Los subproblemas deben ser <strong>estrictamente disjuntos</strong> (sin superposición; si hay superposición, corresponde Programación Dinámica).</li>
-<li>La reducción del tamaño debe ser multiplicativa (n/b), no sustractiva (n - 1). Si es sustractiva (T(n) = T(n - 1) + O(1)), no aplica Teorema Maestro y la complejidad es lineal o cuadrática.</li>
+<li><strong>Caso 1 (Dominio de Hojas):</strong> Si $\log_b a &gt; c \implies T(n) = \Theta(n^{\log_b a})$. El costo computacional está dominado por las hojas del árbol de recursión.</li>
+<li><strong>Caso 2 (Balance Equitativo):</strong> Si $\log_b a = c \implies T(n) = \Theta(n^c \log n)$. Cada nivel del árbol recursivo aporta la misma cantidad asintótica de trabajo.</li>
+<li>
+<p><strong>Caso 3 (Dominio de la Raíz):</strong> Si $\log_b a &lt; c \implies T(n) = \Theta(n^c)$ (sujeto a la condición de regularidad $a \cdot f(n/b) \le k \cdot f(n)$ con $k &lt; 1$). El costo de combinar en la raíz domina todo el proceso.</p>
+</li>
+<li>
+<p><strong>Requisitos de Factibilidad:</strong></p>
+</li>
+<li>Los subproblemas deben ser <strong>estrictamente disjuntos</strong> (sin solapamiento; si hay solapamiento, corresponde Programación Dinámica).</li>
+<li>La reducción del tamaño debe ser multiplicativa ($n/b$), no sustractiva ($n - 1$). Si es sustractiva ($T(n) = T(n - 1) + O(1)$), no aplica Teorema Maestro y la complejidad es lineal o cuadrática.</li>
 </ul>
 <hr />
 <h3>Patrón de Ejercicio 1.1: Álgebra Matricial y Partición en Bloques</h3>
@@ -2108,10 +2112,264 @@ body.dark-mode .warning-box {
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      <p><strong>Enunciado</strong><br />
-Realizar un algoritmo que resuelva la multiplicación de dos matrices cuadradas de orden n (A y B) mediante división y conquista. Recordemos la definición: C = A × B donde C_ij = ∑(k=1..n) A_ik · B_kj para todo i, j ∈ {1, ..., n}. Para simplificar el algoritmo se puede suponer que n es una potencia de 2. Indicar y justificar el orden de complejidad del algoritmo.</p>
-<p><strong>Qué está evaluando</strong><br />
-Partición de matrices en 4 bloques de orden n/2, formulación de las llamadas recursivas de multiplicación, suma de matrices en la etapa de combinación, y aplicación rigurosa del Teorema Maestro.</p>
+      
+
+<p><strong>Enunciado</strong><br />
+Realizar un algoritmo que resuelva la multiplicación de dos matrices cuadradas de orden $n$ ($A$ y $B$) mediante división y conquista. Recordemos la definición: $C = A \times B$ donde $C_{ij} = \sum_{k=1}^n A_{ik} \cdot B_{kj}$ para todo $i, j \in {1, \dots, n}$. Para simplificar el algoritmo se puede suponer que $n$ es una potencia de 2. Indicar y justificar el orden de complejidad temporal y espacial del algoritmo.</p>
+<p><strong>Qué está evaluando la cátedra</strong><br />
+Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas recursivas de multiplicación, suma de matrices en la etapa de combinación, y aplicación rigurosa del Teorema Maestro sin saltarse el análisis de casos.</p>
+<h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
+<ol>
+<li>
+<p><strong>Paso 1: División:</strong>
+   Se dividen las matrices cuadradas $A$ y $B$ de orden $n \times n$ en 4 submatrices (cuadrantes) de tamaño $(n/2) \times (n/2)$:
+   $$A = \begin{pmatrix} A_{11} &amp; A_{12} \ A_{21} &amp; A_{22} \end{pmatrix}, \quad B = \begin{pmatrix} B_{11} &amp; B_{12} \ B_{21} &amp; B_{22} \end{pmatrix}$$</p>
+</li>
+<li>
+<p><strong>Paso 2: Casos Base:</strong>
+   Cuando $n = 1$, las matrices se reducen a un único escalar cada una:
+   $$C_{11} = A_{11} \cdot B_{11}$$
+   Esta multiplicación escalar elemental se ejecuta en tiempo $O(1)$.</p>
+</li>
+<li>
+<p><strong>Paso 3: Conquista (Llamadas Recursivas):</strong>
+   De acuerdo al producto matricial por bloques, la matriz resultante $C$ satisface:
+   $$C = \begin{pmatrix} C_{11} &amp; C_{12} \ C_{21} &amp; C_{22} \end{pmatrix} = \begin{pmatrix} A_{11} B_{11} + A_{12} B_{21} &amp; A_{11} B_{12} + A_{12} B_{22} \ A_{21} B_{11} + A_{22} B_{21} &amp; A_{21} B_{12} + A_{22} B_{22} \end{pmatrix}$$
+   Cada cuadrante requiere 2 productos de matrices de tamaño $(n/2) \times (n/2)$. En total se disparan <strong>$a = 8$ llamadas recursivas</strong>:</p>
+</li>
+<li>
+<p>$M_1 = A_{11} \cdot B_{11}$, $M_2 = A_{12} \cdot B_{21}$</p>
+</li>
+<li>$M_3 = A_{11} \cdot B_{12}$, $M_4 = A_{12} \cdot B_{22}$</li>
+<li>$M_5 = A_{21} \cdot B_{11}$, $M_6 = A_{22} \cdot B_{21}$</li>
+<li>
+<p>$M_7 = A_{21} \cdot B_{12}$, $M_8 = A_{22} \cdot B_{22}$</p>
+</li>
+<li>
+<p><strong>Paso 4: Combinación:</strong>
+   Se calculan los 4 cuadrantes finales mediante 4 sumas de matrices de tamaño $(n/2) \times (n/2)$:</p>
+</li>
+<li>
+<p>$C_{11} = M_1 + M_2$</p>
+</li>
+<li>$C_{12} = M_3 + M_4$</li>
+<li>$C_{21} = M_5 + M_6$</li>
+<li>
+<p>$C_{22} = M_7 + M_8$
+   Cada suma matricial de $(n/2) \times (n/2)$ elementos insume $(n/2)^2 = n^2 / 4$ operaciones. En total, las 4 sumas insumen $4 \cdot (n^2 / 4) = n^2$ operaciones, es decir, costo $\Theta(n^2)$.</p>
+</li>
+<li>
+<p><strong>Paso 5: Ecuación de Recurrencia y Teorema Maestro:</strong>
+   $$T(n) = \begin{cases} \Theta(1) &amp; \text{si } n = 1 \ 8 \cdot T\left(\frac{n}{2}\right) + \Theta(n^2) &amp; \text{si } n &gt; 1 \end{cases}$$
+   Identificamos los parámetros del Teorema Maestro:</p>
+</li>
+<li>
+<p>$a = 8$ (número de subproblemas recursivos)</p>
+</li>
+<li>$b = 2$ (factor de reducción del tamaño de entrada)</li>
+<li>$f(n) = \Theta(n^c)$ con $c = 2$ (costo de división y combinación de bloques)</li>
+</ol>
+<p>Calculamos el exponente crítico:
+   $$\log_b a = \log_2 8 = 3$$
+   Comparamos $\log_b a$ con $c$:
+   $$\log_b a = 3 &gt; 2 = c$$
+   Dado que $\log_b a &gt; c$, aplica estrictamente el <strong>Caso 1 del Teorema Maestro</strong> (el trabajo en las hojas del árbol domina el costo global):
+   $$T(n) = \Theta(n^{\log_b a}) = \Theta(n^{\log_2 8}) = \Theta(n^3)$$</p>
+<h4>2. Demostración Formal de Correctitud por Inducción Matemática</h4>
+<ul>
+<li><strong>Proposición $P(k)$:</strong> El algoritmo calcula exactamente el producto $C = A \times B$ para cualquier par de matrices de orden $n = 2^k$.</li>
+<li>
+<p><strong>Caso Base ($k = 0 \implies n = 2^0 = 1$):</strong>
+  Las matrices $A$ y $B$ tienen dimensión $1 \times 1$. El algoritmo ejecuta $C[0][0] = A[0][0] \cdot B[0][0]$, lo cual coincide exactamente con la definición del producto escalar $C_{11} = A_{11} \cdot B_{11}$. $P(0)$ es verdadero.</p>
+</li>
+<li>
+<p><strong>Hipótesis Inductiva:</strong> Supongamos que el algoritmo calcula correctamente el producto de matrices para toda dimensión $m = 2^j$ con $j \le k - 1$.</p>
+</li>
+<li><strong>Paso Inductivo ($k$ con $n = 2^k$):</strong>
+  La matriz se divide en bloques de dimensión $m = 2^{k-1}$. Por hipótesis inductiva, cada uno de los 8 productos recursivos $M_1, \dots, M_8$ produce el resultado exacto de multiplicar los bloques correspondientes. Por las propiedades distributivas del álgebra lineal:
+  $$C_{ij} = \sum_{k=1}^n A_{ik} B_{kj} = \sum_{k=1}^{n/2} A_{ik} B_{kj} + \sum_{k=n/2 + 1}^n A_{ik} B_{kj}$$
+  La primera sumatoria corresponde al producto del primer bloque y la segunda sumatoria al segundo bloque. Al sumar matricialmente $M_1 + M_2$ se obtiene la suma exacta de ambas componentes para cada celda $(i, j)$ del cuadrante superior izquierdo, e idénticamente para los demás cuadrantes. Por lo tanto, $P(k)$ es verdadero $\forall k \ge 0$. $\blacksquare$</li>
+</ul>
+<h4>3. Ejemplo Concreto y Traza Paso a Paso ($n = 2$)</h4>
+<p>Sean las matrices $2 \times 2$:
+$$A = \begin{pmatrix} 1 &amp; 2 \ 3 &amp; 4 \end{pmatrix}, \quad B = \begin{pmatrix} 5 &amp; 6 \ 7 &amp; 8 \end{pmatrix}$$</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Cuadrante / Operación</th>
+<th style="text-align: left;">Definición Algebraica</th>
+<th style="text-align: left;">Cálculo Numérico</th>
+<th style="text-align: left;">Resultado</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Bloques de $A$</strong></td>
+<td style="text-align: left;">$A_{11}=[1], A_{12}=[2], A_{21}=[3], A_{22}=[4]$</td>
+<td style="text-align: left;">Descomposición en $1 \times 1$</td>
+<td style="text-align: left;">4 escalares</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Bloques de $B$</strong></td>
+<td style="text-align: left;">$B_{11}=[5], B_{12}=[6], B_{21}=[7], B_{22}=[8]$</td>
+<td style="text-align: left;">Descomposición en $1 \times 1$</td>
+<td style="text-align: left;">4 escalares</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>$M_1$</strong></td>
+<td style="text-align: left;">$A_{11} \cdot B_{11}$</td>
+<td style="text-align: left;">$1 \cdot 5$</td>
+<td style="text-align: left;">$5$</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>$M_2$</strong></td>
+<td style="text-align: left;">$A_{12} \cdot B_{21}$</td>
+<td style="text-align: left;">$2 \cdot 7$</td>
+<td style="text-align: left;">$14$</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>$M_3$</strong></td>
+<td style="text-align: left;">$A_{11} \cdot B_{12}$</td>
+<td style="text-align: left;">$1 \cdot 6$</td>
+<td style="text-align: left;">$6$</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>$M_4$</strong></td>
+<td style="text-align: left;">$A_{12} \cdot B_{22}$</td>
+<td style="text-align: left;">$2 \cdot 8$</td>
+<td style="text-align: left;">$16$</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>$M_5$</strong></td>
+<td style="text-align: left;">$A_{21} \cdot B_{11}$</td>
+<td style="text-align: left;">$3 \cdot 5$</td>
+<td style="text-align: left;">$15$</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>$M_6$</strong></td>
+<td style="text-align: left;">$A_{22} \cdot B_{21}$</td>
+<td style="text-align: left;">$4 \cdot 7$</td>
+<td style="text-align: left;">$28$</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>$M_7$</strong></td>
+<td style="text-align: left;">$A_{21} \cdot B_{12}$</td>
+<td style="text-align: left;">$3 \cdot 6$</td>
+<td style="text-align: left;">$18$</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>$M_8$</strong></td>
+<td style="text-align: left;">$A_{22} \cdot B_{22}$</td>
+<td style="text-align: left;">$4 \cdot 8$</td>
+<td style="text-align: left;">$32$</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>$C_{11} = M_1 + M_2$</strong></td>
+<td style="text-align: left;">$A_{11} B_{11} + A_{12} B_{21}$</td>
+<td style="text-align: left;">$5 + 14$</td>
+<td style="text-align: left;"><strong>$19$</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>$C_{12} = M_3 + M_4$</strong></td>
+<td style="text-align: left;">$A_{11} B_{12} + A_{12} B_{22}$</td>
+<td style="text-align: left;">$6 + 16$</td>
+<td style="text-align: left;"><strong>$22$</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>$C_{21} = M_5 + M_6$</strong></td>
+<td style="text-align: left;">$A_{21} B_{11} + A_{22} B_{21}$</td>
+<td style="text-align: left;">$15 + 28$</td>
+<td style="text-align: left;"><strong>$43$</strong></td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>$C_{22} = M_7 + M_8$</strong></td>
+<td style="text-align: left;">$A_{21} B_{12} + A_{22} B_{22}$</td>
+<td style="text-align: left;">$18 + 32$</td>
+<td style="text-align: left;"><strong>$50$</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Matriz final ensamblada:
+$$C = \begin{pmatrix} 19 &amp; 22 \ 43 &amp; 50 \end{pmatrix}$$
+<em>Verificación por producto tradicional:</em></p>
+<ul>
+<li>Fila 1 × Columna 1: $1 \cdot 5 + 2 \cdot 7 = 19$. Correcto.</li>
+<li>Fila 1 × Columna 2: $1 \cdot 6 + 2 \cdot 8 = 22$. Correcto.</li>
+<li>Fila 2 × Columna 1: $3 \cdot 5 + 4 \cdot 7 = 43$. Correcto.</li>
+<li>Fila 2 × Columna 2: $3 \cdot 6 + 4 \cdot 8 = 50$. Correcto.</li>
+</ul>
+<h4>4. Diagrama del Árbol de Recursión</h4>
+<div class="mermaid-wrapper"><div class="mermaid">graph TD
+    R["Raíz: T(n) = 8 llamadas con tamaño n/2 | Costo combinación: n²"]
+    R --> L1["M1 (n/2)"]
+    R --> L2["M2 (n/2)"]
+    R --> L3["M3 (n/2)"]
+    R --> L4["M4 (n/2)"]
+    R --> L5["M5 (n/2)"]
+    R --> L6["M6 (n/2)"]
+    R --> L7["M7 (n/2)"]
+    R --> L8["M8 (n/2)"]
+    L1 --> H1["... 8 hojas de 1x1"]
+    L8 --> H8["... 8 hojas de 1x1"]
+</div></div>
+<h4>5. Implementación en Python (Tipada y Ejecutable)</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-python">def multiplicar_matrices_dyc(a: list[list[float]], b: list[list[float]]) -&gt; list[list[float]]:
+    # Multiplica dos matrices cuadradas de orden n (potencia de 2) por DyC en O(n^3).
+    n = len(a)
+    if n == 1:
+        return [[a[0][0] * b[0][0]]]
+
+    m = n // 2
+    # Partición en 4 submatrices de m x m
+    a11 = [row[:m] for row in a[:m]]
+    a12 = [row[m:] for row in a[:m]]
+    a21 = [row[:m] for row in a[m:]]
+    a22 = [row[m:] for row in a[m:]]
+
+    b11 = [row[:m] for row in b[:m]]
+    b12 = [row[m:] for row in b[:m]]
+    b21 = [row[:m] for row in b[m:]]
+    b22 = [row[m:] for row in b[m:]]
+
+    # 8 multiplicaciones recursivas
+    m1 = multiplicar_matrices_dyc(a11, b11)
+    m2 = multiplicar_matrices_dyc(a12, b21)
+    m3 = multiplicar_matrices_dyc(a11, b12)
+    m4 = multiplicar_matrices_dyc(a12, b22)
+    m5 = multiplicar_matrices_dyc(a21, b11)
+    m6 = multiplicar_matrices_dyc(a22, b21)
+    m7 = multiplicar_matrices_dyc(a21, b12)
+    m8 = multiplicar_matrices_dyc(a22, b22)
+
+    # 4 sumas de bloques de m x m
+    c11 = [[m1[i][j] + m2[i][j] for j in range(m)] for i in range(m)]
+    c12 = [[m3[i][j] + m4[i][j] for j in range(m)] for i in range(m)]
+    c21 = [[m5[i][j] + m6[i][j] for j in range(m)] for i in range(m)]
+    c22 = [[m7[i][j] + m8[i][j] for j in range(m)] for i in range(m)]
+
+    # Ensamblado de la matriz C final de n x n
+    c = []
+    for i in range(m):
+        c.append(c11[i] + c12[i])
+    for i in range(m):
+        c.append(c21[i] + c22[i])
+    return c
+</code></pre></div>
+<div class="trap-callout">
+  <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
+  <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
+  <ul>
+    <li><strong>Afirmar que DyC clásico reduce la complejidad a $O(n^2)$ o $O(n^{2.81})$:</strong> El algoritmo estándar por cuadrantes realiza 8 multiplicaciones ($a = 8$), lo que da exactamente $\Theta(n^3)$, igual que el método iterativo cúbico de 3 bucles. Para bajar a $O(n^{\log_2 7}) \approx O(n^{2.81})$ es indispensable el truco algebraico de Volker Strassen (7 multiplicaciones).</li>
+    <li><strong>Confusión de índices en los productos cruzados:</strong> Un error muy penalizado es escribir $A_{12} B_{12}$ en lugar de $A_{12} B_{21}$. Recuerde que la fila de $A$ multiplica a la columna de $B$.</li>
+    <li><strong>Olvidar el costo de partición y combinación:</strong> Copiar matrices o sumarlas no es gratis; toma $\Theta(n^2)$. Omitir este término en la recurrencia anula la justificación del Teorema Maestro.</li>
+  </ul>
+</div>
+
+<hr />
+<h3>Patrón de Ejercicio 1.2: Búsqueda Binaria sobre Propiedades Monótonas</h3>
+<p>Se busca un elemento o punto crítico en arreglos que no están completamente ordenados pero que presentan una propiedad monótona o un cambio de tendencia detectable en tiempo $O(\log n)$.</p>
+<hr />
+
     </div>
 
     <details open class="exercise-solution-drawer" id="solution-drawer-1">
@@ -2121,119 +2379,13 @@ Partición de matrices en 4 bloques de orden n/2, formulación de las llamadas r
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong>  </p>
-<ol>
-<li>Si n = 1, multiplicamos los dos escalares directamente en O(1).</li>
-<li>
-<p>Si n &gt; 1, dividimos cada matriz A y B en 4 submatrices cuadradas de tamaño n/2 × n/2:
-   <code>text
-   A = [ A11  A12 ]        B = [ B11  B12 ]
-       [ A21  A22 ]            [ B21  B22 ]</code></p>
-</li>
-<li>
-<p>Los bloques resultantes de C = A × B se calculan como:</p>
-</li>
-<li>C11 = A11 · B11 + A12 · B21</li>
-<li>C12 = A11 · B12 + A12 · B22</li>
-<li>C21 = A21 · B11 + A22 · B21</li>
-<li>C22 = A21 · B12 + A22 · B22</li>
-<li>Esto requiere 8 multiplicaciones de matrices de tamaño n/2 y 4 sumas matriciales de tamaño n/2. Sumar dos matrices de n/2 × n/2 toma O(n²) operaciones.</li>
-</ol>
-<p><strong>Pseudocódigo</strong></p>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MultiplicarMatricesDyC(A, B, n):
-    // Caso base: matriz de 1x1
-    SI n = 1:
-        INICIALIZAR C como matriz de 1x1
-        C[0][0] &lt;- A[0][0] * B[0][0]
-        RETORNAR C
-
-    // División en submatrices de orden n/2
-    m &lt;- n / 2
-    INICIALIZAR A11, A12, A21, A22 como matrices de m x m
-    INICIALIZAR B11, B12, B21, B22 como matrices de m x m
-
-    PARA i &lt;- 0 HASTA m - 1:
-        PARA j &lt;- 0 HASTA m - 1:
-            A11[i][j] &lt;- A[i][j]
-            A12[i][j] &lt;- A[i][j + m]
-            A21[i][j] &lt;- A[i + m][j]
-            A22[i][j] &lt;- A[i + m][j + m]
-
-            B11[i][j] &lt;- B[i][j]
-            B12[i][j] &lt;- B[i][j + m]
-            B21[i][j] &lt;- B[i + m][j]
-            B22[i][j] &lt;- B[i + m][j + m]
-
-    // 8 llamadas recursivas para los productos
-    M1 &lt;- MultiplicarMatricesDyC(A11, B11, m)
-    M2 &lt;- MultiplicarMatricesDyC(A12, B21, m)
-    M3 &lt;- MultiplicarMatricesDyC(A11, B12, m)
-    M4 &lt;- MultiplicarMatricesDyC(A12, B22, m)
-    M5 &lt;- MultiplicarMatricesDyC(A21, B11, m)
-    M6 &lt;- MultiplicarMatricesDyC(A22, B21, m)
-    M7 &lt;- MultiplicarMatricesDyC(A21, B12, m)
-    M8 &lt;- MultiplicarMatricesDyC(A22, B22, m)
-
-    // Combinación mediante 4 sumas de matrices
-    C11 &lt;- SumarMatrices(M1, M2, m)
-    C12 &lt;- SumarMatrices(M3, M4, m)
-    C21 &lt;- SumarMatrices(M5, M6, m)
-    C22 &lt;- SumarMatrices(M7, M8, m)
-
-    // Ensamblado de la matriz final C de n x n
-    INICIALIZAR C como matriz de n x n
-    PARA i &lt;- 0 HASTA m - 1:
-        PARA j &lt;- 0 HASTA m - 1:
-            C[i][j]         &lt;- C11[i][j]
-            C[i][j + m]     &lt;- C12[i][j]
-            C[i + m][j]     &lt;- C21[i][j]
-            C[i + m][j + m] &lt;- C22[i][j]
-
-    RETORNAR C
-
-FUNCION SumarMatrices(X, Y, m):
-    INICIALIZAR R como matriz de m x m
-    PARA i &lt;- 0 HASTA m - 1:
-        PARA j &lt;- 0 HASTA m - 1:
-            R[i][j] &lt;- X[i][j] + Y[i][j]
-    RETORNAR R
-</code></pre></div>
-<p><strong>Explicación del algoritmo</strong><br />
-El algoritmo parte las matrices en 4 cuadrantes. La partición y el copiado de submatrices toman O(n²). Luego se disparan 8 llamadas recursivas con submatrices de tamaño n/2. Finalmente, las sumas de bloques y el ensamblado en la matriz C toman 4 × O((n/2)²) = O(n²).</p>
-<p><strong>Complejidad</strong>  </p>
-<ul>
-<li><strong>Tiempo:</strong> La ecuación de recurrencia es:<blockquote>
-<p>T(n) = 8 · T(n/2) + O(n²)</p>
-</blockquote>
-</li>
-</ul>
-<p>Aplicando el Teorema Maestro con a = 8, b = 2, c = 2:
-  log_b a = log₂ 8 = 3.
-  Como log_b a = 3 &gt; 2 = c, estamos en el <strong>Caso 1 (domina la recursión)</strong>:</p>
-<blockquote>
-<p>T(n) = O(n^(log₂ 8)) = O(n³)</p>
-</blockquote>
-<ul>
-<li><strong>Espacio:</strong> En cada nivel se crean submatrices por un total de O(n²). La profundidad del árbol es log₂ n. Con paso por copia el espacio total es O(n²). Si se usan punteros o índices sobre la matriz original sin copiar, el espacio auxiliar de la pila recursiva es O(log n).</li>
-</ul>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
-<ul>
-<li>Pensar que la división y conquista ingenua mejora a O(n²). No lo hace sin el truco algebraico de Strassen (a = 7), que logra O(n^(log₂ 7)) ≈ O(n^2.81).</li>
-<li>Olvidar sumar las parejas de matrices resultantes de las llamadas recursivas.</li>
-<li>Confundir los índices de los bloques (por ejemplo, hacer A12 × B12 en lugar de A12 × B21).</li>
-</ul>
-<p><strong>Variación típica de parcial</strong><br />
-Pedir que se explique cómo el algoritmo de Strassen reduce la cantidad de multiplicaciones de 8 a 7 mediante combinaciones lineales inteligentes, derivando en T(n) = 7 · T(n/2) + O(n²) ⟹ O(n^2.807).</p>
-<hr />
-<h3>Patrón de Ejercicio 1.2: Búsqueda Binaria sobre Propiedades Monótonas</h3>
-<p>Se busca un elemento o punto crítico en arreglos que no están completamente ordenados pero que presentan una propiedad monótona o un cambio de tendencia detectable en tiempo O(log n).</p>
-<hr />
+        
       </div>
     </details>
   </div>
 </article>
 
-<article class="exercise-card" id="ej-2" data-num="2" data-priority="importante" data-paradigm="dyc" data-title="elemento pico en un arreglo unimodal" data-origin="guía de ejercicios 01, ejercicio 4">
+<article class="exercise-card" id="ej-2" data-num="2" data-priority="importante" data-paradigm="dyc" data-title="elemento pico en un arreglo unimodal" data-origin="guía de ejercicios 01, ejercicio 4 / parcial fiuba">
   <header class="card-header">
     <div class="card-header-left">
       <span class="exercise-pill-number">EJ 2</span>
@@ -2242,7 +2394,7 @@ Pedir que se explique cómo el algoritmo de Strassen reduce la cantidad de multi
     <div class="card-header-meta">
       <span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span>
       <span class="badge badge-paradigm badge-dyc">División y Conquista</span>
-      <span class="badge badge-origin" title="Guía de Ejercicios 01, Ejercicio 4">🏛️ Guía de Ejercicios 01, Ejercicio 4</span>
+      <span class="badge badge-origin" title="Guía de Ejercicios 01, Ejercicio 4 / Parcial FIUBA">🏛️ Guía de Ejercicios 01, Ejercicio 4</span>
     </div>
     <div class="card-header-actions">
       <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
@@ -2258,10 +2410,143 @@ Pedir que se explique cómo el algoritmo de Strassen reduce la cantidad de multi
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      <p><strong>Enunciado</strong><br />
-Dado un arreglo A de n enteros distintos donde no hay dos elementos adyacentes iguales, un elemento A[i] se define como "pico" si es estrictamente mayor que sus vecinos existentes (es decir, A[i] &gt; A[i-1] y A[i] &gt; A[i+1], considerando los extremos con un único vecino). Diseñar un algoritmo por División y Conquista que encuentre un elemento pico en tiempo O(log n).</p>
-<p><strong>Qué está evaluando</strong><br />
-Descarte de mitades en tiempo logarítmico aprovechando la dirección de la pendiente local, sin necesidad de que el arreglo completo esté ordenado.</p>
+      
+
+<p><strong>Enunciado</strong><br />
+Dado un arreglo $A$ de $n$ enteros distintos donde no hay dos elementos adyacentes iguales, un elemento $A[i]$ se define como "pico" si es estrictamente mayor que sus vecinos existentes (es decir, $A[i] &gt; A[i-1]$ y $A[i] &gt; A[i+1]$, considerando los extremos con un único vecino). Diseñar un algoritmo por División y Conquista que encuentre un elemento pico en tiempo $O(\log n)$. Justificar la correctitud y la complejidad.</p>
+<p><strong>Qué está evaluando la cátedra</strong><br />
+Capacidad de descarte logarítmico aprovechando la dirección de la pendiente local, manejo riguroso de condiciones de borde en índices y demostración formal de que siempre existe al menos un pico en la mitad elegida.</p>
+<h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
+<ol>
+<li>
+<p><strong>Paso 1: Definición del Invariante de Búsqueda:</strong>
+   En cada llamada sobre el rango $[ini, fin]$, se mantiene el siguiente invariante: <strong>garantizadamente existe al menos un pico local dentro del subarreglo $A[ini \dots fin]$</strong>.</p>
+</li>
+<li>
+<p><strong>Paso 2: Caso Base:</strong>
+   Cuando $ini = fin$, el rango contiene un único elemento. Por el invariante de búsqueda, este elemento debe ser un pico local. Se retorna $ini$ en tiempo $O(1)$.</p>
+</li>
+<li>
+<p><strong>Paso 3: División:</strong>
+   Se calcula el índice central:
+   $$m = \lfloor(ini + fin) / 2\rfloor$$
+   Como $ini &lt; fin$, necesariamente $m &lt; fin$, lo cual garantiza que la posición $m + 1$ es siempre un índice válido dentro del arreglo (sin desbordamiento).</p>
+</li>
+<li>
+<p><strong>Paso 4: Conquista y Criterio de Descarte:</strong>
+   Se comparan los elementos contiguos $A[m]$ y $A[m + 1]$:</p>
+</li>
+<li>
+<p><strong>Caso A ($A[m] &lt; A[m + 1]$):</strong> La pendiente asciende hacia la derecha. Por el Teorema de Existencia, existe al menos un pico en el subrango $[m + 1, fin]$. Se descarta toda la mitad izquierda $[ini, m]$.</p>
+</li>
+<li><strong>Caso B ($A[m] &gt; A[m + 1]$):</strong> La pendiente desciende hacia la derecha (asciende hacia la izquierda). Por lo tanto, existe al menos un pico en el subrango $[ini, m]$ (el propio $m$ podría ser el pico). Se descarta el subrango $[m + 1, fin]$.</li>
+<li><strong>Paso 5: Ecuación de Recurrencia y Teorema Maestro:</strong>
+   En cada paso se realiza exactamente una llamada recursiva sobre un subarreglo de tamaño a lo sumo $\lceil n/2 \rceil$ con trabajo de comparación $O(1)$:
+   $$T(n) = 1 \cdot T(n/2) + \Theta(1)$$
+   Parámetros: $a = 1, b = 2, c = 0$.
+   $$\log_b a = \log_2 1 = 0 = c$$
+   Aplica el <strong>Caso 2 del Teorema Maestro</strong> con $k = 0$:
+   $$T(n) = \Theta(n^c \log n) = \Theta(n^0 \log n) = \Theta(\log n)$$</li>
+</ol>
+<h4>2. Demostración Formal de Existencia del Pico</h4>
+<ul>
+<li><strong>Lema de la Pendiente:</strong> Si $A[m] &lt; A[m + 1]$, entonces el subarreglo $A[m + 1 \dots fin]$ contiene al menos un elemento pico.</li>
+<li><strong>Demostración por el Principio del Buen Orden / Contradicción:</strong>
+  Consideremos el subarreglo $A[m + 1 \dots fin]$. Si el último elemento $A[fin]$ es mayor que $A[fin - 1]$, entonces $A[fin]$ es un pico (pues no tiene vecino derecho). Si no lo es, retrocedemos: como $A[m] &lt; A[m + 1]$, no todos los elementos pueden ser decrecientes hacia la izquierda sin toparse con una cresta. Dado que no hay elementos adyacentes iguales, debe existir un primer índice $k \in {m + 1, \dots, fin - 1}$ tal que $A[k] &gt; A[k + 1]$. Como $k$ es el primer punto de caída, necesariamente $A[k] &gt; A[k - 1]$, lo que convierte a $A[k]$ en un pico. $\blacksquare$</li>
+</ul>
+<h4>3. Ejemplo Concreto y Traza Paso a Paso</h4>
+<p>Sea el arreglo de $n = 7$ elementos:
+$$A = [1, 2, 1, 3, 5, 6, 4]$$</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Paso</th>
+<th style="text-align: center;">Rango $[ini, fin]$</th>
+<th style="text-align: center;">$m$</th>
+<th style="text-align: center;">$A[m]$</th>
+<th style="text-align: center;">$A[m+1]$</th>
+<th style="text-align: center;">Comparación</th>
+<th style="text-align: left;">Decisión / Rango Siguiente</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;">$[0, 6]$</td>
+<td style="text-align: center;">$3$</td>
+<td style="text-align: center;">$3$</td>
+<td style="text-align: center;">$5$</td>
+<td style="text-align: center;">$3 &lt; 5$ (sube a derecha)</td>
+<td style="text-align: left;">Descartar izquierda $\implies [4, 6]$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: center;">$[4, 6]$</td>
+<td style="text-align: center;">$5$</td>
+<td style="text-align: center;">$6$</td>
+<td style="text-align: center;">$4$</td>
+<td style="text-align: center;">$6 &gt; 4$ (baja a derecha)</td>
+<td style="text-align: left;">Descartar derecha $\implies [4, 5]$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;">$[4, 5]$</td>
+<td style="text-align: center;">$4$</td>
+<td style="text-align: center;">$5$</td>
+<td style="text-align: center;">$6$</td>
+<td style="text-align: center;">$5 &lt; 6$ (sube a derecha)</td>
+<td style="text-align: left;">Descartar izquierda $\implies [5, 5]$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>4</strong></td>
+<td style="text-align: center;">$[5, 5]$</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: center;"><strong>$ini == fin = 5$</strong></td>
+<td style="text-align: left;"><strong>Caso base: Pico en índice 5 ($A[5] = 6$)</strong></td>
+</tr>
+</tbody>
+</table>
+<p><em>Verificación:</em> $A[5] = 6$ es estrictamente mayor que su vecino izquierdo $A[4] = 5$ y su vecino derecho $A[6] = 4$. Es un pico válido encontrado en solo 3 iteraciones ($&lt;\log_2 7 \approx 2.8$).</p>
+<h4>4. Diagrama Visual de Búsqueda Binaria de la Pendiente</h4>
+<div class="mermaid-wrapper"><div class="mermaid">graph TD
+    A["Rango [0, 6]: A[3] = 3 < A[4] = 5 (Pendiente Sube)"] -->|Descartar mitad izq| B["Rango [4, 6]: A[5] = 6 > A[6] = 4 (Pendiente Baja)"]
+    B -->|Conservar m=5| C["Rango [4, 5]: A[4] = 5 < A[5] = 6 (Pendiente Sube)"]
+    C -->|Descartar m=4| D["Rango [5, 5]: Caso Base!"]
+    D --> E(["Retorna Índice 5: Elemento Pico = 6"]):::opt
+    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
+</div></div>
+<h4>5. Implementación en Python (Tipada y Ejecutable)</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-python">def encontrar_pico(arr: list[int]) -&gt; int:
+    # Encuentra el índice de un elemento pico en O(log n) mediante DyC.
+    if not arr:
+        return -1
+
+    ini, fin = 0, len(arr) - 1
+    while ini &lt; fin:
+        m = (ini + fin) // 2
+        # Si la pendiente sube hacia la derecha, el pico está a la derecha
+        if arr[m] &lt; arr[m + 1]:
+            ini = m + 1
+        else:
+            # Si la pendiente baja hacia la derecha, m puede ser el pico
+            fin = m
+
+    return ini
+</code></pre></div>
+<div class="trap-callout">
+  <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
+  <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
+  <ul>
+    <li><strong>Hacer <code>fin = m - 1</code> en la rama descendente:</strong> Si $A[m] > A[m+1]$, el elemento $A[m]$ podría ser precisamente el pico. Si ajustas <code>fin = m - 1</code>, excluyes a $m$ y el algoritmo puede retornar un índice incorrecto o fallar. Debe ser obligatoriamente <code>fin = m</code>.</li>
+    <li><strong>Desbordamiento de índice al calcular $m+1$:</strong> Si el bucle tiene condición <code>ini &le; fin</code>, en la última iteración $m = fin$ y la consulta <code>arr[m + 1]</code> arroja <code>IndexError</code>. La condición estricta debe ser <code>ini &lt; fin</code>.</li>
+    <li><strong>Creer que el arreglo debe estar ordenado:</strong> Este algoritmo funciona sobre arreglos desordenados gracias al Lema de la Pendiente. Afirmar en el examen que se requiere ordenar previamente ($O(n \log n)$) invalida la cota $O(\log n)$.</li>
+  </ul>
+</div>
+
+<hr />
+
     </div>
 
     <details open class="exercise-solution-drawer" id="solution-drawer-2">
@@ -2271,60 +2556,13 @@ Descarte de mitades en tiempo logarítmico aprovechando la dirección de la pend
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong>  </p>
-<ol>
-<li>Calculamos el índice medio m = ⌊(ini + fin) / 2⌋.</li>
-<li>Comparamos A[m] con su vecino derecho A[m+1]:</li>
-<li>Si A[m] &lt; A[m+1], la secuencia está subiendo hacia la derecha. Por lo tanto, <strong>garantizadamente existe al menos un pico en la mitad derecha</strong> [m+1, fin].</li>
-<li>Si A[m] &gt; A[m+1], la secuencia está bajando hacia la derecha (o subiendo hacia la izquierda). Por lo tanto, <strong>garantizadamente existe un pico en la mitad izquierda</strong> [ini, m] (el propio m podría ser el pico).</li>
-<li>Reducimos el espacio de búsqueda a la mitad en cada paso.</li>
-</ol>
-<p><strong>Pseudocódigo</strong></p>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION EncontrarPico(A):
-    SI longitud(A) = 0:
-        RETORNAR -1
-    RETORNAR EncontrarPicoRec(A, 0, longitud(A) - 1)
-
-FUNCION EncontrarPicoRec(A, ini, fin):
-    // Caso base: rango de un único elemento
-    SI ini = fin:
-        RETORNAR ini
-
-    m &lt;- (ini + fin) / 2
-
-    // Si la pendiente sube hacia la derecha, el pico está a la derecha
-    SI A[m] &lt; A[m + 1]:
-        RETORNAR EncontrarPicoRec(A, m + 1, fin)
-    SINO:
-        // La pendiente baja hacia la derecha, el pico está en m o a la izquierda
-        RETORNAR EncontrarPicoRec(A, ini, m)
-</code></pre></div>
-<p><strong>Explicación del algoritmo</strong><br />
-El algoritmo inspecciona dos elementos centrales contiguos (m y m+1). Como todos los elementos adyacentes son distintos, siempre hay una dirección de ascenso. Seguir la pendiente ascendente asegura chocar contra un pico local o alcanzar el extremo del arreglo, el cual actúa como pico.</p>
-<p><strong>Complejidad</strong>  </p>
-<ul>
-<li>
-<p><strong>Tiempo:</strong> T(n) = 1 · T(n/2) + O(1). Con a = 1, b = 2, c = 0:
-  log_b a = log₂ 1 = 0 = c ⟹ T(n) = O(n⁰ log n) = O(log n).</p>
-</li>
-<li>
-<p><strong>Espacio adicional:</strong> O(log n) de memoria en la pila de llamadas recursivas (u O(1) si se formula con un bucle MIENTRAS).</p>
-</li>
-</ul>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
-<ul>
-<li>Llamar a la recursión izquierda con <code>m - 1</code>. Si A[m] &gt; A[m+1], A[m] podría ser el pico; si descartamos m, perdemos la solución. Por eso la llamada debe ser <code>[ini, m]</code>.</li>
-<li>Acceder a <code>A[m+1]</code> cuando ini = fin (desbordamiento de índice). El caso base <code>ini = fin</code> previene esto porque con ini &lt; fin, m &lt; fin, asegurando que m + 1 ≤ fin.</li>
-</ul>
-<p><strong>Variación típica de parcial</strong><br />
-Buscar un pico en una matriz de n × n en tiempo O(n log n) o O(n) (buscar el máximo de la columna central y verificar sus vecinos izquierdo y derecho).</p>
-<hr />
+        
       </div>
     </details>
   </div>
 </article>
 
-<article class="exercise-card" id="ej-3" data-num="3" data-priority="imprescindible" data-paradigm="dyc" data-title="búsqueda del primer cero en un arreglo de unos y ceros" data-origin="guía de ejercicios 01, ejercicio 2 / práctica">
+<article class="exercise-card" id="ej-3" data-num="3" data-priority="imprescindible" data-paradigm="dyc" data-title="búsqueda del primer cero en un arreglo de unos y ceros" data-origin="guía de ejercicios 01, ejercicio 2 / final fiuba">
   <header class="card-header">
     <div class="card-header-left">
       <span class="exercise-pill-number">EJ 3</span>
@@ -2333,7 +2571,7 @@ Buscar un pico en una matriz de n × n en tiempo O(n log n) o O(n) (buscar el m�
     <div class="card-header-meta">
       <span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span>
       <span class="badge badge-paradigm badge-dyc">División y Conquista</span>
-      <span class="badge badge-origin" title="Guía de Ejercicios 01, Ejercicio 2 / Práctica">🏛️ Guía de Ejercicios 01, Ejercicio 2</span>
+      <span class="badge badge-origin" title="Guía de Ejercicios 01, Ejercicio 2 / Final FIUBA">🏛️ Guía de Ejercicios 01, Ejercicio 2</span>
     </div>
     <div class="card-header-actions">
       <label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)">
@@ -2349,10 +2587,149 @@ Buscar un pico en una matriz de n × n en tiempo O(n log n) o O(n) (buscar el m�
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      <p><strong>Enunciado</strong><br />
-Se tiene un arreglo A de n elementos compuesto exclusivamente por números 1 seguidos por números 0 (es decir, de la forma [1, 1, ..., 1, 0, 0, ..., 0]). Puede ocurrir que todos sean 1 o todos sean 0. Implementar un algoritmo por División y Conquista que determine la posición del primer 0 en tiempo O(log n).</p>
-<p><strong>Qué está evaluando</strong><br />
-Búsqueda binaria modificada para encontrar el primer elemento que satisface una condición de borde sin recorrer linealmente los repetidos.</p>
+      
+
+<p><strong>Enunciado</strong><br />
+Se tiene un arreglo $A$ de $n$ elementos compuesto exclusivamente por números 1 seguidos por números 0 (es decir, de la forma $[1, 1, \dots, 1, 0, 0, \dots, 0]$). Puede ocurrir que todos sean 1 o todos sean 0. Implementar un algoritmo por División y Conquista que determine la posición del primer 0 en tiempo $O(\log n)$. Si el arreglo no contiene ceros, retornar $-1$.</p>
+<p><strong>Qué está evaluando la cátedra</strong><br />
+Identificación de la propiedad de frontera de transición, manejo riguroso de casos donde el cero está en el índice 0 o no existe, y parada anticipada sin incurrir en recorridos lineales.</p>
+<h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
+<ol>
+<li>
+<p><strong>Paso 1: Propiedad de Monotonía y Frontera:</strong>
+   El arreglo $A$ es monótonamente decreciente no estricto: $A[i] \ge A[i+1]$ para todo $i$. El "primer cero" es el único índice $k$ que satisface:
+   $$A[k] = 0 \quad \land \quad (k = 0 \lor A[k - 1] = 1)$$</p>
+</li>
+<li>
+<p><strong>Paso 2: Casos Base de Rango Vacío:</strong>
+   Si $ini &gt; fin$, el subrango colapsó sin encontrar ningún cero (ocurre cuando el arreglo es puramente de unos). Se retorna $-1$.</p>
+</li>
+<li>
+<p><strong>Paso 3: División:</strong>
+   Se evalúa el elemento en la posición media:
+   $$m = \lfloor(ini + fin) / 2\rfloor$$</p>
+</li>
+<li>
+<p><strong>Paso 4: Conquista y Reducción del Espacio de Búsqueda:</strong></p>
+</li>
+<li><strong>Condición de Éxito Inmediato:</strong> Si $A[m] == 0$ y además ($m == 0$ o $A[m - 1] == 1$), entonces $m$ es por definición el primer cero. Se retorna $m$ inmediatamente en $O(1)$.</li>
+<li><strong>Rama Izquierda ($A[m] == 0$ pero $A[m - 1] == 0$):</strong> Hay más ceros hacia la izquierda. Se descarta la mitad derecha y se busca recursivamente en $[ini, m - 1]$.</li>
+<li><strong>Rama Derecha ($A[m] == 1$):</strong> Por monotonía, todos los elementos desde $ini$ hasta $m$ son 1. El primer cero solo puede estar estrictamente a la derecha. Se busca en $[m + 1, fin]$.</li>
+<li><strong>Paso 5: Ecuación de Recurrencia y Teorema Maestro:</strong>
+   $$T(n) = 1 \cdot T(n/2) + \Theta(1)$$
+   Con $a = 1, b = 2, c = 0$:
+   $$\log_2 1 = 0 = c \implies T(n) = \Theta(\log n)$$
+   Espacio auxiliar: $O(1)$ en implementación iterativa, $O(\log n)$ en la pila de recursión.</li>
+</ol>
+<h4>2. Demostración Formal de Correctitud por Inducción Fuerte</h4>
+<ul>
+<li><strong>Hipótesis:</strong> Para cualquier subrango $A[ini \dots fin]$ de longitud $L = fin - ini + 1$:<ul>
+<li>Si contiene al menos un cero, el algoritmo retorna el menor índice $k \in [ini, fin]$ tal que $A[k] = 0$.</li>
+<li>Si no contiene ceros, retorna $-1$.</li>
+</ul>
+</li>
+<li><strong>Base ($L = 0 \implies ini &gt; fin$):</strong> El subarreglo es vacío. Retorna $-1$. Correcto.</li>
+<li>
+<p><strong>Paso Inductivo ($L \ge 1$):</strong>
+  Se inspecciona $A[m]$. </p>
+<ul>
+<li>Si $A[m] = 1$: Como el arreglo tiene la estructura $1^* 0^*$, si la posición $m$ tiene un 1, todas las posiciones $j \le m$ tienen $A[j] = 1$. Por lo tanto, ningún índice $\le m$ puede ser cero. El primer cero, de existir, debe residir en $[m + 1, fin]$, un subrango de longitud $\le \lfloor L/2 \rfloor$. Por hipótesis inductiva, la llamada recursiva devolverá el resultado correcto.</li>
+<li>Si $A[m] = 0$: Si $m = 0$ o $A[m-1] = 1$, por definición $m$ es el primer cero y se retorna. Si $A[m-1] = 0$, el primer cero está estrictamente antes de $m$, residiendo en $[ini, m - 1]$. Por hipótesis inductiva, la recursión encuentra el resultado exacto. $\blacksquare$</li>
+</ul>
+</li>
+</ul>
+<h4>3. Ejemplo Concreto y Traza Paso a Paso</h4>
+<p>Sea el arreglo de $n = 8$ elementos:
+$$A = [1, 1, 1, 1, 0, 0, 0, 0]$$</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Iteración</th>
+<th style="text-align: center;">Rango $[ini, fin]$</th>
+<th style="text-align: center;">$m$</th>
+<th style="text-align: center;">$A[m]$</th>
+<th style="text-align: center;">Verificación $A[m-1]$</th>
+<th style="text-align: left;">Decisión / Rango Siguiente</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>1</strong></td>
+<td style="text-align: center;">$[0, 7]$</td>
+<td style="text-align: center;">$3$</td>
+<td style="text-align: center;">$1$</td>
+<td style="text-align: center;">No aplica ($A[m]=1$)</td>
+<td style="text-align: left;">$A[3]=1 \implies$ Descartar $[0, 3]$. Nuevo rango: $[4, 7]$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>2</strong></td>
+<td style="text-align: center;">$[4, 7]$</td>
+<td style="text-align: center;">$5$</td>
+<td style="text-align: center;">$0$</td>
+<td style="text-align: center;">$A[4] = 0$</td>
+<td style="text-align: left;">$A[5]=0$ pero $A[4]=0 \implies$ Hay ceros antes. Nuevo rango: $[4, 4]$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>3</strong></td>
+<td style="text-align: center;">$[4, 4]$</td>
+<td style="text-align: center;">$4$</td>
+<td style="text-align: center;">$0$</td>
+<td style="text-align: center;">$A[3] = 1$</td>
+<td style="text-align: left;"><strong>$A[4] = 0 \land A[3] = 1 \implies$ ¡Primer cero hallado en índice 4!</strong></td>
+</tr>
+</tbody>
+</table>
+<p><em>Resultado devuelto:</em> $4$. Complejidad real: 3 comparaciones ($\le \lceil \log_2 8 \rceil = 3$).</p>
+<h4>4. Diagrama Visual del Corte de Frontera</h4>
+<div class="mermaid-wrapper"><div class="mermaid">graph LR
+    subgraph Unos [Zona de 1s]
+        N0["A[0] = 1"] --> N1["A[1] = 1"] --> N2["A[2] = 1"] --> N3["A[3] = 1"]
+    end
+    subgraph Ceros [Zona de 0s]
+        N4["A[4] = 0 (PRIMER CERO)"]:::primer --> N5["A[5] = 0"] --> N6["A[6] = 0"] --> N7["A[7] = 0"]
+    end
+    N3 -.->|Frontera de Transición| N4
+    classDef primer fill:#15803d,stroke:#166534,stroke-width:3px,color:#fff
+</div></div>
+<h4>5. Implementación en Python (Tipada y Ejecutable)</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-python">def buscar_primer_cero(arr: list[int]) -&gt; int:
+    # Retorna el índice del primer 0 en un arreglo de 1s seguidos de 0s en O(log n).
+    if not arr:
+        return -1
+
+    ini, fin = 0, len(arr) - 1
+    primer_cero = -1
+
+    while ini &lt;= fin:
+        m = (ini + fin) // 2
+        if arr[m] == 0:
+            primer_cero = m
+            # Intentar buscar un cero aún más a la izquierda
+            fin = m - 1
+        else:
+            # arr[m] == 1, el primer cero debe estar a la derecha
+            ini = m + 1
+
+    return primer_cero
+</code></pre></div>
+<div class="trap-callout">
+  <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
+  <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
+  <ul>
+    <li><strong>Acceder a <code>arr[m - 1]</code> cuando $m = 0$:</strong> Si el primer cero está en la posición 0, evaluar <code>arr[m - 1]</code> en Python consultará <code>arr[-1]</code> (el último elemento del arreglo), produciendo un falso positivo o error lógico en otros lenguajes (C/Java) con <code>IndexOutOfBoundsException</code>. Siempre se debe anteponer la guarda <code>m == 0 or arr[m - 1] == 1</code>.</li>
+    <li><strong>Arreglos sin ceros (todos 1s):</strong> Si el arreglo no contiene ceros, el algoritmo debe retornar $-1$. Si no se maneja la condición de parada <code>ini &gt; fin</code>, el algoritmo puede retornar un índice erróneo.</li>
+    <li><strong>Hacer un recorrido lineal desde $m$:</strong> Al encontrar un 0 en $m$, algunos estudiantes retroceden linealmente con un bucle mientras <code>arr[i] == 0</code>. Eso degrada la complejidad a $O(n)$ en el peor caso (por ejemplo, en un arreglo compuesto íntegramente por ceros), anulando completamente el beneficio de la búsqueda binaria.</li>
+  </ul>
+</div>
+
+<hr />
+<h3>Errores Frecuentes en Exámenes sobre División y Conquista</h3>
+<ol>
+<li><strong>Olvidar el Caso Base:</strong> Omitir la condición de parada cuando $n = 1$ o $ini \ge fin$, provocando recursión infinita en la traza.</li>
+<li><strong>Calcular erróneamente los parámetros del Teorema Maestro:</strong> Confundir $a$ (cantidad de subproblemas) con $b$ (factor de reducción del tamaño). Ejemplo clásico: en multiplicación de matrices, poner $a = 4$ en lugar de $a = 8$.</li>
+<li><strong>No justificar el costo de combinación $f(n)$:</strong> Poner directamente $O(n^2)$ sin detallar que proviene de recorrer las submatrices sumando elemento a elemento.</li>
+<li><strong>Dividir en subproblemas no balanceados:</strong> Si la división reduce el tamaño a $n - 1$ (como Quicksort en el peor caso), no se puede aplicar el Teorema Maestro básico; se debe resolver mediante sumatoria telescópica.</li>
+</ol>
     </div>
 
     <details open class="exercise-solution-drawer" id="solution-drawer-3">
@@ -2362,60 +2739,7 @@ Búsqueda binaria modificada para encontrar el primer elemento que satisface una
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <p><strong>Idea de resolución</strong>  </p>
-<ol>
-<li>Si en la posición media m hay un 1, el primer cero debe estar estrictamente a la derecha (m + 1 ... fin).</li>
-<li>Si en la posición media m hay un 0, este podría ser el primer cero, o bien el primer cero ocurrió antes (ini ... m).</li>
-<li>Condición de corte directo: Si A[m] = 0 y (m = 0 o A[m-1] = 1), encontramos exactamente el primer 0.</li>
-</ol>
-<p><strong>Pseudocódigo</strong></p>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION BuscarPrimerCero(A):
-    SI longitud(A) = 0:
-        RETORNAR -1
-    RETORNAR BuscarPrimerCeroRec(A, 0, longitud(A) - 1)
-
-FUNCION BuscarPrimerCeroRec(A, ini, fin):
-    SI ini &gt; fin:
-        RETORNAR -1 // No hay ceros en el arreglo
-
-    m &lt;- (ini + fin) / 2
-
-    SI A[m] = 0:
-        // Verificamos si es el primer cero absoluto
-        SI m = 0 O A[m - 1] = 1:
-            RETORNAR m
-        SINO:
-            // Hay más ceros a la izquierda
-            RETORNAR BuscarPrimerCeroRec(A, ini, m - 1)
-    SINO:
-        // A[m] es 1, el primer cero debe estar a la derecha
-        RETORNAR BuscarPrimerCeroRec(A, m + 1, fin)
-</code></pre></div>
-<p><strong>Explicación del algoritmo</strong><br />
-En cada paso se evalúa el elemento central. Si es 1, se descarta toda la mitad izquierda junto con la posición central. Si es 0, se chequea si es el primer cero mirando el elemento anterior. Si no lo es, se explora recursivamente hacia la izquierda.</p>
-<p><strong>Complejidad</strong>  </p>
-<ul>
-<li><strong>Tiempo:</strong> En cada llamada se divide el espacio de búsqueda exactamente por 2 y se realizan comparaciones O(1). T(n) = T(n/2) + O(1) ⟹ O(log n).</li>
-<li><strong>Espacio adicional:</strong> O(log n) por la pila recursiva (O(1) si es iterativo).</li>
-</ul>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div><p><strong>Puntos donde puedo equivocarme</strong>  </p></div>
-<ul>
-<li>No chequear si m = 0 antes de acceder a A[m-1], lo que provoca un error de índice fuera de rango.</li>
-<li>Si no hay ceros en todo el arreglo, caer en un ciclo infinito en lugar de devolver -1.</li>
-</ul>
-<p><strong>Variación típica de parcial</strong>  </p>
-<ul>
-<li>Encontrar el punto fijo en un arreglo ordenado tal que A[i] = i.</li>
-<li>Determinar la raíz de una función monótona continua aplicando el teorema de Bolzano por bisección.</li>
-</ul>
-<hr />
-<h3>Errores Frecuentes en Exámenes sobre División y Conquista</h3>
-<ol>
-<li><strong>Olvidar el Caso Base:</strong> Omitir la condición de parada cuando n = 1 o ini ≥ fin, provocando recursión infinita en la traza.</li>
-<li><strong>Calcular erróneamente los parámetros del Teorema Maestro:</strong> Confundir a (cantidad de subproblemas) con b (factor de reducción del tamaño). Ejemplo clásico: en multiplicación de matrices, poner a = 4 en lugar de a = 8.</li>
-<li><strong>No justificar el costo de combinación f(n):</strong> Poner directamente O(n²) sin detallar que proviene de recorrer las submatrices sumando elemento a elemento.</li>
-<li><strong>Dividir en subproblemas no balanceados:</strong> Si la división reduce el tamaño a n - 1 (como Quicksort en el peor caso), no se puede aplicar el Teorema Maestro básico; se debe resolver mediante sumatoria telescópica.</li>
-</ol>
+        
       </div>
     </details>
   </div>
