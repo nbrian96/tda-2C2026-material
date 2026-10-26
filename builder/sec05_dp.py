@@ -212,47 +212,6 @@ FUNCION MinimasOperacionesAK(K):
     RETORNAR (DP[K], secuencia)
 ```
 
-**Implementación en Python con Tipado Estricto**
-
-```python
-from typing import List, Tuple
-
-def minimas_operaciones_a_k(k: int) -> Tuple[int, List[str]]:
-    # Calcula la mínima cantidad de operaciones para llegar de 0 a K (+1, *2)
-    # utilizando Programación Dinámica en O(K).
-    if k == 0:
-        return 0, []
-    
-    dp = [0] * (k + 1)
-    padre = [0] * (k + 1)
-    op = [""] * (k + 1)
-    
-    dp[0] = 0
-    
-    for i in range(1, k + 1):
-        # Opción 1: Sumar 1
-        dp[i] = dp[i - 1] + 1
-        padre[i] = i - 1
-        op[i] = "+1"
-        
-        # Opción 2: Duplicar si es par
-        if i % 2 == 0:
-            candidato = dp[i // 2] + 1
-            if candidato < dp[i]:
-                dp[i] = candidato
-                padre[i] = i // 2
-                op[i] = "*2"
-                
-    # Reconstrucción de la secuencia óptima
-    secuencia = []
-    actual = k
-    while actual > 0:
-        secuencia.append(op[actual])
-        actual = padre[actual]
-        
-    secuencia.reverse()
-    return dp[k], secuencia
-```
 
 **Complejidad**  
 * **Temporal:** $\mathcal{O}(K)$. La tabla tiene $K + 1$ posiciones y cada una se calcula en tiempo constante $\mathcal{O}(1)$ comparando a lo sumo dos candidatos aritméticos. La reconstrucción realiza a lo sumo $K$ saltos (en la práctica $\le 2 \log_2 K$ saltos), lo que toma $\mathcal{O}(\log K) \subseteq \mathcal{O}(K)$.

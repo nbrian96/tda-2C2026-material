@@ -125,28 +125,25 @@ graph LR
     classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:1px,color:#fff
 ```
 
-#### 5. Implementación en Python (Tipada y Ejecutable)
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def conceder_permisos_mafias(pedidos: list[tuple[str, int, int]]) -> list[tuple[str, int, int]]:
-    # pedidos: lista de (nombre, inicio, fin)
-    if not pedidos:
-        return []
+```text
+Algoritmo ConcederPermisosMafias(pedidos):
+    si pedidos está vacío: devolver []
 
-    # 1. Ordenar vorazmente por punto final ascendente
-    pedidos_ordenados = sorted(pedidos, key=lambda x: x[2])
+    // 1. Regla voraz: ordenar por tiempo de finalización f_i creciente
+    ordenar pedidos por f_i ascendente
 
-    seleccionados = [pedidos_ordenados[0]]
-    ultimo_fin = pedidos_ordenados[0][2]
+    seleccionados = [ pedidos[0] ]
+    ultimo_fin = pedidos[0].fin
 
-    # 2. Selección voraz de intervalos compatibles
-    for pedido in pedidos_ordenados[1:]:
-        nombre, inicio, fin = pedido
-        if inicio >= ultimo_fin:
-            seleccionados.append(pedido)
-            ultimo_fin = fin
+    // 2. Selección voraz de intervalos compatibles en O(n)
+    para cada p en pedidos desde el segundo en adelante:
+        si p.inicio >= ultimo_fin:
+            agregar p a seleccionados
+            ultimo_fin = p.fin
 
-    return seleccionados
+    devolver seleccionados  // Máximo conjunto disjunto de intervalos
 ```
 
 <div class="trap-callout">
@@ -253,39 +250,36 @@ graph TD
     classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 5. Implementación en Python (Tipada y Ejecutable)
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def mochila_aprox_medio(items: list[tuple[str, int, int]], w_max: int) -> tuple[int, list[tuple[str, int, int]]]:
-    # items: lista de (nombre, peso, valor)
-    # 1. Filtrar los que no caben por sí solos
-    candidatos = [it for it in items if it[1] <= w_max]
-    if not candidatos:
-        return 0, []
+```text
+Algoritmo MochilaAproxMedio(items, W_max):
+    // 1. Filtrar los que no caben por sí solos
+    candidatos = [ it para it en items si it.peso <= W_max ]
+    si candidatos está vacío: devolver (0, [])
 
-    # 2. Ordenar por densidad decreciente
-    candidatos.sort(key=lambda x: x[2] / x[1], reverse=True)
+    // 2. Ordenar por densidad decreciente de valor (v_i / w_i)
+    ordenar candidatos por (it.valor / it.peso) descendente
 
     v_greedy = 0
     w_greedy = 0
     sol_greedy = []
-    elemento_critico = None
+    elemento_critico = nulo
 
-    # 3. Llenado voraz
-    for it in candidatos:
-        nombre, peso, valor = it
-        if w_greedy + peso <= w_max:
-            sol_greedy.append(it)
-            w_greedy += peso
-            v_greedy += valor
-        elif elemento_critico is None:
-            elemento_critico = it
+    // 3. Llenado voraz
+    para cada it en candidatos:
+        si w_greedy + it.peso <= W_max:
+            agregar it a sol_greedy
+            w_greedy = w_greedy + it.peso
+            v_greedy = v_greedy + it.valor
+        sino si elemento_critico es nulo:
+            elemento_critico = it  // Primer ítem que desborda la capacidad
 
-    # 4. Cota dual max(V_greedy, v_critico)
-    if elemento_critico is not None and elemento_critico[2] > v_greedy:
-        return elemento_critico[2], [elemento_critico]
-
-    return v_greedy, sol_greedy
+    // 4. Cota dual: max(V_greedy, v_critico) garantiza factor 1/2
+    si elemento_critico != nulo y elemento_critico.valor > v_greedy:
+        devolver (elemento_critico.valor, [ elemento_critico ])
+    sino:
+        devolver (v_greedy, sol_greedy)
 ```
 
 <div class="trap-callout">
@@ -392,31 +386,29 @@ flowchart LR
     class D,C late
 ```
 
-#### 5. Implementación en Python (Tipada y Ejecutable)
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def minimizar_latencia_edf(tareas: list[tuple[str, int, int]]) -> tuple[int, list[tuple[str, int, int, int]]]:
-    # tareas: lista de (nombre, duracion, deadline)
-    if not tareas:
-        return 0, []
-
-    # 1. Ordenar vorazmente por deadline ascendente
-    tareas_ordenadas = sorted(tareas, key=lambda x: x[2])
+```text
+Algoritmo MinimizarLatenciaEDF(tareas):
+    // 1. Regla voraz: ordenar por deadline ascendente (Earliest Deadline First)
+    ordenar tareas por deadline d_i ascendente
 
     tiempo_actual = 0
     latencia_maxima = 0
     cronograma = []
 
-    for nombre, duracion, deadline in tareas_ordenadas:
+    para cada tarea (nombre, t_i, d_i) en tareas:
         inicio = tiempo_actual
-        fin = tiempo_actual + duracion
-        latencia = max(0, fin - deadline)
-        if latencia > latencia_maxima:
+        fin = tiempo_actual + t_i
+        latencia = max(0, fin - d_i)
+
+        si latencia > latencia_maxima:
             latencia_maxima = latencia
-        cronograma.append((nombre, inicio, fin, latencia))
+
+        agregar (nombre, inicio, fin, latencia) a cronograma
         tiempo_actual = fin
 
-    return latencia_maxima, cronograma
+    devolver (latencia_maxima, cronograma)
 ```
 
 <div class="trap-callout">
@@ -504,33 +496,33 @@ graph TD
     classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 4. Implementación en Python (Tipada y Ejecutable)
+#### 4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def set_cover_antenas_greedy(vecindarios: set[str], antenas: dict[str, tuple[int, set[str]]]) -> list[str]:
-    # antenas: dict con nombre -> (costo, set_de_vecindarios_cubiertos)
-    no_cubiertos = set(vecindarios)
-    elegidas = []
+```text
+Algoritmo AntenasSetCoverGreedy(vecindarios, antenas):
+    no_cubiertos = copiar(vecindarios)
+    antenas_elegidas = []
 
-    while no_cubiertos:
-        mejor_antena = None
-        mejor_ratio = float("inf")
+    mientras no_cubiertos no esté vacío:
+        mejor_antena = nulo
+        mejor_ratio = infinito
 
-        for nombre, (costo, cobertura) in antenas.items():
-            nuevos = len(cobertura & no_cubiertos)
-            if nuevos > 0:
-                ratio = costo / nuevos
-                if ratio < mejor_ratio:
+        // Evaluar costo marginal por cada nuevo vecindario cubierto
+        para cada antena A en antenas:
+            nuevos = cantidad(A.cobertura intersección no_cubiertos)
+            si nuevos > 0:
+                ratio = A.costo / nuevos
+                si ratio < mejor_ratio:
                     mejor_ratio = ratio
-                    mejor_antena = nombre
+                    mejor_antena = A
 
-        if mejor_antena is None:
-            break  # Infactible cubrir los restantes
+        si mejor_antena es nulo:
+            break  // Infactible cubrir los restantes
 
-        elegidas.append(mejor_antena)
-        no_cubiertos -= antenas[mejor_antena][1]
+        agregar mejor_antena a antenas_elegidas
+        no_cubiertos = no_cubiertos - mejor_antena.cobertura
 
-    return elegidas
+    devolver antenas_elegidas
 ```
 
 <div class="trap-callout">
@@ -606,36 +598,33 @@ graph LR
   Como la solución voraz es estrictamente peor que la alternativa factible, queda demostrado que **el enfoque greedy no garantiza la solución óptima**.
   *Paradigma adecuado:* Este problema exhibe subestructura óptima con superposición de subproblemas y debe modelarse mediante **Programación Dinámica** en tiempo $O(V + E)$ (ver Ejercicio 32). $\blacksquare$
 
-#### 3. Implementación en Python del Greedy y Validación del Contraejemplo
+#### 3. Pseudocódigo del Algoritmo Greedy y Contraejemplo Formal
 
-```python
-def traslado_invap_greedy(origen: str, destino: str, grafo: dict[str, list[tuple[str, int]]]) -> tuple[int, list[str]]:
+```text
+Algoritmo TrasladoINVAPGreedy(G, origen, destino):
     actual = origen
-    camino = [actual]
+    camino = [ actual ]
     costo_total = 0
 
-    while actual != destino:
-        vecinos = grafo.get(actual, [])
-        if not vecinos:
-            return float("inf"), []
+    mientras actual != destino:
+        vecinos = G.vecinos(actual)
+        si vecinos está vacío:
+            devolver (infinito, [])
 
-        # Elección voraz: mínimo costo en la arista inmediata
-        mejor_sig, menor_costo = min(vecinos, key=lambda x: x[1])
-        camino.append(mejor_sig)
-        costo_total += menor_costo
-        actual = mejor_sig
+        // Elección voraz miope: arista saliente de menor costo inmediato
+        (mejor_siguiente, menor_costo) = vecino de menor costo en vecinos
+        agregar mejor_siguiente a camino
+        costo_total = costo_total + menor_costo
+        actual = mejor_siguiente
 
-    return costo_total, camino
+    devolver (costo_total, camino)
 
-# Demostración del contraejemplo
-grafo_invap = {
-    "E": [("V1", 10), ("V2", 20)],
-    "V1": [("B", 100)],
-    "V2": [("B", 5)],
-    "B": []
-}
-
-# Costo greedy = 110, Costo optimo = 25
+// Demostración del contraejemplo numérico:
+// Grafo: E -> V1 (costo 10), E -> V2 (costo 20)
+//        V1 -> B (costo 100), V2 -> B (costo 5)
+// Decisión Voraz:  E -> V1 -> B  =>  Costo = 10 + 100 = 110
+// Ruta Óptima:     E -> V2 -> B  =>  Costo = 20 + 5 = 25
+// Conclusión: Costo(Greedy) = 110 > 25 = OPT  =>  Greedy NO es óptimo.
 ```
 
 <div class="trap-callout">

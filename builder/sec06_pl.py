@@ -131,57 +131,33 @@ Consideremos una instancia representativa con 4 lugares y 5 especies para verifi
   - $|E| = 10$ restricciones de cobertura lógica (una por especie).
   - **Total de restricciones:** $1 + 10 = 11$ restricciones funcionales (además de los dominios $0 \le x_i, y_j \le 1$).
 
-#### 7. Implementación en Python con Solver MILP
+#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
-```python
-from typing import List, Tuple
-import numpy as np
-from scipy.optimize import milp, LinearConstraint, Bounds
+```text
+Algoritmo ResolverObservacionAvesPLI(Especies, Lugares, duraciones, presencia, T_max):
+    Crear modelo de Programación Lineal Entera (PLI):
 
-def resolver_observacion_aves(
-    duraciones: List[float],
-    matriz_presencia: List[List[int]],
-    presupuesto_dias: float = 2.0
-) -> Tuple[float, List[int], List[int]]:
-    # duraciones: lista de largo |L|
-    # matriz_presencia: matriz |E| x |L| donde A[i][j] = 1 si especie i esta en sitio j
-    num_especies = len(matriz_presencia)
-    num_lugares = len(duraciones)
-    n_vars = num_lugares + num_especies # [y_0...y_5, x_0...x_9]
+    // 1. Variables de decisión binarias:
+    Para cada lugar j in Lugares:
+        Definir y[j] in {0, 1}   // 1 si se visita el sitio j, 0 si no
+    Para cada especie i in Especies:
+        Definir x[i] in {0, 1}   // 1 si se avista la especie i, 0 si no
 
-    # Objetivo: Maximizar sum(x_i) <=> Minimizar -sum(x_i)
-    c = np.zeros(n_vars)
-    c[num_lugares:] = -1.0
+    // 2. Función Objetivo: maximizar especies distintas avistadas
+    Maximizar Z = Sumatoria_{i in Especies} x[i]
 
-    # Restriccion 1: Presupuesto temporal sum(d_j * y_j) <= T_max
-    # Restricciones 2..E+1: x_i - sum(A_ij * y_j) <= 0
-    num_constraints = 1 + num_especies
-    A = np.zeros((num_constraints, n_vars))
-    b_u = np.zeros(num_constraints)
-    b_l = np.full(num_constraints, -np.inf)
+    // 3. Restricciones:
+    // (a) Presupuesto temporal máximo de expedición:
+    Sumatoria_{j in Lugares} (duraciones[j] * y[j]) <= T_max
 
-    # 1. Presupuesto
-    A[0, :num_lugares] = duraciones
-    b_u[0] = presupuesto_dias
+    // (b) Enlace lógico de presencia por especie:
+    Para cada especie i in Especies:
+        x[i] <= Sumatoria_{j in Lugares donde habita i} y[j]
 
-    # 2. Enlace x_i <= sum(A_ij * y_j) => -sum(A_ij * y_j) + x_i <= 0
-    for i in range(num_especies):
-        row = 1 + i
-        for j in range(num_lugares):
-            if matriz_presencia[i][j] == 1:
-                A[row, j] = -1.0
-        A[row, num_lugares + i] = 1.0
-        b_u[row] = 0.0
+    // 4. Resolución mediante solver PLI estándar:
+    (Z_opt, valores_y, valores_x) = ResolverSolverPLI(modelo)
 
-    constraints = LinearConstraint(A, b_l, b_u)
-    integrality = np.ones(n_vars) # Todas binarias
-    bounds = Bounds(0, 1)
-
-    res = milp(c=c, constraints=constraints, integrality=integrality, bounds=bounds)
-
-    lugares_elegidos = [j for j in range(num_lugares) if res.x[j] > 0.5]
-    especies_vistas = [i for i in range(num_especies) if res.x[num_lugares + i] > 0.5]
-    return -res.fun, lugares_elegidos, especies_vistas
+    devolver (Z_opt, LugaresCon(y == 1), EspeciesCon(x == 1))
 ```
 
 <div class="trap-callout">
@@ -285,29 +261,31 @@ Supongamos una grilla pequeña con 10 vecindarios ($|V| = 10$).
   - $|V|$ restricciones individuales de cobertura de vecindario.
   - **Total:** $|V| + 1$ restricciones lineales.
 
-#### 7. Código Python con Modelado PuLP / Scipy
+#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
-```python
-from typing import Dict, List, Set, Tuple
+```text
+Algoritmo FormularAntenas70PLI(Celdas, Vecindarios, Costo_antena):
+    Crear modelo PLI:
 
-def modelar_antenas_70_porciento(
-    celdas_candidatas: List[Tuple[int, int]],
-    ubicacion_vecindarios: Dict[str, Tuple[int, int]],
-    costo_cte: float = 1000.0
-) -> Tuple[List[Tuple[int, int]], List[str], float]:
-    # Determinar que antenas cubren a cada vecindario
-    cubren: Dict[str, List[Tuple[int, int]]] = {}
-    for v_id, (vr, vc) in ubicacion_vecindarios.items():
-        cubren[v_id] = [
-            (ar, ac) for (ar, ac) in celdas_candidatas
-            if abs(ar - vr) <= 1 and abs(ac - vc) <= 1
-        ]
-    
-    # Cantidad minima a cubrir
-    n_v = len(ubicacion_vecindarios)
-    min_cubrir = int(np.ceil(0.70 * n_v))
-    # Retorna la especificacion del modelo lista para resolver con solver MILP
-    return celdas_candidatas, list(ubicacion_vecindarios.keys()), min_cubrir * costo_cte
+    // 1. Variables de decisión binarias:
+    Para cada celda c in Celdas:
+        Definir y[c] in {0, 1}       // 1 si se instala antena en c
+    Para cada vecindario v in Vecindarios:
+        Definir x[v] in {0, 1}       // 1 si el vecindario v queda cubierto
+
+    // 2. Función Objetivo: minimizar costo de antenas
+    Minimizar Costo = Sumatoria_{c in Celdas} (Costo_antena * y[c])
+
+    // 3. Restricciones:
+    // (a) Umbral mínimo de cobertura del 70%:
+    Sumatoria_{v in Vecindarios} x[v] >= techo(0.70 * cantidad(Vecindarios))
+
+    // (b) Cobertura física por vecindario:
+    Para cada vecindario v in Vecindarios:
+        x[v] <= Sumatoria_{c in Celdas que cubren a v} y[c]
+
+    (Costo_opt, antenas_activas) = ResolverSolverPLI(modelo)
+    devolver (Costo_opt, antenas_activas)
 ```
 
 <div class="trap-callout">
@@ -399,47 +377,29 @@ Analicemos 3 regiones simplificadas:
   - 72 restricciones de cota superior de capacidad ($x_{ij} \le CAP_{ij}$).
   - **Total:** $9 + 72 = 81$ restricciones lineales (más $x_{ij} \ge 0$).
 
-#### 7. Código Python con Scipy Linprog
+#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
-```python
-from typing import Dict, List, Tuple
-import numpy as np
-from scipy.optimize import linprog
+```text
+Algoritmo FormularDistribucionFlujoPL(Regiones, Aristas, Generacion, Demanda):
+    Crear modelo de Programación Lineal Continua:
 
-def resolver_flujo_costo_minimo(
-    regiones: List[int],
-    generacion: Dict[int, float],
-    demanda: Dict[int, float],
-    aristas: List[Tuple[int, int, float, float]] # (u, v, costo, cap)
-) -> Tuple[float, Dict[Tuple[int, int], float]]:
-    n_aristas = len(aristas)
-    c = np.array([a[2] for a in aristas])
-    bounds = [(0, a[3]) for a in aristas]
+    // 1. Variables de decisión continuas:
+    Para cada arista (u, v) in Aristas:
+        Definir x[u, v] >= 0         // Potencia transportada por la línea
 
-    # Balance nodal: Suma_salidas - Suma_entradas = G_i - D_i
-    n_nodos = len(regiones)
-    A_eq = np.zeros((n_nodos, n_aristas))
-    b_eq = np.zeros(n_nodos)
+    // 2. Función Objetivo: minimizar costo de transmisión
+    Minimizar Costo = Sumatoria_{(u, v) in Aristas} (costo[u, v] * x[u, v])
 
-    nodo_to_idx = {r: idx for idx, r in enumerate(regiones)}
+    // 3. Restricciones:
+    // (a) Balance nodal de potencia para cada región i in Regiones:
+    Sumatoria_{v} x[i, v] - Sumatoria_{u} x[u, i] = Generacion[i] - Demanda[i]
 
-    for arc_idx, (u, v, _, _) in enumerate(aristas):
-        u_idx = nodo_to_idx[u]
-        v_idx = nodo_to_idx[v]
-        A_eq[u_idx, arc_idx] = 1.0  # Sale de u
-        A_eq[v_idx, arc_idx] = -1.0 # Entra a v
+    // (b) Capacidad física máxima por línea:
+    Para cada arista (u, v) in Aristas:
+        x[u, v] <= Capacidad[u, v]
 
-    for r in regiones:
-        r_idx = nodo_to_idx[r]
-        b_eq[r_idx] = generacion[r] - demanda[r]
-
-    res = linprog(c, A_eq=A_eq, b_eq=b_eq, bounds=bounds, method='highs')
-
-    flujos = {}
-    for idx, (u, v, _, _) in enumerate(aristas):
-        flujos[(u, v)] = res.x[idx]
-
-    return res.fun, flujos
+    (Costo_min, flujos_optimos) = ResolverSimplex(modelo)
+    devolver (Costo_min, flujos_optimos)
 ```
 
 <div class="trap-callout">
@@ -520,40 +480,28 @@ Rutas alternativas en el grafo del diagrama:
 * **Restricciones Lineales:** $|V|$ restricciones de conservación de flujo nodal (1 en origen, 1 en destino y $|V| - 2$ intermedias).
 * *(Nota: Una de las restricciones es linealmente dependiente porque la suma de todos los balances es $1 + (-1) + 0 = 0$).*
 
-#### 7. Código Python con Simplex Continuo
+#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
-```python
-from typing import Dict, List, Tuple
-import numpy as np
-from scipy.optimize import linprog
+```text
+Algoritmo FormularCaminoMinimoPL(Vertices, Aristas, origen, destino):
+    Crear modelo de Programación Lineal Continua:
 
-def camino_minimo_pl_continuo(
-    vertices: List[str],
-    aristas: List[Tuple[str, str, float]], # (u, v, costo)
-    origen: str,
-    destino: str
-) -> Tuple[float, List[Tuple[str, str]]]:
-    n_edges = len(aristas)
-    c = np.array([cost for _, _, cost in aristas])
-    bounds = [(0, None) for _ in aristas]
+    // 1. Variables continuas (por TUM serán naturalmente enteras en {0, 1})
+    Para cada arista (u, v) in Aristas:
+        Definir x[u, v] >= 0
 
-    n_nodes = len(vertices)
-    A_eq = np.zeros((n_nodes, n_edges))
-    b_eq = np.zeros(n_nodes)
+    // 2. Función Objetivo: minimizar costo de seguro acumulado
+    Minimizar Costo = Sumatoria_{(u, v) in Aristas} (costo[u, v] * x[u, v])
 
-    v_map = {name: i for i, name in enumerate(vertices)}
+    // 3. Restricciones de conservación de flujo unitario:
+    Para cada vértice i in Vertices:
+        flujo_neto = Sumatoria_{v} x[i, v] - Sumatoria_{u} x[u, i]
+        si i == origen:     flujo_neto == 1   // Inyecta 1 unidad
+        si i == destino:    flujo_neto == -1  // Extrae 1 unidad
+        si i es intermedio: flujo_neto == 0   // Conservación estricta
 
-    for e_idx, (u, v, _) in enumerate(aristas):
-        A_eq[v_map[u], e_idx] = 1.0
-        A_eq[v_map[v], e_idx] = -1.0
-
-    b_eq[v_map[origen]] = 1.0
-    b_eq[v_map[destino]] = -1.0
-
-    res = linprog(c, A_eq=A_eq, b_eq=b_eq, bounds=bounds, method='highs')
-
-    camino = [aristas[i][:2] for i in range(n_edges) if res.x[i] > 0.9]
-    return res.fun, camino
+    (Costo_min, aristas_activas) = ResolverSimplex(modelo)
+    devolver (Costo_min, aristas_activas)
 ```
 
 <div class="trap-callout">
@@ -649,56 +597,29 @@ Consideremos las tareas $T = \{3, 5, 8, 2, 4\}$:
   - 2 restricciones de cota superior sobre $Z$ ($Z \ge L_1$ y $Z \ge L_2$).
   - **Total:** 2 restricciones lineales funcionales.
 
-#### 7. Código Python con Solver MILP
+#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
-```python
-from typing import List, Tuple
-import numpy as np
-from scipy.optimize import milp, LinearConstraint, Bounds
+```text
+Algoritmo Formular2PartitionMinMaxPLI(tiempos, n):
+    Crear modelo PLI:
 
-def resolver_2_partition_minmax(tiempos: List[float]) -> Tuple[float, List[int], List[int]]:
-    n = len(tiempos)
-    n_vars = n + 1 # [x_0, ..., x_{n-1}, Z]
+    // 1. Variables de decisión:
+    Para cada tarea i desde 1 hasta n:
+        Definir x[i] in {0, 1}       // 1 si se asigna a máquina 1, 0 si a máquina 2
+    Definir Z >= 0                   // Variable continua auxiliar (makespan a minimizar)
 
-    # Objetivo: min Z => c = [0, ..., 0, 1]
-    c = np.zeros(n_vars)
-    c[-1] = 1.0
+    // 2. Función Objetivo: minimizar la carga máxima
+    Minimizar Z
 
-    # Restricciones:
-    # 1. Z - sum(T_i * x_i) >= 0  => -sum(T_i * x_i) + Z >= 0
-    # 2. Z - sum(T_i * (1 - x_i)) >= 0 => sum(T_i * x_i) + Z >= sum(T_i)
-    suma_total = sum(tiempos)
-    A = np.zeros((2, n_vars))
-    b_l = np.zeros(2)
-    b_u = np.full(2, np.inf)
+    // 3. Restricciones de linealización del Min-Max:
+    // (a) Z acota superiormente a la carga de la Máquina 1:
+    Z >= Sumatoria_{i=1}^n (tiempos[i] * x[i])
 
-    # Fila 1
-    for i in range(n):
-        A[0, i] = -tiempos[i]
-    A[0, -1] = 1.0
-    b_l[0] = 0.0
+    // (b) Z acota superiormente a la carga de la Máquina 2:
+    Z >= Sumatoria_{i=1}^n (tiempos[i] * (1 - x[i]))
 
-    # Fila 2
-    for i in range(n):
-        A[1, i] = tiempos[i]
-    A[1, -1] = 1.0
-    b_l[1] = suma_total
-
-    constraints = LinearConstraint(A, b_l, b_u)
-    integrality = np.zeros(n_vars)
-    integrality[:n] = 1 # x_i son binarias
-    integrality[-1] = 0 # Z es continua
-
-    bounds = Bounds(
-        lb=[0]*n + [0],
-        ub=[1]*n + [np.inf]
-    )
-
-    res = milp(c=c, constraints=constraints, integrality=integrality, bounds=bounds)
-
-    p1 = [i for i in range(n) if res.x[i] > 0.5]
-    p2 = [i for i in range(n) if res.x[i] <= 0.5]
-    return res.fun, p1, p2
+    (Z_opt, asignaciones) = ResolverSolverPLI(modelo)
+    devolver (Z_opt, asignaciones)
 ```
 
 <div class="trap-callout">

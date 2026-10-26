@@ -139,50 +139,37 @@ flowchart TD
     L8 --> H8["Hojas caso base"]
 ```
 
-#### 5. Implementación en Python (Tipada y Ejecutable)
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def multiplicar_matrices_dyc(a: list[list[float]], b: list[list[float]]) -> list[list[float]]:
-    # Multiplica dos matrices cuadradas de orden n (potencia de 2) por DyC en O(n^3).
-    n = len(a)
-    if n == 1:
-        return [[a[0][0] * b[0][0]]]
+```text
+Algoritmo MultiplicarMatricesDyC(A, B, n):
+    // Caso Base: matriz de 1x1
+    si n == 1:
+        devolver [[ A[0][0] * B[0][0] ]]
 
-    m = n // 2
-    # Partición en 4 submatrices de m x m
-    a11 = [row[:m] for row in a[:m]]
-    a12 = [row[m:] for row in a[:m]]
-    a21 = [row[:m] for row in a[m:]]
-    a22 = [row[m:] for row in a[m:]]
+    m = n / 2
+    // Dividir A y B en 4 submatrices de m x m cada una:
+    (A11, A12, A21, A22) = PartirEn4Bloques(A, m)
+    (B11, B12, B21, B22) = PartirEn4Bloques(B, m)
 
-    b11 = [row[:m] for row in b[:m]]
-    b12 = [row[m:] for row in b[:m]]
-    b21 = [row[:m] for row in b[m:]]
-    b22 = [row[m:] for row in b[m:]]
+    // 8 multiplicaciones recursivas de tamaño m = n/2:
+    M1 = MultiplicarMatricesDyC(A11, B11, m)
+    M2 = MultiplicarMatricesDyC(A12, B21, m)
+    M3 = MultiplicarMatricesDyC(A11, B12, m)
+    M4 = MultiplicarMatricesDyC(A12, B22, m)
+    M5 = MultiplicarMatricesDyC(A21, B11, m)
+    M6 = MultiplicarMatricesDyC(A22, B21, m)
+    M7 = MultiplicarMatricesDyC(A21, B12, m)
+    M8 = MultiplicarMatricesDyC(A22, B22, m)
 
-    # 8 multiplicaciones recursivas
-    m1 = multiplicar_matrices_dyc(a11, b11)
-    m2 = multiplicar_matrices_dyc(a12, b21)
-    m3 = multiplicar_matrices_dyc(a11, b12)
-    m4 = multiplicar_matrices_dyc(a12, b22)
-    m5 = multiplicar_matrices_dyc(a21, b11)
-    m6 = multiplicar_matrices_dyc(a22, b21)
-    m7 = multiplicar_matrices_dyc(a21, b12)
-    m8 = multiplicar_matrices_dyc(a22, b22)
+    // 4 sumas de matrices de tamaño m x m en O(m^2):
+    C11 = M1 + M2
+    C12 = M3 + M4
+    C21 = M5 + M6
+    C22 = M7 + M8
 
-    # 4 sumas de bloques de m x m
-    c11 = [[m1[i][j] + m2[i][j] for j in range(m)] for i in range(m)]
-    c12 = [[m3[i][j] + m4[i][j] for j in range(m)] for i in range(m)]
-    c21 = [[m5[i][j] + m6[i][j] for j in range(m)] for i in range(m)]
-    c22 = [[m7[i][j] + m8[i][j] for j in range(m)] for i in range(m)]
-
-    # Ensamblado de la matriz C final de n x n
-    c = []
-    for i in range(m):
-        c.append(c11[i] + c12[i])
-    for i in range(m):
-        c.append(c21[i] + c22[i])
-    return c
+    // Combinar en matriz final C de n x n
+    devolver EnsamblarMatriz(C11, C12, C21, C22)
 ```
 
 <div class="trap-callout">
@@ -266,25 +253,23 @@ flowchart LR
     D --> E["Elemento Pico: Indice 5"]
 ```
 
-#### 5. Implementación en Python (Tipada y Ejecutable)
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def encontrar_pico(arr: list[int]) -> int:
-    # Encuentra el índice de un elemento pico en O(log n) mediante DyC.
-    if not arr:
-        return -1
-    
-    ini, fin = 0, len(arr) - 1
-    while ini < fin:
-        m = (ini + fin) // 2
-        # Si la pendiente sube hacia la derecha, el pico está a la derecha
-        if arr[m] < arr[m + 1]:
+```text
+Algoritmo EncontrarPico(A, n):
+    si n == 0: devolver -1
+    ini = 0, fin = n - 1
+
+    mientras ini < fin:
+        m = (ini + fin) / 2
+        // Lema de la pendiente: si sube hacia la derecha, el pico está a la derecha
+        si A[m] < A[m + 1]:
             ini = m + 1
-        else:
-            # Si la pendiente baja hacia la derecha, m puede ser el pico
+        sino:
+            // Si la pendiente desciende, m puede ser el pico
             fin = m
-            
-    return ini
+
+    devolver ini  // Índice del elemento pico garantizado en O(log n)
 ```
 
 <div class="trap-callout">
@@ -368,28 +353,24 @@ graph LR
     classDef primer fill:#15803d,stroke:#166534,stroke-width:3px,color:#fff
 ```
 
-#### 5. Implementación en Python (Tipada y Ejecutable)
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def buscar_primer_cero(arr: list[int]) -> int:
-    # Retorna el índice del primer 0 en un arreglo de 1s seguidos de 0s en O(log n).
-    if not arr:
-        return -1
-
-    ini, fin = 0, len(arr) - 1
+```text
+Algoritmo BuscarPrimerCero(A, n):
+    ini = 0, fin = n - 1
     primer_cero = -1
 
-    while ini <= fin:
-        m = (ini + fin) // 2
-        if arr[m] == 0:
+    mientras ini <= fin:
+        m = (ini + fin) / 2
+        si A[m] == 0:
             primer_cero = m
-            # Intentar buscar un cero aún más a la izquierda
+            // Continuar buscando un cero previo más a la izquierda
             fin = m - 1
-        else:
-            # arr[m] == 1, el primer cero debe estar a la derecha
+        sino:
+            // A[m] == 1: el primer cero debe residir a la derecha
             ini = m + 1
 
-    return primer_cero
+    devolver primer_cero  // Retorna -1 si el arreglo contiene exclusivamente unos
 ```
 
 <div class="trap-callout">

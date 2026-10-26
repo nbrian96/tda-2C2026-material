@@ -1994,51 +1994,37 @@ $$u \in D&#x27;&#x27; \quad \lor \quad v \in D&#x27;&#x27;$$</p>
 </li>
 <li>¡Todos los 5 vértices de $G&#x27;$ quedan dominados con un único nodo $D = \{2\}$!</li>
 </ul>
-<h4>6. Implementación en Python con Verificador Polinomial</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-python">from typing import Dict, List, Set, Tuple
+<h4>6. Pseudocódigo del Verificador y Reducción (Estilo Examen Presencial)</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo VerificadorDominatingSet(G = (V, E), k, certificado_D):
+    // 1. Verificar tamaño de la cota en O(1)
+    si tamaño(certificado_D) &gt; k:
+        devolver Falso
 
-def verificador_dominating_set(
-    vertices: List[int],
-    adyacencia: Dict[int, List[int]],
-    k: int,
-    certificado_D: Set[int]
-) -&gt; bool:
-    # 1. Verificar tamano cota
-    if len(certificado_D) &gt; k:
-        return False
+    // 2. Construir conjunto de vértices dominados en O(V + E)
+    dominados = conjunto_vacío()
+    para cada u in certificado_D:
+        agregar u a dominados             // Se domina a sí mismo
+        para cada vecino v in G.adyacentes(u):
+            agregar v a dominados         // Domina a sus vecinos
 
-    # 2. Verificar que D este contenido en V
-    set_v = set(vertices)
-    if not certificado_D.issubset(set_v):
-        return False
+    // 3. Verificar cobertura total
+    si tamaño(dominados) == cantidad(V):
+        devolver Verdadero  // Certificado válido en tiempo polinomial O(V + E)
+    sino:
+        devolver Falso
 
-    # 3. Conjunto de dominados en O(V + E)
-    dominados = set(certificado_D)
-    for u in certificado_D:
-        for vecino in adyacencia.get(u, []):
-            dominados.add(vecino)
+Algoritmo TransformarVCaDominatingSet(G = (V, E), k):
+    // Construir G' = (V', E') en tiempo O(V + E)
+    V' = copiar(V)
+    E' = copiar(E)
 
-    # 4. Todos los vertices deben estar dominados
-    return len(dominados) == len(vertices)
+    para cada arista e = (u, v) in E:
+        crear nuevo vértice auxiliar w_e
+        agregar w_e a V'
+        agregar aristas (u, w_e) y (v, w_e) a E'
 
-def transformar_vc_a_dominating_set(
-    vertices: List[int],
-    aristas: List[Tuple[int, int]],
-    k: int
-) -&gt; Tuple[List[int], List[Tuple[int, int]], int]:
-    # Gadget: V' = V U {w_e}, E' = E U {(u, w_e), (v, w_e)}
-    nuevos_vertices = list(vertices)
-    nuevas_aristas = list(aristas)
-    next_id = max(vertices) + 1 if vertices else 1
-
-    for u, v in aristas:
-        w_e = next_id
-        next_id += 1
-        nuevos_vertices.append(w_e)
-        nuevas_aristas.append((u, w_e))
-        nuevas_aristas.append((v, w_e))
-
-    return nuevos_vertices, nuevas_aristas, k
+    k' = k
+    devolver (G', k')
 </code></pre></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -2173,25 +2159,21 @@ lo cual contradice la hipótesis de que $\text{Costo}(T) \le n$.</p>
         B2 -. Penalizacion peso 2 .-> D2
     end
 </pre></div>
-<h4>4. Código Python de la Reducción</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-python">from typing import List, Tuple
-import numpy as np
+<h4>4. Pseudocódigo de la Reducción Polinomial (Estilo Examen Presencial)</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo ReducirCicloHamiltonianoATSP(G = (V, E)):
+    n = cantidad(V)
+    Crear grafo completo G' = (V, E') con pesos en aristas:
 
-def reducir_ciclo_hamiltoniano_a_tsp(
-    n_vertices: int,
-    aristas_g: List[Tuple[int, int]]
-) -&gt; Tuple[np.ndarray, int]:
-    # Matriz completa con penalizacion 1 y 2
-    matriz_pesos = np.full((n_vertices, n_vertices), 2, dtype=int)
-    for i in range(n_vertices):
-        matriz_pesos[i, i] = 0 # Sin bucles
+    para cada par de vértices u, v in V con u != v:
+        si (u, v) in E:
+            peso(u, v) = 1    // Arista original presente
+        sino:
+            peso(u, v) = 2    // Arista penalizada inexistente en G
 
-    for u, v in aristas_g:
-        matriz_pesos[u, v] = 1
-        matriz_pesos[v, u] = 1
+    cota_k = n  // Cota de costo del tour
 
-    cota_k = n_vertices
-    return matriz_pesos, cota_k
+    // Se entrega la instancia (G', cota_k) al resolvedor de decisión de TSP
+    devolver (G', cota_k)
 </code></pre></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>

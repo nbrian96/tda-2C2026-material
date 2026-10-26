@@ -71,82 +71,32 @@ graph LR
     P4 -->|c=1| t
 ```
 
-#### 5. Implementación en Python con Tipado Estricto
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-from collections import deque
-from typing import Dict, List, Set, Tuple
+```text
+Algoritmo DespacharDronesEmergencia(Drones, Puestos, Compatibilidades):
+    Construir Red de Flujo G = (V, E) con fuente s y sumidero t:
 
-def despachar_drones_emergencia(
-    drones: List[str],
-    puestos: List[str],
-    compatibilidades: List[Tuple[str, str]] # (dron_id, puesto_id)
-) -> Tuple[int, List[Tuple[str, str]]]:
-    s = "SRC_S"
-    t = "SNK_T"
-    adyacencia: Dict[str, List[str]] = {}
-    capacidad: Dict[Tuple[str, str], int] = {}
-    flujo: Dict[Tuple[str, str], int] = {}
+    // 1. Arcos desde s a cada dron d (capacidad 2 = cada dron realiza hasta 2 viajes)
+    para cada d in Drones:
+        agregar_arco(G, s, d, capacidad = 2)
 
-    def agregar_arco(u: str, v: str, c: int) -> None:
-        if u not in adyacencia: adyacencia[u] = []
-        if v not in adyacencia: adyacencia[v] = []
-        adyacencia[u].append(v)
-        adyacencia[v].append(u)
-        capacidad[(u, v)] = c
-        capacidad[(v, u)] = 0
-        flujo[(u, v)] = 0
-        flujo[(v, u)] = 0
+    // 2. Arcos de compatibilidad entre dron d y puesto p (capacidad 1)
+    para cada (d, p) in Compatibilidades:
+        agregar_arco(G, d, p, capacidad = 1)
 
-    # 1. Fuente a drones con capacidad 2
-    for d in drones:
-        agregar_arco(s, d, 2)
+    // 3. Arcos desde cada puesto p a sumidero t (capacidad 1 = 1 dron por puesto)
+    para cada p in Puestos:
+        agregar_arco(G, p, t, capacidad = 1)
 
-    # 2. Puestos a sumidero con capacidad 1
-    for p in puestos:
-        agregar_arco(p, t, 1)
+    // Ejecución de flujo máximo en tiempo O(|Puestos| * |E|):
+    flujo_total = EdmondsKarp(G, s, t)
 
-    # 3. Drones a puestos con capacidad 1
-    for d, p in compatibilidades:
-        agregar_arco(d, p, 1)
-
-    # Edmonds-Karp BFS
-    flujo_total = 0
-    while True:
-        padre: Dict[str, str] = {}
-        visitados = {s}
-        cola = deque([s])
-        while cola:
-            u = cola.popleft()
-            if u == t: break
-            for v in adyacencia.get(u, []):
-                residual = capacidad.get((u, v), 0) - flujo.get((u, v), 0)
-                if residual > 0 and v not in visitados:
-                    visitados.add(v)
-                    padre[v] = u
-                    cola.append(v)
-
-        if t not in padre: break
-
-        # Cuello de botella
-        cuello = float('inf')
-        curr = t
-        while curr != s:
-            prev = padre[curr]
-            cuello = min(cuello, capacidad[(prev, curr)] - flujo[(prev, curr)])
-            curr = prev
-
-        curr = t
-        while curr != s:
-            prev = padre[curr]
-            flujo[(prev, curr)] += cuello
-            flujo[(curr, prev)] -= cuello
-            curr = prev
-
-        flujo_total += cuello
-
-    despachos = [(d, p) for d, p in compatibilidades if flujo.get((d, p), 0) == 1]
-    return flujo_total, despachos
+    si flujo_total == cantidad(Puestos):
+        despachos = [ (d, p) para cada (d, p) en Compatibilidades si flujo(d, p) == 1 ]
+        devolver (flujo_total, despachos)
+    sino:
+        devolver (flujo_total, "Infactible: no es posible abastecer a todos los puestos")
 ```
 
 <div class="trap-callout">
@@ -219,48 +169,45 @@ Consideremos $n = 4$ días, presupuesto $P = 10$:
 - Si pautáramos día 3 (costo 6, ben 14), no podríamos pautar día 1 ni 2 ni 4. Total = 14.
 - El algoritmo devuelve $OPT(4, 10) = 22$ con días elegidos $\{1, 4\}$.
 
-#### 6. Implementación en Python con Tipado Estricto
+#### 6. Pseudocódigo del Algoritmo DP (Estilo Examen Presencial)
 
-```python
-from typing import List, Tuple
+```text
+Algoritmo PlanificarCampanaPublicidad(costos, beneficios, n, Presupuesto_Max):
+    // 1. Matriz DP de dimensiones (n + 1) x (Presupuesto_Max + 1) en 0
+    crear matriz DP[(n + 1)][(Presupuesto_Max + 1)] = 0
 
-def planificar_campana_publicidad(
-    costos: List[int],
-    beneficios: List[int],
-    presupuesto_max: int
-) -> Tuple[int, List[int]]:
-    n = len(costos)
-    dp = [[0] * (presupuesto_max + 1) for _ in range(n + 1)]
+    // 2. Llenado Bottom-Up
+    para i desde 1 hasta n:
+        c_i = costos[i]
+        b_i = beneficios[i]
+        prev_dia = max(0, i - 3)  // Enfriamiento de 2 días: saltamos a i - 3
 
-    for i in range(1, n + 1):
-        c_i = costos[i - 1]
-        b_i = beneficios[i - 1]
-        prev_dia = max(0, i - 3)
+        para p desde 0 hasta Presupuesto_Max:
+            val_sin = DP[i - 1][p]
+            si p >= c_i:
+                val_con = DP[prev_dia][p - c_i] + b_i
+                DP[i][p] = max(val_sin, val_con)
+            sino:
+                DP[i][p] = val_sin
 
-        for p in range(presupuesto_max + 1):
-            val_sin = dp[i - 1][p]
-            val_con = (dp[prev_dia][p - c_i] + b_i) if p >= c_i else -1
-            dp[i][p] = max(val_sin, val_con)
-
-    # Reconstruccion
+    // 3. Reconstrucción de los días de pauta óptimos
     dias_elegidos = []
-    curr_i = n
-    curr_p = presupuesto_max
+    curr_i = n, curr_p = Presupuesto_Max
 
-    while curr_i > 0 and curr_p > 0:
-        c_i = costos[curr_i - 1]
-        b_i = beneficios[curr_i - 1]
+    mientras curr_i > 0 y curr_p > 0:
+        c_i = costos[curr_i]
+        b_i = beneficios[curr_i]
         prev_dia = max(0, curr_i - 3)
 
-        if curr_p >= c_i and dp[curr_i][curr_p] == dp[prev_dia][curr_p - c_i] + b_i:
-            dias_elegidos.append(curr_i) # 1-indexed
-            curr_p -= c_i
+        si curr_p >= c_i y DP[curr_i][curr_p] == DP[prev_dia][curr_p - c_i] + b_i:
+            agregar curr_i a dias_elegidos
+            curr_p = curr_p - c_i
             curr_i = prev_dia
-        else:
-            curr_i -= 1
+        sino:
+            curr_i = curr_i - 1
 
-    dias_elegidos.reverse()
-    return dp[n][presupuesto_max], dias_elegidos
+    invertir(dias_elegidos)
+    devolver (DP[n][Presupuesto_Max], dias_elegidos)
 ```
 
 <div class="trap-callout">

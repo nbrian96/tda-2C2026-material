@@ -290,50 +290,37 @@ flowchart TD
     L8 --> H8["Hojas caso base"]
 ```
 
-#### 5. Implementación en Python (Tipada y Ejecutable)
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def multiplicar_matrices_dyc(a: list[list[float]], b: list[list[float]]) -> list[list[float]]:
-    # Multiplica dos matrices cuadradas de orden n (potencia de 2) por DyC en O(n^3).
-    n = len(a)
-    if n == 1:
-        return [[a[0][0] * b[0][0]]]
+```text
+Algoritmo MultiplicarMatricesDyC(A, B, n):
+    // Caso Base: matriz de 1x1
+    si n == 1:
+        devolver [[ A[0][0] * B[0][0] ]]
 
-    m = n // 2
-    # Partición en 4 submatrices de m x m
-    a11 = [row[:m] for row in a[:m]]
-    a12 = [row[m:] for row in a[:m]]
-    a21 = [row[:m] for row in a[m:]]
-    a22 = [row[m:] for row in a[m:]]
+    m = n / 2
+    // Dividir A y B en 4 submatrices de m x m cada una:
+    (A11, A12, A21, A22) = PartirEn4Bloques(A, m)
+    (B11, B12, B21, B22) = PartirEn4Bloques(B, m)
 
-    b11 = [row[:m] for row in b[:m]]
-    b12 = [row[m:] for row in b[:m]]
-    b21 = [row[:m] for row in b[m:]]
-    b22 = [row[m:] for row in b[m:]]
+    // 8 multiplicaciones recursivas de tamaño m = n/2:
+    M1 = MultiplicarMatricesDyC(A11, B11, m)
+    M2 = MultiplicarMatricesDyC(A12, B21, m)
+    M3 = MultiplicarMatricesDyC(A11, B12, m)
+    M4 = MultiplicarMatricesDyC(A12, B22, m)
+    M5 = MultiplicarMatricesDyC(A21, B11, m)
+    M6 = MultiplicarMatricesDyC(A22, B21, m)
+    M7 = MultiplicarMatricesDyC(A21, B12, m)
+    M8 = MultiplicarMatricesDyC(A22, B22, m)
 
-    # 8 multiplicaciones recursivas
-    m1 = multiplicar_matrices_dyc(a11, b11)
-    m2 = multiplicar_matrices_dyc(a12, b21)
-    m3 = multiplicar_matrices_dyc(a11, b12)
-    m4 = multiplicar_matrices_dyc(a12, b22)
-    m5 = multiplicar_matrices_dyc(a21, b11)
-    m6 = multiplicar_matrices_dyc(a22, b21)
-    m7 = multiplicar_matrices_dyc(a21, b12)
-    m8 = multiplicar_matrices_dyc(a22, b22)
+    // 4 sumas de matrices de tamaño m x m en O(m^2):
+    C11 = M1 + M2
+    C12 = M3 + M4
+    C21 = M5 + M6
+    C22 = M7 + M8
 
-    # 4 sumas de bloques de m x m
-    c11 = [[m1[i][j] + m2[i][j] for j in range(m)] for i in range(m)]
-    c12 = [[m3[i][j] + m4[i][j] for j in range(m)] for i in range(m)]
-    c21 = [[m5[i][j] + m6[i][j] for j in range(m)] for i in range(m)]
-    c22 = [[m7[i][j] + m8[i][j] for j in range(m)] for i in range(m)]
-
-    # Ensamblado de la matriz C final de n x n
-    c = []
-    for i in range(m):
-        c.append(c11[i] + c12[i])
-    for i in range(m):
-        c.append(c21[i] + c22[i])
-    return c
+    // Combinar en matriz final C de n x n
+    devolver EnsamblarMatriz(C11, C12, C21, C22)
 ```
 
 <div class="trap-callout">
@@ -421,25 +408,23 @@ flowchart LR
     D --> E["Elemento Pico: Indice 5"]
 ```
 
-#### 5. Implementación en Python (Tipada y Ejecutable)
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def encontrar_pico(arr: list[int]) -> int:
-    # Encuentra el índice de un elemento pico en O(log n) mediante DyC.
-    if not arr:
-        return -1
-    
-    ini, fin = 0, len(arr) - 1
-    while ini < fin:
-        m = (ini + fin) // 2
-        # Si la pendiente sube hacia la derecha, el pico está a la derecha
-        if arr[m] < arr[m + 1]:
+```text
+Algoritmo EncontrarPico(A, n):
+    si n == 0: devolver -1
+    ini = 0, fin = n - 1
+
+    mientras ini < fin:
+        m = (ini + fin) / 2
+        // Lema de la pendiente: si sube hacia la derecha, el pico está a la derecha
+        si A[m] < A[m + 1]:
             ini = m + 1
-        else:
-            # Si la pendiente baja hacia la derecha, m puede ser el pico
+        sino:
+            // Si la pendiente desciende, m puede ser el pico
             fin = m
-            
-    return ini
+
+    devolver ini  // Índice del elemento pico garantizado en O(log n)
 ```
 
 <div class="trap-callout">
@@ -527,28 +512,24 @@ graph LR
     classDef primer fill:#15803d,stroke:#166534,stroke-width:3px,color:#fff
 ```
 
-#### 5. Implementación en Python (Tipada y Ejecutable)
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def buscar_primer_cero(arr: list[int]) -> int:
-    # Retorna el índice del primer 0 en un arreglo de 1s seguidos de 0s en O(log n).
-    if not arr:
-        return -1
-
-    ini, fin = 0, len(arr) - 1
+```text
+Algoritmo BuscarPrimerCero(A, n):
+    ini = 0, fin = n - 1
     primer_cero = -1
 
-    while ini <= fin:
-        m = (ini + fin) // 2
-        if arr[m] == 0:
+    mientras ini <= fin:
+        m = (ini + fin) / 2
+        si A[m] == 0:
             primer_cero = m
-            # Intentar buscar un cero aún más a la izquierda
+            // Continuar buscando un cero previo más a la izquierda
             fin = m - 1
-        else:
-            # arr[m] == 1, el primer cero debe estar a la derecha
+        sino:
+            // A[m] == 1: el primer cero debe residir a la derecha
             ini = m + 1
 
-    return primer_cero
+    devolver primer_cero  // Retorna -1 si el arreglo contiene exclusivamente unos
 ```
 
 <div class="trap-callout">
@@ -706,28 +687,25 @@ graph LR
     classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:1px,color:#fff
 ```
 
-#### 5. Implementación en Python (Tipada y Ejecutable)
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def conceder_permisos_mafias(pedidos: list[tuple[str, int, int]]) -> list[tuple[str, int, int]]:
-    # pedidos: lista de (nombre, inicio, fin)
-    if not pedidos:
-        return []
+```text
+Algoritmo ConcederPermisosMafias(pedidos):
+    si pedidos está vacío: devolver []
 
-    # 1. Ordenar vorazmente por punto final ascendente
-    pedidos_ordenados = sorted(pedidos, key=lambda x: x[2])
+    // 1. Regla voraz: ordenar por tiempo de finalización f_i creciente
+    ordenar pedidos por f_i ascendente
 
-    seleccionados = [pedidos_ordenados[0]]
-    ultimo_fin = pedidos_ordenados[0][2]
+    seleccionados = [ pedidos[0] ]
+    ultimo_fin = pedidos[0].fin
 
-    # 2. Selección voraz de intervalos compatibles
-    for pedido in pedidos_ordenados[1:]:
-        nombre, inicio, fin = pedido
-        if inicio >= ultimo_fin:
-            seleccionados.append(pedido)
-            ultimo_fin = fin
+    // 2. Selección voraz de intervalos compatibles en O(n)
+    para cada p en pedidos desde el segundo en adelante:
+        si p.inicio >= ultimo_fin:
+            agregar p a seleccionados
+            ultimo_fin = p.fin
 
-    return seleccionados
+    devolver seleccionados  // Máximo conjunto disjunto de intervalos
 ```
 
 <div class="trap-callout">
@@ -844,39 +822,36 @@ graph TD
     classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 5. Implementación en Python (Tipada y Ejecutable)
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def mochila_aprox_medio(items: list[tuple[str, int, int]], w_max: int) -> tuple[int, list[tuple[str, int, int]]]:
-    # items: lista de (nombre, peso, valor)
-    # 1. Filtrar los que no caben por sí solos
-    candidatos = [it for it in items if it[1] <= w_max]
-    if not candidatos:
-        return 0, []
+```text
+Algoritmo MochilaAproxMedio(items, W_max):
+    // 1. Filtrar los que no caben por sí solos
+    candidatos = [ it para it en items si it.peso <= W_max ]
+    si candidatos está vacío: devolver (0, [])
 
-    # 2. Ordenar por densidad decreciente
-    candidatos.sort(key=lambda x: x[2] / x[1], reverse=True)
+    // 2. Ordenar por densidad decreciente de valor (v_i / w_i)
+    ordenar candidatos por (it.valor / it.peso) descendente
 
     v_greedy = 0
     w_greedy = 0
     sol_greedy = []
-    elemento_critico = None
+    elemento_critico = nulo
 
-    # 3. Llenado voraz
-    for it in candidatos:
-        nombre, peso, valor = it
-        if w_greedy + peso <= w_max:
-            sol_greedy.append(it)
-            w_greedy += peso
-            v_greedy += valor
-        elif elemento_critico is None:
-            elemento_critico = it
+    // 3. Llenado voraz
+    para cada it en candidatos:
+        si w_greedy + it.peso <= W_max:
+            agregar it a sol_greedy
+            w_greedy = w_greedy + it.peso
+            v_greedy = v_greedy + it.valor
+        sino si elemento_critico es nulo:
+            elemento_critico = it  // Primer ítem que desborda la capacidad
 
-    # 4. Cota dual max(V_greedy, v_critico)
-    if elemento_critico is not None and elemento_critico[2] > v_greedy:
-        return elemento_critico[2], [elemento_critico]
-
-    return v_greedy, sol_greedy
+    // 4. Cota dual: max(V_greedy, v_critico) garantiza factor 1/2
+    si elemento_critico != nulo y elemento_critico.valor > v_greedy:
+        devolver (elemento_critico.valor, [ elemento_critico ])
+    sino:
+        devolver (v_greedy, sol_greedy)
 ```
 
 <div class="trap-callout">
@@ -990,31 +965,29 @@ flowchart LR
     class D,C late
 ```
 
-#### 5. Implementación en Python (Tipada y Ejecutable)
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def minimizar_latencia_edf(tareas: list[tuple[str, int, int]]) -> tuple[int, list[tuple[str, int, int, int]]]:
-    # tareas: lista de (nombre, duracion, deadline)
-    if not tareas:
-        return 0, []
-
-    # 1. Ordenar vorazmente por deadline ascendente
-    tareas_ordenadas = sorted(tareas, key=lambda x: x[2])
+```text
+Algoritmo MinimizarLatenciaEDF(tareas):
+    // 1. Regla voraz: ordenar por deadline ascendente (Earliest Deadline First)
+    ordenar tareas por deadline d_i ascendente
 
     tiempo_actual = 0
     latencia_maxima = 0
     cronograma = []
 
-    for nombre, duracion, deadline in tareas_ordenadas:
+    para cada tarea (nombre, t_i, d_i) en tareas:
         inicio = tiempo_actual
-        fin = tiempo_actual + duracion
-        latencia = max(0, fin - deadline)
-        if latencia > latencia_maxima:
+        fin = tiempo_actual + t_i
+        latencia = max(0, fin - d_i)
+
+        si latencia > latencia_maxima:
             latencia_maxima = latencia
-        cronograma.append((nombre, inicio, fin, latencia))
+
+        agregar (nombre, inicio, fin, latencia) a cronograma
         tiempo_actual = fin
 
-    return latencia_maxima, cronograma
+    devolver (latencia_maxima, cronograma)
 ```
 
 <div class="trap-callout">
@@ -1108,33 +1081,33 @@ graph TD
     classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 4. Implementación en Python (Tipada y Ejecutable)
+#### 4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def set_cover_antenas_greedy(vecindarios: set[str], antenas: dict[str, tuple[int, set[str]]]) -> list[str]:
-    # antenas: dict con nombre -> (costo, set_de_vecindarios_cubiertos)
-    no_cubiertos = set(vecindarios)
-    elegidas = []
+```text
+Algoritmo AntenasSetCoverGreedy(vecindarios, antenas):
+    no_cubiertos = copiar(vecindarios)
+    antenas_elegidas = []
 
-    while no_cubiertos:
-        mejor_antena = None
-        mejor_ratio = float("inf")
+    mientras no_cubiertos no esté vacío:
+        mejor_antena = nulo
+        mejor_ratio = infinito
 
-        for nombre, (costo, cobertura) in antenas.items():
-            nuevos = len(cobertura & no_cubiertos)
-            if nuevos > 0:
-                ratio = costo / nuevos
-                if ratio < mejor_ratio:
+        // Evaluar costo marginal por cada nuevo vecindario cubierto
+        para cada antena A en antenas:
+            nuevos = cantidad(A.cobertura intersección no_cubiertos)
+            si nuevos > 0:
+                ratio = A.costo / nuevos
+                si ratio < mejor_ratio:
                     mejor_ratio = ratio
-                    mejor_antena = nombre
+                    mejor_antena = A
 
-        if mejor_antena is None:
-            break  # Infactible cubrir los restantes
+        si mejor_antena es nulo:
+            break  // Infactible cubrir los restantes
 
-        elegidas.append(mejor_antena)
-        no_cubiertos -= antenas[mejor_antena][1]
+        agregar mejor_antena a antenas_elegidas
+        no_cubiertos = no_cubiertos - mejor_antena.cobertura
 
-    return elegidas
+    devolver antenas_elegidas
 ```
 
 <div class="trap-callout">
@@ -1216,36 +1189,33 @@ graph LR
   Como la solución voraz es estrictamente peor que la alternativa factible, queda demostrado que **el enfoque greedy no garantiza la solución óptima**.
   *Paradigma adecuado:* Este problema exhibe subestructura óptima con superposición de subproblemas y debe modelarse mediante **Programación Dinámica** en tiempo $O(V + E)$ (ver Ejercicio 32). $\blacksquare$
 
-#### 3. Implementación en Python del Greedy y Validación del Contraejemplo
+#### 3. Pseudocódigo del Algoritmo Greedy y Contraejemplo Formal
 
-```python
-def traslado_invap_greedy(origen: str, destino: str, grafo: dict[str, list[tuple[str, int]]]) -> tuple[int, list[str]]:
+```text
+Algoritmo TrasladoINVAPGreedy(G, origen, destino):
     actual = origen
-    camino = [actual]
+    camino = [ actual ]
     costo_total = 0
 
-    while actual != destino:
-        vecinos = grafo.get(actual, [])
-        if not vecinos:
-            return float("inf"), []
+    mientras actual != destino:
+        vecinos = G.vecinos(actual)
+        si vecinos está vacío:
+            devolver (infinito, [])
 
-        # Elección voraz: mínimo costo en la arista inmediata
-        mejor_sig, menor_costo = min(vecinos, key=lambda x: x[1])
-        camino.append(mejor_sig)
-        costo_total += menor_costo
-        actual = mejor_sig
+        // Elección voraz miope: arista saliente de menor costo inmediato
+        (mejor_siguiente, menor_costo) = vecino de menor costo en vecinos
+        agregar mejor_siguiente a camino
+        costo_total = costo_total + menor_costo
+        actual = mejor_siguiente
 
-    return costo_total, camino
+    devolver (costo_total, camino)
 
-# Demostración del contraejemplo
-grafo_invap = {
-    "E": [("V1", 10), ("V2", 20)],
-    "V1": [("B", 100)],
-    "V2": [("B", 5)],
-    "B": []
-}
-
-# Costo greedy = 110, Costo optimo = 25
+// Demostración del contraejemplo numérico:
+// Grafo: E -> V1 (costo 10), E -> V2 (costo 20)
+//        V1 -> B (costo 100), V2 -> B (costo 5)
+// Decisión Voraz:  E -> V1 -> B  =>  Costo = 10 + 100 = 110
+// Ruta Óptima:     E -> V2 -> B  =>  Costo = 20 + 5 = 25
+// Conclusión: Costo(Greedy) = 110 > 25 = OPT  =>  Greedy NO es óptimo.
 ```
 
 <div class="trap-callout">
@@ -1381,47 +1351,49 @@ graph TD
     classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 5. Implementación en Python (Tipada y Ejecutable)
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def resolver_8_reinas() -> list[int] | None:
+```text
+Algoritmo Resolver8Reinas():
     n = 8
-    solucion = [-1] * n
-    col_ocupada = [False] * n
-    diag_prin = [False] * (2 * n - 1)  # indices de 0 a 14
-    diag_sec = [False] * (2 * n - 1)   # indices de 0 a 14
+    solucion = arreglo de tamaño n inicializado en -1
+    col_ocupada = arreglo de tamaño n en Falso
+    diag_prin = arreglo de tamaño (2n - 1) en Falso  // fila - col + (n - 1)
+    diag_sec = arreglo de tamaño (2n - 1) en Falso   // fila + col
 
-    def backtrack(fila: int) -> bool:
-        if fila == n:
-            return True
+    función Backtrack(fila):
+        // Caso Base: se ubicaron las 8 reinas sin conflictos
+        si fila == n:
+            devolver Verdadero
 
-        for col in range(n):
-            d_p = fila - col + 7
-            d_s = fila + col
+        para col desde 0 hasta n - 1:
+            dp = fila - col + 7
+            ds = fila + col
 
-            # Poda por Factibilidad en O(1)
-            if not col_ocupada[col] and not diag_prin[d_p] and not diag_sec[d_s]:
-                # 1. Marcar decisión
+            // Poda por Factibilidad en O(1)
+            si no col_ocupada[col] y no diag_prin[dp] y no diag_sec[ds]:
+                // 1. Marcar decisión
                 solucion[fila] = col
-                col_ocupada[col] = True
-                diag_prin[d_p] = True
-                diag_sec[d_s] = True
+                col_ocupada[col] = Verdadero
+                diag_prin[dp] = Verdadero
+                diag_sec[ds] = Verdadero
 
-                # 2. Recursión a fila siguiente
-                if backtrack(fila + 1):
-                    return True
+                // 2. Recursión a fila siguiente
+                si Backtrack(fila + 1):
+                    devolver Verdadero
 
-                # 3. Deshacer decisión (Backtrack)
+                // 3. Deshacer decisión (Backtrack)
                 solucion[fila] = -1
-                col_ocupada[col] = False
-                diag_prin[d_p] = False
-                diag_sec[d_s] = False
+                col_ocupada[col] = Falso
+                diag_prin[dp] = Falso
+                diag_sec[ds] = Falso
 
-        return False
+        devolver Falso
 
-    if backtrack(0):
-        return solucion
-    return None
+    si Backtrack(0):
+        devolver solucion
+    sino:
+        devolver "Sin solución"
 ```
 
 <div class="trap-callout">
@@ -1507,40 +1479,38 @@ graph TD
     classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 4. Implementación en Python (Tipada y Ejecutable)
+#### 4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-import math
+```text
+Algoritmo CuatroCuadradosLagrange(n):
+    solucion = arreglo [0, 0, 0, 0]
 
-def cuatro_cuadrados_lagrange(n: int) -> list[int] | None:
-    solucion = [0, 0, 0, 0]
-
-    def backtrack(paso: int, remanente: int, max_limite: int) -> bool:
-        # En el paso 3, el 4to término se calcula directamente en O(1)
-        if paso == 3:
-            z = int(math.isqrt(remanente))
-            if z * z == remanente and z <= max_limite:
+    función Backtrack(paso, remanente, max_limite):
+        // En el 4to término, se calcula directamente por raíz exacta en O(1)
+        si paso == 3:
+            z = entero(raiz(remanente))
+            si z * z == remanente y z <= max_limite:
                 solucion[3] = z
-                return True
-            return False
+                devolver Verdadero
+            devolver Falso
 
-        limite_sup = min(max_limite, int(math.isqrt(remanente)))
+        limite_sup = min(max_limite, entero(raiz(remanente)))
 
-        for v in range(limite_sup, -1, -1):
+        para v desde limite_sup bajando hasta 0:
+            // Poda por cota inferior: ni usando v en todos los restantes alcanzamos remanente
             terminos_restantes = 4 - paso
-            # Poda por cota inferior: si ni usando v en todos los restantes alcanzamos el remanente
-            if terminos_restantes * (v * v) < remanente:
-                break  # Como v decrece, ningún valor menor alcanzará
+            si terminos_restantes * (v * v) < remanente:
+                romper bucle // Ningún valor menor podrá alcanzarlo
 
             solucion[paso] = v
-            if backtrack(paso + 1, remanente - v * v, v):
-                return True
+            si Backtrack(paso + 1, remanente - v * v, v):
+                devolver Verdadero
 
-        return False
+        devolver Falso
 
-    if backtrack(0, n, int(math.isqrt(n))):
-        return solucion
-    return None
+    si Backtrack(0, n, entero(raiz(n))):
+        devolver solucion
+    devolver nulo
 ```
 
 <div class="trap-callout">
@@ -1631,43 +1601,38 @@ graph TD
     classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 4. Implementación en Python (Tipada y Ejecutable)
+#### 4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def minimo_vertex_cover(vertices: list[str], aristas: list[tuple[str, str]]) -> set[str]:
-    mejor_cobertura = set(vertices)  # Cota superior inicial
+```text
+Algoritmo MinimoVertexCover(V, E):
+    mejor_cobertura = copiar(V)  // Cota superior inicial
+    actual = conjunto_vacío()
 
-    def buscar_arista_libre(actual: set[str]) -> tuple[str, str] | None:
-        for u, v in aristas:
-            if u not in actual and v not in actual:
-                return u, v
-        return None
+    función Backtrack(actual):
+        // Poda Branch & Bound: si el tamaño actual ya iguala o supera al mejor récord
+        si tamaño(actual) >= tamaño(mejor_cobertura):
+            retornar
 
-    def backtrack(actual: set[str]):
-        nonlocal mejor_cobertura
-        # Poda Branch & Bound: si el tamaño actual ya iguala o supera al mejor récord
-        if len(actual) >= len(mejor_cobertura):
-            return
+        arista = BuscarAristaNoCubierta(E, actual)
+        si arista es nulo:
+            // Todas las aristas cubiertas con un tamaño estrictamente menor
+            mejor_cobertura = copiar(actual)
+            retornar
 
-        arista = buscar_arista_libre(actual)
-        if arista is None:
-            # Todas las aristas están cubiertas y len(actual) < len(mejor_cobertura)
-            mejor_cobertura = set(actual)
-            return
+        (u, v) = arista
 
-        u, v = arista
-        # Rama 1: Incluir u
-        actual.add(u)
-        backtrack(actual)
-        actual.remove(u)  # Backtrack
+        // Rama 1: Incluir u
+        agregar u a actual
+        Backtrack(actual)
+        quitar u de actual  // Deshacer
 
-        # Rama 2: Incluir v
-        actual.add(v)
-        backtrack(actual)
-        actual.remove(v)  # Backtrack
+        // Rama 2: Incluir v
+        agregar v a actual
+        Backtrack(actual)
+        quitar v de actual  // Deshacer
 
-    backtrack(set())
-    return mejor_cobertura
+    Backtrack(actual)
+    devolver mejor_cobertura
 ```
 
 <div class="trap-callout">
@@ -1755,39 +1720,39 @@ graph TD
     classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 4. Implementación en Python (Tipada y Ejecutable)
+#### 4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def subset_sum_backtracking(nums: list[int], target: int) -> list[int] | None:
-    # 1. Ordenamiento previo para habilitar podas tempranas
-    nums_ordenados = sorted(nums)
+```text
+Algoritmo SubsetSumBacktracking(nums, target):
+    // 1. Ordenar crecientemente para habilitar podas tempranas en O(n log n)
+    ordenar nums de menor a mayor
     solucion = []
 
-    def backtrack(indice: int, remanente: int) -> bool:
-        if remanente == 0:
-            return True
-        if indice >= len(nums_ordenados) or remanente < 0:
-            return False
+    función Backtrack(indice, remanente):
+        si remanente == 0:
+            devolver Verdadero
+        si indice >= longitud(nums) o remanente < 0:
+            devolver Falso
 
-        # Poda temprana: al estar ordenado, ningún elemento posterior entrará
-        if nums_ordenados[indice] > remanente:
-            return False
+        // Poda temprana: al estar ordenado, ningún elemento posterior entrará
+        si nums[indice] > remanente:
+            devolver Falso
 
-        # Rama 1: Incluir nums_ordenados[indice]
-        solucion.append(nums_ordenados[indice])
-        if backtrack(indice + 1, remanente - nums_ordenados[indice]):
-            return True
-        solucion.pop()  # Backtrack
+        // Rama 1: Incluir nums[indice]
+        agregar nums[indice] a solucion
+        si Backtrack(indice + 1, remanente - nums[indice]):
+            devolver Verdadero
+        quitar_ultimo(solucion)  // Deshacer (Backtrack)
 
-        # Rama 2: Excluir nums_ordenados[indice]
-        if backtrack(indice + 1, remanente):
-            return True
+        // Rama 2: Excluir nums[indice]
+        si Backtrack(indice + 1, remanente):
+            devolver Verdadero
 
-        return False
+        devolver Falso
 
-    if backtrack(0, target):
-        return solucion
-    return None
+    si Backtrack(0, target):
+        devolver solucion
+    devolver nulo
 ```
 
 <div class="trap-callout">
@@ -2025,47 +1990,6 @@ FUNCION MinimasOperacionesAK(K):
     RETORNAR (DP[K], secuencia)
 ```
 
-**Implementación en Python con Tipado Estricto**
-
-```python
-from typing import List, Tuple
-
-def minimas_operaciones_a_k(k: int) -> Tuple[int, List[str]]:
-    # Calcula la mínima cantidad de operaciones para llegar de 0 a K (+1, *2)
-    # utilizando Programación Dinámica en O(K).
-    if k == 0:
-        return 0, []
-    
-    dp = [0] * (k + 1)
-    padre = [0] * (k + 1)
-    op = [""] * (k + 1)
-    
-    dp[0] = 0
-    
-    for i in range(1, k + 1):
-        # Opción 1: Sumar 1
-        dp[i] = dp[i - 1] + 1
-        padre[i] = i - 1
-        op[i] = "+1"
-        
-        # Opción 2: Duplicar si es par
-        if i % 2 == 0:
-            candidato = dp[i // 2] + 1
-            if candidato < dp[i]:
-                dp[i] = candidato
-                padre[i] = i // 2
-                op[i] = "*2"
-                
-    # Reconstrucción de la secuencia óptima
-    secuencia = []
-    actual = k
-    while actual > 0:
-        secuencia.append(op[actual])
-        actual = padre[actual]
-        
-    secuencia.reverse()
-    return dp[k], secuencia
-```
 
 **Complejidad**  
 
@@ -2693,57 +2617,33 @@ Consideremos una instancia representativa con 4 lugares y 5 especies para verifi
     - $|E| = 10$ restricciones de cobertura lógica (una por especie).
     - **Total de restricciones:** $1 + 10 = 11$ restricciones funcionales (además de los dominios $0 \le x_i, y_j \le 1$).
 
-#### 7. Implementación en Python con Solver MILP
+#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
-```python
-from typing import List, Tuple
-import numpy as np
-from scipy.optimize import milp, LinearConstraint, Bounds
+```text
+Algoritmo ResolverObservacionAvesPLI(Especies, Lugares, duraciones, presencia, T_max):
+    Crear modelo de Programación Lineal Entera (PLI):
 
-def resolver_observacion_aves(
-    duraciones: List[float],
-    matriz_presencia: List[List[int]],
-    presupuesto_dias: float = 2.0
-) -> Tuple[float, List[int], List[int]]:
-    # duraciones: lista de largo |L|
-    # matriz_presencia: matriz |E| x |L| donde A[i][j] = 1 si especie i esta en sitio j
-    num_especies = len(matriz_presencia)
-    num_lugares = len(duraciones)
-    n_vars = num_lugares + num_especies # [y_0...y_5, x_0...x_9]
+    // 1. Variables de decisión binarias:
+    Para cada lugar j in Lugares:
+        Definir y[j] in {0, 1}   // 1 si se visita el sitio j, 0 si no
+    Para cada especie i in Especies:
+        Definir x[i] in {0, 1}   // 1 si se avista la especie i, 0 si no
 
-    # Objetivo: Maximizar sum(x_i) <=> Minimizar -sum(x_i)
-    c = np.zeros(n_vars)
-    c[num_lugares:] = -1.0
+    // 2. Función Objetivo: maximizar especies distintas avistadas
+    Maximizar Z = Sumatoria_{i in Especies} x[i]
 
-    # Restriccion 1: Presupuesto temporal sum(d_j * y_j) <= T_max
-    # Restricciones 2..E+1: x_i - sum(A_ij * y_j) <= 0
-    num_constraints = 1 + num_especies
-    A = np.zeros((num_constraints, n_vars))
-    b_u = np.zeros(num_constraints)
-    b_l = np.full(num_constraints, -np.inf)
+    // 3. Restricciones:
+    // (a) Presupuesto temporal máximo de expedición:
+    Sumatoria_{j in Lugares} (duraciones[j] * y[j]) <= T_max
 
-    # 1. Presupuesto
-    A[0, :num_lugares] = duraciones
-    b_u[0] = presupuesto_dias
+    // (b) Enlace lógico de presencia por especie:
+    Para cada especie i in Especies:
+        x[i] <= Sumatoria_{j in Lugares donde habita i} y[j]
 
-    # 2. Enlace x_i <= sum(A_ij * y_j) => -sum(A_ij * y_j) + x_i <= 0
-    for i in range(num_especies):
-        row = 1 + i
-        for j in range(num_lugares):
-            if matriz_presencia[i][j] == 1:
-                A[row, j] = -1.0
-        A[row, num_lugares + i] = 1.0
-        b_u[row] = 0.0
+    // 4. Resolución mediante solver PLI estándar:
+    (Z_opt, valores_y, valores_x) = ResolverSolverPLI(modelo)
 
-    constraints = LinearConstraint(A, b_l, b_u)
-    integrality = np.ones(n_vars) # Todas binarias
-    bounds = Bounds(0, 1)
-
-    res = milp(c=c, constraints=constraints, integrality=integrality, bounds=bounds)
-
-    lugares_elegidos = [j for j in range(num_lugares) if res.x[j] > 0.5]
-    especies_vistas = [i for i in range(num_especies) if res.x[num_lugares + i] > 0.5]
-    return -res.fun, lugares_elegidos, especies_vistas
+    devolver (Z_opt, LugaresCon(y == 1), EspeciesCon(x == 1))
 ```
 
 <div class="trap-callout">
@@ -2852,29 +2752,31 @@ Supongamos una grilla pequeña con 10 vecindarios ($|V| = 10$).
     - $|V|$ restricciones individuales de cobertura de vecindario.
     - **Total:** $|V| + 1$ restricciones lineales.
 
-#### 7. Código Python con Modelado PuLP / Scipy
+#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
-```python
-from typing import Dict, List, Set, Tuple
+```text
+Algoritmo FormularAntenas70PLI(Celdas, Vecindarios, Costo_antena):
+    Crear modelo PLI:
 
-def modelar_antenas_70_porciento(
-    celdas_candidatas: List[Tuple[int, int]],
-    ubicacion_vecindarios: Dict[str, Tuple[int, int]],
-    costo_cte: float = 1000.0
-) -> Tuple[List[Tuple[int, int]], List[str], float]:
-    # Determinar que antenas cubren a cada vecindario
-    cubren: Dict[str, List[Tuple[int, int]]] = {}
-    for v_id, (vr, vc) in ubicacion_vecindarios.items():
-        cubren[v_id] = [
-            (ar, ac) for (ar, ac) in celdas_candidatas
-            if abs(ar - vr) <= 1 and abs(ac - vc) <= 1
-        ]
-    
-    # Cantidad minima a cubrir
-    n_v = len(ubicacion_vecindarios)
-    min_cubrir = int(np.ceil(0.70 * n_v))
-    # Retorna la especificacion del modelo lista para resolver con solver MILP
-    return celdas_candidatas, list(ubicacion_vecindarios.keys()), min_cubrir * costo_cte
+    // 1. Variables de decisión binarias:
+    Para cada celda c in Celdas:
+        Definir y[c] in {0, 1}       // 1 si se instala antena en c
+    Para cada vecindario v in Vecindarios:
+        Definir x[v] in {0, 1}       // 1 si el vecindario v queda cubierto
+
+    // 2. Función Objetivo: minimizar costo de antenas
+    Minimizar Costo = Sumatoria_{c in Celdas} (Costo_antena * y[c])
+
+    // 3. Restricciones:
+    // (a) Umbral mínimo de cobertura del 70%:
+    Sumatoria_{v in Vecindarios} x[v] >= techo(0.70 * cantidad(Vecindarios))
+
+    // (b) Cobertura física por vecindario:
+    Para cada vecindario v in Vecindarios:
+        x[v] <= Sumatoria_{c in Celdas que cubren a v} y[c]
+
+    (Costo_opt, antenas_activas) = ResolverSolverPLI(modelo)
+    devolver (Costo_opt, antenas_activas)
 ```
 
 <div class="trap-callout">
@@ -2971,47 +2873,29 @@ Analicemos 3 regiones simplificadas:
     - 72 restricciones de cota superior de capacidad ($x_{ij} \le CAP_{ij}$).
     - **Total:** $9 + 72 = 81$ restricciones lineales (más $x_{ij} \ge 0$).
 
-#### 7. Código Python con Scipy Linprog
+#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
-```python
-from typing import Dict, List, Tuple
-import numpy as np
-from scipy.optimize import linprog
+```text
+Algoritmo FormularDistribucionFlujoPL(Regiones, Aristas, Generacion, Demanda):
+    Crear modelo de Programación Lineal Continua:
 
-def resolver_flujo_costo_minimo(
-    regiones: List[int],
-    generacion: Dict[int, float],
-    demanda: Dict[int, float],
-    aristas: List[Tuple[int, int, float, float]] # (u, v, costo, cap)
-) -> Tuple[float, Dict[Tuple[int, int], float]]:
-    n_aristas = len(aristas)
-    c = np.array([a[2] for a in aristas])
-    bounds = [(0, a[3]) for a in aristas]
+    // 1. Variables de decisión continuas:
+    Para cada arista (u, v) in Aristas:
+        Definir x[u, v] >= 0         // Potencia transportada por la línea
 
-    # Balance nodal: Suma_salidas - Suma_entradas = G_i - D_i
-    n_nodos = len(regiones)
-    A_eq = np.zeros((n_nodos, n_aristas))
-    b_eq = np.zeros(n_nodos)
+    // 2. Función Objetivo: minimizar costo de transmisión
+    Minimizar Costo = Sumatoria_{(u, v) in Aristas} (costo[u, v] * x[u, v])
 
-    nodo_to_idx = {r: idx for idx, r in enumerate(regiones)}
+    // 3. Restricciones:
+    // (a) Balance nodal de potencia para cada región i in Regiones:
+    Sumatoria_{v} x[i, v] - Sumatoria_{u} x[u, i] = Generacion[i] - Demanda[i]
 
-    for arc_idx, (u, v, _, _) in enumerate(aristas):
-        u_idx = nodo_to_idx[u]
-        v_idx = nodo_to_idx[v]
-        A_eq[u_idx, arc_idx] = 1.0  # Sale de u
-        A_eq[v_idx, arc_idx] = -1.0 # Entra a v
+    // (b) Capacidad física máxima por línea:
+    Para cada arista (u, v) in Aristas:
+        x[u, v] <= Capacidad[u, v]
 
-    for r in regiones:
-        r_idx = nodo_to_idx[r]
-        b_eq[r_idx] = generacion[r] - demanda[r]
-
-    res = linprog(c, A_eq=A_eq, b_eq=b_eq, bounds=bounds, method='highs')
-
-    flujos = {}
-    for idx, (u, v, _, _) in enumerate(aristas):
-        flujos[(u, v)] = res.x[idx]
-
-    return res.fun, flujos
+    (Costo_min, flujos_optimos) = ResolverSimplex(modelo)
+    devolver (Costo_min, flujos_optimos)
 ```
 
 <div class="trap-callout">
@@ -3098,40 +2982,28 @@ Rutas alternativas en el grafo del diagrama:
 * **Restricciones Lineales:** $|V|$ restricciones de conservación de flujo nodal (1 en origen, 1 en destino y $|V| - 2$ intermedias).
 * *(Nota: Una de las restricciones es linealmente dependiente porque la suma de todos los balances es $1 + (-1) + 0 = 0$).*
 
-#### 7. Código Python con Simplex Continuo
+#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
-```python
-from typing import Dict, List, Tuple
-import numpy as np
-from scipy.optimize import linprog
+```text
+Algoritmo FormularCaminoMinimoPL(Vertices, Aristas, origen, destino):
+    Crear modelo de Programación Lineal Continua:
 
-def camino_minimo_pl_continuo(
-    vertices: List[str],
-    aristas: List[Tuple[str, str, float]], # (u, v, costo)
-    origen: str,
-    destino: str
-) -> Tuple[float, List[Tuple[str, str]]]:
-    n_edges = len(aristas)
-    c = np.array([cost for _, _, cost in aristas])
-    bounds = [(0, None) for _ in aristas]
+    // 1. Variables continuas (por TUM serán naturalmente enteras en {0, 1})
+    Para cada arista (u, v) in Aristas:
+        Definir x[u, v] >= 0
 
-    n_nodes = len(vertices)
-    A_eq = np.zeros((n_nodes, n_edges))
-    b_eq = np.zeros(n_nodes)
+    // 2. Función Objetivo: minimizar costo de seguro acumulado
+    Minimizar Costo = Sumatoria_{(u, v) in Aristas} (costo[u, v] * x[u, v])
 
-    v_map = {name: i for i, name in enumerate(vertices)}
+    // 3. Restricciones de conservación de flujo unitario:
+    Para cada vértice i in Vertices:
+        flujo_neto = Sumatoria_{v} x[i, v] - Sumatoria_{u} x[u, i]
+        si i == origen:     flujo_neto == 1   // Inyecta 1 unidad
+        si i == destino:    flujo_neto == -1  // Extrae 1 unidad
+        si i es intermedio: flujo_neto == 0   // Conservación estricta
 
-    for e_idx, (u, v, _) in enumerate(aristas):
-        A_eq[v_map[u], e_idx] = 1.0
-        A_eq[v_map[v], e_idx] = -1.0
-
-    b_eq[v_map[origen]] = 1.0
-    b_eq[v_map[destino]] = -1.0
-
-    res = linprog(c, A_eq=A_eq, b_eq=b_eq, bounds=bounds, method='highs')
-
-    camino = [aristas[i][:2] for i in range(n_edges) if res.x[i] > 0.9]
-    return res.fun, camino
+    (Costo_min, aristas_activas) = ResolverSimplex(modelo)
+    devolver (Costo_min, aristas_activas)
 ```
 
 <div class="trap-callout">
@@ -3233,56 +3105,29 @@ Consideremos las tareas $T = \{3, 5, 8, 2, 4\}$:
     - 2 restricciones de cota superior sobre $Z$ ($Z \ge L_1$ y $Z \ge L_2$).
     - **Total:** 2 restricciones lineales funcionales.
 
-#### 7. Código Python con Solver MILP
+#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
-```python
-from typing import List, Tuple
-import numpy as np
-from scipy.optimize import milp, LinearConstraint, Bounds
+```text
+Algoritmo Formular2PartitionMinMaxPLI(tiempos, n):
+    Crear modelo PLI:
 
-def resolver_2_partition_minmax(tiempos: List[float]) -> Tuple[float, List[int], List[int]]:
-    n = len(tiempos)
-    n_vars = n + 1 # [x_0, ..., x_{n-1}, Z]
+    // 1. Variables de decisión:
+    Para cada tarea i desde 1 hasta n:
+        Definir x[i] in {0, 1}       // 1 si se asigna a máquina 1, 0 si a máquina 2
+    Definir Z >= 0                   // Variable continua auxiliar (makespan a minimizar)
 
-    # Objetivo: min Z => c = [0, ..., 0, 1]
-    c = np.zeros(n_vars)
-    c[-1] = 1.0
+    // 2. Función Objetivo: minimizar la carga máxima
+    Minimizar Z
 
-    # Restricciones:
-    # 1. Z - sum(T_i * x_i) >= 0  => -sum(T_i * x_i) + Z >= 0
-    # 2. Z - sum(T_i * (1 - x_i)) >= 0 => sum(T_i * x_i) + Z >= sum(T_i)
-    suma_total = sum(tiempos)
-    A = np.zeros((2, n_vars))
-    b_l = np.zeros(2)
-    b_u = np.full(2, np.inf)
+    // 3. Restricciones de linealización del Min-Max:
+    // (a) Z acota superiormente a la carga de la Máquina 1:
+    Z >= Sumatoria_{i=1}^n (tiempos[i] * x[i])
 
-    # Fila 1
-    for i in range(n):
-        A[0, i] = -tiempos[i]
-    A[0, -1] = 1.0
-    b_l[0] = 0.0
+    // (b) Z acota superiormente a la carga de la Máquina 2:
+    Z >= Sumatoria_{i=1}^n (tiempos[i] * (1 - x[i]))
 
-    # Fila 2
-    for i in range(n):
-        A[1, i] = tiempos[i]
-    A[1, -1] = 1.0
-    b_l[1] = suma_total
-
-    constraints = LinearConstraint(A, b_l, b_u)
-    integrality = np.zeros(n_vars)
-    integrality[:n] = 1 # x_i son binarias
-    integrality[-1] = 0 # Z es continua
-
-    bounds = Bounds(
-        lb=[0]*n + [0],
-        ub=[1]*n + [np.inf]
-    )
-
-    res = milp(c=c, constraints=constraints, integrality=integrality, bounds=bounds)
-
-    p1 = [i for i in range(n) if res.x[i] > 0.5]
-    p2 = [i for i in range(n) if res.x[i] <= 0.5]
-    return res.fun, p1, p2
+    (Z_opt, asignaciones) = ResolverSolverPLI(modelo)
+    devolver (Z_opt, asignaciones)
 ```
 
 <div class="trap-callout">
@@ -3441,100 +3286,38 @@ Consideremos 3 pacientes y 3 turnos:
   $$\text{Complejidad Temporal:} \quad O(|P| \cdot |E|)$$
   lo cual es estrictamente polinomial y óptimo para redes unitarias.
 
-#### 7. Implementación en Python con Edmonds-Karp
+#### 7. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-from collections import deque
-from typing import Dict, List, Optional, Set, Tuple
+```text
+Algoritmo AsignarTurnosMedicos(Medicos, Pacientes, Turnos, Compatibilidades):
+    Construir Red de Flujo G = (V, E) con fuente s y sumidero t:
 
-class RedDeFlujo:
-    def __init__(self) -> None:
-        self.adyacencia: Dict[str, List[str]] = {}
-        self.capacidad: Dict[Tuple[str, str], int] = {}
-        self.flujo: Dict[Tuple[str, str], int] = {}
+    // 1. Arcos desde s a cada médico m (capacidad = cupo máximo diario)
+    para cada m in Medicos:
+        agregar_arco(G, s, m, capacidad = m.capacidad_diaria)
 
-    def agregar_arista(self, u: str, v: str, cap: int) -> None:
-        if u not in self.adyacencia:
-            self.adyacencia[u] = []
-        if v not in self.adyacencia:
-            self.adyacencia[v] = []
-        self.adyacencia[u].append(v)
-        self.adyacencia[v].append(u) # Arista residual reversa
-        self.capacidad[(u, v)] = cap
-        self.capacidad[(v, u)] = 0
-        self.flujo[(u, v)] = 0
-        self.flujo[(v, u)] = 0
+    // 2. Arcos desde médico m a sus bloques de turno (m, k) de capacidad 1
+    para cada m in Medicos:
+        para cada turno k ofrecido por m:
+            agregar_arco(G, m, (m, k), capacidad = 1)
 
-    def bfs_camino_aumento(self, s: str, t: str) -> Optional[Dict[str, str]]:
-        padre: Dict[str, str] = {}
-        visitados: Set[str] = {s}
-        cola: deque[str] = deque([s])
+    // 3. Arcos de compatibilidad hacia pacientes (capacidad 1)
+    para cada p in Pacientes:
+        para cada turno (m, k) compatible con p:
+            agregar_arco(G, (m, k), p, capacidad = 1)
 
-        while cola:
-            u = cola.popleft()
-            if u == t:
-                return padre
-            for v in self.adyacencia.get(u, []):
-                residual = self.capacidad.get((u, v), 0) - self.flujo.get((u, v), 0)
-                if residual > 0 and v not in visitados:
-                    visitados.add(v)
-                    padre[v] = u
-                    cola.append(v)
-        return None
+    // 4. Arcos desde cada paciente p al sumidero t (capacidad 1)
+    para cada p in Pacientes:
+        agregar_arco(G, p, t, capacidad = 1)
 
-    def edmonds_karp(self, s: str, t: str) -> int:
-        flujo_max = 0
-        while True:
-            padre = self.bfs_camino_aumento(s, t)
-            if not padre:
-                break
-            # Encontrar cuello de botella
-            cuello = float('inf')
-            curr = t
-            while curr != s:
-                prev = padre[curr]
-                residual = self.capacidad[(prev, curr)] - self.flujo[(prev, curr)]
-                cuello = min(cuello, residual)
-                curr = prev
-            # Aumentar flujo
-            curr = t
-            while curr != s:
-                prev = padre[curr]
-                self.flujo[(prev, curr)] += cuello
-                self.flujo[(curr, prev)] -= cuello
-                curr = prev
-            flujo_max += cuello
-        return flujo_max
+    // Ejecución de flujo máximo mediante algoritmo polinomial estándar:
+    flujo_maximo = EdmondsKarp(G, s, t)
 
-def asignar_turnos_medicos(
-    pacientes: List[str],
-    turnos: List[Tuple[str, str]], # (medico, horario)
-    compatibilidades: List[Tuple[str, str, str]] # (paciente, medico, horario)
-) -> Tuple[int, List[Tuple[str, str, str]]]:
-    red = RedDeFlujo()
-    s = "FUENTE_S"
-    t = "SUMIDERO_T"
-
-    for p in pacientes:
-        red.agregar_arista(s, p, 1)
-
-    for m, h in turnos:
-        nodo_t = f"{m}_{h}"
-        red.agregar_arista(nodo_t, t, 1)
-
-    for p, m, h in compatibilidades:
-        nodo_t = f"{m}_{h}"
-        red.agregar_arista(p, nodo_t, 1)
-
-    flujo_optimo = red.edmonds_karp(s, t)
-
-    asignaciones = []
-    for p, m, h in compatibilidades:
-        nodo_t = f"{m}_{h}"
-        if red.flujo.get((p, nodo_t), 0) == 1:
-            asignaciones.append((p, m, h))
-
-    return flujo_optimo, asignaciones
+    si flujo_maximo == cantidad(Pacientes):
+        asignaciones = ExtraerArcosConFlujo1(G)
+        devolver (Verdadero, asignaciones)
+    sino:
+        devolver (Falso, "Infactible: no es posible atender a todos los pacientes")
 ```
 
 <div class="trap-callout">
@@ -3634,56 +3417,35 @@ graph LR
 - Número de aristas: $|E| \le 9 (\text{fuente}) + 9 (\text{sumidero}) + 72 (\text{líneas}) = 90$.
 - Complejidad con Edmonds-Karp: $O(|V| \cdot |E|^2) \approx 11 \cdot 90^2 \approx 89.100$ operaciones elementales, ejecutándose en menos de $0.5$ milisegundos.
 
-#### 7. Código Python con Diagnóstico de Corte Mínimo
+#### 7. Pseudocódigo del Algoritmo y Diagnóstico de Corte (Estilo Examen Presencial)
 
-```python
-from typing import Dict, List, Set, Tuple
+```text
+Algoritmo DiagnosticarRedEnergetica(Generacion, Demanda, Lineas):
+    Construir Red de Flujo G con superfuente S y supersumidero T:
+    demanda_total = sumatoria(Demanda[r] para cada r)
 
-def diagnosticar_red_energetica(
-    generacion: Dict[str, int],
-    demanda: Dict[str, int],
-    lineas: List[Tuple[str, str, int]]
-) -> Tuple[bool, int, Dict[Tuple[str, str], int], List[Tuple[str, str]]]:
-    red = RedDeFlujo()
-    s = "SUPER_S"
-    t = "SUPER_T"
+    // 1. Conectar superfuente S a regiones generadoras
+    para cada r in Generacion donde Generacion[r] > 0:
+        agregar_arco(G, S, r, capacidad = Generacion[r])
 
-    demanda_total = sum(demanda.values())
+    // 2. Conectar regiones demandantes a supersumidero T
+    para cada r in Demanda donde Demanda[r] > 0:
+        agregar_arco(G, r, T, capacidad = Demanda[r])
 
-    for r, g in generacion.items():
-        if g > 0:
-            red.agregar_arista(s, r, g)
+    // 3. Arcos dirigidos de transporte interzonal
+    para cada (u, v, cap) in Lineas:
+        agregar_arco(G, u, v, capacidad = cap)
 
-    for r, d in demanda.items():
-        if d > 0:
-            red.agregar_arista(r, t, d)
+    // Flujo máximo con algoritmo polinomial
+    flujo_obtenido = EdmondsKarp(G, S, T)
 
-    for u, v, cap in lineas:
-        red.agregar_arista(u, v, cap)
-
-    flujo_obtenido = red.edmonds_karp(s, t)
-    es_factible = (flujo_obtenido == demanda_total)
-
-    cuello_botella = []
-    if not es_factible:
-        # Hallar corte minimo: nodos alcanzables desde s en G_f
-        visitados = set()
-        cola = deque([s])
-        visitados.add(s)
-        while cola:
-            curr = cola.popleft()
-            for vecino in red.adyacencia.get(curr, []):
-                residual = red.capacidad.get((curr, vecino), 0) - red.flujo.get((curr, vecino), 0)
-                if residual > 0 and vecino not in visitados:
-                    visitados.add(vecino)
-                    cola.append(vecino)
-        # Las aristas del corte van de visitados a no visitados
-        for u in visitados:
-            for v in red.adyacencia.get(u, []):
-                if v not in visitados and red.capacidad.get((u, v), 0) > 0:
-                    cuello_botella.append((u, v))
-
-    return es_factible, flujo_obtenido, red.flujo, cuello_botella
+    si flujo_obtenido == demanda_total:
+        devolver (Verdadero, flujo_obtenido, "Demanda satisfecha al 100%")
+    sino:
+        // Hallar corte mínimo (A, B) por BFS en red residual G_f desde S
+        A_alcanzables = NodosAlcanzablesDesde(G_f, S)
+        cuellos_botella = [ (u, v) para (u, v) en Lineas si u in A_alcanzables y v no in A_alcanzables ]
+        devolver (Falso, flujo_obtenido, cuellos_botella)
 ```
 
 <div class="trap-callout">
@@ -3862,53 +3624,27 @@ Sea una red con $s \to u \to v \to t$:
     - Se empuja 1 unidad: $f(s, u) = 4, f(u, v) = 4, f(v, t) = 4$.
     - Nuevo flujo máximo: $3 + 1 = 4$.
 
-#### 6. Implementación en Python O(V + E)
+#### 6. Pseudocódigo del Algoritmo en O(V + E) (Estilo Examen Presencial)
 
-```python
-from collections import deque
-from typing import Dict, List, Optional, Tuple
+```text
+Algoritmo ActualizarFlujoAumentoUnitario(G_f, f, s, t, u, v):
+    // 1. Incrementar en 1 unidad la capacidad residual de la arista modificada
+    c_f(u, v) = c_f(u, v) + 1
 
-def actualizar_flujo_aumento_unitario(
-    adyacencia: Dict[str, List[str]],
-    capacidad: Dict[Tuple[str, str], int],
-    flujo: Dict[Tuple[str, str], int],
-    s: str,
-    t: str,
-    u_mod: str,
-    v_mod: str
-) -> Tuple[int, Dict[Tuple[str, str], int]]:
-    # 1. Aumentar capacidad física y residual en 1 unidad
-    capacidad[(u_mod, v_mod)] += 1
+    // 2. Realizar un único BFS desde s en G_f para buscar camino de aumento en O(V + E)
+    camino = BFS_BuscarCamino(G_f, s, t)
 
-    # 2. Unico BFS en O(V + E) para hallar a lo sumo un camino de aumento
-    padre: Dict[str, str] = {}
-    visitados = {s}
-    cola = deque([s])
-    camino_hallado = False
-
-    while cola:
-        curr = cola.popleft()
-        if curr == t:
-            camino_hallado = True
-            break
-        for vecino in adyacencia.get(curr, []):
-            residual = capacidad.get((curr, vecino), 0) - flujo.get((curr, vecino), 0)
-            if residual > 0 and vecino not in visitados:
-                visitados.add(vecino)
-                padre[vecino] = curr
-                cola.append(vecino)
-
-    # 3. Si hay camino, empujar exactamente 1 unidad
-    if camino_hallado:
-        curr = t
-        while curr != s:
-            prev = padre[curr]
-            flujo[(prev, curr)] = flujo.get((prev, curr), 0) + 1
-            flujo[(curr, prev)] = flujo.get((curr, prev), 0) - 1
-            curr = prev
-        return 1, flujo # Aumento de 1 unidad
-
-    return 0, flujo # No cambio el flujo
+    // 3. Actualizar flujo si se encontró camino
+    si camino != nulo:
+        // Como las capacidades son enteras, el cuello de botella es exactamente Delta = 1
+        para cada arista (x, y) en camino:
+            f(x, y) = f(x, y) + 1
+            c_f(x, y) = c_f(x, y) - 1
+            c_f(y, x) = c_f(y, x) + 1
+        devolver (|f| + 1, f)
+    sino:
+        // Si no hay camino de aumento, el flujo previo sigue siendo el óptimo
+        devolver (|f|, f)
 ```
 
 <div class="trap-callout">
@@ -4088,53 +3824,39 @@ Consideremos un grafo simple $G$ con 3 vértices en línea: $1 - 2 - 3$.
     - Nodos $w_{e1}$ y $w_{e2}$ son adyacentes a 2 $\implies$ dominados.
 - ¡Todos los 5 vértices de $G'$ quedan dominados con un único nodo $D = \{2\}$!
 
-#### 6. Implementación en Python con Verificador Polinomial
+#### 6. Pseudocódigo del Verificador y Reducción (Estilo Examen Presencial)
 
-```python
-from typing import Dict, List, Set, Tuple
+```text
+Algoritmo VerificadorDominatingSet(G = (V, E), k, certificado_D):
+    // 1. Verificar tamaño de la cota en O(1)
+    si tamaño(certificado_D) > k:
+        devolver Falso
 
-def verificador_dominating_set(
-    vertices: List[int],
-    adyacencia: Dict[int, List[int]],
-    k: int,
-    certificado_D: Set[int]
-) -> bool:
-    # 1. Verificar tamano cota
-    if len(certificado_D) > k:
-        return False
+    // 2. Construir conjunto de vértices dominados en O(V + E)
+    dominados = conjunto_vacío()
+    para cada u in certificado_D:
+        agregar u a dominados             // Se domina a sí mismo
+        para cada vecino v in G.adyacentes(u):
+            agregar v a dominados         // Domina a sus vecinos
 
-    # 2. Verificar que D este contenido en V
-    set_v = set(vertices)
-    if not certificado_D.issubset(set_v):
-        return False
+    // 3. Verificar cobertura total
+    si tamaño(dominados) == cantidad(V):
+        devolver Verdadero  // Certificado válido en tiempo polinomial O(V + E)
+    sino:
+        devolver Falso
 
-    # 3. Conjunto de dominados en O(V + E)
-    dominados = set(certificado_D)
-    for u in certificado_D:
-        for vecino in adyacencia.get(u, []):
-            dominados.add(vecino)
+Algoritmo TransformarVCaDominatingSet(G = (V, E), k):
+    // Construir G' = (V', E') en tiempo O(V + E)
+    V' = copiar(V)
+    E' = copiar(E)
 
-    # 4. Todos los vertices deben estar dominados
-    return len(dominados) == len(vertices)
+    para cada arista e = (u, v) in E:
+        crear nuevo vértice auxiliar w_e
+        agregar w_e a V'
+        agregar aristas (u, w_e) y (v, w_e) a E'
 
-def transformar_vc_a_dominating_set(
-    vertices: List[int],
-    aristas: List[Tuple[int, int]],
-    k: int
-) -> Tuple[List[int], List[Tuple[int, int]], int]:
-    # Gadget: V' = V U {w_e}, E' = E U {(u, w_e), (v, w_e)}
-    nuevos_vertices = list(vertices)
-    nuevas_aristas = list(aristas)
-    next_id = max(vertices) + 1 if vertices else 1
-
-    for u, v in aristas:
-        w_e = next_id
-        next_id += 1
-        nuevos_vertices.append(w_e)
-        nuevas_aristas.append((u, w_e))
-        nuevas_aristas.append((v, w_e))
-
-    return nuevos_vertices, nuevas_aristas, k
+    k' = k
+    devolver (G', k')
 ```
 
 <div class="trap-callout">
@@ -4234,27 +3956,23 @@ graph LR
     end
 ```
 
-#### 4. Código Python de la Reducción
+#### 4. Pseudocódigo de la Reducción Polinomial (Estilo Examen Presencial)
 
-```python
-from typing import List, Tuple
-import numpy as np
+```text
+Algoritmo ReducirCicloHamiltonianoATSP(G = (V, E)):
+    n = cantidad(V)
+    Crear grafo completo G' = (V, E') con pesos en aristas:
 
-def reducir_ciclo_hamiltoniano_a_tsp(
-    n_vertices: int,
-    aristas_g: List[Tuple[int, int]]
-) -> Tuple[np.ndarray, int]:
-    # Matriz completa con penalizacion 1 y 2
-    matriz_pesos = np.full((n_vertices, n_vertices), 2, dtype=int)
-    for i in range(n_vertices):
-        matriz_pesos[i, i] = 0 # Sin bucles
+    para cada par de vértices u, v in V con u != v:
+        si (u, v) in E:
+            peso(u, v) = 1    // Arista original presente
+        sino:
+            peso(u, v) = 2    // Arista penalizada inexistente en G
 
-    for u, v in aristas_g:
-        matriz_pesos[u, v] = 1
-        matriz_pesos[v, u] = 1
+    cota_k = n  // Cota de costo del tour
 
-    cota_k = n_vertices
-    return matriz_pesos, cota_k
+    // Se entrega la instancia (G', cota_k) al resolvedor de decisión de TSP
+    devolver (G', cota_k)
 ```
 
 <div class="trap-callout">
@@ -5318,82 +5036,32 @@ graph LR
     P4 -->|c=1| t
 ```
 
-#### 5. Implementación en Python con Tipado Estricto
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-from collections import deque
-from typing import Dict, List, Set, Tuple
+```text
+Algoritmo DespacharDronesEmergencia(Drones, Puestos, Compatibilidades):
+    Construir Red de Flujo G = (V, E) con fuente s y sumidero t:
 
-def despachar_drones_emergencia(
-    drones: List[str],
-    puestos: List[str],
-    compatibilidades: List[Tuple[str, str]] # (dron_id, puesto_id)
-) -> Tuple[int, List[Tuple[str, str]]]:
-    s = "SRC_S"
-    t = "SNK_T"
-    adyacencia: Dict[str, List[str]] = {}
-    capacidad: Dict[Tuple[str, str], int] = {}
-    flujo: Dict[Tuple[str, str], int] = {}
+    // 1. Arcos desde s a cada dron d (capacidad 2 = cada dron realiza hasta 2 viajes)
+    para cada d in Drones:
+        agregar_arco(G, s, d, capacidad = 2)
 
-    def agregar_arco(u: str, v: str, c: int) -> None:
-        if u not in adyacencia: adyacencia[u] = []
-        if v not in adyacencia: adyacencia[v] = []
-        adyacencia[u].append(v)
-        adyacencia[v].append(u)
-        capacidad[(u, v)] = c
-        capacidad[(v, u)] = 0
-        flujo[(u, v)] = 0
-        flujo[(v, u)] = 0
+    // 2. Arcos de compatibilidad entre dron d y puesto p (capacidad 1)
+    para cada (d, p) in Compatibilidades:
+        agregar_arco(G, d, p, capacidad = 1)
 
-    # 1. Fuente a drones con capacidad 2
-    for d in drones:
-        agregar_arco(s, d, 2)
+    // 3. Arcos desde cada puesto p a sumidero t (capacidad 1 = 1 dron por puesto)
+    para cada p in Puestos:
+        agregar_arco(G, p, t, capacidad = 1)
 
-    # 2. Puestos a sumidero con capacidad 1
-    for p in puestos:
-        agregar_arco(p, t, 1)
+    // Ejecución de flujo máximo en tiempo O(|Puestos| * |E|):
+    flujo_total = EdmondsKarp(G, s, t)
 
-    # 3. Drones a puestos con capacidad 1
-    for d, p in compatibilidades:
-        agregar_arco(d, p, 1)
-
-    # Edmonds-Karp BFS
-    flujo_total = 0
-    while True:
-        padre: Dict[str, str] = {}
-        visitados = {s}
-        cola = deque([s])
-        while cola:
-            u = cola.popleft()
-            if u == t: break
-            for v in adyacencia.get(u, []):
-                residual = capacidad.get((u, v), 0) - flujo.get((u, v), 0)
-                if residual > 0 and v not in visitados:
-                    visitados.add(v)
-                    padre[v] = u
-                    cola.append(v)
-
-        if t not in padre: break
-
-        # Cuello de botella
-        cuello = float('inf')
-        curr = t
-        while curr != s:
-            prev = padre[curr]
-            cuello = min(cuello, capacidad[(prev, curr)] - flujo[(prev, curr)])
-            curr = prev
-
-        curr = t
-        while curr != s:
-            prev = padre[curr]
-            flujo[(prev, curr)] += cuello
-            flujo[(curr, prev)] -= cuello
-            curr = prev
-
-        flujo_total += cuello
-
-    despachos = [(d, p) for d, p in compatibilidades if flujo.get((d, p), 0) == 1]
-    return flujo_total, despachos
+    si flujo_total == cantidad(Puestos):
+        despachos = [ (d, p) para cada (d, p) en Compatibilidades si flujo(d, p) == 1 ]
+        devolver (flujo_total, despachos)
+    sino:
+        devolver (flujo_total, "Infactible: no es posible abastecer a todos los puestos")
 ```
 
 <div class="trap-callout">
@@ -5471,48 +5139,45 @@ Consideremos $n = 4$ días, presupuesto $P = 10$:
 - Si pautáramos día 3 (costo 6, ben 14), no podríamos pautar día 1 ni 2 ni 4. Total = 14.
 - El algoritmo devuelve $OPT(4, 10) = 22$ con días elegidos $\{1, 4\}$.
 
-#### 6. Implementación en Python con Tipado Estricto
+#### 6. Pseudocódigo del Algoritmo DP (Estilo Examen Presencial)
 
-```python
-from typing import List, Tuple
+```text
+Algoritmo PlanificarCampanaPublicidad(costos, beneficios, n, Presupuesto_Max):
+    // 1. Matriz DP de dimensiones (n + 1) x (Presupuesto_Max + 1) en 0
+    crear matriz DP[(n + 1)][(Presupuesto_Max + 1)] = 0
 
-def planificar_campana_publicidad(
-    costos: List[int],
-    beneficios: List[int],
-    presupuesto_max: int
-) -> Tuple[int, List[int]]:
-    n = len(costos)
-    dp = [[0] * (presupuesto_max + 1) for _ in range(n + 1)]
+    // 2. Llenado Bottom-Up
+    para i desde 1 hasta n:
+        c_i = costos[i]
+        b_i = beneficios[i]
+        prev_dia = max(0, i - 3)  // Enfriamiento de 2 días: saltamos a i - 3
 
-    for i in range(1, n + 1):
-        c_i = costos[i - 1]
-        b_i = beneficios[i - 1]
-        prev_dia = max(0, i - 3)
+        para p desde 0 hasta Presupuesto_Max:
+            val_sin = DP[i - 1][p]
+            si p >= c_i:
+                val_con = DP[prev_dia][p - c_i] + b_i
+                DP[i][p] = max(val_sin, val_con)
+            sino:
+                DP[i][p] = val_sin
 
-        for p in range(presupuesto_max + 1):
-            val_sin = dp[i - 1][p]
-            val_con = (dp[prev_dia][p - c_i] + b_i) if p >= c_i else -1
-            dp[i][p] = max(val_sin, val_con)
-
-    # Reconstruccion
+    // 3. Reconstrucción de los días de pauta óptimos
     dias_elegidos = []
-    curr_i = n
-    curr_p = presupuesto_max
+    curr_i = n, curr_p = Presupuesto_Max
 
-    while curr_i > 0 and curr_p > 0:
-        c_i = costos[curr_i - 1]
-        b_i = beneficios[curr_i - 1]
+    mientras curr_i > 0 y curr_p > 0:
+        c_i = costos[curr_i]
+        b_i = beneficios[curr_i]
         prev_dia = max(0, curr_i - 3)
 
-        if curr_p >= c_i and dp[curr_i][curr_p] == dp[prev_dia][curr_p - c_i] + b_i:
-            dias_elegidos.append(curr_i) # 1-indexed
-            curr_p -= c_i
+        si curr_p >= c_i y DP[curr_i][curr_p] == DP[prev_dia][curr_p - c_i] + b_i:
+            agregar curr_i a dias_elegidos
+            curr_p = curr_p - c_i
             curr_i = prev_dia
-        else:
-            curr_i -= 1
+        sino:
+            curr_i = curr_i - 1
 
-    dias_elegidos.reverse()
-    return dp[n][presupuesto_max], dias_elegidos
+    invertir(dias_elegidos)
+    devolver (DP[n][Presupuesto_Max], dias_elegidos)
 ```
 
 <div class="trap-callout">

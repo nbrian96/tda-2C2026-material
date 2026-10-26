@@ -107,47 +107,49 @@ graph TD
     classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 5. Implementación en Python (Tipada y Ejecutable)
+#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def resolver_8_reinas() -> list[int] | None:
+```text
+Algoritmo Resolver8Reinas():
     n = 8
-    solucion = [-1] * n
-    col_ocupada = [False] * n
-    diag_prin = [False] * (2 * n - 1)  # indices de 0 a 14
-    diag_sec = [False] * (2 * n - 1)   # indices de 0 a 14
+    solucion = arreglo de tamaño n inicializado en -1
+    col_ocupada = arreglo de tamaño n en Falso
+    diag_prin = arreglo de tamaño (2n - 1) en Falso  // fila - col + (n - 1)
+    diag_sec = arreglo de tamaño (2n - 1) en Falso   // fila + col
 
-    def backtrack(fila: int) -> bool:
-        if fila == n:
-            return True
+    función Backtrack(fila):
+        // Caso Base: se ubicaron las 8 reinas sin conflictos
+        si fila == n:
+            devolver Verdadero
 
-        for col in range(n):
-            d_p = fila - col + 7
-            d_s = fila + col
+        para col desde 0 hasta n - 1:
+            dp = fila - col + 7
+            ds = fila + col
 
-            # Poda por Factibilidad en O(1)
-            if not col_ocupada[col] and not diag_prin[d_p] and not diag_sec[d_s]:
-                # 1. Marcar decisión
+            // Poda por Factibilidad en O(1)
+            si no col_ocupada[col] y no diag_prin[dp] y no diag_sec[ds]:
+                // 1. Marcar decisión
                 solucion[fila] = col
-                col_ocupada[col] = True
-                diag_prin[d_p] = True
-                diag_sec[d_s] = True
+                col_ocupada[col] = Verdadero
+                diag_prin[dp] = Verdadero
+                diag_sec[ds] = Verdadero
 
-                # 2. Recursión a fila siguiente
-                if backtrack(fila + 1):
-                    return True
+                // 2. Recursión a fila siguiente
+                si Backtrack(fila + 1):
+                    devolver Verdadero
 
-                # 3. Deshacer decisión (Backtrack)
+                // 3. Deshacer decisión (Backtrack)
                 solucion[fila] = -1
-                col_ocupada[col] = False
-                diag_prin[d_p] = False
-                diag_sec[d_s] = False
+                col_ocupada[col] = Falso
+                diag_prin[dp] = Falso
+                diag_sec[ds] = Falso
 
-        return False
+        devolver Falso
 
-    if backtrack(0):
-        return solucion
-    return None
+    si Backtrack(0):
+        devolver solucion
+    sino:
+        devolver "Sin solución"
 ```
 
 <div class="trap-callout">
@@ -229,40 +231,38 @@ graph TD
     classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 4. Implementación en Python (Tipada y Ejecutable)
+#### 4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-import math
+```text
+Algoritmo CuatroCuadradosLagrange(n):
+    solucion = arreglo [0, 0, 0, 0]
 
-def cuatro_cuadrados_lagrange(n: int) -> list[int] | None:
-    solucion = [0, 0, 0, 0]
-
-    def backtrack(paso: int, remanente: int, max_limite: int) -> bool:
-        # En el paso 3, el 4to término se calcula directamente en O(1)
-        if paso == 3:
-            z = int(math.isqrt(remanente))
-            if z * z == remanente and z <= max_limite:
+    función Backtrack(paso, remanente, max_limite):
+        // En el 4to término, se calcula directamente por raíz exacta en O(1)
+        si paso == 3:
+            z = entero(raiz(remanente))
+            si z * z == remanente y z <= max_limite:
                 solucion[3] = z
-                return True
-            return False
+                devolver Verdadero
+            devolver Falso
 
-        limite_sup = min(max_limite, int(math.isqrt(remanente)))
+        limite_sup = min(max_limite, entero(raiz(remanente)))
 
-        for v in range(limite_sup, -1, -1):
+        para v desde limite_sup bajando hasta 0:
+            // Poda por cota inferior: ni usando v en todos los restantes alcanzamos remanente
             terminos_restantes = 4 - paso
-            # Poda por cota inferior: si ni usando v en todos los restantes alcanzamos el remanente
-            if terminos_restantes * (v * v) < remanente:
-                break  # Como v decrece, ningún valor menor alcanzará
+            si terminos_restantes * (v * v) < remanente:
+                romper bucle // Ningún valor menor podrá alcanzarlo
 
             solucion[paso] = v
-            if backtrack(paso + 1, remanente - v * v, v):
-                return True
+            si Backtrack(paso + 1, remanente - v * v, v):
+                devolver Verdadero
 
-        return False
+        devolver Falso
 
-    if backtrack(0, n, int(math.isqrt(n))):
-        return solucion
-    return None
+    si Backtrack(0, n, entero(raiz(n))):
+        devolver solucion
+    devolver nulo
 ```
 
 <div class="trap-callout">
@@ -348,43 +348,38 @@ graph TD
     classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 4. Implementación en Python (Tipada y Ejecutable)
+#### 4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def minimo_vertex_cover(vertices: list[str], aristas: list[tuple[str, str]]) -> set[str]:
-    mejor_cobertura = set(vertices)  # Cota superior inicial
+```text
+Algoritmo MinimoVertexCover(V, E):
+    mejor_cobertura = copiar(V)  // Cota superior inicial
+    actual = conjunto_vacío()
 
-    def buscar_arista_libre(actual: set[str]) -> tuple[str, str] | None:
-        for u, v in aristas:
-            if u not in actual and v not in actual:
-                return u, v
-        return None
+    función Backtrack(actual):
+        // Poda Branch & Bound: si el tamaño actual ya iguala o supera al mejor récord
+        si tamaño(actual) >= tamaño(mejor_cobertura):
+            retornar
 
-    def backtrack(actual: set[str]):
-        nonlocal mejor_cobertura
-        # Poda Branch & Bound: si el tamaño actual ya iguala o supera al mejor récord
-        if len(actual) >= len(mejor_cobertura):
-            return
+        arista = BuscarAristaNoCubierta(E, actual)
+        si arista es nulo:
+            // Todas las aristas cubiertas con un tamaño estrictamente menor
+            mejor_cobertura = copiar(actual)
+            retornar
 
-        arista = buscar_arista_libre(actual)
-        if arista is None:
-            # Todas las aristas están cubiertas y len(actual) < len(mejor_cobertura)
-            mejor_cobertura = set(actual)
-            return
+        (u, v) = arista
 
-        u, v = arista
-        # Rama 1: Incluir u
-        actual.add(u)
-        backtrack(actual)
-        actual.remove(u)  # Backtrack
+        // Rama 1: Incluir u
+        agregar u a actual
+        Backtrack(actual)
+        quitar u de actual  // Deshacer
 
-        # Rama 2: Incluir v
-        actual.add(v)
-        backtrack(actual)
-        actual.remove(v)  # Backtrack
+        // Rama 2: Incluir v
+        agregar v a actual
+        Backtrack(actual)
+        quitar v de actual  // Deshacer
 
-    backtrack(set())
-    return mejor_cobertura
+    Backtrack(actual)
+    devolver mejor_cobertura
 ```
 
 <div class="trap-callout">
@@ -469,39 +464,39 @@ graph TD
     classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 4. Implementación en Python (Tipada y Ejecutable)
+#### 4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
-```python
-def subset_sum_backtracking(nums: list[int], target: int) -> list[int] | None:
-    # 1. Ordenamiento previo para habilitar podas tempranas
-    nums_ordenados = sorted(nums)
+```text
+Algoritmo SubsetSumBacktracking(nums, target):
+    // 1. Ordenar crecientemente para habilitar podas tempranas en O(n log n)
+    ordenar nums de menor a mayor
     solucion = []
 
-    def backtrack(indice: int, remanente: int) -> bool:
-        if remanente == 0:
-            return True
-        if indice >= len(nums_ordenados) or remanente < 0:
-            return False
+    función Backtrack(indice, remanente):
+        si remanente == 0:
+            devolver Verdadero
+        si indice >= longitud(nums) o remanente < 0:
+            devolver Falso
 
-        # Poda temprana: al estar ordenado, ningún elemento posterior entrará
-        if nums_ordenados[indice] > remanente:
-            return False
+        // Poda temprana: al estar ordenado, ningún elemento posterior entrará
+        si nums[indice] > remanente:
+            devolver Falso
 
-        # Rama 1: Incluir nums_ordenados[indice]
-        solucion.append(nums_ordenados[indice])
-        if backtrack(indice + 1, remanente - nums_ordenados[indice]):
-            return True
-        solucion.pop()  # Backtrack
+        // Rama 1: Incluir nums[indice]
+        agregar nums[indice] a solucion
+        si Backtrack(indice + 1, remanente - nums[indice]):
+            devolver Verdadero
+        quitar_ultimo(solucion)  // Deshacer (Backtrack)
 
-        # Rama 2: Excluir nums_ordenados[indice]
-        if backtrack(indice + 1, remanente):
-            return True
+        // Rama 2: Excluir nums[indice]
+        si Backtrack(indice + 1, remanente):
+            devolver Verdadero
 
-        return False
+        devolver Falso
 
-    if backtrack(0, target):
-        return solucion
-    return None
+    si Backtrack(0, target):
+        devolver solucion
+    devolver nulo
 ```
 
 <div class="trap-callout">
