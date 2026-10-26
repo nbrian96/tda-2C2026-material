@@ -865,7 +865,12 @@ body.dark-mode .exercise-solution-drawer {
   font-weight: 700;
   color: var(--accent-color);
   user-select: none;
+  list-style: none;
   transition: background 0.15s ease;
+}
+
+.solution-summary::-webkit-details-marker {
+  display: none;
 }
 
 .solution-summary:hover {
@@ -1630,7 +1635,7 @@ body.dark-mode .warning-box {
           <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
         </button>
         <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
-          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
+          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Ocultar Soluciones</span>
         </button>
         <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
           <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
@@ -1801,7 +1806,7 @@ body.dark-mode .warning-box {
 <p><strong>Minimización de un Máximo ($\min \max(f_1, f_2, \dots, f_k)$):</strong>
      Se introduce una variable auxiliar continua $Z \in \mathbb{R}$.
      $$\min Z \quad \text{sujeto a:} \quad Z \ge f_r(x) \quad \forall r \in {1, \dots, k}$$
-     <em>Principio:</em> Al minimizar $Z$, el optimizador presiona $Z$ hacia abajo hasta topar con la cota más restrictiva, cumpliéndose en el óptimo que $Z^* = \max_r f_r(x^*)$.</p>
+     <em>Principio:</em> Al minimizar $Z$, el optimizador presiona $Z$ hacia abajo hasta topar con la cota más restrictiva, cumpliéndose en el óptimo que $Z^<em> = \max_r f_r(x^</em>)$.</p>
 </li>
 <li>
 <p><strong>Relación de Cobertura y Activación (<em>Linking Constraints</em>):</strong>
@@ -1836,19 +1841,23 @@ body.dark-mode .warning-box {
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(19)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Paolo Casanova dispone de 2 días para realizar salidas a diferentes lugares cercanos y observar la mayor cantidad posible de especies de aves. Hay 10 especies en particular que desea encontrar ($E = {1, \dots, 10}$) y 6 lugares posibles a visitar ($L = {1, \dots, 6}$). Algunos lugares insumen medio día ($0.5$ días) y otros un día completo ($1.0$ días). Para cada lugar se conoce exactamente qué especies habitan allí según una matriz binaria de presencia $A_{ij}$ ($A_{ij} = 1$ si la especie $i$ habita en el lugar $j$, $0$ si no). Plantear un modelo de Programación Lineal Entera que determine qué lugares visitar para maximizar la cantidad de especies distintas encontradas en el tiempo disponible. Indicar la cantidad exacta de variables y restricciones del modelo.</p>
-<h4>2. Los 5 Pasos Metodológicos de Modelado en PLI</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-19">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Modelado en PLI</h4>
 <ol>
 <li><strong>Identificación de Decisiones y Recursos:</strong></li>
 <li>Decisión primaria: ¿Se visita el lugar $j \in L$? (Variable binaria $y_j$).</li>
@@ -2037,26 +2046,14 @@ def resolver_observacion_aves(
     <li><strong>Declarar variables continuas en lugar de binarias:</strong> Si se omite $y_j \in \{0, 1\}$, el solver visitará fracciones de lugares (ej. visitar $0.25$ del lugar 1 y $0.25$ del lugar 4), obteniendo una solución matemáticamente óptima pero físicamente absurda.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 5.2: Cobertura de Celdas con Umbral Porcentual</h3>
-<p>Problemas de infraestructura (antenas, sensores, cámaras) sobre grillas donde se exige cubrir una fracción mínima del total de objetivos con costo mínimo.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-19">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 5.2: Cobertura de Celdas con Umbral Porcentual</h3>
+<p>Problemas de infraestructura (antenas, sensores, cámaras) sobre grillas donde se exige cubrir una fracción mínima del total de objetivos con costo mínimo.</p>
+<hr />
 
 <article class="exercise-card" id="ej-20" data-num="20" data-priority="imprescindible" data-paradigm="pl" data-title="cobertura de antenas celulares con umbral del 70% de vecindarios" data-origin="parcial 2024-2-3 (10 de diciembre de 2024), ejercicio 3">
   <header class="card-header">
@@ -2075,19 +2072,23 @@ def resolver_observacion_aves(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(20)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Una empresa de telefonía celular colocará antenas en una grilla bidimensional de celdas para prestar servicio a vecindarios distribuidos en un mapa. Si se instala una antena en la celda $(i, j)$, brindará cobertura a un bloque de 9 celdas (la propia celda $(i, j)$ y sus 8 celdas contiguas en vecindad de Moore). Instalar una antena tiene un costo fijo $CTE &gt; 0$ idéntico en cualquier celda. Se dispone de un conjunto $V$ de vecindarios distribuidos en la zona. La empresa exige brindar servicio a <strong>por lo menos el 70% de los vecindarios</strong> minimizando la inversión total. Plantear un modelo de Programación Lineal Entera indicando claramente variables, dominios, función objetivo, restricciones y su conteo exacto.</p>
-<h4>2. Los 5 Pasos Metodológicos de Modelado en PLI</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-20">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Modelado en PLI</h4>
 <ol>
 <li><strong>Identificación de Decisiones:</strong></li>
 <li>Decisión de infraestructura: ¿Se instala una antena en la celda candidata $c \in C$? Variable binaria $y_c$.</li>
@@ -2203,26 +2204,14 @@ def modelar_antenas_70_porciento(
     <li><strong>Creer que el problema pide maximizar cobertura:</strong> La función objetivo NO es $\max \sum x_v$; es **minimizar el costo de antenas** sujeto a que la cobertura alcance el $70\%$. Maximizar cobertura instalaría antenas en toda la grilla innecesariamente.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 5.3: Flujo de Costo Mínimo / Transporte Multizona</h3>
-<p>Problemas de balance de oferta y demanda con capacidades máximas y costos de transporte por arista en redes continuas.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-20">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 5.3: Flujo de Costo Mínimo / Transporte Multizona</h3>
+<p>Problemas de balance de oferta y demanda con capacidades máximas y costos de transporte por arista en redes continuas.</p>
+<hr />
 
 <article class="exercise-card" id="ej-21" data-num="21" data-priority="imprescindible" data-paradigm="pl" data-title="distribución energética multizona con costos de transporte (flujo de costo mínimo)" data-origin="parcial 2025-1-1 (27 de mayo de 2025), ejercicio 3">
   <header class="card-header">
@@ -2241,19 +2230,23 @@ def modelar_antenas_70_porciento(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(21)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>El sistema interconectado argentino está dividido en 9 regiones eléctricas ($R = {1, \dots, 9}$). Para cada región $i$ se conoce su capacidad de generación prevista $G_i \ge 0$ (en MWh) y su demanda requerida $D_i \ge 0$ (en MWh). Desde cualquier región $i$ se puede transmitir energía a otra región $j$ con un costo unitario de transporte $C_{ij} \ge 0$ pesos por MWh. Cada línea de transmisión posee una capacidad máxima de transporte de $CAP_{ij} \ge 0$ MWh/día. Plantear un modelo de Programación Lineal continuo que determine el despacho de energía más económico para satisfacer plenamente la demanda de todas las regiones sin violar capacidades de transporte. Indicar variables y restricciones.</p>
-<h4>2. Los 5 Pasos Metodológicos de Modelado en PL Continuo</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-21">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Modelado en PL Continuo</h4>
 <ol>
 <li>
 <p><strong>Identificación de la Naturaleza Continua:</strong>
@@ -2381,26 +2374,14 @@ def resolver_flujo_costo_minimo(
     <li><strong>Invertir los signos del balance nodal:</strong> Restar las entradas y sumar las salidas. El balance físico es: $(\text{Generación local}) + (\text{Flujo Entrante}) - (\text{Flujo Saliente}) = \text{Demanda local}$.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 5.4: Camino Mínimo Formulado como Flujo Unitario</h3>
-<p>Formulación de la búsqueda de rutas óptimas en grafos dirigidos acíclicos como problemas de inyección y extracción de una única unidad de flujo en Programación Lineal continua aprovechando Unimodularidad Total.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-21">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 5.4: Camino Mínimo Formulado como Flujo Unitario</h3>
+<p>Formulación de la búsqueda de rutas óptimas en grafos dirigidos acíclicos como problemas de inyección y extracción de una única unidad de flujo en Programación Lineal continua aprovechando Unimodularidad Total.</p>
+<hr />
 
 <article class="exercise-card" id="ej-22" data-num="22" data-priority="importante" data-paradigm="pl" data-title="camino de mínimo riesgo (invap) como flujo unitario en pl" data-origin="parcial 2025-1-2 (17 de junio de 2025), ejercicio 5">
   <header class="card-header">
@@ -2419,19 +2400,23 @@ def resolver_flujo_costo_minimo(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(22)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Para el traslado de una carga crítica de alta seguridad de la empresa INVAP desde el centro atómico Ezeiza ($s$) hasta el laboratorio central en Bariloche ($t$), se dispone de un grafo dirigido $G = (V, E)$. Cada tramo carretero $(u, v) \in E$ tiene un costo de póliza de seguro $C_{uv} &gt; 0$. Plantear un modelo de Programación Lineal continuo que determine la ruta de menor costo de seguro. Justificar formalmente por qué no es necesario declarar las variables como binarias para obtener una ruta válida. Indicar la cantidad exacta de variables y restricciones.</p>
-<h4>2. Los 5 Pasos Metodológicos de Modelado en PL Continuo</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-22">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Modelado en PL Continuo</h4>
 <ol>
 <li>
 <p><strong>Inyección de Flujo Unitario:</strong>
@@ -2531,26 +2516,14 @@ def camino_minimo_pl_continuo(
     <li><strong>Olvidar el nodo sumidero:</strong> Poner conservación $= 0$ en todos lados sin definir la extracción de $-1$ en el destino $t$.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 5.5: Linealización de Funciones No Lineales (min max)</h3>
-<p>Transformación de funciones objetivo no lineales como minimax o discrepancias absolutas en sistemas lineales estándar con variables continuas auxiliares.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-22">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 5.5: Linealización de Funciones No Lineales (min max)</h3>
+<p>Transformación de funciones objetivo no lineales como minimax o discrepancias absolutas en sistemas lineales estándar con variables continuas auxiliares.</p>
+<hr />
 
 <article class="exercise-card" id="ej-23" data-num="23" data-priority="importante" data-paradigm="pl" data-title="2-partition min-max con linealización de variable auxiliar" data-origin="guía de ejercicios 05, ejercicio 12 / práctica de examen">
   <header class="card-header">
@@ -2569,21 +2542,25 @@ def camino_minimo_pl_continuo(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(23)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Dado un conjunto de $n$ tareas con tiempos de procesamiento enteros positivos $T = {T_1, T_2, \dots, T_n}$, se desea particionar las tareas entre dos procesadores idénticos $P_1$ y $P_2$ de manera que se minimice el <em>makespan</em> (el tiempo de finalización de la máquina más cargada):
 $$\min \max \left( \sum_{i \in P_1} T_i, \sum_{j \in P_2} T_j \right)$$
 Formular el problema como un modelo de Programación Lineal Entera, linealizando rigurosamente el operador $\max$. Indicar variables, dominios y conteo de restricciones.</p>
-<h4>2. Los 5 Pasos Metodológicos de Linealización en PLI</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-23">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Linealización en PLI</h4>
 <ol>
 <li>
 <p><strong>Definición de Variables de Partición:</strong>
@@ -2617,14 +2594,14 @@ Sea $(x^<em>, Z^</em>)$ una solución óptima del modelo linealizado.</p>
 <ol>
 <li>
 <p>Por definición de las restricciones:
-   $$Z^* \ge L_1(x^<em>) \quad \text{y} \quad Z^</em> \ge L_2(x^<em>) \implies Z^</em> \ge \max(L_1(x^<em>), L_2(x^</em>))$$</p>
+   $$Z^<em> \ge L_1(x^</em>) \quad \text{y} \quad Z^<em> \ge L_2(x^</em>) \implies Z^<em> \ge \max(L_1(x^</em>), L_2(x^*))$$</p>
 </li>
 <li>
-<p>Supongamos por contradicción que $Z^* &gt; \max(L_1(x^<em>), L_2(x^</em>))$. Entonces podríamos definir un valor $Z' = \max(L_1(x^<em>), L_2(x^</em>)) &lt; Z^*$.</p>
+<p>Supongamos por contradicción que $Z^<em> &gt; \max(L_1(x^</em>), L_2(x^<em>))$. Entonces podríamos definir un valor $Z' = \max(L_1(x^</em>), L_2(x^<em>)) &lt; Z^</em>$.</p>
 </li>
 <li>La solución $(x^<em>, Z')$ satisface todas las restricciones del modelo y produce un valor objetivo $Z' &lt; Z^</em>$, contradiciendo la optimalidad de $(x^<em>, Z^</em>)$.</li>
 <li>Por lo tanto, en toda solución óptima se cumple estrictamente que:
-   $$Z^* = \max(L_1(x^<em>), L_2(x^</em>))$$
+   $$Z^<em> = \max(L_1(x^</em>), L_2(x^*))$$
    lo que demuestra que el modelo lineal es exactamente equivalente al problema no lineal original.</li>
 </ol>
 <h4>4. Diagrama Visual de Acotamiento de la Variable Z</h4>
@@ -2724,7 +2701,10 @@ def resolver_2_partition_minmax(tiempos: List[float]) -&gt; Tuple[float, List[in
     <li><strong>Declarar $Z$ como entera innecesariamente:</strong> Si los tiempos son enteros, $Z$ adoptará un valor entero automáticamente; forzarla a entera solo recarga el árbol de Branch and Bound del solver sin ninguna necesidad matemática.</li>
   </ul>
 </div>
-
+      </div>
+    </details>
+  </div>
+</article>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Programación Lineal</h3>
 <ol>
@@ -2733,21 +2713,6 @@ def resolver_2_partition_minmax(tiempos: List[float]) -&gt; Tuple[float, List[in
 <li><strong>No declarar el dominio estricto de las variables:</strong> Omitir si una variable es binaria ($x_i \in {0, 1}$), continua no negativa ($x_{ij} \ge 0$) o entera no negativa ($z_k \in \mathbb{Z}^+$) es motivo de descuento directo del $40\%$ del valor de la pregunta.</li>
 <li><strong>Omitir el conteo analítico de variables y restricciones:</strong> Si la consigna indica <em>"indicar variables y restricciones"</em>, debe tabularse cuántas variables continuas, cuántas binarias y cuántas restricciones lineales componen el modelo en función de los parámetros de entrada.</li>
 </ol>
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-23">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
-      </div>
-    </details>
-  </div>
-</article>
-
 </main>
 <script>
 
@@ -2755,7 +2720,7 @@ def resolver_2_partition_minmax(tiempos: List[float]) -&gt; Tuple[float, List[in
 let currentMode = 'emergency';
 let currentParadigm = 'all';
 let searchQuery = '';
-let solutionsExpanded = false;
+let solutionsExpanded = true;
 let masteredExercises = new Set();
 let checklistState = {};
 
@@ -2873,9 +2838,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   initMathRendering();
 
-  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall (post-render)
+  // Por defecto en pantalla mostrar las soluciones expandidas
   document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = false;
+    drawer.open = true;
   });
 });
 
@@ -3168,7 +3133,7 @@ function toggleGlobalSolutions() {
   });
   const lbl = document.getElementById("lblGlobalSolutions");
   if (lbl) {
-    lbl.textContent = solutionsExpanded ? "Ocultar Todas" : "Revelar Todas";
+    lbl.textContent = solutionsExpanded ? "Ocultar Soluciones" : "Mostrar Soluciones";
   }
 }
 

@@ -865,7 +865,12 @@ body.dark-mode .exercise-solution-drawer {
   font-weight: 700;
   color: var(--accent-color);
   user-select: none;
+  list-style: none;
   transition: background 0.15s ease;
+}
+
+.solution-summary::-webkit-details-marker {
+  display: none;
 }
 
 .solution-summary:hover {
@@ -1630,7 +1635,7 @@ body.dark-mode .warning-box {
           <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
         </button>
         <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
-          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
+          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Ocultar Soluciones</span>
         </button>
         <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
           <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
@@ -1835,17 +1840,12 @@ body.dark-mode .warning-box {
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(4)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Trabajamos para el mafioso Arnook, quien organiza los pedidos de pequeñas mafias locales por el control de diferentes kilómetros de la ruta costera de Ciudad República. Cada mafia le pide control sobre un rango de kilómetros $[s_i, f_i]$ (por ejemplo, del kilómetro 1 al 5, del 3 al 8, etc.). Si una mafia toma control de un kilómetro, ninguna otra puede ocupar ese mismo tramo (no pueden solaparse). Arnook cobra una tarifa fija por otorgar el permiso, independientemente de los kilómetros pedidos, por lo que su objetivo es maximizar la cantidad total de permisos otorgados sin conflictos de territorio.  </p>
 <ol>
 <li>Implementar un algoritmo Greedy que determine a qué mafias otorgar el permiso.  </li>
@@ -1855,7 +1855,16 @@ Trabajamos para el mafioso Arnook, quien organiza los pedidos de pequeñas mafia
 </ol>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio voraz correcto (ordenamiento por punto final más temprano), y la demostración formal de optimalidad vía <em>Greedy Stays Ahead</em>.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos de Greedy)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-4">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos de Greedy)</h4>
 <ol>
 <li><strong>Paso 1: Análisis de Reglas Candidatas y Descarte de Erróneas:</strong></li>
 <li><em>Criterio erróneo 1 (Inicio más temprano $s_i$):</em> Falla si un pedido empieza muy temprano y ocupa toda la ruta ($[1, 100]$ bloquea a $[2, 3]$ y $[4, 5]$).</li>
@@ -2066,26 +2075,14 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
     <li><strong>Ordenar por duración ($f_i - s_i$):</strong> Es el error intuitivo más frecuente en parciales. Recuerde que un intervalo de duración 2 puede arruinar a dos intervalos adyacentes de duración 3, obteniendo 1 en lugar de 2.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 2.2: Mochila Fraccionaria vs 0-1 con Garantía de Calidad 1/2</h3>
-<p>En las evaluaciones teóricas y en los TPs de la cátedra se examina la relación entre la solución fraccionaria (óptima con greedy) y la versión entera 0-1, demostrando cómo una regla greedy corregida otorga una cota de aproximación constante.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-4">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 2.2: Mochila Fraccionaria vs 0-1 con Garantía de Calidad 1/2</h3>
+<p>En las evaluaciones teóricas y en los TPs de la cátedra se examina la relación entre la solución fraccionaria (óptima con greedy) y la versión entera 0-1, demostrando cómo una regla greedy corregida otorga una cota de aproximación constante.</p>
+<hr />
 
 <article class="exercise-card" id="ej-5" data-num="5" data-priority="imprescindible" data-paradigm="greedy" data-title="mochila 0-1 con garantía de aproximación 1/2" data-origin="guía de ejercicios 02, ejercicio 8 / diapositivas explicativas de cátedra">
   <header class="card-header">
@@ -2104,17 +2101,12 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(5)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Se tiene una mochila de capacidad de peso $W$ y $n$ objetos indivisibles (0-1), donde cada objeto $i$ tiene peso $w_i$ y valor $v_i$.  </p>
 <ol>
 <li>Explicar por qué la regla voraz estándar basada en ordenar por densidad de valor ($v_i / w_i$) puede fallar de forma arbitraria en la mochila 0-1.  </li>
@@ -2124,7 +2116,16 @@ Se tiene una mochila de capacidad de peso $W$ y $n$ objetos indivisibles (0-1), 
 </ol>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Capacidad de analizar por qué un algoritmo voraz falla en problemas NP-Hard, diseño de heurísticas con garantías formales de aproximación y uso de la relajación continua como cota superior de optimalidad.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-5">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Análisis del Fallo de la Densidad Voraz Pura:</strong>
@@ -2279,26 +2280,14 @@ Capacidad de analizar por qué un algoritmo voraz falla en problemas NP-Hard, di
     <li><strong>No usar la relajación fraccionaria en la demostración:</strong> Decir que "el elemento que no entró más lo que entró supera al óptimo" exige justificar formalmente que $OPT \le OPT_{\text{frac}} = V_{\text{greedy}} + \alpha v_k$. Sin la relajación continua no hay demostración válida.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 2.3: Minimización de Latencia y Deadlines (EDF)</h3>
-<p>Se tienen tareas con tiempos de procesamiento y fechas límite de entrega (deadlines). El objetivo es ordenar las tareas para minimizar la latencia máxima que experimenta cualquier tarea.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-5">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 2.3: Minimización de Latencia y Deadlines (EDF)</h3>
+<p>Se tienen tareas con tiempos de procesamiento y fechas límite de entrega (deadlines). El objetivo es ordenar las tareas para minimizar la latencia máxima que experimenta cualquier tarea.</p>
+<hr />
 
 <article class="exercise-card" id="ej-6" data-num="6" data-priority="importante" data-paradigm="greedy" data-title="minimización de latencia máxima (earliest deadline first)" data-origin="guía de ejercicios 02, ejercicio 9 / práctica">
   <header class="card-header">
@@ -2317,21 +2306,25 @@ Capacidad de analizar por qué un algoritmo voraz falla en problemas NP-Hard, di
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(6)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Se tienen $n$ tareas que deben procesarse secuencialmente en una única máquina que comienza en el tiempo $t = 0$. Cada tarea $i$ tiene una duración $t_i$ y una fecha límite de entrega (deadline) $d_i$. Si una tarea comienza en el tiempo $s_i$, finaliza en $f_i = s_i + t_i$. La latencia de la tarea $i$ se define como $L_i = \max(0, f_i - d_i)$. Diseñar un algoritmo greedy que programe las tareas minimizando la latencia máxima $L_{\max} = \max_i L_i$. Demostrar formalmente su optimalidad.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Técnica de ordenamiento por fecha de vencimiento más temprana (<em>Earliest Deadline First</em>) y demostración formal por argumento de intercambio de inversiones adyacentes (<em>Exchange Argument</em>).</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-6">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
 <ol>
 <li><strong>Paso 1: Análisis de Reglas Voraces Alternativas y sus Fallas:</strong></li>
 <li><em>Menor duración primero ($t_i$):</em> Falla si una tarea corta tiene un deadline muy lejano y desplaza a una tarea larga con vencimiento inmediato.</li>
@@ -2520,26 +2513,14 @@ $$L_{\max}(S') \le L_{\max}(S)$$</p>
     <li><strong>Tiempos de arribo ($r_i$):</strong> Este algoritmo asume que todas las tareas están disponibles en $t = 0$. Si el enunciado incluye tiempos de llegada diferentes ($r_i \neq 0$), el problema se convierte en NP-Duro y EDF simple deja de ser óptimo.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 2.4: Heurísticas Voraces de Cobertura (Set Cover Greedy)</h3>
-<p>Aparece cuando el problema exacto es NP-Hard (como Set Cover o Dominating Set) y el enunciado solicita explícitamente: <em>"Diseñar un algoritmo greedy de costo/beneficio marginal..."</em>.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-6">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 2.4: Heurísticas Voraces de Cobertura (Set Cover Greedy)</h3>
+<p>Aparece cuando el problema exacto es NP-Hard (como Set Cover o Dominating Set) y el enunciado solicita explícitamente: <em>"Diseñar un algoritmo greedy de costo/beneficio marginal..."</em>.</p>
+<hr />
 
 <article class="exercise-card" id="ej-7" data-num="7" data-priority="imprescindible" data-paradigm="greedy" data-title="ubicación voraz de antenas celulares con costo por vecindario" data-origin="parcial 2024-2-3 (10 de diciembre de 2024), ejercicio 4">
   <header class="card-header">
@@ -2558,21 +2539,25 @@ $$L_{\max}(S') \le L_{\max}(S)$$</p>
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(7)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Una empresa de telefonía celular desea colocar antenas en una grilla de celdas para brindar cobertura a un conjunto de vecindarios distribuidos en la zona. Cada antena colocada en una celda $(i, j)$ da cobertura a esa celda y a las 8 que la rodean (un bloque de $3 \times 3$). El costo de instalar una antena en la celda $(i, j)$ es de $CTO_{ij}$ pesos. Se desea cubrir todos los vecindarios minimizando el costo total. Diseñar un algoritmo Greedy que determine en qué celdas colocar antenas. Justificar la regla de elección voraz, la cota de aproximación y la complejidad del algoritmo.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heurística voraz de costo/beneficio marginal, junto con el análisis de su factor de aproximación logarítmico de Chvátal.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-7">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Formulación como Weighted Set Cover:</strong>
@@ -2584,7 +2569,7 @@ Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heur
    $$\Delta(c) = |S_c \cap U_{\text{restantes}}|$$
    Definimos el ratio voraz:
    $$\text{Ratio}(c) = \frac{CTO_c}{\Delta(c)}$$
-   Se selecciona vorazmente la celda $c^<em>$ que <strong>minimiza el costo por cada nuevo vecindario cubierto</strong>:
+   Se selecciona vorazmente la celda $c^<em>$ que </em><em>minimiza el costo por cada nuevo vecindario cubierto</em><em>:
    $$c^</em> = \arg\min_{c: \Delta(c) &gt; 0} \frac{CTO_c}{\Delta(c)}$$</p>
 </li>
 <li>
@@ -2689,26 +2674,14 @@ Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heur
     <li><strong>Afirmar que es óptimo:</strong> Set Cover es NP-Completo. Cualquier afirmación de que este greedy es siempre óptimo se califica con 0 puntos. Es una heurística con cota de aproximación armónica $\ln |U| + 1$.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 2.5: Greedy en Caminos y Etapas (Demostración de No-Optimalidad)</h3>
-<p>Aparece cuando se plantea un problema de etapas secuenciales y se pide evaluar si un enfoque voraz local alcanza el óptimo global.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-7">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 2.5: Greedy en Caminos y Etapas (Demostración de No-Optimalidad)</h3>
+<p>Aparece cuando se plantea un problema de etapas secuenciales y se pide evaluar si un enfoque voraz local alcanza el óptimo global.</p>
+<hr />
 
 <article class="exercise-card" id="ej-8" data-num="8" data-priority="imprescindible" data-paradigm="greedy" data-title="traslado crítico invap: enfoque voraz y contraejemplo formal" data-origin="parcial 2025-1-2 (17 de junio de 2025), ejercicio 3">
   <header class="card-header">
@@ -2727,17 +2700,12 @@ Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heur
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(8)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Para el traslado de una carga peligrosa del INVAP de Ezeiza a Bariloche a través de etapas diarias (con alternativas de ciudades intermedias y costos de seguro asociados a cada tramo):  </p>
 <ol>
 <li>Diseñar un algoritmo Greedy que decida el itinerario.  </li>
@@ -2745,7 +2713,16 @@ Para el traslado de una carga peligrosa del INVAP de Ezeiza a Bariloche a travé
 </ol>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Construcción de heurísticas paso a paso y formulación de contraejemplos matemáticos claros para refutar la optimalidad de algoritmos voraces en grafos de decisión multietapa.</p>
-<h4>1. Deducción Metodológica Formal</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-8">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Regla Voraz Local:</strong>
@@ -2840,7 +2817,10 @@ grafo_invap = {
     <li><strong>Afirmar que Dijkstra es greedy:</strong> Si bien Dijkstra utiliza una cola de prioridad voraz sobre la distancia acumulada, **no toma decisiones miopes por arista individual**. Evalúa la distancia total acumulada desde la fuente $d[u] + w(u, v)$, lo que pertenece conceptualmente a la programación dinámica sobre grafos dirigidos acíclicos.</li>
   </ul>
 </div>
-
+      </div>
+    </details>
+  </div>
+</article>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Greedy</h3>
 <ol>
@@ -2849,21 +2829,6 @@ grafo_invap = {
 <li><strong>No justificar por qué el algoritmo es voraz:</strong> Se debe explicitar que la decisión es local, miope e irrevocable.</li>
 <li><strong>Confundir Interval Scheduling con Interval Scheduling Ponderado:</strong> Si las tareas tienen valores o beneficios distintos, ordenar por tiempo de fin no es óptimo.</li>
 </ol>
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-8">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
-      </div>
-    </details>
-  </div>
-</article>
-
 </main>
 <script>
 
@@ -2871,7 +2836,7 @@ grafo_invap = {
 let currentMode = 'emergency';
 let currentParadigm = 'all';
 let searchQuery = '';
-let solutionsExpanded = false;
+let solutionsExpanded = true;
 let masteredExercises = new Set();
 let checklistState = {};
 
@@ -2989,9 +2954,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   initMathRendering();
 
-  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall (post-render)
+  // Por defecto en pantalla mostrar las soluciones expandidas
   document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = false;
+    drawer.open = true;
   });
 });
 
@@ -3284,7 +3249,7 @@ function toggleGlobalSolutions() {
   });
   const lbl = document.getElementById("lblGlobalSolutions");
   if (lbl) {
-    lbl.textContent = solutionsExpanded ? "Ocultar Todas" : "Revelar Todas";
+    lbl.textContent = solutionsExpanded ? "Ocultar Soluciones" : "Mostrar Soluciones";
   }
 }
 

@@ -865,7 +865,12 @@ body.dark-mode .exercise-solution-drawer {
   font-weight: 700;
   color: var(--accent-color);
   user-select: none;
+  list-style: none;
   transition: background 0.15s ease;
+}
+
+.solution-summary::-webkit-details-marker {
+  display: none;
 }
 
 .solution-summary:hover {
@@ -1630,7 +1635,7 @@ body.dark-mode .warning-box {
           <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
         </button>
         <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
-          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
+          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Ocultar Soluciones</span>
         </button>
         <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
           <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
@@ -2104,21 +2109,25 @@ body.dark-mode .warning-box {
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(1)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Realizar un algoritmo que resuelva la multiplicación de dos matrices cuadradas de orden $n$ ($A$ y $B$) mediante división y conquista. Recordemos la definición: $C = A \times B$ donde $C_{ij} = \sum_{k=1}^n A_{ik} \cdot B_{kj}$ para todo $i, j \in {1, \dots, n}$. Para simplificar el algoritmo se puede suponer que $n$ es una potencia de 2. Indicar y justificar el orden de complejidad temporal y espacial del algoritmo.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas recursivas de multiplicación, suma de matrices en la etapa de combinación, y aplicación rigurosa del Teorema Maestro sin saltarse el análisis de casos.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-1">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: División:</strong>
@@ -2363,26 +2372,14 @@ $$C = \begin{pmatrix} 19 &amp; 22 \ 43 &amp; 50 \end{pmatrix}$$
     <li><strong>Olvidar el costo de partición y combinación:</strong> Copiar matrices o sumarlas no es gratis; toma $\Theta(n^2)$. Omitir este término en la recurrencia anula la justificación del Teorema Maestro.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 1.2: Búsqueda Binaria sobre Propiedades Monótonas</h3>
-<p>Se busca un elemento o punto crítico en arreglos que no están completamente ordenados pero que presentan una propiedad monótona o un cambio de tendencia detectable en tiempo $O(\log n)$.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-1">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 1.2: Búsqueda Binaria sobre Propiedades Monótonas</h3>
+<p>Se busca un elemento o punto crítico en arreglos que no están completamente ordenados pero que presentan una propiedad monótona o un cambio de tendencia detectable en tiempo $O(\log n)$.</p>
+<hr />
 
 <article class="exercise-card" id="ej-2" data-num="2" data-priority="importante" data-paradigm="dyc" data-title="elemento pico en un arreglo unimodal" data-origin="guía de ejercicios 01, ejercicio 4 / parcial fiuba">
   <header class="card-header">
@@ -2401,21 +2398,25 @@ $$C = \begin{pmatrix} 19 &amp; 22 \ 43 &amp; 50 \end{pmatrix}$$
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(2)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Dado un arreglo $A$ de $n$ enteros distintos donde no hay dos elementos adyacentes iguales, un elemento $A[i]$ se define como "pico" si es estrictamente mayor que sus vecinos existentes (es decir, $A[i] &gt; A[i-1]$ y $A[i] &gt; A[i+1]$, considerando los extremos con un único vecino). Diseñar un algoritmo por División y Conquista que encuentre un elemento pico en tiempo $O(\log n)$. Justificar la correctitud y la complejidad.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Capacidad de descarte logarítmico aprovechando la dirección de la pendiente local, manejo riguroso de condiciones de borde en índices y demostración formal de que siempre existe al menos un pico en la mitad elegida.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-2">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Definición del Invariante de Búsqueda:</strong>
@@ -2544,17 +2545,6 @@ $$A = [1, 2, 1, 3, 5, 6, 4]$$</p>
 </div>
 
 <hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-2">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
@@ -2577,21 +2567,25 @@ $$A = [1, 2, 1, 3, 5, 6, 4]$$</p>
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(3)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Se tiene un arreglo $A$ de $n$ elementos compuesto exclusivamente por números 1 seguidos por números 0 (es decir, de la forma $[1, 1, \dots, 1, 0, 0, \dots, 0]$). Puede ocurrir que todos sean 1 o todos sean 0. Implementar un algoritmo por División y Conquista que determine la posición del primer 0 en tiempo $O(\log n)$. Si el arreglo no contiene ceros, retornar $-1$.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Identificación de la propiedad de frontera de transición, manejo riguroso de casos donde el cero está en el índice 0 o no existe, y parada anticipada sin incurrir en recorridos lineales.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-3">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Propiedad de Monotonía y Frontera:</strong>
@@ -2631,7 +2625,7 @@ Identificación de la propiedad de frontera de transición, manejo riguroso de c
 <p><strong>Paso Inductivo ($L \ge 1$):</strong>
   Se inspecciona $A[m]$. </p>
 <ul>
-<li>Si $A[m] = 1$: Como el arreglo tiene la estructura $1^* 0^*$, si la posición $m$ tiene un 1, todas las posiciones $j \le m$ tienen $A[j] = 1$. Por lo tanto, ningún índice $\le m$ puede ser cero. El primer cero, de existir, debe residir en $[m + 1, fin]$, un subrango de longitud $\le \lfloor L/2 \rfloor$. Por hipótesis inductiva, la llamada recursiva devolverá el resultado correcto.</li>
+<li>Si $A[m] = 1$: Como el arreglo tiene la estructura $1^<em> 0^</em>$, si la posición $m$ tiene un 1, todas las posiciones $j \le m$ tienen $A[j] = 1$. Por lo tanto, ningún índice $\le m$ puede ser cero. El primer cero, de existir, debe residir en $[m + 1, fin]$, un subrango de longitud $\le \lfloor L/2 \rfloor$. Por hipótesis inductiva, la llamada recursiva devolverá el resultado correcto.</li>
 <li>Si $A[m] = 0$: Si $m = 0$ o $A[m-1] = 1$, por definición $m$ es el primer cero y se retorna. Si $A[m-1] = 0$, el primer cero está estrictamente antes de $m$, residiendo en $[ini, m - 1]$. Por hipótesis inductiva, la recursión encuentra el resultado exacto. $\blacksquare$</li>
 </ul>
 </li>
@@ -2719,7 +2713,10 @@ $$A = [1, 1, 1, 1, 0, 0, 0, 0]$$</p>
     <li><strong>Hacer un recorrido lineal desde $m$:</strong> Al encontrar un 0 en $m$, algunos estudiantes retroceden linealmente con un bucle mientras <code>arr[i] == 0</code>. Eso degrada la complejidad a $O(n)$ en el peor caso (por ejemplo, en un arreglo compuesto íntegramente por ceros), anulando completamente el beneficio de la búsqueda binaria.</li>
   </ul>
 </div>
-
+      </div>
+    </details>
+  </div>
+</article>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre División y Conquista</h3>
 <ol>
@@ -2728,21 +2725,6 @@ $$A = [1, 1, 1, 1, 0, 0, 0, 0]$$</p>
 <li><strong>No justificar el costo de combinación $f(n)$:</strong> Poner directamente $O(n^2)$ sin detallar que proviene de recorrer las submatrices sumando elemento a elemento.</li>
 <li><strong>Dividir en subproblemas no balanceados:</strong> Si la división reduce el tamaño a $n - 1$ (como Quicksort en el peor caso), no se puede aplicar el Teorema Maestro básico; se debe resolver mediante sumatoria telescópica.</li>
 </ol>
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-3">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
-      </div>
-    </details>
-  </div>
-</article>
-
 </main>
 <script>
 
@@ -2750,7 +2732,7 @@ $$A = [1, 1, 1, 1, 0, 0, 0, 0]$$</p>
 let currentMode = 'emergency';
 let currentParadigm = 'all';
 let searchQuery = '';
-let solutionsExpanded = false;
+let solutionsExpanded = true;
 let masteredExercises = new Set();
 let checklistState = {};
 
@@ -2868,9 +2850,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   initMathRendering();
 
-  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall (post-render)
+  // Por defecto en pantalla mostrar las soluciones expandidas
   document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = false;
+    drawer.open = true;
   });
 });
 
@@ -3163,7 +3145,7 @@ function toggleGlobalSolutions() {
   });
   const lbl = document.getElementById("lblGlobalSolutions");
   if (lbl) {
-    lbl.textContent = solutionsExpanded ? "Ocultar Todas" : "Revelar Todas";
+    lbl.textContent = solutionsExpanded ? "Ocultar Soluciones" : "Mostrar Soluciones";
   }
 }
 

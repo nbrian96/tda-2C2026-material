@@ -865,7 +865,12 @@ body.dark-mode .exercise-solution-drawer {
   font-weight: 700;
   color: var(--accent-color);
   user-select: none;
+  list-style: none;
   transition: background 0.15s ease;
+}
+
+.solution-summary::-webkit-details-marker {
+  display: none;
 }
 
 .solution-summary:hover {
@@ -1630,7 +1635,7 @@ body.dark-mode .warning-box {
           <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
         </button>
         <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
-          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
+          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Ocultar Soluciones</span>
         </button>
         <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
           <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
@@ -1823,21 +1828,25 @@ body.dark-mode .warning-box {
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(9)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Realizar un algoritmo que resuelva el problema de las 8 reinas mediante backtracking. El problema consiste en ubicar 8 reinas en un tablero de ajedrez de $8 \times 8$ de manera que no haya dos reinas en la misma fila, columna o diagonal. Indicar detalladamente las estructuras de datos utilizadas para representar el problema y la solución, garantizando que el chequeo de amenazas se realice en $O(1)$. Justificar la complejidad temporal y espacial.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos de acceso directo para columnas y diagonales directas/inversas en $O(1)$, y gestión simétrica del estado (<em>hacer decisión $\to$ recursión $\to$ deshacer decisión</em>).</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos de Backtracking)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-9">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos de Backtracking)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Definición del Estado y Vector Solución:</strong>
@@ -2052,26 +2061,14 @@ Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos
     <li><strong>Error de signo en la diagonal principal:</strong> Olvidar el $+7$ en $f - col$ produce índices negativos (en Python mapea al final de la lista alterando otras diagonales; en C/Java arroja error de segmentación).</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 3.2: Descomposición Numérica con Cotas (Lagrange)</h3>
-<p>Problemas donde se debe descomponer un número entero en sumas de componentes (cuadrados, primos, monedas) bajo un número fijo de términos.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-9">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 3.2: Descomposición Numérica con Cotas (Lagrange)</h3>
+<p>Problemas donde se debe descomponer un número entero en sumas de componentes (cuadrados, primos, monedas) bajo un número fijo de términos.</p>
+<hr />
 
 <article class="exercise-card" id="ej-10" data-num="10" data-priority="imprescindible" data-paradigm="backtracking" data-title="suma de cuatro cuadrados de lagrange con cotas y podas" data-origin="parcial 2024-2-1 (5 de noviembre de 2024), ejercicio 1">
   <header class="card-header">
@@ -2090,23 +2087,27 @@ Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(10)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 El teorema de los cuatro cuadrados de Lagrange especifica que cualquier número entero no negativo $n$ puede expresarse como la suma de cuatro cuadrados de enteros no negativos:
 $$n = w^2 + x^2 + y^2 + z^2$$</p>
 <p>Desarrollar un algoritmo que, dado el valor de $n$, indique cuáles son los cuatro enteros no negativos que lo componen. Justificar detalladamente el árbol de decisiones, las podas aplicadas y la complejidad del algoritmo.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Diseño de un árbol de backtracking acotado a profundidad 4, imposición de orden no creciente para eliminar ramas simétricas redundantes ($w \ge x \ge y \ge z$), poda por cota inferior y determinación analítica del último término en $O(1)$.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-10">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Eliminación de Simetrías por Orden No Creciente:</strong>
@@ -2237,26 +2238,14 @@ def cuatro_cuadrados_lagrange(n: int) -&gt; list[int] | None:
     <li><strong>No imponer $w \ge x \ge y \ge z$:</strong> Permitir que los valores crezcan nuevamente en niveles inferiores provoca que el algoritmo evalúe las 24 permutaciones de la misma suma, multiplicando innecesariamente el tiempo de cómputo.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 3.3: Cobertura en Grafos con Branch and Bound (Vertex Cover)</h3>
-<p>Aparece cuando se solicita un algoritmo exacto para un problema NP-Hard sobre grafos no dirigidos.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-10">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 3.3: Cobertura en Grafos con Branch and Bound (Vertex Cover)</h3>
+<p>Aparece cuando se solicita un algoritmo exacto para un problema NP-Hard sobre grafos no dirigidos.</p>
+<hr />
 
 <article class="exercise-card" id="ej-11" data-num="11" data-priority="imprescindible" data-paradigm="backtracking" data-title="vertex cover mínimo por branch and bound" data-origin="parcial 2024-2-2 (26 de noviembre de 2024), ejercicio 1 / guía 03 ejercicio 13">
   <header class="card-header">
@@ -2275,21 +2264,25 @@ def cuatro_cuadrados_lagrange(n: int) -&gt; list[int] | None:
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(11)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Implementar un algoritmo que dado un grafo no dirigido $G = (V, E)$ devuelva un conjunto de vértices que represente un mínimo Vertex Cover del mismo. Explicar el árbol de decisiones, las podas aplicadas y la complejidad.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos extremos debe pertenecer a la cobertura), poda por cota superior (<em>Branch and Bound</em>) descartando ramas que alcancen o superen el mejor tamaño ya hallado.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-11">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Definición de Vertex Cover:</strong>
@@ -2395,26 +2388,14 @@ Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos 
     <li><strong>No copiar la solución óptima:</strong> Escribir <code>mejor_cobertura = actual</code> guarda una referencia al conjunto mutable. Al hacer backtracking, <code>mejor_cobertura</code> se vacía junto con <code>actual</code>. Se debe hacer siempre copia profunda con <code>set(actual)</code>.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 3.4: Suma de Subconjuntos (Subset Sum) con Podas</h3>
-<p>Exploración binaria de inclusión/exclusión de elementos para alcanzar un valor objetivo exacto.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-11">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 3.4: Suma de Subconjuntos (Subset Sum) con Podas</h3>
+<p>Exploración binaria de inclusión/exclusión de elementos para alcanzar un valor objetivo exacto.</p>
+<hr />
 
 <article class="exercise-card" id="ej-12" data-num="12" data-priority="importante" data-paradigm="backtracking" data-title="suma de subconjuntos con podas tempranas" data-origin="guía de ejercicios 03, ejercicio 11 / práctica">
   <header class="card-header">
@@ -2433,21 +2414,25 @@ Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos 
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(12)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un algoritmo por backtracking que determine si existe un subconjunto de $L$ cuya suma sea exactamente $S$, y en caso afirmativo devuelva dicho subconjunto. Indicar y justificar las podas de factibilidad aplicadas y la complejidad.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Árbol binario de inclusión/exclusión, poda temprana por exceso de suma y optimización del espacio de búsqueda mediante ordenamiento previo de los elementos.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-12">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Ordenamiento Previo para Poda en Bloque:</strong>
@@ -2640,7 +2625,10 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
     <li><strong>Números negativos o nulos:</strong> Esta poda asume que todos los elementos son positivos ($L[i] > 0$). Si hubiera números negativos, sumar un elemento posterior podría reducir la suma actual y permitir alcanzar el objetivo.</li>
   </ul>
 </div>
-
+      </div>
+    </details>
+  </div>
+</article>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Backtracking</h3>
 <ol>
@@ -2649,21 +2637,6 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <li><strong>No justificar la complejidad en el peor caso:</strong> Afirmar que con podas el algoritmo pasa a ser polinomial. Las podas optimizan el caso promedio, pero el peor caso sigue siendo exponencial o factorial.</li>
 <li><strong>No podar simetrías:</strong> Permitir explorar permutaciones del mismo conjunto en problemas de combinatoria.</li>
 </ol>
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-12">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
-      </div>
-    </details>
-  </div>
-</article>
-
 </main>
 <script>
 
@@ -2671,7 +2644,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 let currentMode = 'emergency';
 let currentParadigm = 'all';
 let searchQuery = '';
-let solutionsExpanded = false;
+let solutionsExpanded = true;
 let masteredExercises = new Set();
 let checklistState = {};
 
@@ -2789,9 +2762,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   initMathRendering();
 
-  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall (post-render)
+  // Por defecto en pantalla mostrar las soluciones expandidas
   document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = false;
+    drawer.open = true;
   });
 });
 
@@ -3084,7 +3057,7 @@ function toggleGlobalSolutions() {
   });
   const lbl = document.getElementById("lblGlobalSolutions");
   if (lbl) {
-    lbl.textContent = solutionsExpanded ? "Ocultar Todas" : "Revelar Todas";
+    lbl.textContent = solutionsExpanded ? "Ocultar Soluciones" : "Mostrar Soluciones";
   }
 }
 

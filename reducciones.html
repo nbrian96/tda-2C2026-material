@@ -865,7 +865,12 @@ body.dark-mode .exercise-solution-drawer {
   font-weight: 700;
   color: var(--accent-color);
   user-select: none;
+  list-style: none;
   transition: background 0.15s ease;
+}
+
+.solution-summary::-webkit-details-marker {
+  display: none;
 }
 
 .solution-summary:hover {
@@ -1630,7 +1635,7 @@ body.dark-mode .warning-box {
           <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
         </button>
         <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
-          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
+          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Ocultar Soluciones</span>
         </button>
         <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
           <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
@@ -1845,21 +1850,25 @@ body.dark-mode .warning-box {
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(28)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Un conjunto dominante (<em>Dominating Set</em>) en un grafo no dirigido $G = (V, E)$ es un subconjunto de vértices $D \subseteq V$ tal que todo vértice $v \in V$ pertenece a $D$ o es adyacente a al menos un vértice en $D$.<br />
 El problema de decisión de Dominating Set plantea: dado un grafo $G = (V, E)$ y un entero positivo $k \le |V|$, ¿existe un conjunto dominante $D$ tal que $|D| \le k$?<br />
 Demostrar formalmente que <strong>Dominating Set es NP-Completo</strong>, reduciendo desde <strong>Vertex Cover</strong>.</p>
-<h4>2. Los 5 Pasos Metodológicos de la Demostración</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-28">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de la Demostración</h4>
 <h5>Paso 1: Pertenencia a la Clase NP ($DominatingSet \in \text{NP}$)</h5>
 <ul>
 <li><strong>Certificado Candidato ($C$):</strong> Un subconjunto de vértices propuesto $D \subseteq V$.  <ul>
@@ -2035,26 +2044,14 @@ def transformar_vc_a_dominating_set(
     <li><strong>Olvidar reemplazar los vértices auxiliares en la vuelta:</strong> Si un conjunto dominante contiene $w_e$, no es un subconjunto de los vértices originales. Es obligatorio explicar por qué $w_e$ puede sustituirse por $u$ sin aumentar el tamaño ni perder dominancia.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 7.2: Reducciones de Caminos y Ciclos (El Dilema de Marco el Cadete)</h3>
-<p>Reducción polinomial estricta desde Ciclo Hamiltoniano hacia el Problema del Viajante de Comercio (TSP) en grafos ponderados completos.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-28">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 7.2: Reducciones de Caminos y Ciclos (El Dilema de Marco el Cadete)</h3>
+<p>Reducción polinomial estricta desde Ciclo Hamiltoniano hacia el Problema del Viajante de Comercio (TSP) en grafos ponderados completos.</p>
+<hr />
 
 <article class="exercise-card" id="ej-29" data-num="29" data-priority="imprescindible" data-paradigm="reducciones" data-title="el dilema de marco el cadete: reducción de ciclo hamiltoniano a tsp" data-origin="parcial 2025-1-1 (27 de mayo de 2025), ejercicio 5">
   <header class="card-header">
@@ -2073,17 +2070,12 @@ def transformar_vc_a_dominating_set(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(29)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Marco, el cadete administrativo de una empresa de logística, compró un costoso paquete de software para resolver el <strong>Problema del Viajante de Comercio</strong> (TSP en su versión de decisión), cuando la gerencia le había solicitado explícitamente un módulo para resolver <strong>Ciclo Hamiltoniano</strong>. El vendedor del software le aseguró a Marco:<br />
 <em>"Si puedes resolver TSP de decisión en un grafo completo ponderado, puedes resolver exactamente Ciclo Hamiltoniano en cualquier grafo en el mismo orden de tiempo"</em>.<br />
 Definiciones formales:</p>
@@ -2092,7 +2084,16 @@ Definiciones formales:</p>
 <li><strong>TSP (Decisión):</strong> Dado un grafo completo $G' = (V', E')$ con pesos enteros $w(e) \ge 0$ en las aristas y un entero $k$, determinar si existe un tour cerrado que visite cada vértice una única vez con costo total $\le k$.
 Determinar con fundamento formal si el vendedor tiene razón o si hay que despedir a Marco. Desarrollar la reducción polinomial completa con demostración de equivalencia.</li>
 </ul>
-<h4>2. Resolución y Demostración Formal</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-29">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Resolución y Demostración Formal</h4>
 <p><strong>El vendedor tiene razón.</strong> Demostraremos que:
 $$\text{Ciclo Hamiltoniano} \le_P \text{TSP (Decisión)}$$
 lo que significa que una subrutina que resuelve TSP permite resolver Ciclo Hamiltoniano de manera directa.</p>
@@ -2196,26 +2197,14 @@ def reducir_ciclo_hamiltoniano_a_tsp(
     <li><strong>No demostrar la cota $n+1 > n$ en la vuelta:</strong> Omitir la desigualdad aritmética que prueba por qué una sola arista de peso 2 hace imposible alcanzar el costo $n$.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 7.3: Reducciones Numéricas (Cambio de Monedas a Subset Sum)</h3>
-<p>Demostración de que la versión de decisión del problema de cambio de monedas no es más difícil que Subset Sum y análisis de equivalencia en la clase NP-Completo.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-29">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 7.3: Reducciones Numéricas (Cambio de Monedas a Subset Sum)</h3>
+<p>Demostración de que la versión de decisión del problema de cambio de monedas no es más difícil que Subset Sum y análisis de equivalencia en la clase NP-Completo.</p>
+<hr />
 
 <article class="exercise-card" id="ej-30" data-num="30" data-priority="imprescindible" data-paradigm="reducciones" data-title="reducción de cambio de monedas a subset sum" data-origin="parcial 2024-2-1 (5 de noviembre de 2024), ejercicio 5">
   <header class="card-header">
@@ -2234,20 +2223,24 @@ def reducir_ciclo_hamiltoniano_a_tsp(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(30)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Demostrar formalmente que el problema del <strong>Cambio de Monedas</strong> (en su versión de decisión: dadas denominaciones enteras $D = {d_1, \dots, d_m}$, un entero objetivo $V$ y una cota $k$, ¿es posible dar cambio de valor exacto $V$ utilizando a lo sumo $k$ monedas?) <strong>no es más difícil</strong> que el problema de la <strong>Suma de Subconjuntos (Subset Sum)</strong>.<br />
 ¿Es posible demostrar la reducción en sentido inverso? Fundamentar en base a las clases de complejidad teóricas.</p>
-<h4>2. Demostración Formal</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-30">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Demostración Formal</h4>
 <p><strong>Interpretación de la Consigna:</strong><br />
 La afirmación "el problema $A$ no es más difícil que el problema $B$" equivale rigurosamente a la relación de reducción polinomial:
 $$\text{Cambio de Monedas} \le_P \text{Subset Sum}$$</p>
@@ -2300,26 +2293,14 @@ $$\text{Cambio de Monedas} \equiv_P \text{Subset Sum}$$</li>
     <li><strong>Decir que no se puede reducir en sentido inverso:</strong> Creer erróneamente que porque uno parece más general no puede reducirse al otro. Dos problemas NP-Completos cualesquiera siempre admiten reducción mutua bidireccional.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 7.4: La Reducción Dual Canónica (Independent Set a Vertex Cover)</h3>
-<p>Reducción estructural basada en el Teorema del Complemento de Gallai en grafos no dirigidos.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-30">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 7.4: La Reducción Dual Canónica (Independent Set a Vertex Cover)</h3>
+<p>Reducción estructural basada en el Teorema del Complemento de Gallai en grafos no dirigidos.</p>
+<hr />
 
 <article class="exercise-card" id="ej-31" data-num="31" data-priority="importante" data-paradigm="reducciones" data-title="reducción dual: independent set a vertex cover" data-origin="guía de ejercicios 07, ejercicio 3">
   <header class="card-header">
@@ -2338,23 +2319,27 @@ $$\text{Cambio de Monedas} \equiv_P \text{Subset Sum}$$</li>
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(31)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Dados los problemas de decisión de <strong>Independent Set</strong> (¿existe un subconjunto de vértices $I \subseteq V$ de tamaño $|I| \ge k$ tal que no existan aristas entre vértices de $I$?) y <strong>Vertex Cover</strong> (¿existe un subconjunto $S \subseteq V$ de tamaño $|S| \le k'$ que cubra todas las aristas de $E$?):</p>
 <ol>
 <li>Diseñar una reducción polinomial formal de <strong>Independent Set a Vertex Cover</strong>.</li>
 <li>Demostrar rigurosamente la equivalencia lógica fundamentando el teorema del complemento en teoría de grafos.</li>
 </ol>
-<h4>2. Demostración del Teorema del Complemento (Lema de Gallai)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-31">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Demostración del Teorema del Complemento (Lema de Gallai)</h4>
 <p><strong>Teorema Fundamental:</strong><br />
 En cualquier grafo no dirigido $G = (V, E)$, un subconjunto de vértices $S \subseteq V$ es un <strong>Independent Set</strong> si y solo si su complemento $V \setminus S$ es un <strong>Vertex Cover</strong>.</p>
 <p><strong>Demostración:</strong></p>
@@ -2413,7 +2398,10 @@ En cualquier grafo no dirigido $G = (V, E)$, un subconjunto de vértices $S \sub
     <li><strong>Invertir el sentido de las desigualdades:</strong> Olvidar que Independent Set es un problema de **maximización** ($|S| \ge k$) mientras que Vertex Cover es de **minimización** ($|C| \le k'$). Al restar del total $|V|$, la desigualdad se invierte automáticamente ($|S| \ge k \iff |V| - |S| \le |V| - k$).</li>
   </ul>
 </div>
-
+      </div>
+    </details>
+  </div>
+</article>
 <hr />
 <h3>Errores Fatales en Exámenes sobre Reducciones NP</h3>
 <ol>
@@ -2422,21 +2410,6 @@ En cualquier grafo no dirigido $G = (V, E)$, un subconjunto de vértices $S \sub
 <li><strong>Probar únicamente la implicación de ida ($\implies$):</strong> Demostrar que si $I_A \in \text{YES} \implies I_B \in \text{YES}$ no es suficiente. Debe demostrarse rigurosamente la vuelta ($\impliedby$) para asegurar que instancias $\text{NO}$ de $A$ no produzcan falsos positivos en $B$.</li>
 <li><strong>Usar algoritmos exponenciales en la transformación:</strong> La función de mapeo $f(I_A)$ debe ejecutarse en tiempo estrictamente polinomial $O(n^c)$. Si la reducción requiere calcular algo NP-Hard antes de armar la instancia, la reducción queda invalidada.</li>
 </ol>
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-31">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
-      </div>
-    </details>
-  </div>
-</article>
-
 </main>
 <script>
 
@@ -2444,7 +2417,7 @@ En cualquier grafo no dirigido $G = (V, E)$, un subconjunto de vértices $S \sub
 let currentMode = 'emergency';
 let currentParadigm = 'all';
 let searchQuery = '';
-let solutionsExpanded = false;
+let solutionsExpanded = true;
 let masteredExercises = new Set();
 let checklistState = {};
 
@@ -2562,9 +2535,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   initMathRendering();
 
-  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall (post-render)
+  // Por defecto en pantalla mostrar las soluciones expandidas
   document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = false;
+    drawer.open = true;
   });
 });
 
@@ -2857,7 +2830,7 @@ function toggleGlobalSolutions() {
   });
   const lbl = document.getElementById("lblGlobalSolutions");
   if (lbl) {
-    lbl.textContent = solutionsExpanded ? "Ocultar Todas" : "Revelar Todas";
+    lbl.textContent = solutionsExpanded ? "Ocultar Soluciones" : "Mostrar Soluciones";
   }
 }
 

@@ -865,7 +865,12 @@ body.dark-mode .exercise-solution-drawer {
   font-weight: 700;
   color: var(--accent-color);
   user-select: none;
+  list-style: none;
   transition: background 0.15s ease;
+}
+
+.solution-summary::-webkit-details-marker {
+  display: none;
 }
 
 .solution-summary:hover {
@@ -1630,7 +1635,7 @@ body.dark-mode .warning-box {
           <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
         </button>
         <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
-          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
+          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Ocultar Soluciones</span>
         </button>
         <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
           <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
@@ -2104,21 +2109,25 @@ body.dark-mode .warning-box {
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(1)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Realizar un algoritmo que resuelva la multiplicación de dos matrices cuadradas de orden $n$ ($A$ y $B$) mediante división y conquista. Recordemos la definición: $C = A \times B$ donde $C_{ij} = \sum_{k=1}^n A_{ik} \cdot B_{kj}$ para todo $i, j \in {1, \dots, n}$. Para simplificar el algoritmo se puede suponer que $n$ es una potencia de 2. Indicar y justificar el orden de complejidad temporal y espacial del algoritmo.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas recursivas de multiplicación, suma de matrices en la etapa de combinación, y aplicación rigurosa del Teorema Maestro sin saltarse el análisis de casos.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-1">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: División:</strong>
@@ -2363,26 +2372,14 @@ $$C = \begin{pmatrix} 19 &amp; 22 \ 43 &amp; 50 \end{pmatrix}$$
     <li><strong>Olvidar el costo de partición y combinación:</strong> Copiar matrices o sumarlas no es gratis; toma $\Theta(n^2)$. Omitir este término en la recurrencia anula la justificación del Teorema Maestro.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 1.2: Búsqueda Binaria sobre Propiedades Monótonas</h3>
-<p>Se busca un elemento o punto crítico en arreglos que no están completamente ordenados pero que presentan una propiedad monótona o un cambio de tendencia detectable en tiempo $O(\log n)$.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-1">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 1.2: Búsqueda Binaria sobre Propiedades Monótonas</h3>
+<p>Se busca un elemento o punto crítico en arreglos que no están completamente ordenados pero que presentan una propiedad monótona o un cambio de tendencia detectable en tiempo $O(\log n)$.</p>
+<hr />
 
 <article class="exercise-card" id="ej-2" data-num="2" data-priority="importante" data-paradigm="dyc" data-title="elemento pico en un arreglo unimodal" data-origin="guía de ejercicios 01, ejercicio 4 / parcial fiuba">
   <header class="card-header">
@@ -2401,21 +2398,25 @@ $$C = \begin{pmatrix} 19 &amp; 22 \ 43 &amp; 50 \end{pmatrix}$$
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(2)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Dado un arreglo $A$ de $n$ enteros distintos donde no hay dos elementos adyacentes iguales, un elemento $A[i]$ se define como "pico" si es estrictamente mayor que sus vecinos existentes (es decir, $A[i] &gt; A[i-1]$ y $A[i] &gt; A[i+1]$, considerando los extremos con un único vecino). Diseñar un algoritmo por División y Conquista que encuentre un elemento pico en tiempo $O(\log n)$. Justificar la correctitud y la complejidad.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Capacidad de descarte logarítmico aprovechando la dirección de la pendiente local, manejo riguroso de condiciones de borde en índices y demostración formal de que siempre existe al menos un pico en la mitad elegida.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-2">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Definición del Invariante de Búsqueda:</strong>
@@ -2544,17 +2545,6 @@ $$A = [1, 2, 1, 3, 5, 6, 4]$$</p>
 </div>
 
 <hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-2">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
@@ -2577,21 +2567,25 @@ $$A = [1, 2, 1, 3, 5, 6, 4]$$</p>
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(3)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Se tiene un arreglo $A$ de $n$ elementos compuesto exclusivamente por números 1 seguidos por números 0 (es decir, de la forma $[1, 1, \dots, 1, 0, 0, \dots, 0]$). Puede ocurrir que todos sean 1 o todos sean 0. Implementar un algoritmo por División y Conquista que determine la posición del primer 0 en tiempo $O(\log n)$. Si el arreglo no contiene ceros, retornar $-1$.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Identificación de la propiedad de frontera de transición, manejo riguroso de casos donde el cero está en el índice 0 o no existe, y parada anticipada sin incurrir en recorridos lineales.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-3">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Propiedad de Monotonía y Frontera:</strong>
@@ -2631,7 +2625,7 @@ Identificación de la propiedad de frontera de transición, manejo riguroso de c
 <p><strong>Paso Inductivo ($L \ge 1$):</strong>
   Se inspecciona $A[m]$. </p>
 <ul>
-<li>Si $A[m] = 1$: Como el arreglo tiene la estructura $1^* 0^*$, si la posición $m$ tiene un 1, todas las posiciones $j \le m$ tienen $A[j] = 1$. Por lo tanto, ningún índice $\le m$ puede ser cero. El primer cero, de existir, debe residir en $[m + 1, fin]$, un subrango de longitud $\le \lfloor L/2 \rfloor$. Por hipótesis inductiva, la llamada recursiva devolverá el resultado correcto.</li>
+<li>Si $A[m] = 1$: Como el arreglo tiene la estructura $1^<em> 0^</em>$, si la posición $m$ tiene un 1, todas las posiciones $j \le m$ tienen $A[j] = 1$. Por lo tanto, ningún índice $\le m$ puede ser cero. El primer cero, de existir, debe residir en $[m + 1, fin]$, un subrango de longitud $\le \lfloor L/2 \rfloor$. Por hipótesis inductiva, la llamada recursiva devolverá el resultado correcto.</li>
 <li>Si $A[m] = 0$: Si $m = 0$ o $A[m-1] = 1$, por definición $m$ es el primer cero y se retorna. Si $A[m-1] = 0$, el primer cero está estrictamente antes de $m$, residiendo en $[ini, m - 1]$. Por hipótesis inductiva, la recursión encuentra el resultado exacto. $\blacksquare$</li>
 </ul>
 </li>
@@ -2719,7 +2713,10 @@ $$A = [1, 1, 1, 1, 0, 0, 0, 0]$$</p>
     <li><strong>Hacer un recorrido lineal desde $m$:</strong> Al encontrar un 0 en $m$, algunos estudiantes retroceden linealmente con un bucle mientras <code>arr[i] == 0</code>. Eso degrada la complejidad a $O(n)$ en el peor caso (por ejemplo, en un arreglo compuesto íntegramente por ceros), anulando completamente el beneficio de la búsqueda binaria.</li>
   </ul>
 </div>
-
+      </div>
+    </details>
+  </div>
+</article>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre División y Conquista</h3>
 <ol>
@@ -2729,21 +2726,6 @@ $$A = [1, 1, 1, 1, 0, 0, 0, 0]$$</p>
 <li><strong>Dividir en subproblemas no balanceados:</strong> Si la división reduce el tamaño a $n - 1$ (como Quicksort en el peor caso), no se puede aplicar el Teorema Maestro básico; se debe resolver mediante sumatoria telescópica.</li>
 </ol>
 <hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-3">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
-      </div>
-    </details>
-  </div>
-</article>
 <h2>5. Tema 2: Algoritmos Greedy (Voraces)</h2>
 <h3>Conceptos Mínimos de Supervivencia</h3>
 <ol>
@@ -2801,17 +2783,12 @@ $$A = [1, 1, 1, 1, 0, 0, 0, 0]$$</p>
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(4)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Trabajamos para el mafioso Arnook, quien organiza los pedidos de pequeñas mafias locales por el control de diferentes kilómetros de la ruta costera de Ciudad República. Cada mafia le pide control sobre un rango de kilómetros $[s_i, f_i]$ (por ejemplo, del kilómetro 1 al 5, del 3 al 8, etc.). Si una mafia toma control de un kilómetro, ninguna otra puede ocupar ese mismo tramo (no pueden solaparse). Arnook cobra una tarifa fija por otorgar el permiso, independientemente de los kilómetros pedidos, por lo que su objetivo es maximizar la cantidad total de permisos otorgados sin conflictos de territorio.  </p>
 <ol>
 <li>Implementar un algoritmo Greedy que determine a qué mafias otorgar el permiso.  </li>
@@ -2821,7 +2798,16 @@ Trabajamos para el mafioso Arnook, quien organiza los pedidos de pequeñas mafia
 </ol>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio voraz correcto (ordenamiento por punto final más temprano), y la demostración formal de optimalidad vía <em>Greedy Stays Ahead</em>.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos de Greedy)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-4">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos de Greedy)</h4>
 <ol>
 <li><strong>Paso 1: Análisis de Reglas Candidatas y Descarte de Erróneas:</strong></li>
 <li><em>Criterio erróneo 1 (Inicio más temprano $s_i$):</em> Falla si un pedido empieza muy temprano y ocupa toda la ruta ($[1, 100]$ bloquea a $[2, 3]$ y $[4, 5]$).</li>
@@ -3032,26 +3018,14 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
     <li><strong>Ordenar por duración ($f_i - s_i$):</strong> Es el error intuitivo más frecuente en parciales. Recuerde que un intervalo de duración 2 puede arruinar a dos intervalos adyacentes de duración 3, obteniendo 1 en lugar de 2.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 2.2: Mochila Fraccionaria vs 0-1 con Garantía de Calidad 1/2</h3>
-<p>En las evaluaciones teóricas y en los TPs de la cátedra se examina la relación entre la solución fraccionaria (óptima con greedy) y la versión entera 0-1, demostrando cómo una regla greedy corregida otorga una cota de aproximación constante.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-4">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 2.2: Mochila Fraccionaria vs 0-1 con Garantía de Calidad 1/2</h3>
+<p>En las evaluaciones teóricas y en los TPs de la cátedra se examina la relación entre la solución fraccionaria (óptima con greedy) y la versión entera 0-1, demostrando cómo una regla greedy corregida otorga una cota de aproximación constante.</p>
+<hr />
 
 <article class="exercise-card" id="ej-5" data-num="5" data-priority="imprescindible" data-paradigm="greedy" data-title="mochila 0-1 con garantía de aproximación 1/2" data-origin="guía de ejercicios 02, ejercicio 8 / diapositivas explicativas de cátedra">
   <header class="card-header">
@@ -3070,17 +3044,12 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(5)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Se tiene una mochila de capacidad de peso $W$ y $n$ objetos indivisibles (0-1), donde cada objeto $i$ tiene peso $w_i$ y valor $v_i$.  </p>
 <ol>
 <li>Explicar por qué la regla voraz estándar basada en ordenar por densidad de valor ($v_i / w_i$) puede fallar de forma arbitraria en la mochila 0-1.  </li>
@@ -3090,7 +3059,16 @@ Se tiene una mochila de capacidad de peso $W$ y $n$ objetos indivisibles (0-1), 
 </ol>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Capacidad de analizar por qué un algoritmo voraz falla en problemas NP-Hard, diseño de heurísticas con garantías formales de aproximación y uso de la relajación continua como cota superior de optimalidad.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-5">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Análisis del Fallo de la Densidad Voraz Pura:</strong>
@@ -3245,26 +3223,14 @@ Capacidad de analizar por qué un algoritmo voraz falla en problemas NP-Hard, di
     <li><strong>No usar la relajación fraccionaria en la demostración:</strong> Decir que "el elemento que no entró más lo que entró supera al óptimo" exige justificar formalmente que $OPT \le OPT_{\text{frac}} = V_{\text{greedy}} + \alpha v_k$. Sin la relajación continua no hay demostración válida.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 2.3: Minimización de Latencia y Deadlines (EDF)</h3>
-<p>Se tienen tareas con tiempos de procesamiento y fechas límite de entrega (deadlines). El objetivo es ordenar las tareas para minimizar la latencia máxima que experimenta cualquier tarea.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-5">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 2.3: Minimización de Latencia y Deadlines (EDF)</h3>
+<p>Se tienen tareas con tiempos de procesamiento y fechas límite de entrega (deadlines). El objetivo es ordenar las tareas para minimizar la latencia máxima que experimenta cualquier tarea.</p>
+<hr />
 
 <article class="exercise-card" id="ej-6" data-num="6" data-priority="importante" data-paradigm="greedy" data-title="minimización de latencia máxima (earliest deadline first)" data-origin="guía de ejercicios 02, ejercicio 9 / práctica">
   <header class="card-header">
@@ -3283,21 +3249,25 @@ Capacidad de analizar por qué un algoritmo voraz falla en problemas NP-Hard, di
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(6)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Se tienen $n$ tareas que deben procesarse secuencialmente en una única máquina que comienza en el tiempo $t = 0$. Cada tarea $i$ tiene una duración $t_i$ y una fecha límite de entrega (deadline) $d_i$. Si una tarea comienza en el tiempo $s_i$, finaliza en $f_i = s_i + t_i$. La latencia de la tarea $i$ se define como $L_i = \max(0, f_i - d_i)$. Diseñar un algoritmo greedy que programe las tareas minimizando la latencia máxima $L_{\max} = \max_i L_i$. Demostrar formalmente su optimalidad.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Técnica de ordenamiento por fecha de vencimiento más temprana (<em>Earliest Deadline First</em>) y demostración formal por argumento de intercambio de inversiones adyacentes (<em>Exchange Argument</em>).</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-6">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
 <ol>
 <li><strong>Paso 1: Análisis de Reglas Voraces Alternativas y sus Fallas:</strong></li>
 <li><em>Menor duración primero ($t_i$):</em> Falla si una tarea corta tiene un deadline muy lejano y desplaza a una tarea larga con vencimiento inmediato.</li>
@@ -3486,26 +3456,14 @@ $$L_{\max}(S') \le L_{\max}(S)$$</p>
     <li><strong>Tiempos de arribo ($r_i$):</strong> Este algoritmo asume que todas las tareas están disponibles en $t = 0$. Si el enunciado incluye tiempos de llegada diferentes ($r_i \neq 0$), el problema se convierte en NP-Duro y EDF simple deja de ser óptimo.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 2.4: Heurísticas Voraces de Cobertura (Set Cover Greedy)</h3>
-<p>Aparece cuando el problema exacto es NP-Hard (como Set Cover o Dominating Set) y el enunciado solicita explícitamente: <em>"Diseñar un algoritmo greedy de costo/beneficio marginal..."</em>.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-6">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 2.4: Heurísticas Voraces de Cobertura (Set Cover Greedy)</h3>
+<p>Aparece cuando el problema exacto es NP-Hard (como Set Cover o Dominating Set) y el enunciado solicita explícitamente: <em>"Diseñar un algoritmo greedy de costo/beneficio marginal..."</em>.</p>
+<hr />
 
 <article class="exercise-card" id="ej-7" data-num="7" data-priority="imprescindible" data-paradigm="greedy" data-title="ubicación voraz de antenas celulares con costo por vecindario" data-origin="parcial 2024-2-3 (10 de diciembre de 2024), ejercicio 4">
   <header class="card-header">
@@ -3524,21 +3482,25 @@ $$L_{\max}(S') \le L_{\max}(S)$$</p>
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(7)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Una empresa de telefonía celular desea colocar antenas en una grilla de celdas para brindar cobertura a un conjunto de vecindarios distribuidos en la zona. Cada antena colocada en una celda $(i, j)$ da cobertura a esa celda y a las 8 que la rodean (un bloque de $3 \times 3$). El costo de instalar una antena en la celda $(i, j)$ es de $CTO_{ij}$ pesos. Se desea cubrir todos los vecindarios minimizando el costo total. Diseñar un algoritmo Greedy que determine en qué celdas colocar antenas. Justificar la regla de elección voraz, la cota de aproximación y la complejidad del algoritmo.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heurística voraz de costo/beneficio marginal, junto con el análisis de su factor de aproximación logarítmico de Chvátal.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-7">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Formulación como Weighted Set Cover:</strong>
@@ -3550,7 +3512,7 @@ Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heur
    $$\Delta(c) = |S_c \cap U_{\text{restantes}}|$$
    Definimos el ratio voraz:
    $$\text{Ratio}(c) = \frac{CTO_c}{\Delta(c)}$$
-   Se selecciona vorazmente la celda $c^<em>$ que <strong>minimiza el costo por cada nuevo vecindario cubierto</strong>:
+   Se selecciona vorazmente la celda $c^<em>$ que </em><em>minimiza el costo por cada nuevo vecindario cubierto</em><em>:
    $$c^</em> = \arg\min_{c: \Delta(c) &gt; 0} \frac{CTO_c}{\Delta(c)}$$</p>
 </li>
 <li>
@@ -3655,26 +3617,14 @@ Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heur
     <li><strong>Afirmar que es óptimo:</strong> Set Cover es NP-Completo. Cualquier afirmación de que este greedy es siempre óptimo se califica con 0 puntos. Es una heurística con cota de aproximación armónica $\ln |U| + 1$.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 2.5: Greedy en Caminos y Etapas (Demostración de No-Optimalidad)</h3>
-<p>Aparece cuando se plantea un problema de etapas secuenciales y se pide evaluar si un enfoque voraz local alcanza el óptimo global.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-7">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 2.5: Greedy en Caminos y Etapas (Demostración de No-Optimalidad)</h3>
+<p>Aparece cuando se plantea un problema de etapas secuenciales y se pide evaluar si un enfoque voraz local alcanza el óptimo global.</p>
+<hr />
 
 <article class="exercise-card" id="ej-8" data-num="8" data-priority="imprescindible" data-paradigm="greedy" data-title="traslado crítico invap: enfoque voraz y contraejemplo formal" data-origin="parcial 2025-1-2 (17 de junio de 2025), ejercicio 3">
   <header class="card-header">
@@ -3693,17 +3643,12 @@ Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heur
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(8)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Para el traslado de una carga peligrosa del INVAP de Ezeiza a Bariloche a través de etapas diarias (con alternativas de ciudades intermedias y costos de seguro asociados a cada tramo):  </p>
 <ol>
 <li>Diseñar un algoritmo Greedy que decida el itinerario.  </li>
@@ -3711,7 +3656,16 @@ Para el traslado de una carga peligrosa del INVAP de Ezeiza a Bariloche a travé
 </ol>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Construcción de heurísticas paso a paso y formulación de contraejemplos matemáticos claros para refutar la optimalidad de algoritmos voraces en grafos de decisión multietapa.</p>
-<h4>1. Deducción Metodológica Formal</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-8">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Regla Voraz Local:</strong>
@@ -3806,7 +3760,10 @@ grafo_invap = {
     <li><strong>Afirmar que Dijkstra es greedy:</strong> Si bien Dijkstra utiliza una cola de prioridad voraz sobre la distancia acumulada, **no toma decisiones miopes por arista individual**. Evalúa la distancia total acumulada desde la fuente $d[u] + w(u, v)$, lo que pertenece conceptualmente a la programación dinámica sobre grafos dirigidos acíclicos.</li>
   </ul>
 </div>
-
+      </div>
+    </details>
+  </div>
+</article>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Greedy</h3>
 <ol>
@@ -3816,21 +3773,6 @@ grafo_invap = {
 <li><strong>Confundir Interval Scheduling con Interval Scheduling Ponderado:</strong> Si las tareas tienen valores o beneficios distintos, ordenar por tiempo de fin no es óptimo.</li>
 </ol>
 <hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-8">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
-      </div>
-    </details>
-  </div>
-</article>
 <h2>6. Tema 3: Backtracking y Branch &amp; Bound</h2>
 <h3>Conceptos Mínimos de Supervivencia</h3>
 <ol>
@@ -3876,21 +3818,25 @@ grafo_invap = {
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(9)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Realizar un algoritmo que resuelva el problema de las 8 reinas mediante backtracking. El problema consiste en ubicar 8 reinas en un tablero de ajedrez de $8 \times 8$ de manera que no haya dos reinas en la misma fila, columna o diagonal. Indicar detalladamente las estructuras de datos utilizadas para representar el problema y la solución, garantizando que el chequeo de amenazas se realice en $O(1)$. Justificar la complejidad temporal y espacial.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos de acceso directo para columnas y diagonales directas/inversas en $O(1)$, y gestión simétrica del estado (<em>hacer decisión $\to$ recursión $\to$ deshacer decisión</em>).</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos de Backtracking)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-9">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos de Backtracking)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Definición del Estado y Vector Solución:</strong>
@@ -4105,26 +4051,14 @@ Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos
     <li><strong>Error de signo en la diagonal principal:</strong> Olvidar el $+7$ en $f - col$ produce índices negativos (en Python mapea al final de la lista alterando otras diagonales; en C/Java arroja error de segmentación).</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 3.2: Descomposición Numérica con Cotas (Lagrange)</h3>
-<p>Problemas donde se debe descomponer un número entero en sumas de componentes (cuadrados, primos, monedas) bajo un número fijo de términos.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-9">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 3.2: Descomposición Numérica con Cotas (Lagrange)</h3>
+<p>Problemas donde se debe descomponer un número entero en sumas de componentes (cuadrados, primos, monedas) bajo un número fijo de términos.</p>
+<hr />
 
 <article class="exercise-card" id="ej-10" data-num="10" data-priority="imprescindible" data-paradigm="backtracking" data-title="suma de cuatro cuadrados de lagrange con cotas y podas" data-origin="parcial 2024-2-1 (5 de noviembre de 2024), ejercicio 1">
   <header class="card-header">
@@ -4143,23 +4077,27 @@ Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(10)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 El teorema de los cuatro cuadrados de Lagrange especifica que cualquier número entero no negativo $n$ puede expresarse como la suma de cuatro cuadrados de enteros no negativos:
 $$n = w^2 + x^2 + y^2 + z^2$$</p>
 <p>Desarrollar un algoritmo que, dado el valor de $n$, indique cuáles son los cuatro enteros no negativos que lo componen. Justificar detalladamente el árbol de decisiones, las podas aplicadas y la complejidad del algoritmo.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Diseño de un árbol de backtracking acotado a profundidad 4, imposición de orden no creciente para eliminar ramas simétricas redundantes ($w \ge x \ge y \ge z$), poda por cota inferior y determinación analítica del último término en $O(1)$.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-10">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Eliminación de Simetrías por Orden No Creciente:</strong>
@@ -4290,26 +4228,14 @@ def cuatro_cuadrados_lagrange(n: int) -&gt; list[int] | None:
     <li><strong>No imponer $w \ge x \ge y \ge z$:</strong> Permitir que los valores crezcan nuevamente en niveles inferiores provoca que el algoritmo evalúe las 24 permutaciones de la misma suma, multiplicando innecesariamente el tiempo de cómputo.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 3.3: Cobertura en Grafos con Branch and Bound (Vertex Cover)</h3>
-<p>Aparece cuando se solicita un algoritmo exacto para un problema NP-Hard sobre grafos no dirigidos.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-10">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 3.3: Cobertura en Grafos con Branch and Bound (Vertex Cover)</h3>
+<p>Aparece cuando se solicita un algoritmo exacto para un problema NP-Hard sobre grafos no dirigidos.</p>
+<hr />
 
 <article class="exercise-card" id="ej-11" data-num="11" data-priority="imprescindible" data-paradigm="backtracking" data-title="vertex cover mínimo por branch and bound" data-origin="parcial 2024-2-2 (26 de noviembre de 2024), ejercicio 1 / guía 03 ejercicio 13">
   <header class="card-header">
@@ -4328,21 +4254,25 @@ def cuatro_cuadrados_lagrange(n: int) -&gt; list[int] | None:
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(11)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Implementar un algoritmo que dado un grafo no dirigido $G = (V, E)$ devuelva un conjunto de vértices que represente un mínimo Vertex Cover del mismo. Explicar el árbol de decisiones, las podas aplicadas y la complejidad.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos extremos debe pertenecer a la cobertura), poda por cota superior (<em>Branch and Bound</em>) descartando ramas que alcancen o superen el mejor tamaño ya hallado.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-11">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Definición de Vertex Cover:</strong>
@@ -4448,26 +4378,14 @@ Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos 
     <li><strong>No copiar la solución óptima:</strong> Escribir <code>mejor_cobertura = actual</code> guarda una referencia al conjunto mutable. Al hacer backtracking, <code>mejor_cobertura</code> se vacía junto con <code>actual</code>. Se debe hacer siempre copia profunda con <code>set(actual)</code>.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 3.4: Suma de Subconjuntos (Subset Sum) con Podas</h3>
-<p>Exploración binaria de inclusión/exclusión de elementos para alcanzar un valor objetivo exacto.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-11">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 3.4: Suma de Subconjuntos (Subset Sum) con Podas</h3>
+<p>Exploración binaria de inclusión/exclusión de elementos para alcanzar un valor objetivo exacto.</p>
+<hr />
 
 <article class="exercise-card" id="ej-12" data-num="12" data-priority="importante" data-paradigm="backtracking" data-title="suma de subconjuntos con podas tempranas" data-origin="guía de ejercicios 03, ejercicio 11 / práctica">
   <header class="card-header">
@@ -4486,21 +4404,25 @@ Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos 
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(12)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<p><strong>Enunciado</strong><br />
+      <p><strong>Enunciado</strong><br />
 Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un algoritmo por backtracking que determine si existe un subconjunto de $L$ cuya suma sea exactamente $S$, y en caso afirmativo devuelva dicho subconjunto. Indicar y justificar las podas de factibilidad aplicadas y la complejidad.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Árbol binario de inclusión/exclusión, poda temprana por exceso de suma y optimización del espacio de búsqueda mediante ordenamiento previo de los elementos.</p>
-<h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-12">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
 <ol>
 <li>
 <p><strong>Paso 1: Ordenamiento Previo para Poda en Bloque:</strong>
@@ -4693,7 +4615,10 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
     <li><strong>Números negativos o nulos:</strong> Esta poda asume que todos los elementos son positivos ($L[i] > 0$). Si hubiera números negativos, sumar un elemento posterior podría reducir la suma actual y permitir alcanzar el objetivo.</li>
   </ul>
 </div>
-
+      </div>
+    </details>
+  </div>
+</article>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Backtracking</h3>
 <ol>
@@ -4703,21 +4628,6 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <li><strong>No podar simetrías:</strong> Permitir explorar permutaciones del mismo conjunto en problemas de combinatoria.</li>
 </ol>
 <hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-12">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
-      </div>
-    </details>
-  </div>
-</article>
 <h2>7. Tema 4: Programación Dinámica (PD)</h2>
 <h3>Conceptos Mínimos de Supervivencia</h3>
 <ol>
@@ -4758,9 +4668,6 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(13)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -5123,14 +5030,14 @@ def minimas_operaciones_a_k(k: int) -&gt; Tuple[int, List[str]]:
 </ol>
 </li>
 </ul>
-<hr />
-<h3>Patrón de Ejercicio 4.2: Mochila 2D con Restricciones Lógicas</h3>
-<p>Aparece cuando la mochila tiene múltiples recursos acoplados (peso y volumen) y condiciones lógicas adicionales sobre subconjuntos específicos de elementos (exclusión mutua y obligatoriedad).</p>
-<hr />
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 4.2: Mochila 2D con Restricciones Lógicas</h3>
+<p>Aparece cuando la mochila tiene múltiples recursos acoplados (peso y volumen) y condiciones lógicas adicionales sobre subconjuntos específicos de elementos (exclusión mutua y obligatoriedad).</p>
+<hr />
 
 <article class="exercise-card" id="ej-14" data-num="14" data-priority="imprescindible" data-paradigm="dp" data-title="mochila 2d con selección obligatoria y excluyente de guías de aves" data-origin="parcial 2024-2-1 (5 de noviembre de 2024), ejercicio 3">
   <header class="card-header">
@@ -5149,9 +5056,6 @@ def minimas_operaciones_a_k(k: int) -&gt; Tuple[int, List[str]]:
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(14)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -5267,14 +5171,14 @@ FUNCION Mochila2DEstandar(elementos, MaxPeso, MaxVol):
 </ul>
 <p><strong>Variación típica de parcial</strong><br />
 Agregar una tercera restricción, como un límite en el costo económico de los objetos asegurados (problema del Delivery, ver Ejercicio 16).</p>
-<hr />
-<h3>Patrón de Ejercicio 4.3: Partición de Secuencias y Formateo (Word Wrap)</h3>
-<p>Minimizar una penalidad cuadrática o no lineal sobre la partición de un arreglo de palabras en líneas de longitud fija.</p>
-<hr />
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 4.3: Partición de Secuencias y Formateo (Word Wrap)</h3>
+<p>Minimizar una penalidad cuadrática o no lineal sobre la partición de un arreglo de palabras en líneas de longitud fija.</p>
+<hr />
 
 <article class="exercise-card" id="ej-15" data-num="15" data-priority="imprescindible" data-paradigm="dp" data-title="justificación de texto (word wrap / knuth-plass)" data-origin="parcial 2024-2-3 (10 de diciembre de 2024), ejercicio 2">
   <header class="card-header">
@@ -5293,9 +5197,6 @@ Agregar una tercera restricción, como un límite en el costo económico de los 
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(15)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -5405,14 +5306,14 @@ Para cada palabra i, retrocedemos evaluando posibles inicios de la línea actual
 </ul>
 <p><strong>Variación típica de parcial</strong><br />
 No penalizar los sobrantes de la última línea del texto (convención tipográfica habitual). En ese caso, para la línea que llega a n, el costo de la línea se fija en 0 en lugar de Sobrante².</p>
-<hr />
-<h3>Patrón de Ejercicio 4.4: Mochila 3D Multidimensional con Restricciones Presupuestarias</h3>
-<p>Aparece cuando el problema presenta 3 dimensiones de recursos simultáneas (peso, volumen, costo monetario o seguro) y exige definir un estado 4D.</p>
-<hr />
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 4.4: Mochila 3D Multidimensional con Restricciones Presupuestarias</h3>
+<p>Aparece cuando el problema presenta 3 dimensiones de recursos simultáneas (peso, volumen, costo monetario o seguro) y exige definir un estado 4D.</p>
+<hr />
 
 <article class="exercise-card" id="ej-16" data-num="16" data-priority="imprescindible" data-paradigm="dp" data-title="problema del delivery: mochila 3d con límite de seguro financiero" data-origin="parcial 2025-1-1 (27 de mayo de 2025), ejercicio 4">
   <header class="card-header">
@@ -5431,9 +5332,6 @@ No penalizar los sobrantes de la última línea del texto (convención tipográf
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(16)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -5519,14 +5417,14 @@ Generalización formal de la mochila 0-1 a tres dimensiones de capacidad acumula
 <li>Olvidar una de las tres dimensiones en la condición de inclusión (<code>SI p.peso &lt;= w Y p.volumen &lt;= v Y p.costo &lt;= m</code>).</li>
 <li>No aclarar que es un algoritmo pseudo-polinomial dependiente del valor numérico de las capacidades.</li>
 </ul>
-<hr />
-<h3>Patrón de Ejercicio 4.5: Exclusión Adyacente (House Robber / Juan el Vago)</h3>
-<p>Decisión sobre elementos consecutivos donde elegir un elemento prohíbe elegir a su vecino inmediato.</p>
-<hr />
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 4.5: Exclusión Adyacente (House Robber / Juan el Vago)</h3>
+<p>Decisión sobre elementos consecutivos donde elegir un elemento prohíbe elegir a su vecino inmediato.</p>
+<hr />
 
 <article class="exercise-card" id="ej-17" data-num="17" data-priority="importante" data-paradigm="dp" data-title="juan el vago (exclusión de días consecutivos)" data-origin="guía de ejercicios 04, ejercicio 4 / práctica">
   <header class="card-header">
@@ -5545,9 +5443,6 @@ Generalización formal de la mochila 0-1 a tres dimensiones de capacidad acumula
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(17)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -5621,14 +5516,14 @@ Juan dispone de ofertas de trabajo para los próximos n días. Cada día i le of
 <li><strong>Tiempo:</strong> O(n) pues llena una tabla lineal de n posiciones con operaciones O(1).</li>
 <li><strong>Espacio:</strong> O(n) (u O(1) con variables temporales si no se requiere reconstrucción).</li>
 </ul>
-<hr />
-<h3>Patrón de Ejercicio 4.6: Interval Scheduling Ponderado (DP con Búsqueda Binaria)</h3>
-<p>Selección de intervalos con pesos o beneficios arbitrarios donde Greedy falla y se requiere DP con búsqueda logarítmica del predecesor compatible.</p>
-<hr />
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 4.6: Interval Scheduling Ponderado (DP con Búsqueda Binaria)</h3>
+<p>Selección de intervalos con pesos o beneficios arbitrarios donde Greedy falla y se requiere DP con búsqueda logarítmica del predecesor compatible.</p>
+<hr />
 
 <article class="exercise-card" id="ej-18" data-num="18" data-priority="imprescindible" data-paradigm="dp" data-title="interval scheduling ponderado (dp + búsqueda binaria)" data-origin="guía de ejercicios 04, ejercicio 2 / práctica">
   <header class="card-header">
@@ -5647,9 +5542,6 @@ Juan dispone de ofertas de trabajo para los próximos n días. Cada día i le of
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(18)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -5731,6 +5623,10 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
 <li><strong>Tiempo:</strong> Ordenamiento en O(n log n). Búsqueda binaria de p(i) para los n intervalos en O(n log n). Llenado de DP en O(n). Total: <strong>O(n log n)</strong>.</li>
 <li><strong>Espacio:</strong> O(n) para los arreglos <code>DP</code>, <code>P</code> y la reconstrucción.</li>
 </ul>
+      </div>
+    </details>
+  </div>
+</article>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Programación Dinámica</h3>
 <ol>
@@ -5740,10 +5636,6 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
 <li><strong>Omitir la reconstrucción:</strong> Quedarse con el número final DP[n][W] cuando el problema pide "cuáles son los elementos".</li>
 </ol>
 <hr />
-      </div>
-    </details>
-  </div>
-</article>
 <h2>8. Tema 5: Programación Lineal y Entera (PL / PLI)</h2>
 <h3>Conceptos Mínimos de Supervivencia</h3>
 <ol>
@@ -5767,7 +5659,7 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
 <p><strong>Minimización de un Máximo ($\min \max(f_1, f_2, \dots, f_k)$):</strong>
      Se introduce una variable auxiliar continua $Z \in \mathbb{R}$.
      $$\min Z \quad \text{sujeto a:} \quad Z \ge f_r(x) \quad \forall r \in {1, \dots, k}$$
-     <em>Principio:</em> Al minimizar $Z$, el optimizador presiona $Z$ hacia abajo hasta topar con la cota más restrictiva, cumpliéndose en el óptimo que $Z^* = \max_r f_r(x^*)$.</p>
+     <em>Principio:</em> Al minimizar $Z$, el optimizador presiona $Z$ hacia abajo hasta topar con la cota más restrictiva, cumpliéndose en el óptimo que $Z^<em> = \max_r f_r(x^</em>)$.</p>
 </li>
 <li>
 <p><strong>Relación de Cobertura y Activación (<em>Linking Constraints</em>):</strong>
@@ -5802,19 +5694,23 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(19)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Paolo Casanova dispone de 2 días para realizar salidas a diferentes lugares cercanos y observar la mayor cantidad posible de especies de aves. Hay 10 especies en particular que desea encontrar ($E = {1, \dots, 10}$) y 6 lugares posibles a visitar ($L = {1, \dots, 6}$). Algunos lugares insumen medio día ($0.5$ días) y otros un día completo ($1.0$ días). Para cada lugar se conoce exactamente qué especies habitan allí según una matriz binaria de presencia $A_{ij}$ ($A_{ij} = 1$ si la especie $i$ habita en el lugar $j$, $0$ si no). Plantear un modelo de Programación Lineal Entera que determine qué lugares visitar para maximizar la cantidad de especies distintas encontradas en el tiempo disponible. Indicar la cantidad exacta de variables y restricciones del modelo.</p>
-<h4>2. Los 5 Pasos Metodológicos de Modelado en PLI</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-19">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Modelado en PLI</h4>
 <ol>
 <li><strong>Identificación de Decisiones y Recursos:</strong></li>
 <li>Decisión primaria: ¿Se visita el lugar $j \in L$? (Variable binaria $y_j$).</li>
@@ -6003,26 +5899,14 @@ def resolver_observacion_aves(
     <li><strong>Declarar variables continuas en lugar de binarias:</strong> Si se omite $y_j \in \{0, 1\}$, el solver visitará fracciones de lugares (ej. visitar $0.25$ del lugar 1 y $0.25$ del lugar 4), obteniendo una solución matemáticamente óptima pero físicamente absurda.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 5.2: Cobertura de Celdas con Umbral Porcentual</h3>
-<p>Problemas de infraestructura (antenas, sensores, cámaras) sobre grillas donde se exige cubrir una fracción mínima del total de objetivos con costo mínimo.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-19">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 5.2: Cobertura de Celdas con Umbral Porcentual</h3>
+<p>Problemas de infraestructura (antenas, sensores, cámaras) sobre grillas donde se exige cubrir una fracción mínima del total de objetivos con costo mínimo.</p>
+<hr />
 
 <article class="exercise-card" id="ej-20" data-num="20" data-priority="imprescindible" data-paradigm="pl" data-title="cobertura de antenas celulares con umbral del 70% de vecindarios" data-origin="parcial 2024-2-3 (10 de diciembre de 2024), ejercicio 3">
   <header class="card-header">
@@ -6041,19 +5925,23 @@ def resolver_observacion_aves(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(20)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Una empresa de telefonía celular colocará antenas en una grilla bidimensional de celdas para prestar servicio a vecindarios distribuidos en un mapa. Si se instala una antena en la celda $(i, j)$, brindará cobertura a un bloque de 9 celdas (la propia celda $(i, j)$ y sus 8 celdas contiguas en vecindad de Moore). Instalar una antena tiene un costo fijo $CTE &gt; 0$ idéntico en cualquier celda. Se dispone de un conjunto $V$ de vecindarios distribuidos en la zona. La empresa exige brindar servicio a <strong>por lo menos el 70% de los vecindarios</strong> minimizando la inversión total. Plantear un modelo de Programación Lineal Entera indicando claramente variables, dominios, función objetivo, restricciones y su conteo exacto.</p>
-<h4>2. Los 5 Pasos Metodológicos de Modelado en PLI</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-20">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Modelado en PLI</h4>
 <ol>
 <li><strong>Identificación de Decisiones:</strong></li>
 <li>Decisión de infraestructura: ¿Se instala una antena en la celda candidata $c \in C$? Variable binaria $y_c$.</li>
@@ -6169,26 +6057,14 @@ def modelar_antenas_70_porciento(
     <li><strong>Creer que el problema pide maximizar cobertura:</strong> La función objetivo NO es $\max \sum x_v$; es **minimizar el costo de antenas** sujeto a que la cobertura alcance el $70\%$. Maximizar cobertura instalaría antenas en toda la grilla innecesariamente.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 5.3: Flujo de Costo Mínimo / Transporte Multizona</h3>
-<p>Problemas de balance de oferta y demanda con capacidades máximas y costos de transporte por arista en redes continuas.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-20">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 5.3: Flujo de Costo Mínimo / Transporte Multizona</h3>
+<p>Problemas de balance de oferta y demanda con capacidades máximas y costos de transporte por arista en redes continuas.</p>
+<hr />
 
 <article class="exercise-card" id="ej-21" data-num="21" data-priority="imprescindible" data-paradigm="pl" data-title="distribución energética multizona con costos de transporte (flujo de costo mínimo)" data-origin="parcial 2025-1-1 (27 de mayo de 2025), ejercicio 3">
   <header class="card-header">
@@ -6207,19 +6083,23 @@ def modelar_antenas_70_porciento(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(21)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>El sistema interconectado argentino está dividido en 9 regiones eléctricas ($R = {1, \dots, 9}$). Para cada región $i$ se conoce su capacidad de generación prevista $G_i \ge 0$ (en MWh) y su demanda requerida $D_i \ge 0$ (en MWh). Desde cualquier región $i$ se puede transmitir energía a otra región $j$ con un costo unitario de transporte $C_{ij} \ge 0$ pesos por MWh. Cada línea de transmisión posee una capacidad máxima de transporte de $CAP_{ij} \ge 0$ MWh/día. Plantear un modelo de Programación Lineal continuo que determine el despacho de energía más económico para satisfacer plenamente la demanda de todas las regiones sin violar capacidades de transporte. Indicar variables y restricciones.</p>
-<h4>2. Los 5 Pasos Metodológicos de Modelado en PL Continuo</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-21">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Modelado en PL Continuo</h4>
 <ol>
 <li>
 <p><strong>Identificación de la Naturaleza Continua:</strong>
@@ -6347,26 +6227,14 @@ def resolver_flujo_costo_minimo(
     <li><strong>Invertir los signos del balance nodal:</strong> Restar las entradas y sumar las salidas. El balance físico es: $(\text{Generación local}) + (\text{Flujo Entrante}) - (\text{Flujo Saliente}) = \text{Demanda local}$.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 5.4: Camino Mínimo Formulado como Flujo Unitario</h3>
-<p>Formulación de la búsqueda de rutas óptimas en grafos dirigidos acíclicos como problemas de inyección y extracción de una única unidad de flujo en Programación Lineal continua aprovechando Unimodularidad Total.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-21">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 5.4: Camino Mínimo Formulado como Flujo Unitario</h3>
+<p>Formulación de la búsqueda de rutas óptimas en grafos dirigidos acíclicos como problemas de inyección y extracción de una única unidad de flujo en Programación Lineal continua aprovechando Unimodularidad Total.</p>
+<hr />
 
 <article class="exercise-card" id="ej-22" data-num="22" data-priority="importante" data-paradigm="pl" data-title="camino de mínimo riesgo (invap) como flujo unitario en pl" data-origin="parcial 2025-1-2 (17 de junio de 2025), ejercicio 5">
   <header class="card-header">
@@ -6385,19 +6253,23 @@ def resolver_flujo_costo_minimo(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(22)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Para el traslado de una carga crítica de alta seguridad de la empresa INVAP desde el centro atómico Ezeiza ($s$) hasta el laboratorio central en Bariloche ($t$), se dispone de un grafo dirigido $G = (V, E)$. Cada tramo carretero $(u, v) \in E$ tiene un costo de póliza de seguro $C_{uv} &gt; 0$. Plantear un modelo de Programación Lineal continuo que determine la ruta de menor costo de seguro. Justificar formalmente por qué no es necesario declarar las variables como binarias para obtener una ruta válida. Indicar la cantidad exacta de variables y restricciones.</p>
-<h4>2. Los 5 Pasos Metodológicos de Modelado en PL Continuo</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-22">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Modelado en PL Continuo</h4>
 <ol>
 <li>
 <p><strong>Inyección de Flujo Unitario:</strong>
@@ -6497,26 +6369,14 @@ def camino_minimo_pl_continuo(
     <li><strong>Olvidar el nodo sumidero:</strong> Poner conservación $= 0$ en todos lados sin definir la extracción de $-1$ en el destino $t$.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 5.5: Linealización de Funciones No Lineales (min max)</h3>
-<p>Transformación de funciones objetivo no lineales como minimax o discrepancias absolutas en sistemas lineales estándar con variables continuas auxiliares.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-22">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 5.5: Linealización de Funciones No Lineales (min max)</h3>
+<p>Transformación de funciones objetivo no lineales como minimax o discrepancias absolutas en sistemas lineales estándar con variables continuas auxiliares.</p>
+<hr />
 
 <article class="exercise-card" id="ej-23" data-num="23" data-priority="importante" data-paradigm="pl" data-title="2-partition min-max con linealización de variable auxiliar" data-origin="guía de ejercicios 05, ejercicio 12 / práctica de examen">
   <header class="card-header">
@@ -6535,21 +6395,25 @@ def camino_minimo_pl_continuo(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(23)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Dado un conjunto de $n$ tareas con tiempos de procesamiento enteros positivos $T = {T_1, T_2, \dots, T_n}$, se desea particionar las tareas entre dos procesadores idénticos $P_1$ y $P_2$ de manera que se minimice el <em>makespan</em> (el tiempo de finalización de la máquina más cargada):
 $$\min \max \left( \sum_{i \in P_1} T_i, \sum_{j \in P_2} T_j \right)$$
 Formular el problema como un modelo de Programación Lineal Entera, linealizando rigurosamente el operador $\max$. Indicar variables, dominios y conteo de restricciones.</p>
-<h4>2. Los 5 Pasos Metodológicos de Linealización en PLI</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-23">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Linealización en PLI</h4>
 <ol>
 <li>
 <p><strong>Definición de Variables de Partición:</strong>
@@ -6583,14 +6447,14 @@ Sea $(x^<em>, Z^</em>)$ una solución óptima del modelo linealizado.</p>
 <ol>
 <li>
 <p>Por definición de las restricciones:
-   $$Z^* \ge L_1(x^<em>) \quad \text{y} \quad Z^</em> \ge L_2(x^<em>) \implies Z^</em> \ge \max(L_1(x^<em>), L_2(x^</em>))$$</p>
+   $$Z^<em> \ge L_1(x^</em>) \quad \text{y} \quad Z^<em> \ge L_2(x^</em>) \implies Z^<em> \ge \max(L_1(x^</em>), L_2(x^*))$$</p>
 </li>
 <li>
-<p>Supongamos por contradicción que $Z^* &gt; \max(L_1(x^<em>), L_2(x^</em>))$. Entonces podríamos definir un valor $Z' = \max(L_1(x^<em>), L_2(x^</em>)) &lt; Z^*$.</p>
+<p>Supongamos por contradicción que $Z^<em> &gt; \max(L_1(x^</em>), L_2(x^<em>))$. Entonces podríamos definir un valor $Z' = \max(L_1(x^</em>), L_2(x^<em>)) &lt; Z^</em>$.</p>
 </li>
 <li>La solución $(x^<em>, Z')$ satisface todas las restricciones del modelo y produce un valor objetivo $Z' &lt; Z^</em>$, contradiciendo la optimalidad de $(x^<em>, Z^</em>)$.</li>
 <li>Por lo tanto, en toda solución óptima se cumple estrictamente que:
-   $$Z^* = \max(L_1(x^<em>), L_2(x^</em>))$$
+   $$Z^<em> = \max(L_1(x^</em>), L_2(x^*))$$
    lo que demuestra que el modelo lineal es exactamente equivalente al problema no lineal original.</li>
 </ol>
 <h4>4. Diagrama Visual de Acotamiento de la Variable Z</h4>
@@ -6690,7 +6554,10 @@ def resolver_2_partition_minmax(tiempos: List[float]) -&gt; Tuple[float, List[in
     <li><strong>Declarar $Z$ como entera innecesariamente:</strong> Si los tiempos son enteros, $Z$ adoptará un valor entero automáticamente; forzarla a entera solo recarga el árbol de Branch and Bound del solver sin ninguna necesidad matemática.</li>
   </ul>
 </div>
-
+      </div>
+    </details>
+  </div>
+</article>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Programación Lineal</h3>
 <ol>
@@ -6700,21 +6567,6 @@ def resolver_2_partition_minmax(tiempos: List[float]) -&gt; Tuple[float, List[in
 <li><strong>Omitir el conteo analítico de variables y restricciones:</strong> Si la consigna indica <em>"indicar variables y restricciones"</em>, debe tabularse cuántas variables continuas, cuántas binarias y cuántas restricciones lineales componen el modelo en función de los parámetros de entrada.</li>
 </ol>
 <hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-23">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
-      </div>
-    </details>
-  </div>
-</article>
 <h2>9. Tema 6: Redes de Flujo (Flujo Máximo y Corte Mínimo)</h2>
 <h3>Conceptos Mínimos de Supervivencia</h3>
 <ol>
@@ -6778,24 +6630,28 @@ def resolver_2_partition_minmax(tiempos: List[float]) -&gt; Tuple[float, List[in
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(24)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>En un centro médico de alta complejidad se dispone de un conjunto de $M$ profesionales médicos y un conjunto de $P$ pacientes. Cada médico $m \in M$ dispone de un listado de franjas horarias libres $H_m$ para consultas. Cada paciente $p \in P$ requiere a lo sumo una cita médica y ha declarado un listado de tuplas compatibles $(m, h)$ donde puede y desea ser atendido. Se desea diseñar un algoritmo eficiente basado en redes de flujo que determine la asignación que maximice la cantidad total de citas médicas efectivas, garantizando que:</p>
 <ul>
 <li>Ningún médico atienda a más de un paciente en una misma franja horaria.</li>
 <li>Ningún paciente reciba más de un turno médico.
 Detallar la topología formal de la red, capacidades, algoritmo empleado, demostración de correctitud y complejidad asintótica.</li>
 </ul>
-<h4>2. Los 5 Pasos Metodológicos de Modelado en Redes de Flujo</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-24">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Modelado en Redes de Flujo</h4>
 <ol>
 <li>
 <p><strong>Diseño de la Topología en Capas Nodal:</strong>
@@ -7016,26 +6872,14 @@ def asignar_turnos_medicos(
     <li><strong>Olvidar justificar el Teorema de Integralidad:</strong> Si no se menciona que las capacidades enteras garantizan flujo $0$ o $1$, la cátedra descuenta puntos al asumir que las soluciones podrían ser fraccionarias (ej. paciente atendido $0.5$ por un médico y $0.5$ por otro).</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 6.2: Redes de Demanda y Suministro con Super-Nodos</h3>
-<p>Sistemas de transporte, logística o energía con múltiples fuentes de generación y múltiples centros de consumo, requiriendo super-fuente y super-sumidero para balancear el sistema.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-24">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 6.2: Redes de Demanda y Suministro con Super-Nodos</h3>
+<p>Sistemas de transporte, logística o energía con múltiples fuentes de generación y múltiples centros de consumo, requiriendo super-fuente y super-sumidero para balancear el sistema.</p>
+<hr />
 
 <article class="exercise-card" id="ej-25" data-num="25" data-priority="imprescindible" data-paradigm="flujo" data-title="red de distribución energética con super-fuente y super-sumidero (ford-fulkerson)" data-origin="parcial 2025-1-1 (27 de mayo de 2025), ejercicio 1">
   <header class="card-header">
@@ -7054,19 +6898,23 @@ def asignar_turnos_medicos(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(25)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>El sistema interconectado energético nacional está constituido por 9 regiones geográficas ($R_1, \dots, R_9$). Para cada región $i$ se conoce su capacidad de generación prevista $G_i \ge 0$ (MWh) y su demanda requerida $D_i \ge 0$ (MWh). Entre pares de regiones existen líneas de transmisión de alta tensión con capacidad máxima $CAP_{ij}$ MWh/día. Se desea diseñar un algoritmo basado en redes de flujo que determine si es factible abastecer la demanda total de todas las regiones y, en caso afirmativo, cuánta energía transportar por cada línea. Si la demanda no puede cubrirse, el algoritmo debe identificar el conjunto crítico de líneas que causan el cuello de botella.</p>
-<h4>2. Los 5 Pasos Metodológicos de Modelado con Super-Nodos</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-25">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Modelado con Super-Nodos</h4>
 <ol>
 <li>
 <p><strong>Creación de Super-Fuente ($S$) y Super-Sumidero ($T$):</strong>
@@ -7204,26 +7052,14 @@ def diagnosticar_red_energetica(
     <li><strong>No distinguir capacidad de generación de capacidad de transporte:</strong> Asumir que toda la energía generada llega si $\sum G_i \ge \sum D_i$. El examen evalúa precisamente el cuello de botella en las líneas intermedias.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 6.3: Análisis Teórico y Propiedades de Cortes Mínimos</h3>
-<p>Preguntas conceptuales de demostración formal o refutación mediante contraejemplos matemáticos mínimos ante perturbaciones uniformes en las capacidades de las aristas.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-25">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 6.3: Análisis Teórico y Propiedades de Cortes Mínimos</h3>
+<p>Preguntas conceptuales de demostración formal o refutación mediante contraejemplos matemáticos mínimos ante perturbaciones uniformes en las capacidades de las aristas.</p>
+<hr />
 
 <article class="exercise-card" id="ej-26" data-num="26" data-priority="imprescindible" data-paradigm="flujo" data-title="análisis teórico: aumento uniforme de capacidades y corte mínimo" data-origin="parcial 2024-2-3 (10 de diciembre de 2024), ejercicio 1">
   <header class="card-header">
@@ -7242,20 +7078,24 @@ def diagnosticar_red_energetica(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(26)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Indicar si la siguiente afirmación es verdadera o falsa. Si es verdadera, proveer una demostración formal rigurosa. Si es falsa, construir un contraejemplo explícito indicando nodos, aristas, capacidades originales, corte original, nuevas capacidades y el nuevo corte mínimo:<br />
 <em>“Sea $G = (V, E)$ una red de flujo arbitraria con fuente $s$, sumidero $t$ y capacidades enteras positivas $c(e)$ en cada arista $e \in E$. Sea $(A, B)$ un corte mínimo $s-t$ con respecto a las capacidades $c$. Si se suma $1$ a la capacidad de cada arista de la red ($c'(e) = c(e) + 1$), el corte $(A, B)$ sigue siendo obligatoriamente un corte mínimo respecto a las nuevas capacidades $c'$.”</em></p>
-<h4>2. Demostración de Falsedad mediante Análisis Analítico</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-26">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Demostración de Falsedad mediante Análisis Analítico</h4>
 <p><strong>La afirmación es FALSA.</strong></p>
 <p><strong>Análisis de Sensibilidad de la Capacidad de un Corte:</strong><br />
 Sea $(A, B)$ un corte $s-t$ cualquiera. Su capacidad bajo la función original $c$ es:
@@ -7344,26 +7184,14 @@ $$C'(A_2, B_2) = 11 + 1 = 12$$</p>
     <li><strong>Dar un contraejemplo sin valores numéricos explícitos:</strong> Un contraejemplo debe incluir el grafo completo, los conjuntos de vértices $A$ y $B$, y la cuenta aritmética explícita de antes y después.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 6.4: Actualización Dinámica de Flujo Máximo</h3>
-<p>Se dispone del flujo máximo y red residual calculados y se incrementa la capacidad de una única arista en 1 unidad. Se pide actualizar el flujo en tiempo lineal $O(V + E)$ sin reejecutar el algoritmo desde cero.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-26">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 6.4: Actualización Dinámica de Flujo Máximo</h3>
+<p>Se dispone del flujo máximo y red residual calculados y se incrementa la capacidad de una única arista en 1 unidad. Se pide actualizar el flujo en tiempo lineal $O(V + E)$ sin reejecutar el algoritmo desde cero.</p>
+<hr />
 
 <article class="exercise-card" id="ej-27" data-num="27" data-priority="importante" data-paradigm="flujo" data-title="actualización de flujo máximo ante aumento de capacidad unitaria en o(v + e)" data-origin="guía de ejercicios 06, ejercicio 5">
   <header class="card-header">
@@ -7382,19 +7210,23 @@ $$C'(A_2, B_2) = 11 + 1 = 12$$</p>
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(27)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Dada una red de flujo $G = (V, E)$ con capacidades enteras positivas, se ha calculado previamente un flujo máximo $f^*$ de $s$ a $t$ y se dispone de su red residual asociada $G_f$. Supongamos que se incrementa en una unidad la capacidad de una arista arbitraria $(u, v) \in E$ (de $c(u, v)$ pasa a $c(u, v) + 1$). Diseñar un algoritmo que recalcule el nuevo flujo máximo en tiempo estrictamente acotado por $O(V + E)$. Justificar la correctitud y la cota temporal.</p>
-<h4>2. Los 5 Pasos Metodológicos de Actualización Incremental</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-27">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Actualización Incremental</h4>
 <ol>
 <li>
 <p><strong>Impacto Local en la Red Residual:</strong>
@@ -7503,7 +7335,10 @@ def actualizar_flujo_aumento_unitario(
     <li><strong>Buscar más de un camino de aumento:</strong> Como la capacidad de una sola arista aumentó en 1, el flujo máximo no puede crecer en más de 1 unidad. Ejecutar un bucle `while` buscando caminos adicionales es conceptualmente redundante.</li>
   </ul>
 </div>
-
+      </div>
+    </details>
+  </div>
+</article>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Redes de Flujo</h3>
 <ol>
@@ -7513,21 +7348,6 @@ def actualizar_flujo_aumento_unitario(
 <li><strong>Afirmar que Ford-Fulkerson es polinomial:</strong> Ford-Fulkerson depende del valor del flujo $|f^<em>|$ ($O(E \cdot |f^</em>|)$), lo que lo hace pseudo-polinomial. El algoritmo polinomial estándar evaluado es <strong>Edmonds-Karp</strong> ($O(V E^2)$).</li>
 </ol>
 <hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-27">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
-      </div>
-    </details>
-  </div>
-</article>
 <h2>10. Tema 7: Reducciones Polinomiales y NP-Completitud</h2>
 <h3>Conceptos Mínimos de Supervivencia</h3>
 <ol>
@@ -7595,21 +7415,25 @@ def actualizar_flujo_aumento_unitario(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(28)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Un conjunto dominante (<em>Dominating Set</em>) en un grafo no dirigido $G = (V, E)$ es un subconjunto de vértices $D \subseteq V$ tal que todo vértice $v \in V$ pertenece a $D$ o es adyacente a al menos un vértice en $D$.<br />
 El problema de decisión de Dominating Set plantea: dado un grafo $G = (V, E)$ y un entero positivo $k \le |V|$, ¿existe un conjunto dominante $D$ tal que $|D| \le k$?<br />
 Demostrar formalmente que <strong>Dominating Set es NP-Completo</strong>, reduciendo desde <strong>Vertex Cover</strong>.</p>
-<h4>2. Los 5 Pasos Metodológicos de la Demostración</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-28">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de la Demostración</h4>
 <h5>Paso 1: Pertenencia a la Clase NP ($DominatingSet \in \text{NP}$)</h5>
 <ul>
 <li><strong>Certificado Candidato ($C$):</strong> Un subconjunto de vértices propuesto $D \subseteq V$.  <ul>
@@ -7785,26 +7609,14 @@ def transformar_vc_a_dominating_set(
     <li><strong>Olvidar reemplazar los vértices auxiliares en la vuelta:</strong> Si un conjunto dominante contiene $w_e$, no es un subconjunto de los vértices originales. Es obligatorio explicar por qué $w_e$ puede sustituirse por $u$ sin aumentar el tamaño ni perder dominancia.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 7.2: Reducciones de Caminos y Ciclos (El Dilema de Marco el Cadete)</h3>
-<p>Reducción polinomial estricta desde Ciclo Hamiltoniano hacia el Problema del Viajante de Comercio (TSP) en grafos ponderados completos.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-28">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 7.2: Reducciones de Caminos y Ciclos (El Dilema de Marco el Cadete)</h3>
+<p>Reducción polinomial estricta desde Ciclo Hamiltoniano hacia el Problema del Viajante de Comercio (TSP) en grafos ponderados completos.</p>
+<hr />
 
 <article class="exercise-card" id="ej-29" data-num="29" data-priority="imprescindible" data-paradigm="reducciones" data-title="el dilema de marco el cadete: reducción de ciclo hamiltoniano a tsp" data-origin="parcial 2025-1-1 (27 de mayo de 2025), ejercicio 5">
   <header class="card-header">
@@ -7823,17 +7635,12 @@ def transformar_vc_a_dominating_set(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(29)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Marco, el cadete administrativo de una empresa de logística, compró un costoso paquete de software para resolver el <strong>Problema del Viajante de Comercio</strong> (TSP en su versión de decisión), cuando la gerencia le había solicitado explícitamente un módulo para resolver <strong>Ciclo Hamiltoniano</strong>. El vendedor del software le aseguró a Marco:<br />
 <em>"Si puedes resolver TSP de decisión en un grafo completo ponderado, puedes resolver exactamente Ciclo Hamiltoniano en cualquier grafo en el mismo orden de tiempo"</em>.<br />
 Definiciones formales:</p>
@@ -7842,7 +7649,16 @@ Definiciones formales:</p>
 <li><strong>TSP (Decisión):</strong> Dado un grafo completo $G' = (V', E')$ con pesos enteros $w(e) \ge 0$ en las aristas y un entero $k$, determinar si existe un tour cerrado que visite cada vértice una única vez con costo total $\le k$.
 Determinar con fundamento formal si el vendedor tiene razón o si hay que despedir a Marco. Desarrollar la reducción polinomial completa con demostración de equivalencia.</li>
 </ul>
-<h4>2. Resolución y Demostración Formal</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-29">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Resolución y Demostración Formal</h4>
 <p><strong>El vendedor tiene razón.</strong> Demostraremos que:
 $$\text{Ciclo Hamiltoniano} \le_P \text{TSP (Decisión)}$$
 lo que significa que una subrutina que resuelve TSP permite resolver Ciclo Hamiltoniano de manera directa.</p>
@@ -7946,26 +7762,14 @@ def reducir_ciclo_hamiltoniano_a_tsp(
     <li><strong>No demostrar la cota $n+1 > n$ en la vuelta:</strong> Omitir la desigualdad aritmética que prueba por qué una sola arista de peso 2 hace imposible alcanzar el costo $n$.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 7.3: Reducciones Numéricas (Cambio de Monedas a Subset Sum)</h3>
-<p>Demostración de que la versión de decisión del problema de cambio de monedas no es más difícil que Subset Sum y análisis de equivalencia en la clase NP-Completo.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-29">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 7.3: Reducciones Numéricas (Cambio de Monedas a Subset Sum)</h3>
+<p>Demostración de que la versión de decisión del problema de cambio de monedas no es más difícil que Subset Sum y análisis de equivalencia en la clase NP-Completo.</p>
+<hr />
 
 <article class="exercise-card" id="ej-30" data-num="30" data-priority="imprescindible" data-paradigm="reducciones" data-title="reducción de cambio de monedas a subset sum" data-origin="parcial 2024-2-1 (5 de noviembre de 2024), ejercicio 5">
   <header class="card-header">
@@ -7984,20 +7788,24 @@ def reducir_ciclo_hamiltoniano_a_tsp(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(30)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Demostrar formalmente que el problema del <strong>Cambio de Monedas</strong> (en su versión de decisión: dadas denominaciones enteras $D = {d_1, \dots, d_m}$, un entero objetivo $V$ y una cota $k$, ¿es posible dar cambio de valor exacto $V$ utilizando a lo sumo $k$ monedas?) <strong>no es más difícil</strong> que el problema de la <strong>Suma de Subconjuntos (Subset Sum)</strong>.<br />
 ¿Es posible demostrar la reducción en sentido inverso? Fundamentar en base a las clases de complejidad teóricas.</p>
-<h4>2. Demostración Formal</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-30">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Demostración Formal</h4>
 <p><strong>Interpretación de la Consigna:</strong><br />
 La afirmación "el problema $A$ no es más difícil que el problema $B$" equivale rigurosamente a la relación de reducción polinomial:
 $$\text{Cambio de Monedas} \le_P \text{Subset Sum}$$</p>
@@ -8050,26 +7858,14 @@ $$\text{Cambio de Monedas} \equiv_P \text{Subset Sum}$$</li>
     <li><strong>Decir que no se puede reducir en sentido inverso:</strong> Creer erróneamente que porque uno parece más general no puede reducirse al otro. Dos problemas NP-Completos cualesquiera siempre admiten reducción mutua bidireccional.</li>
   </ul>
 </div>
-
-<hr />
-<h3>Patrón de Ejercicio 7.4: La Reducción Dual Canónica (Independent Set a Vertex Cover)</h3>
-<p>Reducción estructural basada en el Teorema del Complemento de Gallai en grafos no dirigidos.</p>
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-30">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 7.4: La Reducción Dual Canónica (Independent Set a Vertex Cover)</h3>
+<p>Reducción estructural basada en el Teorema del Complemento de Gallai en grafos no dirigidos.</p>
+<hr />
 
 <article class="exercise-card" id="ej-31" data-num="31" data-priority="importante" data-paradigm="reducciones" data-title="reducción dual: independent set a vertex cover" data-origin="guía de ejercicios 07, ejercicio 3">
   <header class="card-header">
@@ -8088,23 +7884,27 @@ $$\text{Cambio de Monedas} \equiv_P \text{Subset Sum}$$</li>
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(31)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-
-<h4>1. Enunciado Completo</h4>
+      <h4>1. Enunciado Completo</h4>
 <p>Dados los problemas de decisión de <strong>Independent Set</strong> (¿existe un subconjunto de vértices $I \subseteq V$ de tamaño $|I| \ge k$ tal que no existan aristas entre vértices de $I$?) y <strong>Vertex Cover</strong> (¿existe un subconjunto $S \subseteq V$ de tamaño $|S| \le k'$ que cubra todas las aristas de $E$?):</p>
 <ol>
 <li>Diseñar una reducción polinomial formal de <strong>Independent Set a Vertex Cover</strong>.</li>
 <li>Demostrar rigurosamente la equivalencia lógica fundamentando el teorema del complemento en teoría de grafos.</li>
 </ol>
-<h4>2. Demostración del Teorema del Complemento (Lema de Gallai)</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-31">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Demostración del Teorema del Complemento (Lema de Gallai)</h4>
 <p><strong>Teorema Fundamental:</strong><br />
 En cualquier grafo no dirigido $G = (V, E)$, un subconjunto de vértices $S \subseteq V$ es un <strong>Independent Set</strong> si y solo si su complemento $V \setminus S$ es un <strong>Vertex Cover</strong>.</p>
 <p><strong>Demostración:</strong></p>
@@ -8163,7 +7963,10 @@ En cualquier grafo no dirigido $G = (V, E)$, un subconjunto de vértices $S \sub
     <li><strong>Invertir el sentido de las desigualdades:</strong> Olvidar que Independent Set es un problema de **maximización** ($|S| \ge k$) mientras que Vertex Cover es de **minimización** ($|C| \le k'$). Al restar del total $|V|$, la desigualdad se invierte automáticamente ($|S| \ge k \iff |V| - |S| \le |V| - k$).</li>
   </ul>
 </div>
-
+      </div>
+    </details>
+  </div>
+</article>
 <hr />
 <h3>Errores Fatales en Exámenes sobre Reducciones NP</h3>
 <ol>
@@ -8173,21 +7976,6 @@ En cualquier grafo no dirigido $G = (V, E)$, un subconjunto de vértices $S \sub
 <li><strong>Usar algoritmos exponenciales en la transformación:</strong> La función de mapeo $f(I_A)$ debe ejecutarse en tiempo estrictamente polinomial $O(n^c)$. Si la reducción requiere calcular algo NP-Hard antes de armar la instancia, la reducción queda invalidada.</li>
 </ol>
 <hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-31">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
-      </div>
-    </details>
-  </div>
-</article>
 <h2>11. Ejercicios Integradores Multi-Paradigma</h2>
 <p>En los parciales más exigentes, la cátedra suele plantear un mismo escenario del mundo real y exigir resolverlo o compararlo a través de múltiples paradigmas distintos (Greedy vs Programación Dinámica vs Programación Lineal vs Redes de Flujo). Esta sección entrena la capacidad de conectar y contrastar estos enfoques.</p>
 <hr />
@@ -8209,9 +7997,6 @@ En cualquier grafo no dirigido $G = (V, E)$, un subconjunto de vértices $S \sub
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(32)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -8342,9 +8127,6 @@ El INVAP debe transportar una carga de alta seguridad desde Ezeiza hasta Bariloc
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(33)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -8412,9 +8194,6 @@ Una empresa dispone de N servidores y M tareas. Cada tarea j requiere una cantid
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(34)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -8526,9 +8305,6 @@ Para el problema de Vertex Cover Mínimo en un grafo G = (V, E), comparar tres e
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(35)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -8983,9 +8759,6 @@ FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(36)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -9405,11 +9178,11 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
 </tr>
 </tbody>
 </table>
-<hr />
       </div>
     </details>
   </div>
 </article>
+<hr />
 <h2>12. Ejercicios Tipo Parcial Generados</h2>
 <p>Esta sección contiene ejercicios integrales creados específicamente siguiendo la estructura narrativa, nivel de dificultad, trampas de corrección y estilo de la cátedra de Teoría de Algoritmos de FIUBA.</p>
 <hr />
@@ -9431,16 +9204,12 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(37)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-<p><strong>Tipo:</strong> Ejercicio de Examen Integrador<br />
+      <p><strong>Tipo:</strong> Ejercicio de Examen Integrador<br />
 <strong>Clasificación:</strong> 🔴 IMPRESCINDIBLE<br />
 <strong>Paradigma:</strong> Redes de Flujo (Matching Bipartito con Restricción de Recursos)<br />
 <strong>Qué evalúa la cátedra:</strong> Modelado de capacidades heterogéneas ($c=2$ en fuentes intermedias), filtrado de compatibilidades temporales y espaciales previo al grafo, y demostración de integralidad.</p>
@@ -9451,7 +9220,16 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
 <li>Detallar la topología formal de la red (nodos, aristas, fuentes, sumideros y capacidades).</li>
 <li>Demostrar la correctitud del modelo e indicar la complejidad temporal del algoritmo.</li>
 </ol>
-<h4>2. Los 5 Pasos Metodológicos de Modelado</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-37">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Modelado</h4>
 <ol>
 <li>
 <p><strong>Preprocesamiento de Compatibilidad:</strong>
@@ -9598,17 +9376,6 @@ def despachar_drones_emergencia(
 </div>
 
 <hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-37">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
@@ -9631,22 +9398,27 @@ def despachar_drones_emergencia(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(38)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-<p><strong>Tipo:</strong> Ejercicio de Examen Integrador<br />
+      <p><strong>Tipo:</strong> Ejercicio de Examen Integrador<br />
 <strong>Clasificación:</strong> 🔴 IMPRESCINDIBLE<br />
 <strong>Paradigma:</strong> Programación Dinámica (Exclusión Multidía con Restricción de Presupuesto)<br />
 <strong>Qué evalúa la cátedra:</strong> Definición formal de subproblemas 2D, manejo riguroso de saltos de índice ($i - 3$) por cooldown y reconstrucción exacta de decisiones.</p>
 <h4>1. Enunciado Completo</h4>
 <p>Una empresa de marketing digital planifica su campaña durante los próximos $n$ días. Para cada día $i \in {1, \dots, n}$ se dispone de una propuesta de pauta publicitaria que cuesta $C[i]$ pesos y genera una conversión estimada de $B[i]$ nuevos clientes ($C[i], B[i] &gt; 0$). El presupuesto global disponible es de $P$ pesos. Por políticas de saturación de audiencia, si se pauta en el día $i$, <strong>no se puede volver a pautar durante los siguientes 2 días</strong> (es decir, los días $i+1$ e $i+2$ son de enfriamiento obligatorio; recién se podría volver a pautar el día $i+3$). Diseñar un algoritmo de Programación Dinámica que maximice las conversiones acumuladas sin exceder el presupuesto $P$.</p>
-<h4>2. Los 5 Pasos Metodológicos de Programación Dinámica</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-38">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Programación Dinámica</h4>
 <ol>
 <li>
 <p><strong>Definición Formal del Subproblema:</strong>
@@ -9759,17 +9531,6 @@ def planificar_campana_publicidad(
 </div>
 
 <hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-38">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
@@ -9792,23 +9553,28 @@ def planificar_campana_publicidad(
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(39)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-<p><strong>Tipo:</strong> Ejercicio de Examen Integrador<br />
+      <p><strong>Tipo:</strong> Ejercicio de Examen Integrador<br />
 <strong>Clasificación:</strong> 🔴 IMPRESCINDIBLE<br />
 <strong>Paradigma:</strong> Programación Lineal Entera (Set Cover Ponderado con Umbral y Capacidad)<br />
 <strong>Qué evalúa la cátedra:</strong> Modelado en PLI de vinculación de cobertura (<em>linking constraints</em> de capacidad de tráfico), activación de servidores e imposición de metas porcentuales.</p>
 <h4>1. Enunciado Completo</h4>
 <p>Una compañía de infraestructura de telecomunicaciones debe instalar servidores de computación Edge en un conjunto de $S$ ubicaciones geográficas posibles para dar cobertura de ultrabaja latencia a $U$ clientes corporativos. Instalar un servidor en el sitio $i \in S$ tiene un costo de obra civil de $K_i &gt; 0$ y ofrece una capacidad máxima de procesamiento de tráfico de $T_i &gt; 0$ Gbps. Cada cliente $j \in U$ demanda $d_j &gt; 0$ Gbps y define un conjunto $S_j \subseteq S$ de sitios candidatos cuya latencia de fibra óptica es $\le 5$ ms. La empresa exige brindar servicio a <strong>por lo menos el 80% de los clientes corporativos</strong> minimizando la inversión en infraestructura.
 Plantear un modelo formal de Programación Lineal Entera indicando variables, dominios, función objetivo, restricciones y recuento exacto.</p>
-<h4>2. Los 5 Pasos Metodológicos de Modelado en PLI</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-39">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Los 5 Pasos Metodológicos de Modelado en PLI</h4>
 <ol>
 <li><strong>Variables de Decisión:</strong></li>
 <li>$y_i \in {0, 1} \quad \forall i \in S$: Vale 1 si se instala un servidor en la ubicación $i$, 0 si no.</li>
@@ -9884,17 +9650,6 @@ Plantear un modelo formal de Programación Lineal Entera indicando variables, do
 </div>
 
 <hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-39">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
@@ -9917,16 +9672,12 @@ Plantear un modelo formal de Programación Lineal Entera indicando variables, do
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(40)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
   <div class="card-body">
     <div class="exercise-statement-box">
-      
-<p><strong>Tipo:</strong> Ejercicio de Examen Integrador<br />
+      <p><strong>Tipo:</strong> Ejercicio de Examen Integrador<br />
 <strong>Clasificación:</strong> 🔴 IMPRESCINDIBLE<br />
 <strong>Paradigma:</strong> Reducciones Polinomiales (K-Coloring a Asignación de Frecuencias)<br />
 <strong>Qué evalúa la cátedra:</strong> Protocolo riguroso de 4 pasos de NP-Completitud, reducción de K-Coloring y equivalencia de clases independientes.</p>
@@ -9934,7 +9685,16 @@ Plantear un modelo formal de Programación Lineal Entera indicando variables, do
 <p>Se define formalmente el problema de <strong>Asignación de Frecuencias (AF)</strong> de la siguiente manera:<br />
 Dado un conjunto de $A$ antenas de transmisión y un conjunto $I$ de pares no ordenados de antenas que generan interferencia destructiva si operan en la misma frecuencia, junto con un número entero $k$ de canales de radiofrecuencia disponibles, determinar si es posible asignar un canal a cada antena de modo que ningún par de antenas con interferencia comparta canal.<br />
 Demostrar formalmente que <strong>Asignación de Frecuencias es NP-Completo</strong> mediante una reducción polinomial desde <strong>k-Coloring de Grafos</strong>.</p>
-<h4>2. Demostración en el Esquema Sagrado de 4 Pasos</h4>
+    </div>
+
+    <details open class="exercise-solution-drawer" id="solution-drawer-40">
+      <summary class="solution-summary">
+        <span class="summary-toggle-icon">▶</span>
+        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
+        <span class="summary-badge">Active Recall</span>
+      </summary>
+      <div class="solution-inner-content">
+        <h4>2. Demostración en el Esquema Sagrado de 4 Pasos</h4>
 <h5>Paso 1: Pertenencia a NP ($AF \in \text{NP}$)</h5>
 <ul>
 <li><strong>Certificado Candidato ($C$):</strong> Un vector de enteros $C \in {1, \dots, k}^A$ donde $C[a]$ representa el canal asignado a la antena $a$. Tamaño del certificado: $|A|$ enteros de tamaño $O(\log k)$ bits $\implies O(|A| \log k)$ bits (tamaño polinomial).</li>
@@ -10001,23 +9761,11 @@ $$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
     <li><strong>Reducir para $k=2$:</strong> 2-Coloring (bipartición) está en P (se resuelve con BFS en $O(V+E)$). Se debe especificar que la reducción es desde $k$-Coloring con $k \ge 3$, que es donde el problema es NP-Completo.</li>
   </ul>
 </div>
-
-<hr />
-
-    </div>
-
-    <details open class="exercise-solution-drawer" id="solution-drawer-40">
-      <summary class="solution-summary">
-        <span class="summary-toggle-icon">▶</span>
-        <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
-        <span class="summary-badge">Active Recall</span>
-      </summary>
-      <div class="solution-inner-content">
-        
       </div>
     </details>
   </div>
 </article>
+<hr />
 <h2>13. Catálogo de Errores Típicos de Parcial y Trampas Frecuentes</h2>
 <p>Este catálogo compila las fallas y penalizaciones más comunes detectadas en las correcciones de exámenes de la cátedra:</p>
 <h3>1. En Reducciones NP-Completitud (Las fallas más costosas)</h3>
@@ -10063,20 +9811,20 @@ $$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
 <p>Utilizá esta lista de verificación durante tu última hora de repaso antes de ingresar al aula:</p>
 <h3>A. Dominio de Paradigmas</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_84944" onchange="toggleChecklistItem('chk_84944', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_2926" onchange="toggleChecklistItem('chk_2926', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_58963" onchange="toggleChecklistItem('chk_58963', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_18787" onchange="toggleChecklistItem('chk_18787', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_8698" onchange="toggleChecklistItem('chk_8698', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_57746" onchange="toggleChecklistItem('chk_57746', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_50168" onchange="toggleChecklistItem('chk_50168', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_76985" onchange="toggleChecklistItem('chk_76985', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_25030" onchange="toggleChecklistItem('chk_25030', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_44112" onchange="toggleChecklistItem('chk_44112', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_87319" onchange="toggleChecklistItem('chk_87319', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_66706" onchange="toggleChecklistItem('chk_66706', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_92427" onchange="toggleChecklistItem('chk_92427', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_90567" onchange="toggleChecklistItem('chk_90567', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
 </ul>
 <h3>B. Ejecución en la Hoja de Examen</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_80423" onchange="toggleChecklistItem('chk_80423', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_68589" onchange="toggleChecklistItem('chk_68589', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_49807" onchange="toggleChecklistItem('chk_49807', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_67926" onchange="toggleChecklistItem('chk_67926', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_57767" onchange="toggleChecklistItem('chk_57767', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_63897" onchange="toggleChecklistItem('chk_63897', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_63744" onchange="toggleChecklistItem('chk_63744', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_99894" onchange="toggleChecklistItem('chk_99894', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
 </ul>
 </main>
 <script>
@@ -10085,7 +9833,7 @@ $$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
 let currentMode = 'emergency';
 let currentParadigm = 'all';
 let searchQuery = '';
-let solutionsExpanded = false;
+let solutionsExpanded = true;
 let masteredExercises = new Set();
 let checklistState = {};
 
@@ -10203,9 +9951,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   initMathRendering();
 
-  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall (post-render)
+  // Por defecto en pantalla mostrar las soluciones expandidas
   document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = false;
+    drawer.open = true;
   });
 });
 
@@ -10498,7 +10246,7 @@ function toggleGlobalSolutions() {
   });
   const lbl = document.getElementById("lblGlobalSolutions");
   if (lbl) {
-    lbl.textContent = solutionsExpanded ? "Ocultar Todas" : "Revelar Todas";
+    lbl.textContent = solutionsExpanded ? "Ocultar Soluciones" : "Mostrar Soluciones";
   }
 }
 

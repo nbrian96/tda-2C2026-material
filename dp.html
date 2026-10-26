@@ -865,7 +865,12 @@ body.dark-mode .exercise-solution-drawer {
   font-weight: 700;
   color: var(--accent-color);
   user-select: none;
+  list-style: none;
   transition: background 0.15s ease;
+}
+
+.solution-summary::-webkit-details-marker {
+  display: none;
 }
 
 .solution-summary:hover {
@@ -1630,7 +1635,7 @@ body.dark-mode .warning-box {
           <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
         </button>
         <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
-          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
+          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Ocultar Soluciones</span>
         </button>
         <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
           <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
@@ -1818,9 +1823,6 @@ body.dark-mode .warning-box {
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(13)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -2183,14 +2185,14 @@ def minimas_operaciones_a_k(k: int) -&gt; Tuple[int, List[str]]:
 </ol>
 </li>
 </ul>
-<hr />
-<h3>Patrón de Ejercicio 4.2: Mochila 2D con Restricciones Lógicas</h3>
-<p>Aparece cuando la mochila tiene múltiples recursos acoplados (peso y volumen) y condiciones lógicas adicionales sobre subconjuntos específicos de elementos (exclusión mutua y obligatoriedad).</p>
-<hr />
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 4.2: Mochila 2D con Restricciones Lógicas</h3>
+<p>Aparece cuando la mochila tiene múltiples recursos acoplados (peso y volumen) y condiciones lógicas adicionales sobre subconjuntos específicos de elementos (exclusión mutua y obligatoriedad).</p>
+<hr />
 
 <article class="exercise-card" id="ej-14" data-num="14" data-priority="imprescindible" data-paradigm="dp" data-title="mochila 2d con selección obligatoria y excluyente de guías de aves" data-origin="parcial 2024-2-1 (5 de noviembre de 2024), ejercicio 3">
   <header class="card-header">
@@ -2209,9 +2211,6 @@ def minimas_operaciones_a_k(k: int) -&gt; Tuple[int, List[str]]:
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(14)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -2327,14 +2326,14 @@ FUNCION Mochila2DEstandar(elementos, MaxPeso, MaxVol):
 </ul>
 <p><strong>Variación típica de parcial</strong><br />
 Agregar una tercera restricción, como un límite en el costo económico de los objetos asegurados (problema del Delivery, ver Ejercicio 16).</p>
-<hr />
-<h3>Patrón de Ejercicio 4.3: Partición de Secuencias y Formateo (Word Wrap)</h3>
-<p>Minimizar una penalidad cuadrática o no lineal sobre la partición de un arreglo de palabras en líneas de longitud fija.</p>
-<hr />
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 4.3: Partición de Secuencias y Formateo (Word Wrap)</h3>
+<p>Minimizar una penalidad cuadrática o no lineal sobre la partición de un arreglo de palabras en líneas de longitud fija.</p>
+<hr />
 
 <article class="exercise-card" id="ej-15" data-num="15" data-priority="imprescindible" data-paradigm="dp" data-title="justificación de texto (word wrap / knuth-plass)" data-origin="parcial 2024-2-3 (10 de diciembre de 2024), ejercicio 2">
   <header class="card-header">
@@ -2353,9 +2352,6 @@ Agregar una tercera restricción, como un límite en el costo económico de los 
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(15)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -2465,14 +2461,14 @@ Para cada palabra i, retrocedemos evaluando posibles inicios de la línea actual
 </ul>
 <p><strong>Variación típica de parcial</strong><br />
 No penalizar los sobrantes de la última línea del texto (convención tipográfica habitual). En ese caso, para la línea que llega a n, el costo de la línea se fija en 0 en lugar de Sobrante².</p>
-<hr />
-<h3>Patrón de Ejercicio 4.4: Mochila 3D Multidimensional con Restricciones Presupuestarias</h3>
-<p>Aparece cuando el problema presenta 3 dimensiones de recursos simultáneas (peso, volumen, costo monetario o seguro) y exige definir un estado 4D.</p>
-<hr />
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 4.4: Mochila 3D Multidimensional con Restricciones Presupuestarias</h3>
+<p>Aparece cuando el problema presenta 3 dimensiones de recursos simultáneas (peso, volumen, costo monetario o seguro) y exige definir un estado 4D.</p>
+<hr />
 
 <article class="exercise-card" id="ej-16" data-num="16" data-priority="imprescindible" data-paradigm="dp" data-title="problema del delivery: mochila 3d con límite de seguro financiero" data-origin="parcial 2025-1-1 (27 de mayo de 2025), ejercicio 4">
   <header class="card-header">
@@ -2491,9 +2487,6 @@ No penalizar los sobrantes de la última línea del texto (convención tipográf
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(16)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -2579,14 +2572,14 @@ Generalización formal de la mochila 0-1 a tres dimensiones de capacidad acumula
 <li>Olvidar una de las tres dimensiones en la condición de inclusión (<code>SI p.peso &lt;= w Y p.volumen &lt;= v Y p.costo &lt;= m</code>).</li>
 <li>No aclarar que es un algoritmo pseudo-polinomial dependiente del valor numérico de las capacidades.</li>
 </ul>
-<hr />
-<h3>Patrón de Ejercicio 4.5: Exclusión Adyacente (House Robber / Juan el Vago)</h3>
-<p>Decisión sobre elementos consecutivos donde elegir un elemento prohíbe elegir a su vecino inmediato.</p>
-<hr />
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 4.5: Exclusión Adyacente (House Robber / Juan el Vago)</h3>
+<p>Decisión sobre elementos consecutivos donde elegir un elemento prohíbe elegir a su vecino inmediato.</p>
+<hr />
 
 <article class="exercise-card" id="ej-17" data-num="17" data-priority="importante" data-paradigm="dp" data-title="juan el vago (exclusión de días consecutivos)" data-origin="guía de ejercicios 04, ejercicio 4 / práctica">
   <header class="card-header">
@@ -2605,9 +2598,6 @@ Generalización formal de la mochila 0-1 a tres dimensiones de capacidad acumula
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(17)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -2681,14 +2671,14 @@ Juan dispone de ofertas de trabajo para los próximos n días. Cada día i le of
 <li><strong>Tiempo:</strong> O(n) pues llena una tabla lineal de n posiciones con operaciones O(1).</li>
 <li><strong>Espacio:</strong> O(n) (u O(1) con variables temporales si no se requiere reconstrucción).</li>
 </ul>
-<hr />
-<h3>Patrón de Ejercicio 4.6: Interval Scheduling Ponderado (DP con Búsqueda Binaria)</h3>
-<p>Selección de intervalos con pesos o beneficios arbitrarios donde Greedy falla y se requiere DP con búsqueda logarítmica del predecesor compatible.</p>
-<hr />
       </div>
     </details>
   </div>
 </article>
+<hr />
+<h3>Patrón de Ejercicio 4.6: Interval Scheduling Ponderado (DP con Búsqueda Binaria)</h3>
+<p>Selección de intervalos con pesos o beneficios arbitrarios donde Greedy falla y se requiere DP con búsqueda logarítmica del predecesor compatible.</p>
+<hr />
 
 <article class="exercise-card" id="ej-18" data-num="18" data-priority="imprescindible" data-paradigm="dp" data-title="interval scheduling ponderado (dp + búsqueda binaria)" data-origin="guía de ejercicios 04, ejercicio 2 / práctica">
   <header class="card-header">
@@ -2707,9 +2697,6 @@ Juan dispone de ofertas de trabajo para los próximos n días. Cada día i le of
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution(18)">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -2791,6 +2778,10 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
 <li><strong>Tiempo:</strong> Ordenamiento en O(n log n). Búsqueda binaria de p(i) para los n intervalos en O(n log n). Llenado de DP en O(n). Total: <strong>O(n log n)</strong>.</li>
 <li><strong>Espacio:</strong> O(n) para los arreglos <code>DP</code>, <code>P</code> y la reconstrucción.</li>
 </ul>
+      </div>
+    </details>
+  </div>
+</article>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Programación Dinámica</h3>
 <ol>
@@ -2799,11 +2790,6 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
 <li><strong>No justificar el orden de llenado:</strong> Asumir que se llena mágicamente sin decir que las filas se procesan de 0 a n y las capacidades de 0 a W.</li>
 <li><strong>Omitir la reconstrucción:</strong> Quedarse con el número final DP[n][W] cuando el problema pide "cuáles son los elementos".</li>
 </ol>
-      </div>
-    </details>
-  </div>
-</article>
-
 </main>
 <script>
 
@@ -2811,7 +2797,7 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
 let currentMode = 'emergency';
 let currentParadigm = 'all';
 let searchQuery = '';
-let solutionsExpanded = false;
+let solutionsExpanded = true;
 let masteredExercises = new Set();
 let checklistState = {};
 
@@ -2929,9 +2915,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   initMathRendering();
 
-  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall (post-render)
+  // Por defecto en pantalla mostrar las soluciones expandidas
   document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = false;
+    drawer.open = true;
   });
 });
 
@@ -3224,7 +3210,7 @@ function toggleGlobalSolutions() {
   });
   const lbl = document.getElementById("lblGlobalSolutions");
   if (lbl) {
-    lbl.textContent = solutionsExpanded ? "Ocultar Todas" : "Revelar Todas";
+    lbl.textContent = solutionsExpanded ? "Ocultar Soluciones" : "Mostrar Soluciones";
   }
 }
 

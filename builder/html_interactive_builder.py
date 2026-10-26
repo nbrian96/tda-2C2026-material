@@ -48,6 +48,11 @@ PARADIGMS = {
 }
 
 SOLUTION_MARKERS = [
+    r"<h4>1\.\s*Deducción Metodológica",
+    r"<h4>2\.\s+",
+    r"<p><strong>Resolución y Comparativa",
+    r"<p><strong>Pseudocódigo del Algoritmo",
+    r"<h4>1\.\s*(?:Resolución|Paradigma)",
     r"<p><strong>Idea de resolución",
     r"<p><strong>Pseudocódigo",
     r"<p><strong>Modelo Matemático",
@@ -55,8 +60,6 @@ SOLUTION_MARKERS = [
     r"<p><strong>Respuesta y Demostración",
     r"<p><strong>Demostración Paso a Paso",
     r"<p><strong>Demostración Formal",
-    r"<h4>1\. Resolución",
-    r"<h4>1\. Paradigma",
     r"<p><strong>Explicación del modelo",
     r"<p><strong>Demostración de Optimalidad"
 ]
@@ -137,9 +140,6 @@ def format_exercise_card(num, title, body_html):
         <span class="checkbox-custom"></span>
         <span class="label-text">Dominado</span>
       </label>
-      <button class="btn-toggle-solution" type="button" onclick="toggleCardSolution({num})">
-        <span class="icon">👁️</span> <span class="text">Ver Solución</span>
-      </button>
     </div>
   </header>
 
@@ -180,10 +180,10 @@ def process_html_exercises(html_body):
         num = int(num_m.group(1))
         title = num_m.group(2).strip()
         
-        h2_m = re.search(r"<h2>", body)
-        if h2_m:
-            ex_body = body[:h2_m.start()]
-            trailing = body[h2_m.start():]
+        split_m = re.search(r"(?:<hr\s*/?>\s*)?(?:<h3>(?:Patrón de Ejercicio|Errores Frecuentes|Errores Fatales)|<h2>)", body)
+        if split_m:
+            ex_body = body[:split_m.start()]
+            trailing = body[split_m.start():]
         else:
             ex_body = body
             trailing = ""
@@ -333,7 +333,7 @@ def get_hud_and_drawer_html(active_paradigm="all"):
           <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
         </button>
         <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
-          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
+          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Ocultar Soluciones</span>
         </button>
         <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
           <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
@@ -1328,7 +1328,12 @@ body.dark-mode .exercise-solution-drawer {
   font-weight: 700;
   color: var(--accent-color);
   user-select: none;
+  list-style: none;
   transition: background 0.15s ease;
+}
+
+.solution-summary::-webkit-details-marker {
+  display: none;
 }
 
 .solution-summary:hover {
@@ -2056,7 +2061,7 @@ def get_complete_js():
 let currentMode = 'emergency';
 let currentParadigm = 'all';
 let searchQuery = '';
-let solutionsExpanded = false;
+let solutionsExpanded = true;
 let masteredExercises = new Set();
 let checklistState = {};
 
@@ -2174,9 +2179,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   initMathRendering();
 
-  // Por defecto en pantalla colapsar las soluciones para incentivar el Active Recall (post-render)
+  // Por defecto en pantalla mostrar las soluciones expandidas
   document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = false;
+    drawer.open = true;
   });
 });
 
@@ -2469,7 +2474,7 @@ function toggleGlobalSolutions() {
   });
   const lbl = document.getElementById("lblGlobalSolutions");
   if (lbl) {
-    lbl.textContent = solutionsExpanded ? "Ocultar Todas" : "Revelar Todas";
+    lbl.textContent = solutionsExpanded ? "Ocultar Soluciones" : "Mostrar Soluciones";
   }
 }
 
