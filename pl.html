@@ -366,6 +366,10 @@ body.dark-mode .mermaid-wrapper {
   display: flex;
   justify-content: center;
 }
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
 
 /* HUD Top Bar */
 .hud-top-bar {
@@ -1635,7 +1639,7 @@ body.dark-mode .warning-box {
           <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
         </button>
         <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
-          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Ocultar Soluciones</span>
+          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
         </button>
         <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
           <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
@@ -1850,7 +1854,7 @@ body.dark-mode .warning-box {
 <p>Paolo Casanova dispone de 2 días para realizar salidas a diferentes lugares cercanos y observar la mayor cantidad posible de especies de aves. Hay 10 especies en particular que desea encontrar ($E = {1, \dots, 10}$) y 6 lugares posibles a visitar ($L = {1, \dots, 6}$). Algunos lugares insumen medio día ($0.5$ días) y otros un día completo ($1.0$ días). Para cada lugar se conoce exactamente qué especies habitan allí según una matriz binaria de presencia $A_{ij}$ ($A_{ij} = 1$ si la especie $i$ habita en el lugar $j$, $0$ si no). Plantear un modelo de Programación Lineal Entera que determine qué lugares visitar para maximizar la cantidad de especies distintas encontradas en el tiempo disponible. Indicar la cantidad exacta de variables y restricciones del modelo.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-19">
+    <details class="exercise-solution-drawer" id="solution-drawer-19">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2081,7 +2085,7 @@ def resolver_observacion_aves(
 <p>Una empresa de telefonía celular colocará antenas en una grilla bidimensional de celdas para prestar servicio a vecindarios distribuidos en un mapa. Si se instala una antena en la celda $(i, j)$, brindará cobertura a un bloque de 9 celdas (la propia celda $(i, j)$ y sus 8 celdas contiguas en vecindad de Moore). Instalar una antena tiene un costo fijo $CTE &gt; 0$ idéntico en cualquier celda. Se dispone de un conjunto $V$ de vecindarios distribuidos en la zona. La empresa exige brindar servicio a <strong>por lo menos el 70% de los vecindarios</strong> minimizando la inversión total. Plantear un modelo de Programación Lineal Entera indicando claramente variables, dominios, función objetivo, restricciones y su conteo exacto.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-20">
+    <details class="exercise-solution-drawer" id="solution-drawer-20">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2239,7 +2243,7 @@ def modelar_antenas_70_porciento(
 <p>El sistema interconectado argentino está dividido en 9 regiones eléctricas ($R = {1, \dots, 9}$). Para cada región $i$ se conoce su capacidad de generación prevista $G_i \ge 0$ (en MWh) y su demanda requerida $D_i \ge 0$ (en MWh). Desde cualquier región $i$ se puede transmitir energía a otra región $j$ con un costo unitario de transporte $C_{ij} \ge 0$ pesos por MWh. Cada línea de transmisión posee una capacidad máxima de transporte de $CAP_{ij} \ge 0$ MWh/día. Plantear un modelo de Programación Lineal continuo que determine el despacho de energía más económico para satisfacer plenamente la demanda de todas las regiones sin violar capacidades de transporte. Indicar variables y restricciones.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-21">
+    <details class="exercise-solution-drawer" id="solution-drawer-21">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2409,7 +2413,7 @@ def resolver_flujo_costo_minimo(
 <p>Para el traslado de una carga crítica de alta seguridad de la empresa INVAP desde el centro atómico Ezeiza ($s$) hasta el laboratorio central en Bariloche ($t$), se dispone de un grafo dirigido $G = (V, E)$. Cada tramo carretero $(u, v) \in E$ tiene un costo de póliza de seguro $C_{uv} &gt; 0$. Plantear un modelo de Programación Lineal continuo que determine la ruta de menor costo de seguro. Justificar formalmente por qué no es necesario declarar las variables como binarias para obtener una ruta válida. Indicar la cantidad exacta de variables y restricciones.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-22">
+    <details class="exercise-solution-drawer" id="solution-drawer-22">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2553,7 +2557,7 @@ $$\min \max \left( \sum_{i \in P_1} T_i, \sum_{j \in P_2} T_j \right)$$
 Formular el problema como un modelo de Programación Lineal Entera, linealizando rigurosamente el operador $\max$. Indicar variables, dominios y conteo de restricciones.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-23">
+    <details class="exercise-solution-drawer" id="solution-drawer-23">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2720,7 +2724,7 @@ def resolver_2_partition_minmax(tiempos: List[float]) -&gt; Tuple[float, List[in
 let currentMode = 'emergency';
 let currentParadigm = 'all';
 let searchQuery = '';
-let solutionsExpanded = true;
+let solutionsExpanded = false;
 let masteredExercises = new Set();
 let checklistState = {};
 
@@ -2832,16 +2836,25 @@ let trainerAnswered = false;
 document.addEventListener("DOMContentLoaded", async () => {
   loadSavedState();
   updateModeUI();
-  applyFilters();
+
+  // Abrir temporalmente todos los drawers para que Mermaid calcule la geometría real
+  const drawers = document.querySelectorAll(".exercise-solution-drawer");
+  drawers.forEach(drawer => {
+    drawer.open = true;
+  });
+
   if (typeof initMermaidDiagrams === "function") {
     await initMermaidDiagrams();
   }
   initMathRendering();
 
-  // Por defecto en pantalla mostrar las soluciones expandidas
-  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = true;
+  // Colapsar soluciones por defecto para incentivar el Active Recall
+  drawers.forEach(drawer => {
+    drawer.open = false;
   });
+
+  // Aplicar filtros después del renderizado para evitar que tarjetas en display:none rompan los SVGs
+  applyFilters();
 });
 
 function initMathRendering() {

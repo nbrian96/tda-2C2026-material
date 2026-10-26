@@ -366,6 +366,10 @@ body.dark-mode .mermaid-wrapper {
   display: flex;
   justify-content: center;
 }
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
 
 /* HUD Top Bar */
 .hud-top-bar {
@@ -1635,7 +1639,7 @@ body.dark-mode .warning-box {
           <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
         </button>
         <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
-          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Ocultar Soluciones</span>
+          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
         </button>
         <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
           <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
@@ -2120,7 +2124,7 @@ Realizar un algoritmo que resuelva la multiplicación de dos matrices cuadradas 
 Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas recursivas de multiplicación, suma de matrices en la etapa de combinación, y aplicación rigurosa del Teorema Maestro sin saltarse el análisis de casos.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-1">
+    <details class="exercise-solution-drawer" id="solution-drawer-1">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2409,7 +2413,7 @@ Dado un arreglo $A$ de $n$ enteros distintos donde no hay dos elementos adyacent
 Capacidad de descarte logarítmico aprovechando la dirección de la pendiente local, manejo riguroso de condiciones de borde en índices y demostración formal de que siempre existe al menos un pico en la mitad elegida.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-2">
+    <details class="exercise-solution-drawer" id="solution-drawer-2">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2578,7 +2582,7 @@ Se tiene un arreglo $A$ de $n$ elementos compuesto exclusivamente por números 1
 Identificación de la propiedad de frontera de transición, manejo riguroso de casos donde el cero está en el índice 0 o no existe, y parada anticipada sin incurrir en recorridos lineales.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-3">
+    <details class="exercise-solution-drawer" id="solution-drawer-3">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2732,7 +2736,7 @@ $$A = [1, 1, 1, 1, 0, 0, 0, 0]$$</p>
 let currentMode = 'emergency';
 let currentParadigm = 'all';
 let searchQuery = '';
-let solutionsExpanded = true;
+let solutionsExpanded = false;
 let masteredExercises = new Set();
 let checklistState = {};
 
@@ -2844,16 +2848,25 @@ let trainerAnswered = false;
 document.addEventListener("DOMContentLoaded", async () => {
   loadSavedState();
   updateModeUI();
-  applyFilters();
+
+  // Abrir temporalmente todos los drawers para que Mermaid calcule la geometría real
+  const drawers = document.querySelectorAll(".exercise-solution-drawer");
+  drawers.forEach(drawer => {
+    drawer.open = true;
+  });
+
   if (typeof initMermaidDiagrams === "function") {
     await initMermaidDiagrams();
   }
   initMathRendering();
 
-  // Por defecto en pantalla mostrar las soluciones expandidas
-  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = true;
+  // Colapsar soluciones por defecto para incentivar el Active Recall
+  drawers.forEach(drawer => {
+    drawer.open = false;
   });
+
+  // Aplicar filtros después del renderizado para evitar que tarjetas en display:none rompan los SVGs
+  applyFilters();
 });
 
 function initMathRendering() {

@@ -366,6 +366,10 @@ body.dark-mode .mermaid-wrapper {
   display: flex;
   justify-content: center;
 }
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
 
 /* HUD Top Bar */
 .hud-top-bar {
@@ -1635,7 +1639,7 @@ body.dark-mode .warning-box {
           <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
         </button>
         <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
-          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Ocultar Soluciones</span>
+          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
         </button>
         <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
           <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
@@ -1839,7 +1843,7 @@ Realizar un algoritmo que resuelva el problema de las 8 reinas mediante backtrac
 Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos de acceso directo para columnas y diagonales directas/inversas en $O(1)$, y gestión simétrica del estado (<em>hacer decisión $\to$ recursión $\to$ deshacer decisión</em>).</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-9">
+    <details class="exercise-solution-drawer" id="solution-drawer-9">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2100,7 +2104,7 @@ $$n = w^2 + x^2 + y^2 + z^2$$</p>
 Diseño de un árbol de backtracking acotado a profundidad 4, imposición de orden no creciente para eliminar ramas simétricas redundantes ($w \ge x \ge y \ge z$), poda por cota inferior y determinación analítica del último término en $O(1)$.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-10">
+    <details class="exercise-solution-drawer" id="solution-drawer-10">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2275,7 +2279,7 @@ Implementar un algoritmo que dado un grafo no dirigido $G = (V, E)$ devuelva un 
 Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos extremos debe pertenecer a la cobertura), poda por cota superior (<em>Branch and Bound</em>) descartando ramas que alcancen o superen el mejor tamaño ya hallado.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-11">
+    <details class="exercise-solution-drawer" id="solution-drawer-11">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2425,7 +2429,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 Árbol binario de inclusión/exclusión, poda temprana por exceso de suma y optimización del espacio de búsqueda mediante ordenamiento previo de los elementos.</p>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-12">
+    <details class="exercise-solution-drawer" id="solution-drawer-12">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2644,7 +2648,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 let currentMode = 'emergency';
 let currentParadigm = 'all';
 let searchQuery = '';
-let solutionsExpanded = true;
+let solutionsExpanded = false;
 let masteredExercises = new Set();
 let checklistState = {};
 
@@ -2756,16 +2760,25 @@ let trainerAnswered = false;
 document.addEventListener("DOMContentLoaded", async () => {
   loadSavedState();
   updateModeUI();
-  applyFilters();
+
+  // Abrir temporalmente todos los drawers para que Mermaid calcule la geometría real
+  const drawers = document.querySelectorAll(".exercise-solution-drawer");
+  drawers.forEach(drawer => {
+    drawer.open = true;
+  });
+
   if (typeof initMermaidDiagrams === "function") {
     await initMermaidDiagrams();
   }
   initMathRendering();
 
-  // Por defecto en pantalla mostrar las soluciones expandidas
-  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = true;
+  // Colapsar soluciones por defecto para incentivar el Active Recall
+  drawers.forEach(drawer => {
+    drawer.open = false;
   });
+
+  // Aplicar filtros después del renderizado para evitar que tarjetas en display:none rompan los SVGs
+  applyFilters();
 });
 
 function initMathRendering() {

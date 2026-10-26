@@ -382,10 +382,14 @@ Consideremos 4 tareas:
 #### 4. Diagrama Visual de Cronograma
 
 ```mermaid
-graph LR
-    B["B: [0 -> 2] (L=0)"]:::ontime --> A["A: [2 -> 5] (L=0)"]:::ontime --> D["D: [5 -> 9] (L=1)"]:::late --> C["C: [9 -> 10] (L=1)"]:::late
+flowchart LR
+    B["Tarea B (0 a 2)<br/>d=4 | L=0 (A tiempo)"] -->|t=2| A["Tarea A (2 a 5)<br/>d=6 | L=0 (A tiempo)"]
+    A -->|t=5| D["Tarea D (5 a 9)<br/>d=8 | L=1 (Retraso)"]
+    D -->|t=9| C["Tarea C (9 a 10)<br/>d=9 | L=1 (Retraso)"]
     classDef ontime fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
     classDef late fill:#b45309,stroke:#92400e,stroke-width:2px,color:#fff
+    class B,A ontime
+    class D,C late
 ```
 
 #### 5. Implementación en Python (Tipada y Ejecutable)

@@ -366,6 +366,10 @@ body.dark-mode .mermaid-wrapper {
   display: flex;
   justify-content: center;
 }
+.mermaid svg {
+  max-width: 100%;
+  height: auto;
+}
 
 /* HUD Top Bar */
 .hud-top-bar {
@@ -1635,7 +1639,7 @@ body.dark-mode .warning-box {
           <span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span>
         </button>
         <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)">
-          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Ocultar Soluciones</span>
+          <span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span>
         </button>
         <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
           <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
@@ -1819,7 +1823,7 @@ El INVAP debe transportar una carga de alta seguridad desde Ezeiza hasta Bariloc
 <hr />
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-32">
+    <details class="exercise-solution-drawer" id="solution-drawer-32">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -1947,7 +1951,7 @@ Una empresa dispone de N servidores y M tareas. Cada tarea j requiere una cantid
 </ol>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-33">
+    <details class="exercise-solution-drawer" id="solution-drawer-33">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2052,7 +2056,7 @@ Para el problema de Vertex Cover Mínimo en un grafo G = (V, E), comparar tres e
 </table>
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-34">
+    <details class="exercise-solution-drawer" id="solution-drawer-34">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2139,7 +2143,7 @@ Resolver y contrastar el problema a través de todos los paradigmas algorítmico
 <hr />
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-35">
+    <details class="exercise-solution-drawer" id="solution-drawer-35">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2592,7 +2596,7 @@ Resolver y comparar este problema a través de todos los paradigmas algorítmico
 <hr />
     </div>
 
-    <details open class="exercise-solution-drawer" id="solution-drawer-36">
+    <details class="exercise-solution-drawer" id="solution-drawer-36">
       <summary class="solution-summary">
         <span class="summary-toggle-icon">▶</span>
         <span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>
@@ -2997,7 +3001,7 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
 let currentMode = 'emergency';
 let currentParadigm = 'all';
 let searchQuery = '';
-let solutionsExpanded = true;
+let solutionsExpanded = false;
 let masteredExercises = new Set();
 let checklistState = {};
 
@@ -3109,16 +3113,25 @@ let trainerAnswered = false;
 document.addEventListener("DOMContentLoaded", async () => {
   loadSavedState();
   updateModeUI();
-  applyFilters();
+
+  // Abrir temporalmente todos los drawers para que Mermaid calcule la geometría real
+  const drawers = document.querySelectorAll(".exercise-solution-drawer");
+  drawers.forEach(drawer => {
+    drawer.open = true;
+  });
+
   if (typeof initMermaidDiagrams === "function") {
     await initMermaidDiagrams();
   }
   initMathRendering();
 
-  // Por defecto en pantalla mostrar las soluciones expandidas
-  document.querySelectorAll(".exercise-solution-drawer").forEach(drawer => {
-    drawer.open = true;
+  // Colapsar soluciones por defecto para incentivar el Active Recall
+  drawers.forEach(drawer => {
+    drawer.open = false;
   });
+
+  // Aplicar filtros después del renderizado para evitar que tarjetas en display:none rompan los SVGs
+  applyFilters();
 });
 
 function initMathRendering() {
