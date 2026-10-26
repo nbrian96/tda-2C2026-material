@@ -2119,7 +2119,7 @@ body.dark-mode .warning-box {
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado</strong><br />
-Realizar un algoritmo que resuelva la multiplicación de dos matrices cuadradas de orden $n$ ($A$ y $B$) mediante división y conquista. Recordemos la definición: $C = A \times B$ donde $C_{ij} = \sum_{k=1}^n A_{ik} \cdot B_{kj}$ para todo $i, j \in {1, \dots, n}$. Para simplificar el algoritmo se puede suponer que $n$ es una potencia de 2. Indicar y justificar el orden de complejidad temporal y espacial del algoritmo.</p>
+Realizar un algoritmo que resuelva la multiplicación de dos matrices cuadradas de orden $n$ ($A$ y $B$) mediante división y conquista. Recordemos la definición: $C = A \times B$ donde $C_{ij} = \sum_{k=1}^n A_{ik} \cdot B_{kj}$ para todo $i, j \in \{1, \dots, n\}$. Para simplificar el algoritmo se puede suponer que $n$ es una potencia de 2. Indicar y justificar el orden de complejidad temporal y espacial del algoritmo.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas recursivas de multiplicación, suma de matrices en la etapa de combinación, y aplicación rigurosa del Teorema Maestro sin saltarse el análisis de casos.</p>
     </div>
@@ -2136,7 +2136,7 @@ Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas
 <li>
 <p><strong>Paso 1: División:</strong>
    Se dividen las matrices cuadradas $A$ y $B$ de orden $n \times n$ en 4 submatrices (cuadrantes) de tamaño $(n/2) \times (n/2)$:
-   $$A = \begin{pmatrix} A_{11} &amp; A_{12} \ A_{21} &amp; A_{22} \end{pmatrix}, \quad B = \begin{pmatrix} B_{11} &amp; B_{12} \ B_{21} &amp; B_{22} \end{pmatrix}$$</p>
+   $$A = \begin{pmatrix} A_{11} &amp; A_{12} \\ A_{21} &amp; A_{22} \end{pmatrix}, \quad B = \begin{pmatrix} B_{11} &amp; B_{12} \\ B_{21} &amp; B_{22} \end{pmatrix}$$</p>
 </li>
 <li>
 <p><strong>Paso 2: Casos Base:</strong>
@@ -2147,7 +2147,7 @@ Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas
 <li>
 <p><strong>Paso 3: Conquista (Llamadas Recursivas):</strong>
    De acuerdo al producto matricial por bloques, la matriz resultante $C$ satisface:
-   $$C = \begin{pmatrix} C_{11} &amp; C_{12} \ C_{21} &amp; C_{22} \end{pmatrix} = \begin{pmatrix} A_{11} B_{11} + A_{12} B_{21} &amp; A_{11} B_{12} + A_{12} B_{22} \ A_{21} B_{11} + A_{22} B_{21} &amp; A_{21} B_{12} + A_{22} B_{22} \end{pmatrix}$$
+   $$C = \begin{pmatrix} C_{11} &amp; C_{12} \\ C_{21} &amp; C_{22} \end{pmatrix} = \begin{pmatrix} A_{11} B_{11} + A_{12} B_{21} &amp; A_{11} B_{12} + A_{12} B_{22} \\ A_{21} B_{11} + A_{22} B_{21} &amp; A_{21} B_{12} + A_{22} B_{22} \end{pmatrix}$$
    Cada cuadrante requiere 2 productos de matrices de tamaño $(n/2) \times (n/2)$. En total se disparan <strong>$a = 8$ llamadas recursivas</strong>:</p>
 </li>
 <li>
@@ -2173,7 +2173,7 @@ Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas
 </li>
 <li>
 <p><strong>Paso 5: Ecuación de Recurrencia y Teorema Maestro:</strong>
-   $$T(n) = \begin{cases} \Theta(1) &amp; \text{si } n = 1 \ 8 \cdot T\left(\frac{n}{2}\right) + \Theta(n^2) &amp; \text{si } n &gt; 1 \end{cases}$$
+   $$T(n) = \begin{cases} \Theta(1) &amp; \text{si } n = 1 \\ 8 \cdot T\left(\frac{n}{2}\right) + \Theta(n^2) &amp; \text{si } n &gt; 1 \end{cases}$$
    Identificamos los parámetros del Teorema Maestro:</p>
 </li>
 <li>
@@ -2205,7 +2205,7 @@ Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas
 </ul>
 <h4>3. Ejemplo Concreto y Traza Paso a Paso ($n = 2$)</h4>
 <p>Sean las matrices $2 \times 2$:
-$$A = \begin{pmatrix} 1 &amp; 2 \ 3 &amp; 4 \end{pmatrix}, \quad B = \begin{pmatrix} 5 &amp; 6 \ 7 &amp; 8 \end{pmatrix}$$</p>
+$$A = \begin{pmatrix} 1 &amp; 2 \\ 3 &amp; 4 \end{pmatrix}, \quad B = \begin{pmatrix} 5 &amp; 6 \\ 7 &amp; 8 \end{pmatrix}$$</p>
 <table>
 <thead>
 <tr>
@@ -2303,7 +2303,7 @@ $$A = \begin{pmatrix} 1 &amp; 2 \ 3 &amp; 4 \end{pmatrix}, \quad B = \begin{pmat
 </tbody>
 </table>
 <p>Matriz final ensamblada:
-$$C = \begin{pmatrix} 19 &amp; 22 \ 43 &amp; 50 \end{pmatrix}$$
+$$C = \begin{pmatrix} 19 &amp; 22 \\ 43 &amp; 50 \end{pmatrix}$$
 <em>Verificación por producto tradicional:</em></p>
 <ul>
 <li>Fila 1 × Columna 1: $1 \cdot 5 + 2 \cdot 7 = 19$. Correcto.</li>
@@ -2456,7 +2456,7 @@ Capacidad de descarte logarítmico aprovechando la dirección de la pendiente lo
 <ul>
 <li><strong>Lema de la Pendiente:</strong> Si $A[m] &lt; A[m + 1]$, entonces el subarreglo $A[m + 1 \dots fin]$ contiene al menos un elemento pico.</li>
 <li><strong>Demostración por el Principio del Buen Orden / Contradicción:</strong>
-  Consideremos el subarreglo $A[m + 1 \dots fin]$. Si el último elemento $A[fin]$ es mayor que $A[fin - 1]$, entonces $A[fin]$ es un pico (pues no tiene vecino derecho). Si no lo es, retrocedemos: como $A[m] &lt; A[m + 1]$, no todos los elementos pueden ser decrecientes hacia la izquierda sin toparse con una cresta. Dado que no hay elementos adyacentes iguales, debe existir un primer índice $k \in {m + 1, \dots, fin - 1}$ tal que $A[k] &gt; A[k + 1]$. Como $k$ es el primer punto de caída, necesariamente $A[k] &gt; A[k - 1]$, lo que convierte a $A[k]$ en un pico. $\blacksquare$</li>
+  Consideremos el subarreglo $A[m + 1 \dots fin]$. Si el último elemento $A[fin]$ es mayor que $A[fin - 1]$, entonces $A[fin]$ es un pico (pues no tiene vecino derecho). Si no lo es, retrocedemos: como $A[m] &lt; A[m + 1]$, no todos los elementos pueden ser decrecientes hacia la izquierda sin toparse con una cresta. Dado que no hay elementos adyacentes iguales, debe existir un primer índice $k \in \{m + 1, \dots, fin - 1\}$ tal que $A[k] &gt; A[k + 1]$. Como $k$ es el primer punto de caída, necesariamente $A[k] &gt; A[k - 1]$, lo que convierte a $A[k]$ en un pico. $\blacksquare$</li>
 </ul>
 <h4>3. Ejemplo Concreto y Traza Paso a Paso</h4>
 <p>Sea el arreglo de $n = 7$ elementos:
@@ -2542,7 +2542,7 @@ $$A = [1, 2, 1, 3, 5, 6, 4]$$</p>
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Hacer <code>fin = m - 1</code> en la rama descendente:</strong> Si $A[m] > A[m+1]$, el elemento $A[m]$ podría ser precisamente el pico. Si ajustas <code>fin = m - 1</code>, excluyes a $m$ y el algoritmo puede retornar un índice incorrecto o fallar. Debe ser obligatoriamente <code>fin = m</code>.</li>
+    <li><strong>Hacer <code>fin = m - 1</code> en la rama descendente:</strong> Si $A[m] &gt; A[m+1]$, el elemento $A[m]$ podría ser precisamente el pico. Si ajustas <code>fin = m - 1</code>, excluyes a $m$ y el algoritmo puede retornar un índice incorrecto o fallar. Debe ser obligatoriamente <code>fin = m</code>.</li>
     <li><strong>Desbordamiento de índice al calcular $m+1$:</strong> Si el bucle tiene condición <code>ini &le; fin</code>, en la última iteración $m = fin$ y la consulta <code>arr[m + 1]</code> arroja <code>IndexError</code>. La condición estricta debe ser <code>ini &lt; fin</code>.</li>
     <li><strong>Creer que el arreglo debe estar ordenado:</strong> Este algoritmo funciona sobre arreglos desordenados gracias al Lema de la Pendiente. Afirmar en el examen que se requiere ordenar previamente ($O(n \log n)$) invalida la cota $O(\log n)$.</li>
   </ul>
@@ -2629,7 +2629,7 @@ Identificación de la propiedad de frontera de transición, manejo riguroso de c
 <p><strong>Paso Inductivo ($L \ge 1$):</strong>
   Se inspecciona $A[m]$. </p>
 <ul>
-<li>Si $A[m] = 1$: Como el arreglo tiene la estructura $1^<em> 0^</em>$, si la posición $m$ tiene un 1, todas las posiciones $j \le m$ tienen $A[j] = 1$. Por lo tanto, ningún índice $\le m$ puede ser cero. El primer cero, de existir, debe residir en $[m + 1, fin]$, un subrango de longitud $\le \lfloor L/2 \rfloor$. Por hipótesis inductiva, la llamada recursiva devolverá el resultado correcto.</li>
+<li>Si $A[m] = 1$: Como el arreglo tiene la estructura $1^* 0^*$, si la posición $m$ tiene un 1, todas las posiciones $j \le m$ tienen $A[j] = 1$. Por lo tanto, ningún índice $\le m$ puede ser cero. El primer cero, de existir, debe residir en $[m + 1, fin]$, un subrango de longitud $\le \lfloor L/2 \rfloor$. Por hipótesis inductiva, la llamada recursiva devolverá el resultado correcto.</li>
 <li>Si $A[m] = 0$: Si $m = 0$ o $A[m-1] = 1$, por definición $m$ es el primer cero y se retorna. Si $A[m-1] = 0$, el primer cero está estrictamente antes de $m$, residiendo en $[ini, m - 1]$. Por hipótesis inductiva, la recursión encuentra el resultado exacto. $\blacksquare$</li>
 </ul>
 </li>

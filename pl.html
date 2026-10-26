@@ -1797,7 +1797,7 @@ body.dark-mode .warning-box {
 <li>
 <p><strong>Conjuntos y Parámetros:</strong> Definición rigurosa de índices, conjuntos de entrada y constantes numéricas con sus unidades físicas.</p>
 </li>
-<li><strong>Variables de Decisión y Dominios:</strong> Qué representa semánticamente cada variable, con su dominio matemático estricto ($x_i \in {0, 1}$, $y_j \ge 0$, $z \in \mathbb{R}$).</li>
+<li><strong>Variables de Decisión y Dominios:</strong> Qué representa semánticamente cada variable, con su dominio matemático estricto ($x_i \in \{0, 1\}$, $y_j \ge 0$, $z \in \mathbb{R}$).</li>
 <li><strong>Función Objetivo:</strong> Maximizar o minimizar una combinación lineal exacta. Está estrictamente prohibido multiplicar variables entre sí o emplear funciones no lineales directas ($\max$, $\min$, $|\cdot|$).</li>
 <li><strong>Restricciones Lineales:</strong> Desigualdades e igualdades lineales ($\le, \ge, =$) que delimitan el poliedro convexo de soluciones factibles.</li>
 <li>
@@ -1809,8 +1809,8 @@ body.dark-mode .warning-box {
 <li>
 <p><strong>Minimización de un Máximo ($\min \max(f_1, f_2, \dots, f_k)$):</strong>
      Se introduce una variable auxiliar continua $Z \in \mathbb{R}$.
-     $$\min Z \quad \text{sujeto a:} \quad Z \ge f_r(x) \quad \forall r \in {1, \dots, k}$$
-     <em>Principio:</em> Al minimizar $Z$, el optimizador presiona $Z$ hacia abajo hasta topar con la cota más restrictiva, cumpliéndose en el óptimo que $Z^<em> = \max_r f_r(x^</em>)$.</p>
+     $$\min Z \quad \text{sujeto a:} \quad Z \ge f_r(x) \quad \forall r \in \{1, \dots, k\}$$
+     <em>Principio:</em> Al minimizar $Z$, el optimizador presiona $Z$ hacia abajo hasta topar con la cota más restrictiva, cumpliéndose en el óptimo que $Z^* = \max_r f_r(x^*)$.</p>
 </li>
 <li>
 <p><strong>Relación de Cobertura y Activación (<em>Linking Constraints</em>):</strong>
@@ -1851,7 +1851,7 @@ body.dark-mode .warning-box {
   <div class="card-body">
     <div class="exercise-statement-box">
       <h4>1. Enunciado Completo</h4>
-<p>Paolo Casanova dispone de 2 días para realizar salidas a diferentes lugares cercanos y observar la mayor cantidad posible de especies de aves. Hay 10 especies en particular que desea encontrar ($E = {1, \dots, 10}$) y 6 lugares posibles a visitar ($L = {1, \dots, 6}$). Algunos lugares insumen medio día ($0.5$ días) y otros un día completo ($1.0$ días). Para cada lugar se conoce exactamente qué especies habitan allí según una matriz binaria de presencia $A_{ij}$ ($A_{ij} = 1$ si la especie $i$ habita en el lugar $j$, $0$ si no). Plantear un modelo de Programación Lineal Entera que determine qué lugares visitar para maximizar la cantidad de especies distintas encontradas en el tiempo disponible. Indicar la cantidad exacta de variables y restricciones del modelo.</p>
+<p>Paolo Casanova dispone de 2 días para realizar salidas a diferentes lugares cercanos y observar la mayor cantidad posible de especies de aves. Hay 10 especies en particular que desea encontrar ($E = \{1, \dots, 10\}$) y 6 lugares posibles a visitar ($L = \{1, \dots, 6\}$). Algunos lugares insumen medio día ($0.5$ días) y otros un día completo ($1.0$ días). Para cada lugar se conoce exactamente qué especies habitan allí según una matriz binaria de presencia $A_{ij}$ ($A_{ij} = 1$ si la especie $i$ habita en el lugar $j$, $0$ si no). Plantear un modelo de Programación Lineal Entera que determine qué lugares visitar para maximizar la cantidad de especies distintas encontradas en el tiempo disponible. Indicar la cantidad exacta de variables y restricciones del modelo.</p>
     </div>
 
     <details class="exercise-solution-drawer" id="solution-drawer-19">
@@ -1868,10 +1868,10 @@ body.dark-mode .warning-box {
 <li>Decisión secundaria/beneficio: ¿Se logra observar la especie $i \in E$? (Variable binaria $x_i$).</li>
 <li>Recurso limitante: Presupuesto temporal global de $2.0$ días.</li>
 <li><strong>Definición de Conjuntos y Parámetros:</strong></li>
-<li>$E = {1, \dots, 10}$: Conjunto de especies objetivo.</li>
-<li>$L = {1, \dots, 6}$: Conjunto de sitios candidatos.</li>
-<li>$d_j \in {0.5, 1.0}$: Duración de la visita al sitio $j$.</li>
-<li>$A_{ij} \in {0, 1}$: Matriz de incidencia especie-sitio.</li>
+<li>$E = \{1, \dots, 10\}$: Conjunto de especies objetivo.</li>
+<li>$L = \{1, \dots, 6\}$: Conjunto de sitios candidatos.</li>
+<li>$d_j \in \{0.5, 1.0\}$: Duración de la visita al sitio $j$.</li>
+<li>$A_{ij} \in \{0, 1\}$: Matriz de incidencia especie-sitio.</li>
 <li>$T_{max} = 2.0$: Días disponibles.</li>
 <li>
 <p><strong>Formulación de la Función Objetivo:</strong>
@@ -1891,7 +1891,7 @@ body.dark-mode .warning-box {
 </li>
 <li>
 <p><strong>Declaración Explícita de Dominios:</strong>
-   $$y_j \in {0, 1} \quad \forall j \in L, \qquad x_i \in {0, 1} \quad \forall i \in E$$</p>
+   $$y_j \in \{0, 1\} \quad \forall j \in L, \qquad x_i \in \{0, 1\} \quad \forall i \in E$$</p>
 </li>
 </ol>
 <h4>3. Demostración Rigurosa de Correctitud del Enlace</h4>
@@ -1906,7 +1906,7 @@ Bajo la función objetivo de maximizar $\sum_{i \in E} x_i$:</p>
 <li>
 <p><strong>Caso $\ge 1$ (Al menos un hábitat visitado):</strong> Si visita $k \ge 1$ sitios donde habita la especie $i$, entonces $\sum_{j \in L} A_{ij} y_j = k \ge 1$. La restricción se convierte en:
    $$x_i \le k$$
-   Dado que el dominio impone $x_i \in {0, 1}$ y la función objetivo maximiza $\sum x_i$ con coeficientes positivos ($+1$), el optimizador asignará el mayor valor factible: $x_i = 1$.</p>
+   Dado que el dominio impone $x_i \in \{0, 1\}$ y la función objetivo maximiza $\sum x_i$ con coeficientes positivos ($+1$), el optimizador asignará el mayor valor factible: $x_i = 1$.</p>
 </li>
 <li>
 <p><strong>Inmunidad al Doble Cómputo:</strong> Si visita 2 o más lugares con la misma especie, $x_i \le 2$ o $3$, pero al estar restringida por su dominio superior $x_i \le 1$, la especie aporta exactamente 1 a la función objetivo.</p>
@@ -1949,29 +1949,29 @@ Bajo la función objetivo de maximizar $\sum_{i \in E} x_i$:</p>
 <tr>
 <td style="text-align: left;"><strong>L1</strong></td>
 <td style="text-align: left;">0.5 días</td>
-<td style="text-align: left;">${E_1, E_2}$</td>
+<td style="text-align: left;">$\{E_1, E_2\}$</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>L2</strong></td>
 <td style="text-align: left;">1.0 días</td>
-<td style="text-align: left;">${E_2, E_3, E_4}$</td>
+<td style="text-align: left;">$\{E_2, E_3, E_4\}$</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>L3</strong></td>
 <td style="text-align: left;">0.5 días</td>
-<td style="text-align: left;">${E_3, E_5}$</td>
+<td style="text-align: left;">$\{E_3, E_5\}$</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>L4</strong></td>
 <td style="text-align: left;">1.0 días</td>
-<td style="text-align: left;">${E_1, E_4, E_5}$</td>
+<td style="text-align: left;">$\{E_1, E_4, E_5\}$</td>
 </tr>
 </tbody>
 </table>
 <ul>
 <li><strong>Presupuesto:</strong> $T = 2.0$ días.</li>
 <li><strong>Evaluación de combinaciones:</strong><ul>
-<li>Visitar ${L_1, L_3, L_2}$: Duración $0.5 + 0.5 + 1.0 = 2.0$ días. Especies cubiertas: ${E_1, E_2} \cup {E_3, E_5} \cup {E_2, E_3, E_4} = {E_1, E_2, E_3, E_4, E_5}$ (5 especies).</li>
+<li>Visitar $\{L_1, L_3, L_2\}$: Duración $0.5 + 0.5 + 1.0 = 2.0$ días. Especies cubiertas: $\{E_1, E_2\} \cup \{E_3, E_5\} \cup \{E_2, E_3, E_4\} = \{E_1, E_2, E_3, E_4, E_5\}$ (5 especies).</li>
 <li>Valor objetivo óptimo: $Z^* = 5$.</li>
 <li>Variables: $y_1=1, y_2=1, y_3=1, y_4=0$; $x_1=x_2=x_3=x_4=x_5=1$.</li>
 </ul>
@@ -2120,7 +2120,7 @@ def resolver_observacion_aves(
 </li>
 <li>
 <p><strong>Dominios de las Variables:</strong>
-   $$y_c \in {0, 1} \quad \forall c \in C, \qquad x_v \in {0, 1} \quad \forall v \in V$$</p>
+   $$y_c \in \{0, 1\} \quad \forall c \in C, \qquad x_v \in \{0, 1\} \quad \forall v \in V$$</p>
 </li>
 </ol>
 <h4>3. Demostración de Validez del Modelo</h4>
@@ -2158,8 +2158,8 @@ def resolver_observacion_aves(
 <p>Supongamos una grilla pequeña con 10 vecindarios ($|V| = 10$).</p>
 <ul>
 <li>Umbral requerido: $\lceil 0.70 \times 10 \rceil = 7$ vecindarios.</li>
-<li>Supongamos que la antena $A_1$ cubre ${v_1, v_2, v_3, v_4}$, la antena $A_2$ cubre ${v_4, v_5, v_6, v_7}$ y la antena $A_3$ cubre ${v_8, v_9, v_{10}}$.</li>
-<li>Con 2 antenas ($A_1$ y $A_2$), se cubren ${v_1, \dots, v_7}$ (7 vecindarios).</li>
+<li>Supongamos que la antena $A_1$ cubre $\{v_1, v_2, v_3, v_4\}$, la antena $A_2$ cubre $\{v_4, v_5, v_6, v_7\}$ y la antena $A_3$ cubre $\{v_8, v_9, v_{10}\}$.</li>
+<li>Con 2 antenas ($A_1$ y $A_2$), se cubren $\{v_1, \dots, v_7\}$ (7 vecindarios).</li>
 <li>Inversión mínima: $2 \times CTE$.</li>
 <li>Solución factible óptima: $y_{A1}=1, y_{A2}=1, y_{A3}=0$; $x_1=x_2=\dots=x_7=1$, $x_8=x_9=x_{10}=0$.</li>
 </ul>
@@ -2240,7 +2240,7 @@ def modelar_antenas_70_porciento(
   <div class="card-body">
     <div class="exercise-statement-box">
       <h4>1. Enunciado Completo</h4>
-<p>El sistema interconectado argentino está dividido en 9 regiones eléctricas ($R = {1, \dots, 9}$). Para cada región $i$ se conoce su capacidad de generación prevista $G_i \ge 0$ (en MWh) y su demanda requerida $D_i \ge 0$ (en MWh). Desde cualquier región $i$ se puede transmitir energía a otra región $j$ con un costo unitario de transporte $C_{ij} \ge 0$ pesos por MWh. Cada línea de transmisión posee una capacidad máxima de transporte de $CAP_{ij} \ge 0$ MWh/día. Plantear un modelo de Programación Lineal continuo que determine el despacho de energía más económico para satisfacer plenamente la demanda de todas las regiones sin violar capacidades de transporte. Indicar variables y restricciones.</p>
+<p>El sistema interconectado argentino está dividido en 9 regiones eléctricas ($R = \{1, \dots, 9\}$). Para cada región $i$ se conoce su capacidad de generación prevista $G_i \ge 0$ (en MWh) y su demanda requerida $D_i \ge 0$ (en MWh). Desde cualquier región $i$ se puede transmitir energía a otra región $j$ con un costo unitario de transporte $C_{ij} \ge 0$ pesos por MWh. Cada línea de transmisión posee una capacidad máxima de transporte de $CAP_{ij} \ge 0$ MWh/día. Plantear un modelo de Programación Lineal continuo que determine el despacho de energía más económico para satisfacer plenamente la demanda de todas las regiones sin violar capacidades de transporte. Indicar variables y restricciones.</p>
     </div>
 
     <details class="exercise-solution-drawer" id="solution-drawer-21">
@@ -2259,8 +2259,8 @@ def modelar_antenas_70_porciento(
 <li>
 <p><strong>Definición de Conjuntos y Parámetros:</strong></p>
 </li>
-<li>$R = {1, \dots, 9}$: Conjunto de nodos regionales.</li>
-<li>$L = {(i, j) \in R \times R : i \ne j}$: Líneas de transmisión disponibles.</li>
+<li>$R = \{1, \dots, 9\}$: Conjunto de nodos regionales.</li>
+<li>$L = \{(i, j) \in R \times R : i \ne j\}$: Líneas de transmisión disponibles.</li>
 <li>$G_i \ge 0$: Generación inyectada en el nodo $i$.</li>
 <li>$D_i \ge 0$: Demanda consumida en el nodo $i$.</li>
 <li>$C_{ij} \ge 0$: Costo por MWh en el arco $(i, j)$.</li>
@@ -2440,7 +2440,7 @@ def resolver_flujo_costo_minimo(
    Para cada nodo $i \in V$, la diferencia neta entre el flujo que emite y el flujo que recibe debe coincidir con su inyección externa:
    $$\sum_{v : (i, v) \in E} x_{iv} - \sum_{u : (u, i) \in E} x_{ui} = b(i) \quad \forall i \in V$$
    donde el vector de balance externo $b(i)$ está definido por:
-   $$b(i) = \begin{cases} +1 &amp; \text{si } i = s \text{ (Ezeiza - Fuente)} \ -1 &amp; \text{si } i = t \text{ (Bariloche - Sumidero)} \ 0 &amp; \text{si } i \in V \setminus {s, t} \text{ (Puntos intermedios)} \end{cases}$$</p>
+   $$b(i) = \begin{cases} +1 &amp; \text{si } i = s \text{ (Ezeiza - Fuente)} \\ -1 &amp; \text{si } i = t \text{ (Bariloche - Sumidero)} \\ 0 &amp; \text{si } i \in V \setminus \{s, t\} \text{ (Puntos intermedios)} \end{cases}$$</p>
 </li>
 <li>
 <p><strong>Cotas de las Variables:</strong>
@@ -2449,12 +2449,12 @@ def resolver_flujo_costo_minimo(
 </ol>
 <h4>3. Demostración Teórica: Teorema de Unimodularidad Total (TUM)</h4>
 <p><strong>Teorema de Hoffman-Kruskal aplicado a Grafos:</strong><br />
-Sea $A \in {-1, 0, 1}^{|V| \times |E|}$ la matriz de incidencia nodo-arco del grafo $G$, donde cada columna correspondiente a la arista $(u, v)$ contiene exactamente dos elementos no nulos: $+1$ en la fila del nodo origen $u$ y $-1$ en la fila del nodo destino $v$.</p>
+Sea $A \in \{-1, 0, 1\}^{|V| \times |E|}$ la matriz de incidencia nodo-arco del grafo $G$, donde cada columna correspondiente a la arista $(u, v)$ contiene exactamente dos elementos no nulos: $+1$ en la fila del nodo origen $u$ y $-1$ en la fila del nodo destino $v$.</p>
 <ol>
-<li><strong>Propiedad TUM:</strong> Toda submatriz cuadrada de $A$ tiene determinante en ${-1, 0, 1}$.</li>
-<li><em>Demostración inductiva:</em> Para submatrices de orden $k$, si una columna tiene solo ceros, $\det = 0$. Si tiene un único $\pm 1$, por expansión de Laplace $\det = \pm 1 \cdot \det(M_{k-1}) \in {-1, 0, 1}$. Si todas las columnas tienen un $+1$ y un $-1$, la suma de todas las filas es el vector nulo $\mathbf{0}$, por lo que las filas son linealmente dependientes y $\det = 0$.</li>
-<li><strong>Integralidad de Vértices:</strong> Dado que $A$ es totalmente unimodular y el vector del lado derecho $b \in {-1, 0, 1}^{|V|}$ es entero, por la regla de Cramer <strong>todo vértice extremo del poliedro ${x \ge 0 : Ax = b}$ tiene componentes estrictamente enteras</strong>.</li>
-<li>Como la inyección total es 1, los únicos valores enteros factibles para las aristas en cualquier solución básica factible sin ciclos son $x_{uv} \in {0, 1}$, representando exactamente un camino simple de $s$ a $t$.</li>
+<li><strong>Propiedad TUM:</strong> Toda submatriz cuadrada de $A$ tiene determinante en $\{-1, 0, 1\}$.</li>
+<li><em>Demostración inductiva:</em> Para submatrices de orden $k$, si una columna tiene solo ceros, $\det = 0$. Si tiene un único $\pm 1$, por expansión de Laplace $\det = \pm 1 \cdot \det(M_{k-1}) \in \{-1, 0, 1\}$. Si todas las columnas tienen un $+1$ y un $-1$, la suma de todas las filas es el vector nulo $\mathbf{0}$, por lo que las filas son linealmente dependientes y $\det = 0$.</li>
+<li><strong>Integralidad de Vértices:</strong> Dado que $A$ es totalmente unimodular y el vector del lado derecho $b \in \{-1, 0, 1\}^{|V|}$ es entero, por la regla de Cramer <strong>todo vértice extremo del poliedro $\{x \ge 0 : Ax = b\}$ tiene componentes estrictamente enteras</strong>.</li>
+<li>Como la inyección total es 1, los únicos valores enteros factibles para las aristas en cualquier solución básica factible sin ciclos son $x_{uv} \in \{0, 1\}$, representando exactamente un camino simple de $s$ a $t$.</li>
 </ol>
 <h4>4. Diagrama Visual del Grafo de Traslado</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
@@ -2552,7 +2552,7 @@ def camino_minimo_pl_continuo(
   <div class="card-body">
     <div class="exercise-statement-box">
       <h4>1. Enunciado Completo</h4>
-<p>Dado un conjunto de $n$ tareas con tiempos de procesamiento enteros positivos $T = {T_1, T_2, \dots, T_n}$, se desea particionar las tareas entre dos procesadores idénticos $P_1$ y $P_2$ de manera que se minimice el <em>makespan</em> (el tiempo de finalización de la máquina más cargada):
+<p>Dado un conjunto de $n$ tareas con tiempos de procesamiento enteros positivos $T = \{T_1, T_2, \dots, T_n\}$, se desea particionar las tareas entre dos procesadores idénticos $P_1$ y $P_2$ de manera que se minimice el <em>makespan</em> (el tiempo de finalización de la máquina más cargada):
 $$\min \max \left( \sum_{i \in P_1} T_i, \sum_{j \in P_2} T_j \right)$$
 Formular el problema como un modelo de Programación Lineal Entera, linealizando rigurosamente el operador $\max$. Indicar variables, dominios y conteo de restricciones.</p>
     </div>
@@ -2568,8 +2568,8 @@ Formular el problema como un modelo de Programación Lineal Entera, linealizando
 <ol>
 <li>
 <p><strong>Definición de Variables de Partición:</strong>
-   Para cada tarea $i \in {1, \dots, n}$, definimos una variable binaria:
-   $$x_i = \begin{cases} 1 &amp; \text{si la tarea } i \text{ se asigna al procesador } P_1 \ 0 &amp; \text{si la tarea } i \text{ se asigna al procesador } P_2 \end{cases}$$</p>
+   Para cada tarea $i \in \{1, \dots, n\}$, definimos una variable binaria:
+   $$x_i = \begin{cases} 1 &amp; \text{si la tarea } i \text{ se asigna al procesador } P_1 \\ 0 &amp; \text{si la tarea } i \text{ se asigna al procesador } P_2 \end{cases}$$</p>
 </li>
 <li>
 <p><strong>Expresión de Carga de cada Máquina:</strong></p>
@@ -2594,18 +2594,18 @@ Formular el problema como un modelo de Programación Lineal Entera, linealizando
 </ol>
 <h4>3. Demostración Matemática de Equivalencia</h4>
 <p><strong>Teorema de Equivalencia de la Linealización Minimax:</strong><br />
-Sea $(x^<em>, Z^</em>)$ una solución óptima del modelo linealizado.</p>
+Sea $(x^*, Z^*)$ una solución óptima del modelo linealizado.</p>
 <ol>
 <li>
 <p>Por definición de las restricciones:
-   $$Z^<em> \ge L_1(x^</em>) \quad \text{y} \quad Z^<em> \ge L_2(x^</em>) \implies Z^<em> \ge \max(L_1(x^</em>), L_2(x^*))$$</p>
+   $$Z^* \ge L_1(x^*) \quad \text{y} \quad Z^* \ge L_2(x^*) \implies Z^* \ge \max(L_1(x^*), L_2(x^*))$$</p>
 </li>
 <li>
-<p>Supongamos por contradicción que $Z^<em> &gt; \max(L_1(x^</em>), L_2(x^<em>))$. Entonces podríamos definir un valor $Z' = \max(L_1(x^</em>), L_2(x^<em>)) &lt; Z^</em>$.</p>
+<p>Supongamos por contradicción que $Z^* &gt; \max(L_1(x^*), L_2(x^*))$. Entonces podríamos definir un valor $Z&#x27; = \max(L_1(x^*), L_2(x^*)) &lt; Z^*$.</p>
 </li>
-<li>La solución $(x^<em>, Z')$ satisface todas las restricciones del modelo y produce un valor objetivo $Z' &lt; Z^</em>$, contradiciendo la optimalidad de $(x^<em>, Z^</em>)$.</li>
+<li>La solución $(x^*, Z&#x27;)$ satisface todas las restricciones del modelo y produce un valor objetivo $Z&#x27; &lt; Z^*$, contradiciendo la optimalidad de $(x^*, Z^*)$.</li>
 <li>Por lo tanto, en toda solución óptima se cumple estrictamente que:
-   $$Z^<em> = \max(L_1(x^</em>), L_2(x^*))$$
+   $$Z^* = \max(L_1(x^*), L_2(x^*))$$
    lo que demuestra que el modelo lineal es exactamente equivalente al problema no lineal original.</li>
 </ol>
 <h4>4. Diagrama Visual de Acotamiento de la Variable Z</h4>
@@ -2617,18 +2617,18 @@ Sea $(x^<em>, Z^</em>)$ una solución óptima del modelo linealizado.</p>
     MinZ["min Z"] -->|Presiona| Z
 </pre></div>
 <h4>5. Ejemplo Numérico y Traza</h4>
-<p>Consideremos las tareas $T = {3, 5, 8, 2, 4}$:</p>
+<p>Consideremos las tareas $T = \{3, 5, 8, 2, 4\}$:</p>
 <ul>
 <li>Suma total: $3 + 5 + 8 + 2 + 4 = 22$. Carga ideal perfecta: $22 / 2 = 11$.</li>
 <li>Asignación factible 1:<ul>
-<li>$P_1 = {8, 3} \implies L_1 = 11$.</li>
-<li>$P_2 = {5, 4, 2} \implies L_2 = 11$.</li>
+<li>$P_1 = \{8, 3\} \implies L_1 = 11$.</li>
+<li>$P_2 = \{5, 4, 2\} \implies L_2 = 11$.</li>
 <li>Restricciones: $Z \ge 11$ y $Z \ge 11 \implies Z^* = 11$.</li>
 </ul>
 </li>
 <li>Asignación factible 2:<ul>
-<li>$P_1 = {8, 5} \implies L_1 = 13$.</li>
-<li>$P_2 = {4, 3, 2} \implies L_2 = 9$.</li>
+<li>$P_1 = \{8, 5\} \implies L_1 = 13$.</li>
+<li>$P_2 = \{4, 3, 2\} \implies L_2 = 9$.</li>
 <li>Restricciones: $Z \ge 13$ y $Z \ge 9 \implies Z = 13$ (peor que el óptimo).</li>
 </ul>
 </li>
@@ -2637,7 +2637,7 @@ Sea $(x^<em>, Z^</em>)$ una solución óptima del modelo linealizado.</p>
 <h4>6. Conteo Formal de Variables y Restricciones</h4>
 <ul>
 <li><strong>Variables de Decisión:</strong><ul>
-<li>$n$ variables binarias de asignación $x_i \in {0, 1}$.</li>
+<li>$n$ variables binarias de asignación $x_i \in \{0, 1\}$.</li>
 <li>1 variable continua auxiliar $Z \ge 0$.</li>
 <li><strong>Total:</strong> $n + 1$ variables ($n$ binarias, 1 continua).</li>
 </ul>
@@ -2714,7 +2714,7 @@ def resolver_2_partition_minmax(tiempos: List[float]) -&gt; Tuple[float, List[in
 <ol>
 <li><strong>Multiplicar dos variables de decisión:</strong> Escribir términos como $x_i \cdot y_j$ destruye la linealidad del modelo. En PL/PLI todos los términos deben ser el producto de una constante conocida por una única variable.</li>
 <li><strong>Usar operadores $\max$, $\min$ o valores absolutos $|\cdot|$ directamente:</strong> Deben linealizarse obligatoriamente mediante variables auxiliares continuas ($Z$) y sistemas de desigualdades.</li>
-<li><strong>No declarar el dominio estricto de las variables:</strong> Omitir si una variable es binaria ($x_i \in {0, 1}$), continua no negativa ($x_{ij} \ge 0$) o entera no negativa ($z_k \in \mathbb{Z}^+$) es motivo de descuento directo del $40\%$ del valor de la pregunta.</li>
+<li><strong>No declarar el dominio estricto de las variables:</strong> Omitir si una variable es binaria ($x_i \in \{0, 1\}$), continua no negativa ($x_{ij} \ge 0$) o entera no negativa ($z_k \in \mathbb{Z}^+$) es motivo de descuento directo del $40\%$ del valor de la pregunta.</li>
 <li><strong>Omitir el conteo analítico de variables y restricciones:</strong> Si la consigna indica <em>"indicar variables y restricciones"</em>, debe tabularse cuántas variables continuas, cuántas binarias y cuántas restricciones lineales componen el modelo en función de los parámetros de entrada.</li>
 </ol>
 </main>

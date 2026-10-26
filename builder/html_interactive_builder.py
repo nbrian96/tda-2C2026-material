@@ -2664,13 +2664,64 @@ def normalize_markdown_lists(md_text):
         new_lines.append(line)
     return "\n".join(new_lines)
 
+def convert_markdown_to_html(md_text):
+    # 1. Proteger bloques de código (fenced e inline) para no tocar math dentro de código
+    code_placeholders = []
+
+    def save_fenced_code(match):
+        idx = len(code_placeholders)
+        code_placeholders.append(match.group(0))
+        return f"%%FENCED_CODE_{idx}%%"
+
+    md_text = re.sub(r"(```[\s\S]*?```)", save_fenced_code, md_text)
+
+    def save_inline_code(match):
+        idx = len(code_placeholders)
+        code_placeholders.append(match.group(0))
+        return f"%%INLINE_CODE_{idx}%%"
+
+    md_text = re.sub(r"(`[^`\n]+?`)", save_inline_code, md_text)
+
+    # 2. Proteger bloques de matemáticas KaTeX (display e inline)
+    math_placeholders = []
+
+    def save_display_math(match):
+        idx = len(math_placeholders)
+        math_placeholders.append(match.group(0))
+        return f"%%MATH_DISP_{idx}%%"
+
+    md_text = re.sub(r"\$\$(.+?)\$\$", save_display_math, md_text, flags=re.DOTALL)
+
+    def save_inline_math(match):
+        idx = len(math_placeholders)
+        math_placeholders.append(match.group(0))
+        return f"%%MATH_INL_{idx}%%"
+
+    md_text = re.sub(r"(?<!\\)\$(?!\$)([^\n]+?)(?<!\\)\$", save_inline_math, md_text)
+
+    # 3. Restaurar bloques de código para que markdown los procese con sus extensiones
+    for idx, raw_code in enumerate(code_placeholders):
+        md_text = md_text.replace(f"%%FENCED_CODE_{idx}%%", raw_code)
+        md_text = md_text.replace(f"%%INLINE_CODE_{idx}%%", raw_code)
+
+    # 4. Procesar Markdown con extensiones
+    html_raw = markdown.markdown(md_text, extensions=['fenced_code', 'tables'])
+
+    # 5. Restaurar bloques de matemáticas escapando caracteres HTML (<, >, &)
+    for idx, raw_math in enumerate(math_placeholders):
+        safe_math = html.escape(raw_math)
+        html_raw = html_raw.replace(f"%%MATH_DISP_{idx}%%", safe_math)
+        html_raw = html_raw.replace(f"%%MATH_INL_{idx}%%", safe_math)
+
+    return html_raw
+
 def build_interactive_html(md_text, output_file, active_paradigm="all", page_title=None):
     title_text = "Teoría de Algoritmos — Guía Interactiva de Parciales (FIUBA)"
     if page_title:
         title_text = f"Teoría de Algoritmos — {page_title} (FIUBA)"
 
     md_text = normalize_markdown_lists(md_text)
-    html_raw = markdown.markdown(md_text, extensions=['fenced_code', 'tables'])
+    html_raw = convert_markdown_to_html(md_text)
     html_with_cards = process_html_exercises(html_raw)
     html_with_widgets = inject_interactive_widgets(html_with_cards)
 

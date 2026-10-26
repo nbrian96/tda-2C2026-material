@@ -1878,7 +1878,7 @@ Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos
 <li>
 <p><strong>Paso 3: Poda por Factibilidad en $O(1)$:</strong>
    Una reina puede situarse en $(fila, col)$ si y solo si:
-   $$\neg \, col_ocupada[col] \quad \land \quad \neg \, diag_prin[fila - col + 7] \quad \land \quad \neg \, diag_sec[fila + col]$$
+   $$\neg \, col\_ocupada[col] \quad \land \quad \neg \, diag\_prin[fila - col + 7] \quad \land \quad \neg \, diag\_sec[fila + col]$$
    Esta consulta involucra exactamente 3 accesos indexados a memoria en tiempo $O(1)$.</p>
 </li>
 <li>
@@ -2321,19 +2321,84 @@ Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos 
 <li><strong>Espacio Auxiliar:</strong> $O(|V|)$ para almacenar el conjunto actual y la pila de recursión.</li>
 </ol>
 <h4>2. Ejemplo Concreto y Traza Paso a Paso</h4>
-<p>Sea el grafo con 4 vértices $V = {1, 2, 3, 4}$ y aristas $E = {(1, 2), (2, 3), (3, 4)}$ (camino de 4 vértices).</p>
-<p>| Paso / Rama | Cobertura Actual ($C$) | Cota Actual ($|C|$) | Arista No Cubierta Elegida | Decisión / Poda |
-| :---: | :---: | :---: | :---: | :--- |
-| <strong>Inicio</strong> | $\emptyset$ | $0$ | $(1, 2)$ | Mejor récord inicial: $|V| = 4$ |
-| <strong>Rama 1 (incluir 1)</strong> | ${1}$ | $1 &lt; 4$ | $(2, 3)$ | Ramificar con arista $(2, 3)$ |
-| <strong>Rama 1.1 (incluir 2)</strong> | ${1, 2}$ | $2 &lt; 4$ | $(3, 4)$ | Ramificar con arista $(3, 4)$ |
-| <strong>Rama 1.1.1 (incluir 3)</strong> | ${1, 2, 3}$ | $3 &lt; 4$ | Ninguna | <strong>Cobertura válida hallada! Récord = 3</strong> (${1, 2, 3}$) |
-| <strong>Rama 1.1.2 (incluir 4)</strong> | ${1, 2, 4}$ | $3 \ge 3$ | - | <strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 3$) |
-| <strong>Rama 1.2 (incluir 3)</strong> | ${1, 3}$ | $2 &lt; 3$ | $(3, 4)$ cubierta! Aristas libres: Ninguna! | <strong>¡Nuevo Récord Óptimo = 2!</strong> (${1, 3}$) |
-| <strong>Rama 2 (incluir 2)</strong> | ${2}$ | $1 &lt; 2$ | $(3, 4)$ | Ramificar con arista $(3, 4)$ |
-| <strong>Rama 2.1 (incluir 3)</strong> | ${2, 3}$ | $2 \ge 2$ | - | <strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 2$) |
-| <strong>Rama 2.2 (incluir 4)</strong> | ${2, 4}$ | $2 \ge 2$ | - | <strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 2$) |</p>
-<p><em>Resultado óptimo final:</em> Vertex Cover de tamaño mínimo <strong>$k = 2$</strong> (por ejemplo ${1, 3}$ o ${2, 3}$).</p>
+<p>Sea el grafo con 4 vértices $V = \{1, 2, 3, 4\}$ y aristas $E = \{(1, 2), (2, 3), (3, 4)\}$ (camino de 4 vértices).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Paso / Rama</th>
+<th style="text-align: center;">Cobertura Actual ($C$)</th>
+<th style="text-align: center;">Cota Actual ($|C|$)</th>
+<th style="text-align: center;">Arista No Cubierta Elegida</th>
+<th style="text-align: left;">Decisión / Poda</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>Inicio</strong></td>
+<td style="text-align: center;">$\emptyset$</td>
+<td style="text-align: center;">$0$</td>
+<td style="text-align: center;">$(1, 2)$</td>
+<td style="text-align: left;">Mejor récord inicial: $|V| = 4$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 1 (incluir 1)</strong></td>
+<td style="text-align: center;">$\{1\}$</td>
+<td style="text-align: center;">$1 &lt; 4$</td>
+<td style="text-align: center;">$(2, 3)$</td>
+<td style="text-align: left;">Ramificar con arista $(2, 3)$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 1.1 (incluir 2)</strong></td>
+<td style="text-align: center;">$\{1, 2\}$</td>
+<td style="text-align: center;">$2 &lt; 4$</td>
+<td style="text-align: center;">$(3, 4)$</td>
+<td style="text-align: left;">Ramificar con arista $(3, 4)$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 1.1.1 (incluir 3)</strong></td>
+<td style="text-align: center;">$\{1, 2, 3\}$</td>
+<td style="text-align: center;">$3 &lt; 4$</td>
+<td style="text-align: center;">Ninguna</td>
+<td style="text-align: left;"><strong>Cobertura válida hallada! Récord = 3</strong> ($\{1, 2, 3\}$)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 1.1.2 (incluir 4)</strong></td>
+<td style="text-align: center;">$\{1, 2, 4\}$</td>
+<td style="text-align: center;">$3 \ge 3$</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: left;"><strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 3$)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 1.2 (incluir 3)</strong></td>
+<td style="text-align: center;">$\{1, 3\}$</td>
+<td style="text-align: center;">$2 &lt; 3$</td>
+<td style="text-align: center;">$(3, 4)$ cubierta! Aristas libres: Ninguna!</td>
+<td style="text-align: left;"><strong>¡Nuevo Récord Óptimo = 2!</strong> ($\{1, 3\}$)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 2 (incluir 2)</strong></td>
+<td style="text-align: center;">$\{2\}$</td>
+<td style="text-align: center;">$1 &lt; 2$</td>
+<td style="text-align: center;">$(3, 4)$</td>
+<td style="text-align: left;">Ramificar con arista $(3, 4)$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 2.1 (incluir 3)</strong></td>
+<td style="text-align: center;">$\{2, 3\}$</td>
+<td style="text-align: center;">$2 \ge 2$</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: left;"><strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 2$)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 2.2 (incluir 4)</strong></td>
+<td style="text-align: center;">$\{2, 4\}$</td>
+<td style="text-align: center;">$2 \ge 2$</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: left;"><strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 2$)</td>
+</tr>
+</tbody>
+</table>
+<p><em>Resultado óptimo final:</em> Vertex Cover de tamaño mínimo <strong>$k = 2$</strong> (por ejemplo $\{1, 3\}$ o $\{2, 3\}$).</p>
 <h4>3. Diagrama Visual del Árbol de Branch &amp; Bound</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">graph TD
     R["Raíz: C = {} | Récord = 4"] --> N1["Rama u=1: C = {1}"]:::opt
@@ -2483,7 +2548,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$14$</td>
 <td style="text-align: center;">$2 &gt; 14$ (No)</td>
 <td style="text-align: center;"><strong>Incluir 2</strong> $\implies R = 12$</td>
-<td style="text-align: left;">${2}$</td>
+<td style="text-align: left;">$\{2\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>1</strong></td>
@@ -2491,7 +2556,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$12$</td>
 <td style="text-align: center;">$3 &gt; 12$ (No)</td>
 <td style="text-align: center;"><strong>Incluir 3</strong> $\implies R = 9$</td>
-<td style="text-align: left;">${2, 3}$</td>
+<td style="text-align: left;">$\{2, 3\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>2</strong></td>
@@ -2499,7 +2564,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$9$</td>
 <td style="text-align: center;">$5 &gt; 9$ (No)</td>
 <td style="text-align: center;"><strong>Incluir 5</strong> $\implies R = 4$</td>
-<td style="text-align: left;">${2, 3, 5}$</td>
+<td style="text-align: left;">$\{2, 3, 5\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>3</strong></td>
@@ -2515,7 +2580,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$9$</td>
 <td style="text-align: center;">-</td>
 <td style="text-align: center;"><strong>Excluir 5</strong> $\implies R = 9$</td>
-<td style="text-align: left;">${2, 3}$</td>
+<td style="text-align: left;">$\{2, 3\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>3</strong></td>
@@ -2523,7 +2588,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$9$</td>
 <td style="text-align: center;">$7 &gt; 9$ (No)</td>
 <td style="text-align: center;"><strong>Incluir 7</strong> $\implies R = 2$</td>
-<td style="text-align: left;">${2, 3, 7}$</td>
+<td style="text-align: left;">$\{2, 3, 7\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>4</strong></td>
@@ -2539,7 +2604,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$9$</td>
 <td style="text-align: center;">-</td>
 <td style="text-align: center;"><strong>Excluir 7</strong> $\implies R = 9$</td>
-<td style="text-align: left;">${2, 3}$</td>
+<td style="text-align: left;">$\{2, 3\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>4</strong></td>
@@ -2555,7 +2620,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$12$</td>
 <td style="text-align: center;">-</td>
 <td style="text-align: center;"><strong>Excluir 3</strong> $\implies R = 12$</td>
-<td style="text-align: left;">${2}$</td>
+<td style="text-align: left;">$\{2\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>2</strong></td>
@@ -2563,7 +2628,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$12$</td>
 <td style="text-align: center;">$5 &gt; 12$ (No)</td>
 <td style="text-align: center;"><strong>Incluir 5</strong> $\implies R = 7$</td>
-<td style="text-align: left;">${2, 5}$</td>
+<td style="text-align: left;">$\{2, 5\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>3</strong></td>
@@ -2571,7 +2636,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$7$</td>
 <td style="text-align: center;">$7 &gt; 7$ (No)</td>
 <td style="text-align: center;"><strong>Incluir 7</strong> $\implies R = 0$</td>
-<td style="text-align: left;"><strong>¡ÉXITO: $R = 0$! Solución: ${2, 5, 7}$</strong></td>
+<td style="text-align: left;"><strong>¡ÉXITO: $R = 0$! Solución: $\{2, 5, 7\}$</strong></td>
 </tr>
 </tbody>
 </table>
@@ -2625,8 +2690,8 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Aplicar la poda <code>L[i] &gt; remanente</code> sin ordenar:</strong> La poda por exceso solo es válida si la lista está previamente ordenada. Si la lista contiene números desordenados (por ejemplo $[10, 2]$ con $R = 5$), descartar por $10 > 5$ omitiría erróneamente al $2$.</li>
-    <li><strong>Números negativos o nulos:</strong> Esta poda asume que todos los elementos son positivos ($L[i] > 0$). Si hubiera números negativos, sumar un elemento posterior podría reducir la suma actual y permitir alcanzar el objetivo.</li>
+    <li><strong>Aplicar la poda <code>L[i] &gt; remanente</code> sin ordenar:</strong> La poda por exceso solo es válida si la lista está previamente ordenada. Si la lista contiene números desordenados (por ejemplo $[10, 2]$ con $R = 5$), descartar por $10 &gt; 5$ omitiría erróneamente al $2$.</li>
+    <li><strong>Números negativos o nulos:</strong> Esta poda asume que todos los elementos son positivos ($L[i] &gt; 0$). Si hubiera números negativos, sumar un elemento posterior podría reducir la suma actual y permitir alcanzar el objetivo.</li>
   </ul>
 </div>
       </div>

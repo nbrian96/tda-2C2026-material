@@ -1839,14 +1839,14 @@ body.dark-mode .warning-box {
 <p><strong>Preprocesamiento de Compatibilidad:</strong>
    Un dron $i$ es compatible con un puesto $j$ si y solo si:
    $$\text{Distancia}(i, j) \le \text{AlcanceMax}_i \quad \land \quad t_i^{ini} \le h_j^{min} \quad \land \quad h_j^{max} \le t_i^{fin}$$
-   Sea $Comp(i, j) \in {0, 1}$ el indicador de dicha compatibilidad calculable en tiempo $O(D \cdot P)$.</p>
+   Sea $Comp(i, j) \in \{0, 1\}$ el indicador de dicha compatibilidad calculable en tiempo $O(D \cdot P)$.</p>
 </li>
 <li>
 <p><strong>Topología en Capas Nodal:</strong></p>
 </li>
 <li>Super-fuente $s$.</li>
-<li>Capa de drones: un nodo $d_i$ por cada dron $i \in {1, \dots, D}$.</li>
-<li>Capa de puestos sanitarios: un nodo $p_j$ por cada puesto $j \in {1, \dots, P}$.</li>
+<li>Capa de drones: un nodo $d_i$ por cada dron $i \in \{1, \dots, D\}$.</li>
+<li>Capa de puestos sanitarios: un nodo $p_j$ por cada puesto $j \in \{1, \dots, P\}$.</li>
 <li>Super-sumidero $t$.</li>
 <li><strong>Asignación de Aristas y Capacidades:</strong></li>
 <li><strong>Aristas de Fuente a Drones:</strong> $(s, d_i)$ con capacidad $c(s, d_i) = 2$ para todo $i$. <em>Justificación:</em> Modela directamente que cada dron puede efectuar a lo sumo 2 entregas.</li>
@@ -1864,7 +1864,7 @@ body.dark-mode .warning-box {
 <h4>3. Demostración Teórica de Correctitud e Integralidad</h4>
 <p><strong>Lema de Flujo Entero y Validez:</strong></p>
 <ol>
-<li>Como todas las capacidades de la red son números enteros ($c \in {1, 2}$), por el <strong>Teorema de Integralidad de Flujo</strong>, el flujo óptimo calculado por Edmonds-Karp asignará valores enteros a todas las aristas: $f(e) \in {0, 1, 2}$.</li>
+<li>Como todas las capacidades de la red son números enteros ($c \in \{1, 2\}$), por el <strong>Teorema de Integralidad de Flujo</strong>, el flujo óptimo calculado por Edmonds-Karp asignará valores enteros a todas las aristas: $f(e) \in \{0, 1, 2\}$.</li>
 <li>
 <p>Para cada dron $i$, por conservación en el nodo $d_i$:
    $$\sum_{j} f(d_i, p_j) = f(s, d_i) \le c(s, d_i) = 2$$
@@ -2012,7 +2012,7 @@ def despachar_drones_emergencia(
 <strong>Paradigma:</strong> Programación Dinámica (Exclusión Multidía con Restricción de Presupuesto)<br />
 <strong>Qué evalúa la cátedra:</strong> Definición formal de subproblemas 2D, manejo riguroso de saltos de índice ($i - 3$) por cooldown y reconstrucción exacta de decisiones.</p>
 <h4>1. Enunciado Completo</h4>
-<p>Una empresa de marketing digital planifica su campaña durante los próximos $n$ días. Para cada día $i \in {1, \dots, n}$ se dispone de una propuesta de pauta publicitaria que cuesta $C[i]$ pesos y genera una conversión estimada de $B[i]$ nuevos clientes ($C[i], B[i] &gt; 0$). El presupuesto global disponible es de $P$ pesos. Por políticas de saturación de audiencia, si se pauta en el día $i$, <strong>no se puede volver a pautar durante los siguientes 2 días</strong> (es decir, los días $i+1$ e $i+2$ son de enfriamiento obligatorio; recién se podría volver a pautar el día $i+3$). Diseñar un algoritmo de Programación Dinámica que maximice las conversiones acumuladas sin exceder el presupuesto $P$.</p>
+<p>Una empresa de marketing digital planifica su campaña durante los próximos $n$ días. Para cada día $i \in \{1, \dots, n\}$ se dispone de una propuesta de pauta publicitaria que cuesta $C[i]$ pesos y genera una conversión estimada de $B[i]$ nuevos clientes ($C[i], B[i] &gt; 0$). El presupuesto global disponible es de $P$ pesos. Por políticas de saturación de audiencia, si se pauta en el día $i$, <strong>no se puede volver a pautar durante los siguientes 2 días</strong> (es decir, los días $i+1$ e $i+2$ son de enfriamiento obligatorio; recién se podría volver a pautar el día $i+3$). Diseñar un algoritmo de Programación Dinámica que maximice las conversiones acumuladas sin exceder el presupuesto $P$.</p>
     </div>
 
     <details class="exercise-solution-drawer" id="solution-drawer-38">
@@ -2026,14 +2026,14 @@ def despachar_drones_emergencia(
 <ol>
 <li>
 <p><strong>Definición Formal del Subproblema:</strong>
-   $$OPT(i, p): \text{Máxima conversión obtenible considerando el prefijo de días } {1, \dots, i} \text{ con un presupuesto disponible de } p \text{ pesos}$$
+   $$OPT(i, p): \text{Máxima conversión obtenible considerando el prefijo de días } \{1, \dots, i\} \text{ con un presupuesto disponible de } p \text{ pesos}$$
    donde $0 \le i \le n$ y $0 \le p \le P$.</p>
 </li>
 <li>
 <p><strong>Casos Base:</strong></p>
 </li>
-<li>$OPT(0, p) = 0 \quad \forall p \in {0, \dots, P}$ (sin días disponibles no hay conversiones).</li>
-<li>$OPT(i, 0) = 0 \quad \forall i \in {0, \dots, n}$ (sin dinero no es posible pautar, asumiendo $C[i] &gt; 0$).</li>
+<li>$OPT(0, p) = 0 \quad \forall p \in \{0, \dots, P\}$ (sin días disponibles no hay conversiones).</li>
+<li>$OPT(i, 0) = 0 \quad \forall i \in \{0, \dots, n\}$ (sin dinero no es posible pautar, asumiendo $C[i] &gt; 0$).</li>
 <li>
 <p><strong>Ecuación de Recurrencia de Bellman:</strong>
    Para el día $i$, existen exactamente dos decisiones excluyentes:</p>
@@ -2044,7 +2044,7 @@ def despachar_drones_emergencia(
 <li>
 <p><strong>Opción B (Pautar el día $i$):</strong> Factible solo si $p \ge C[i]$. Ganamos $B[i]$ conversiones y el día publicitario previo pudo ser a lo sumo el día $i-3$ (por el enfriamiento obligatorio de 2 días). El valor es $OPT(\max(0, i-3), p - C[i]) + B[i]$.
    Combinando ambas alternativas:
-   $$OPT(i, p) = \begin{cases} OPT(i-1, p) &amp; \text{si } C[i] &gt; p \ \max \left( OPT(i-1, p), \; OPT(\max(0, i-3), p - C[i]) + B[i] \right) &amp; \text{si } C[i] \le p \end{cases}$$</p>
+   $$OPT(i, p) = \begin{cases} OPT(i-1, p) &amp; \text{si } C[i] &gt; p \\ \max \left( OPT(i-1, p), \; OPT(\max(0, i-3), p - C[i]) + B[i] \right) &amp; \text{si } C[i] \le p \end{cases}$$</p>
 </li>
 <li>
 <p><strong>Orden de Llenado de la Tabla:</strong>
@@ -2082,7 +2082,7 @@ def despachar_drones_emergencia(
 <li>Si pautamos día 1 (costo 5, ben 10) $\implies$ enfriamiento días 2 y 3 $\implies$ podemos pautar día 4 (costo 5, ben 12).</li>
 <li>Costo total: $5 + 5 = 10 \le 10$. Beneficio total: $10 + 12 = 22$.</li>
 <li>Si pautáramos día 3 (costo 6, ben 14), no podríamos pautar día 1 ni 2 ni 4. Total = 14.</li>
-<li>El algoritmo devuelve $OPT(4, 10) = 22$ con días elegidos ${1, 4}$.</li>
+<li>El algoritmo devuelve $OPT(4, 10) = 22$ con días elegidos $\{1, 4\}$.</li>
 </ul>
 <h4>6. Implementación en Python con Tipado Estricto</h4>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-python">from typing import List, Tuple
@@ -2181,9 +2181,9 @@ Plantear un modelo formal de Programación Lineal Entera indicando variables, do
         <h4>2. Los 5 Pasos Metodológicos de Modelado en PLI</h4>
 <ol>
 <li><strong>Variables de Decisión:</strong></li>
-<li>$y_i \in {0, 1} \quad \forall i \in S$: Vale 1 si se instala un servidor en la ubicación $i$, 0 si no.</li>
-<li>$u_j \in {0, 1} \quad \forall j \in U$: Vale 1 si el cliente corporativo $j$ recibe servicio, 0 si no.</li>
-<li>$x_{ji} \in {0, 1} \quad \forall j \in U, i \in S_j$: Vale 1 si el cliente $j$ es atendido específicamente por el servidor $i$, 0 si no.</li>
+<li>$y_i \in \{0, 1\} \quad \forall i \in S$: Vale 1 si se instala un servidor en la ubicación $i$, 0 si no.</li>
+<li>$u_j \in \{0, 1\} \quad \forall j \in U$: Vale 1 si el cliente corporativo $j$ recibe servicio, 0 si no.</li>
+<li>$x_{ji} \in \{0, 1\} \quad \forall j \in U, i \in S_j$: Vale 1 si el cliente $j$ es atendido específicamente por el servidor $i$, 0 si no.</li>
 <li>
 <p><strong>Función Objetivo:</strong>
    Minimizar el gasto de inversión en infraestructura física:
@@ -2206,7 +2206,7 @@ Plantear un modelo formal de Programación Lineal Entera indicando variables, do
 </li>
 <li>
 <p><strong>Dominios de las Variables:</strong>
-   $$y_i \in {0, 1} \quad \forall i \in S, \qquad u_j \in {0, 1} \quad \forall j \in U, \qquad x_{ji} \in {0, 1} \quad \forall j \in U, i \in S_j$$</p>
+   $$y_i \in \{0, 1\} \quad \forall i \in S, \qquad u_j \in \{0, 1\} \quad \forall j \in U, \qquad x_{ji} \in \{0, 1\} \quad \forall j \in U, i \in S_j$$</p>
 </li>
 </ol>
 <h4>3. Conteo Formal de Variables y Restricciones</h4>
@@ -2249,7 +2249,7 @@ Plantear un modelo formal de Programación Lineal Entera indicando variables, do
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
     <li><strong>Olvidar multiplicar la capacidad por $y_i$:</strong> Si se escribe $\sum d_j x_{ji} \le T_i$, el modelo asignará clientes a servidores no instalados ($y_i = 0$), teniendo costo 0 y violando la lógica física. La restricción debe ser estrictamente $\le T_i \cdot y_i$.</li>
-    <li><strong>No imponer $x_{ji} = 0$ para servidores con latencia $> 5$ ms:</strong> Se debe indexar $x_{ji}$ únicamente sobre el subconjunto $S_j$ de baja latencia.</li>
+    <li><strong>No imponer $x_{ji} = 0$ para servidores con latencia $&gt; 5$ ms:</strong> Se debe indexar $x_{ji}$ únicamente sobre el subconjunto $S_j$ de baja latencia.</li>
   </ul>
 </div>
 
@@ -2301,7 +2301,7 @@ Demostrar formalmente que <strong>Asignación de Frecuencias es NP-Completo</str
         <h4>2. Demostración en el Esquema Sagrado de 4 Pasos</h4>
 <h5>Paso 1: Pertenencia a NP ($AF \in \text{NP}$)</h5>
 <ul>
-<li><strong>Certificado Candidato ($C$):</strong> Un vector de enteros $C \in {1, \dots, k}^A$ donde $C[a]$ representa el canal asignado a la antena $a$. Tamaño del certificado: $|A|$ enteros de tamaño $O(\log k)$ bits $\implies O(|A| \log k)$ bits (tamaño polinomial).</li>
+<li><strong>Certificado Candidato ($C$):</strong> Un vector de enteros $C \in \{1, \dots, k\}^A$ donde $C[a]$ representa el canal asignado a la antena $a$. Tamaño del certificado: $|A|$ enteros de tamaño $O(\log k)$ bits $\implies O(|A| \log k)$ bits (tamaño polinomial).</li>
 <li><strong>Algoritmo Verificador Polinomial $V(A, I, k, C)$:</strong><ol>
 <li>Verificar que para cada antena $a \in A$, $1 \le C[a] \le k$.</li>
 <li>Para cada par de interferencia $(u, v) \in I$:</li>
@@ -2313,7 +2313,7 @@ Demostrar formalmente que <strong>Asignación de Frecuencias es NP-Completo</str
 </ul>
 <h5>Paso 2: Selección del Problema Conocido</h5>
 <p>Elegimos el problema <strong>k-Coloring de Grafos</strong> ($k \ge 3$), conocido NP-Completo (Karp, 1972):<br />
-<em>Dado un grafo $G = (V, E)$ y un entero $k$, ¿es posible asignar un color de ${1, \dots, k}$ a cada vértice de modo que dos vértices adyacentes tengan colores distintos?</em><br />
+<em>Dado un grafo $G = (V, E)$ y un entero $k$, ¿es posible asignar un color de $\{1, \dots, k\}$ a cada vértice de modo que dos vértices adyacentes tengan colores distintos?</em><br />
 Objetivo: Demostrar que:
 $$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
 <h5>Paso 3: Transformación Polinomial $f(G, k) \to (A, I, k)$</h5>
@@ -2329,7 +2329,7 @@ $$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
 <li>
 <p><strong>($\implies$) Si $G$ es $k$-coloreable, entonces existe una asignación de frecuencias válida sin interferencias:</strong></p>
 <ul>
-<li>Si $G$ admite un coloreo válido con $k$ colores, existe una función $col: V \to {1, \dots, k}$ tal que $(u, v) \in E \implies col(u) \ne col(v)$.</li>
+<li>Si $G$ admite un coloreo válido con $k$ colores, existe una función $col: V \to \{1, \dots, k\}$ tal que $(u, v) \in E \implies col(u) \ne col(v)$.</li>
 <li>Asignamos al canal de la antena $v$ el color de su vértice: $\text{Canal}(v) = col(v)$.</li>
 <li>Para todo par de interferencia $(u, v) \in I$, como $(u, v) \in E$, se tiene que $\text{Canal}(u) = col(u) \ne col(v) = \text{Canal}(v)$.</li>
 <li>Por lo tanto, ninguna antena en interferencia comparte canal: es una asignación válida para AF.</li>
@@ -2338,7 +2338,7 @@ $$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
 <li>
 <p><strong>($\impliedby$) Si existe una asignación válida de $k$ frecuencias, entonces $G$ es $k$-coloreable:</strong></p>
 <ul>
-<li>Supongamos que existe una asignación de canales válida $F: A \to {1, \dots, k}$.</li>
+<li>Supongamos que existe una asignación de canales válida $F: A \to \{1, \dots, k\}$.</li>
 <li>Definimos el coloreo de vértices asignando $col(v) = F(v)$ para cada $v \in V$.</li>
 <li>Para toda arista $(u, v) \in E$, por la construcción existe el par de interferencia $(u, v) \in I$. Como la asignación es válida, necesariamente $F(u) \ne F(v)$, lo que implica que $col(u) \ne col(v)$.</li>
 <li>Por lo tanto, ningún par de vértices vecinos tiene el mismo color, constituyendo un $k$-coloreo válido de $G$.</li>
@@ -2415,20 +2415,20 @@ $$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
 <p>Utilizá esta lista de verificación durante tu última hora de repaso antes de ingresar al aula:</p>
 <h3>A. Dominio de Paradigmas</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_72274" onchange="toggleChecklistItem('chk_72274', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_78520" onchange="toggleChecklistItem('chk_78520', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_39215" onchange="toggleChecklistItem('chk_39215', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_79963" onchange="toggleChecklistItem('chk_79963', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_18405" onchange="toggleChecklistItem('chk_18405', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_43260" onchange="toggleChecklistItem('chk_43260', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_58913" onchange="toggleChecklistItem('chk_58913', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_34747" onchange="toggleChecklistItem('chk_34747', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_79916" onchange="toggleChecklistItem('chk_79916', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_71192" onchange="toggleChecklistItem('chk_71192', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_31095" onchange="toggleChecklistItem('chk_31095', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_29246" onchange="toggleChecklistItem('chk_29246', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_47790" onchange="toggleChecklistItem('chk_47790', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_58615" onchange="toggleChecklistItem('chk_58615', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
 </ul>
 <h3>B. Ejecución en la Hoja de Examen</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_43348" onchange="toggleChecklistItem('chk_43348', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_85527" onchange="toggleChecklistItem('chk_85527', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_18771" onchange="toggleChecklistItem('chk_18771', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_26786" onchange="toggleChecklistItem('chk_26786', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_29477" onchange="toggleChecklistItem('chk_29477', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_97569" onchange="toggleChecklistItem('chk_97569', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_72946" onchange="toggleChecklistItem('chk_72946', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_6557" onchange="toggleChecklistItem('chk_6557', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
 </ul>
 </main>
 <script>

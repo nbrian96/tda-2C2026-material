@@ -2119,7 +2119,7 @@ body.dark-mode .warning-box {
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado</strong><br />
-Realizar un algoritmo que resuelva la multiplicación de dos matrices cuadradas de orden $n$ ($A$ y $B$) mediante división y conquista. Recordemos la definición: $C = A \times B$ donde $C_{ij} = \sum_{k=1}^n A_{ik} \cdot B_{kj}$ para todo $i, j \in {1, \dots, n}$. Para simplificar el algoritmo se puede suponer que $n$ es una potencia de 2. Indicar y justificar el orden de complejidad temporal y espacial del algoritmo.</p>
+Realizar un algoritmo que resuelva la multiplicación de dos matrices cuadradas de orden $n$ ($A$ y $B$) mediante división y conquista. Recordemos la definición: $C = A \times B$ donde $C_{ij} = \sum_{k=1}^n A_{ik} \cdot B_{kj}$ para todo $i, j \in \{1, \dots, n\}$. Para simplificar el algoritmo se puede suponer que $n$ es una potencia de 2. Indicar y justificar el orden de complejidad temporal y espacial del algoritmo.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
 Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas recursivas de multiplicación, suma de matrices en la etapa de combinación, y aplicación rigurosa del Teorema Maestro sin saltarse el análisis de casos.</p>
     </div>
@@ -2136,7 +2136,7 @@ Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas
 <li>
 <p><strong>Paso 1: División:</strong>
    Se dividen las matrices cuadradas $A$ y $B$ de orden $n \times n$ en 4 submatrices (cuadrantes) de tamaño $(n/2) \times (n/2)$:
-   $$A = \begin{pmatrix} A_{11} &amp; A_{12} \ A_{21} &amp; A_{22} \end{pmatrix}, \quad B = \begin{pmatrix} B_{11} &amp; B_{12} \ B_{21} &amp; B_{22} \end{pmatrix}$$</p>
+   $$A = \begin{pmatrix} A_{11} &amp; A_{12} \\ A_{21} &amp; A_{22} \end{pmatrix}, \quad B = \begin{pmatrix} B_{11} &amp; B_{12} \\ B_{21} &amp; B_{22} \end{pmatrix}$$</p>
 </li>
 <li>
 <p><strong>Paso 2: Casos Base:</strong>
@@ -2147,7 +2147,7 @@ Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas
 <li>
 <p><strong>Paso 3: Conquista (Llamadas Recursivas):</strong>
    De acuerdo al producto matricial por bloques, la matriz resultante $C$ satisface:
-   $$C = \begin{pmatrix} C_{11} &amp; C_{12} \ C_{21} &amp; C_{22} \end{pmatrix} = \begin{pmatrix} A_{11} B_{11} + A_{12} B_{21} &amp; A_{11} B_{12} + A_{12} B_{22} \ A_{21} B_{11} + A_{22} B_{21} &amp; A_{21} B_{12} + A_{22} B_{22} \end{pmatrix}$$
+   $$C = \begin{pmatrix} C_{11} &amp; C_{12} \\ C_{21} &amp; C_{22} \end{pmatrix} = \begin{pmatrix} A_{11} B_{11} + A_{12} B_{21} &amp; A_{11} B_{12} + A_{12} B_{22} \\ A_{21} B_{11} + A_{22} B_{21} &amp; A_{21} B_{12} + A_{22} B_{22} \end{pmatrix}$$
    Cada cuadrante requiere 2 productos de matrices de tamaño $(n/2) \times (n/2)$. En total se disparan <strong>$a = 8$ llamadas recursivas</strong>:</p>
 </li>
 <li>
@@ -2173,7 +2173,7 @@ Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas
 </li>
 <li>
 <p><strong>Paso 5: Ecuación de Recurrencia y Teorema Maestro:</strong>
-   $$T(n) = \begin{cases} \Theta(1) &amp; \text{si } n = 1 \ 8 \cdot T\left(\frac{n}{2}\right) + \Theta(n^2) &amp; \text{si } n &gt; 1 \end{cases}$$
+   $$T(n) = \begin{cases} \Theta(1) &amp; \text{si } n = 1 \\ 8 \cdot T\left(\frac{n}{2}\right) + \Theta(n^2) &amp; \text{si } n &gt; 1 \end{cases}$$
    Identificamos los parámetros del Teorema Maestro:</p>
 </li>
 <li>
@@ -2205,7 +2205,7 @@ Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas
 </ul>
 <h4>3. Ejemplo Concreto y Traza Paso a Paso ($n = 2$)</h4>
 <p>Sean las matrices $2 \times 2$:
-$$A = \begin{pmatrix} 1 &amp; 2 \ 3 &amp; 4 \end{pmatrix}, \quad B = \begin{pmatrix} 5 &amp; 6 \ 7 &amp; 8 \end{pmatrix}$$</p>
+$$A = \begin{pmatrix} 1 &amp; 2 \\ 3 &amp; 4 \end{pmatrix}, \quad B = \begin{pmatrix} 5 &amp; 6 \\ 7 &amp; 8 \end{pmatrix}$$</p>
 <table>
 <thead>
 <tr>
@@ -2303,7 +2303,7 @@ $$A = \begin{pmatrix} 1 &amp; 2 \ 3 &amp; 4 \end{pmatrix}, \quad B = \begin{pmat
 </tbody>
 </table>
 <p>Matriz final ensamblada:
-$$C = \begin{pmatrix} 19 &amp; 22 \ 43 &amp; 50 \end{pmatrix}$$
+$$C = \begin{pmatrix} 19 &amp; 22 \\ 43 &amp; 50 \end{pmatrix}$$
 <em>Verificación por producto tradicional:</em></p>
 <ul>
 <li>Fila 1 × Columna 1: $1 \cdot 5 + 2 \cdot 7 = 19$. Correcto.</li>
@@ -2456,7 +2456,7 @@ Capacidad de descarte logarítmico aprovechando la dirección de la pendiente lo
 <ul>
 <li><strong>Lema de la Pendiente:</strong> Si $A[m] &lt; A[m + 1]$, entonces el subarreglo $A[m + 1 \dots fin]$ contiene al menos un elemento pico.</li>
 <li><strong>Demostración por el Principio del Buen Orden / Contradicción:</strong>
-  Consideremos el subarreglo $A[m + 1 \dots fin]$. Si el último elemento $A[fin]$ es mayor que $A[fin - 1]$, entonces $A[fin]$ es un pico (pues no tiene vecino derecho). Si no lo es, retrocedemos: como $A[m] &lt; A[m + 1]$, no todos los elementos pueden ser decrecientes hacia la izquierda sin toparse con una cresta. Dado que no hay elementos adyacentes iguales, debe existir un primer índice $k \in {m + 1, \dots, fin - 1}$ tal que $A[k] &gt; A[k + 1]$. Como $k$ es el primer punto de caída, necesariamente $A[k] &gt; A[k - 1]$, lo que convierte a $A[k]$ en un pico. $\blacksquare$</li>
+  Consideremos el subarreglo $A[m + 1 \dots fin]$. Si el último elemento $A[fin]$ es mayor que $A[fin - 1]$, entonces $A[fin]$ es un pico (pues no tiene vecino derecho). Si no lo es, retrocedemos: como $A[m] &lt; A[m + 1]$, no todos los elementos pueden ser decrecientes hacia la izquierda sin toparse con una cresta. Dado que no hay elementos adyacentes iguales, debe existir un primer índice $k \in \{m + 1, \dots, fin - 1\}$ tal que $A[k] &gt; A[k + 1]$. Como $k$ es el primer punto de caída, necesariamente $A[k] &gt; A[k - 1]$, lo que convierte a $A[k]$ en un pico. $\blacksquare$</li>
 </ul>
 <h4>3. Ejemplo Concreto y Traza Paso a Paso</h4>
 <p>Sea el arreglo de $n = 7$ elementos:
@@ -2542,7 +2542,7 @@ $$A = [1, 2, 1, 3, 5, 6, 4]$$</p>
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Hacer <code>fin = m - 1</code> en la rama descendente:</strong> Si $A[m] > A[m+1]$, el elemento $A[m]$ podría ser precisamente el pico. Si ajustas <code>fin = m - 1</code>, excluyes a $m$ y el algoritmo puede retornar un índice incorrecto o fallar. Debe ser obligatoriamente <code>fin = m</code>.</li>
+    <li><strong>Hacer <code>fin = m - 1</code> en la rama descendente:</strong> Si $A[m] &gt; A[m+1]$, el elemento $A[m]$ podría ser precisamente el pico. Si ajustas <code>fin = m - 1</code>, excluyes a $m$ y el algoritmo puede retornar un índice incorrecto o fallar. Debe ser obligatoriamente <code>fin = m</code>.</li>
     <li><strong>Desbordamiento de índice al calcular $m+1$:</strong> Si el bucle tiene condición <code>ini &le; fin</code>, en la última iteración $m = fin$ y la consulta <code>arr[m + 1]</code> arroja <code>IndexError</code>. La condición estricta debe ser <code>ini &lt; fin</code>.</li>
     <li><strong>Creer que el arreglo debe estar ordenado:</strong> Este algoritmo funciona sobre arreglos desordenados gracias al Lema de la Pendiente. Afirmar en el examen que se requiere ordenar previamente ($O(n \log n)$) invalida la cota $O(\log n)$.</li>
   </ul>
@@ -2629,7 +2629,7 @@ Identificación de la propiedad de frontera de transición, manejo riguroso de c
 <p><strong>Paso Inductivo ($L \ge 1$):</strong>
   Se inspecciona $A[m]$. </p>
 <ul>
-<li>Si $A[m] = 1$: Como el arreglo tiene la estructura $1^<em> 0^</em>$, si la posición $m$ tiene un 1, todas las posiciones $j \le m$ tienen $A[j] = 1$. Por lo tanto, ningún índice $\le m$ puede ser cero. El primer cero, de existir, debe residir en $[m + 1, fin]$, un subrango de longitud $\le \lfloor L/2 \rfloor$. Por hipótesis inductiva, la llamada recursiva devolverá el resultado correcto.</li>
+<li>Si $A[m] = 1$: Como el arreglo tiene la estructura $1^* 0^*$, si la posición $m$ tiene un 1, todas las posiciones $j \le m$ tienen $A[j] = 1$. Por lo tanto, ningún índice $\le m$ puede ser cero. El primer cero, de existir, debe residir en $[m + 1, fin]$, un subrango de longitud $\le \lfloor L/2 \rfloor$. Por hipótesis inductiva, la llamada recursiva devolverá el resultado correcto.</li>
 <li>Si $A[m] = 0$: Si $m = 0$ o $A[m-1] = 1$, por definición $m$ es el primer cero y se retorna. Si $A[m-1] = 0$, el primer cero está estrictamente antes de $m$, residiendo en $[ini, m - 1]$. Por hipótesis inductiva, la recursión encuentra el resultado exacto. $\blacksquare$</li>
 </ul>
 </li>
@@ -2840,8 +2840,8 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 <ul>
 <li>
 <p><strong>Definición de Soluciones:</strong>
-  Sea $G = {g_1, g_2, \dots, g_k}$ el conjunto de intervalos elegidos por el algoritmo Greedy, ordenados cronológicamente por tiempo de fin.
-  Sea $OPT = {o_1, o_2, \dots, o_m}$ el conjunto de intervalos de una solución óptima arbitraria, también ordenados por tiempo de fin, con $m \ge k$.</p>
+  Sea $G = \{g_1, g_2, \dots, g_k\}$ el conjunto de intervalos elegidos por el algoritmo Greedy, ordenados cronológicamente por tiempo de fin.
+  Sea $OPT = \{o_1, o_2, \dots, o_m\}$ el conjunto de intervalos de una solución óptima arbitraria, también ordenados por tiempo de fin, con $m \ge k$.</p>
 </li>
 <li>
 <p><strong>Lema Inductivo:</strong> Para todo $r \le k$, el tiempo de fin del $r$-ésimo elemento voraz es menor o igual al del $r$-ésimo elemento óptimo:
@@ -2939,7 +2939,7 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 <td style="text-align: center;">$0$ (inicial)</td>
 <td style="text-align: center;">$1 \ge 0$ (Sí)</td>
 <td style="text-align: center;"><strong>ACEPTAR A</strong></td>
-<td style="text-align: left;">${A}$, $f_{\text{último}} = 4$</td>
+<td style="text-align: left;">$\{A\}$, $f_{\text{último}} = 4$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>2</strong></td>
@@ -2948,7 +2948,7 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 <td style="text-align: center;">$4$</td>
 <td style="text-align: center;">$3 \ge 4$ (No)</td>
 <td style="text-align: center;"><strong>RECHAZAR</strong> (conflicto)</td>
-<td style="text-align: left;">${A}$</td>
+<td style="text-align: left;">$\{A\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>3</strong></td>
@@ -2957,7 +2957,7 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 <td style="text-align: center;">$4$</td>
 <td style="text-align: center;">$0 \ge 4$ (No)</td>
 <td style="text-align: center;"><strong>RECHAZAR</strong> (conflicto)</td>
-<td style="text-align: left;">${A}$</td>
+<td style="text-align: left;">$\{A\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>4</strong></td>
@@ -2966,7 +2966,7 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 <td style="text-align: center;">$4$</td>
 <td style="text-align: center;">$4 \ge 4$ (Sí)</td>
 <td style="text-align: center;"><strong>ACEPTAR D</strong></td>
-<td style="text-align: left;">${A, D}$, $f_{\text{último}} = 7$</td>
+<td style="text-align: left;">$\{A, D\}$, $f_{\text{último}} = 7$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>5</strong></td>
@@ -2975,11 +2975,11 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 <td style="text-align: center;">$7$</td>
 <td style="text-align: center;">$6 \ge 7$ (No)</td>
 <td style="text-align: center;"><strong>RECHAZAR</strong> (conflicto)</td>
-<td style="text-align: left;">${A, D}$</td>
+<td style="text-align: left;">$\{A, D\}$</td>
 </tr>
 </tbody>
 </table>
-<p><em>Total de permisos máximos otorgados:</em> 2 mafias (${A, D}$).</p>
+<p><em>Total de permisos máximos otorgados:</em> 2 mafias ($\{A, D\}$).</p>
 <h4>4. Diagrama Visual de Intervalos</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">graph LR
     subgraph Ruta [Ocupación en Ruta Costera]
@@ -3018,7 +3018,7 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
     <li><strong>Confundir Interval Scheduling con Interval Scheduling Ponderado:</strong> Si las mafias ofrecieran dinero diferente por cada permiso ($v_i$), la regla voraz por fin más temprano **deja de ser óptima**. Se debe resolver obligatoriamente mediante Programación Dinámica con búsqueda binaria en $O(n \log n)$ (ver Ejercicio 18).</li>
-    <li><strong>Solapamiento en extremos ($s_j == f_i$):</strong> Prestar atención a si el enunciado indica si compartir el kilómetro exacto está permitido o no ($s_j \ge f_i$ vs $s_j > f_i$). En la ruta costera, la frontera compartida es admisible ($s_j \ge f_{\text{último}}$).</li>
+    <li><strong>Solapamiento en extremos ($s_j == f_i$):</strong> Prestar atención a si el enunciado indica si compartir el kilómetro exacto está permitido o no ($s_j \ge f_i$ vs $s_j &gt; f_i$). En la ruta costera, la frontera compartida es admisible ($s_j \ge f_{\text{último}}$).</li>
     <li><strong>Ordenar por duración ($f_i - s_i$):</strong> Es el error intuitivo más frecuente en parciales. Recuerde que un intervalo de duración 2 puede arruinar a dos intervalos adyacentes de duración 3, obteniendo 1 en lugar de 2.</li>
   </ul>
 </div>
@@ -3171,10 +3171,10 @@ Capacidad de analizar por qué un algoritmo voraz falla en problemas NP-Hard, di
 </table>
 <p><em>Comparación:</em></p>
 <ul>
-<li>$V_{\text{greedy}} = 60 + 100 = 160$ (elementos ${1, 2}$, peso 30).</li>
+<li>$V_{\text{greedy}} = 60 + 100 = 160$ (elementos $\{1, 2\}$, peso 30).</li>
 <li>Elemento Crítico en solitario: Ítem 3 ($v_3 = 120$, peso $30 \le 50$).</li>
 <li>$V_{\text{aprox}} = \max(160, 120) = 160$.</li>
-<li><em>Óptimo entero real (DP):</em> Ítems ${2, 3}$ con peso $20 + 30 = 50$, valor $100 + 120 = 220$.</li>
+<li><em>Óptimo entero real (DP):</em> Ítems $\{2, 3\}$ con peso $20 + 30 = 50$, valor $100 + 120 = 220$.</li>
 <li><em>Ratio obtenido:</em> $160 / 220 \approx 72.7\% &gt; 50\%$ (satisface holgadamente la cota $\ge 1/2$).</li>
 </ul>
 <h4>4. Diagrama del Proceso de Selección</h4>
@@ -3298,25 +3298,25 @@ Técnica de ordenamiento por fecha de vencimiento más temprana (<em>Earliest De
 <li><strong>Existencia de Inversión Adyacente:</strong> Si un cronograma tiene inversiones, necesariamente contiene al menos un par de tareas <strong>adyacentes y consecutivas</strong> $i$ y $j$ con $d_i &gt; d_j$.</li>
 <li>
 <p><strong>Efecto del Intercambio Adyacente:</strong>
-  Sea $S$ un cronograma óptimo con la menor cantidad de inversiones. Si $S$ tiene inversiones, tomamos un par adyacente $i, j$ tal que $i$ precede inmediatamente a $j$ con $d_i &gt; d_j$. Intercambiamos el orden de ejecución de $i$ y $j$, obteniendo un nuevo cronograma $S'$.</p>
+  Sea $S$ un cronograma óptimo con la menor cantidad de inversiones. Si $S$ tiene inversiones, tomamos un par adyacente $i, j$ tal que $i$ precede inmediatamente a $j$ con $d_i &gt; d_j$. Intercambiamos el orden de ejecución de $i$ y $j$, obteniendo un nuevo cronograma $S&#x27;$.</p>
 <ul>
 <li>Las tareas programadas antes de $i$ y después de $j$ no modifican sus tiempos de inicio ni fin. Sus latencias permanecen idénticas.</li>
-<li>La tarea $j$ se ejecuta antes en $S'$ que en $S$: su tiempo de finalización se reduce de $f_j$ a $f'_j = f_j - t_i$. Por ende, su latencia $L'_j \le L_j$.</li>
+<li>La tarea $j$ se ejecuta antes en $S&#x27;$ que en $S$: su tiempo de finalización se reduce de $f_j$ a $f&#x27;_j = f_j - t_i$. Por ende, su latencia $L&#x27;_j \le L_j$.</li>
 <li>
-<p>La tarea $i$ finaliza en $S'$ exactamente en el instante en que antes finalizaba $j$: $f'_i = f_j$.
+<p>La tarea $i$ finaliza en $S&#x27;$ exactamente en el instante en que antes finalizaba $j$: $f&#x27;_i = f_j$.
 Calculamos su nueva latencia:
-$$L'_i = \max(0, f'_i - d_i) = \max(0, f_j - d_i)$$
+$$L&#x27;_i = \max(0, f&#x27;_i - d_i) = \max(0, f_j - d_i)$$
 Como $d_i &gt; d_j$, se cumple:
 $$f_j - d_i &lt; f_j - d_j \le L_j$$
-Por lo tanto, $L'_i \le L_j$.</p>
+Por lo tanto, $L&#x27;_i \le L_j$.</p>
 </li>
 <li>
 <p>La nueva latencia máxima del par es:
-$$\max(L'_i, L'_j) \le \max(L_i, L_j)$$</p>
+$$\max(L&#x27;_i, L&#x27;_j) \le \max(L_i, L_j)$$</p>
 </li>
 <li>
-<p>Por consiguiente, la latencia máxima global del cronograma $S'$ <strong>no aumentó</strong>:
-$$L_{\max}(S') \le L_{\max}(S)$$</p>
+<p>Por consiguiente, la latencia máxima global del cronograma $S&#x27;$ <strong>no aumentó</strong>:
+$$L_{\max}(S&#x27;) \le L_{\max}(S)$$</p>
 </li>
 </ul>
 </li>
@@ -3520,12 +3520,12 @@ Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heur
    $$\Delta(c) = |S_c \cap U_{\text{restantes}}|$$
    Definimos el ratio voraz:
    $$\text{Ratio}(c) = \frac{CTO_c}{\Delta(c)}$$
-   Se selecciona vorazmente la celda $c^<em>$ que </em><em>minimiza el costo por cada nuevo vecindario cubierto</em><em>:
-   $$c^</em> = \arg\min_{c: \Delta(c) &gt; 0} \frac{CTO_c}{\Delta(c)}$$</p>
+   Se selecciona vorazmente la celda $c^*$ que <strong>minimiza el costo por cada nuevo vecindario cubierto</strong>:
+   $$c^* = \arg\min_{c: \Delta(c) &gt; 0} \frac{CTO_c}{\Delta(c)}$$</p>
 </li>
 <li>
 <p><strong>Paso 3: Actualización y Terminación:</strong>
-   Se incorpora $c^<em>$ a la solución y se actualiza $U_{\text{restantes}} = U_{\text{restantes}} \setminus S_{c^</em>}$. Se repite hasta que $U_{\text{restantes}} = \emptyset$.</p>
+   Se incorpora $c^*$ a la solución y se actualiza $U_{\text{restantes}} = U_{\text{restantes}} \setminus S_{c^*}$. Se repite hasta que $U_{\text{restantes}} = \emptyset$.</p>
 </li>
 <li>
 <p><strong>Paso 4: Factor de Garantía de Aproximación (Teorema de Chvátal):</strong>
@@ -3541,7 +3541,7 @@ Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heur
 <li>Complejidad temporal: $O(V \cdot M)$. Espacio: $O(V + M)$.</li>
 </ol>
 <h4>2. Ejemplo Concreto y Traza Paso a Paso</h4>
-<p>Sean 4 vecindarios ${v_1, v_2, v_3, v_4}$ y 3 antenas candidatas:</p>
+<p>Sean 4 vecindarios $\{v_1, v_2, v_3, v_4\}$ y 3 antenas candidatas:</p>
 <table>
 <thead>
 <tr>
@@ -3553,35 +3553,35 @@ Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heur
 <tbody>
 <tr>
 <td style="text-align: center;"><strong>A1</strong></td>
-<td style="text-align: center;">${v_1, v_2}$</td>
+<td style="text-align: center;">$\{v_1, v_2\}$</td>
 <td style="text-align: center;">$\$10$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>A2</strong></td>
-<td style="text-align: center;">${v_2, v_3, v_4}$</td>
+<td style="text-align: center;">$\{v_2, v_3, v_4\}$</td>
 <td style="text-align: center;">$\$24$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>A3</strong></td>
-<td style="text-align: center;">${v_3, v_4}$</td>
+<td style="text-align: center;">$\{v_3, v_4\}$</td>
 <td style="text-align: center;">$\$12$</td>
 </tr>
 </tbody>
 </table>
-<p><em>Iteración 1 ($U_{\text{restantes}} = {v_1, v_2, v_3, v_4}$):</em></p>
+<p><em>Iteración 1 ($U_{\text{restantes}} = \{v_1, v_2, v_3, v_4\}$):</em></p>
 <ul>
 <li>A1: cubre $2$ nuevos $\implies$ Ratio $= 10 / 2 = 5.0$.</li>
 <li>A2: cubre $3$ nuevos $\implies$ Ratio $= 24 / 3 = 8.0$.</li>
 <li>A3: cubre $2$ nuevos $\implies$ Ratio $= 12 / 2 = 6.0$.</li>
-<li><strong>Elección voraz:</strong> Se instala <strong>A1</strong> (costo $\$10$). Quedan sin cubrir ${v_3, v_4}$.</li>
+<li><strong>Elección voraz:</strong> Se instala <strong>A1</strong> (costo $\$10$). Quedan sin cubrir $\{v_3, v_4\}$.</li>
 </ul>
-<p><em>Iteración 2 ($U_{\text{restantes}} = {v_3, v_4}$):</em></p>
+<p><em>Iteración 2 ($U_{\text{restantes}} = \{v_3, v_4\}$):</em></p>
 <ul>
-<li>A2: cubre ${v_3, v_4}$ ($2$ nuevos) $\implies$ Ratio $= 24 / 2 = 12.0$.</li>
-<li>A3: cubre ${v_3, v_4}$ ($2$ nuevos) $\implies$ Ratio $= 12 / 2 = 6.0$.</li>
+<li>A2: cubre $\{v_3, v_4\}$ ($2$ nuevos) $\implies$ Ratio $= 24 / 2 = 12.0$.</li>
+<li>A3: cubre $\{v_3, v_4\}$ ($2$ nuevos) $\implies$ Ratio $= 12 / 2 = 6.0$.</li>
 <li><strong>Elección voraz:</strong> Se instala <strong>A3</strong> (costo $\$12$). Quedan sin cubrir $\emptyset$.</li>
 </ul>
-<p><em>Resultado Greedy:</em> Antenas ${A1, A3}$ con Costo Total $= 10 + 12 = \$22$. (En este caso coincide con el óptimo global).</p>
+<p><em>Resultado Greedy:</em> Antenas $\{A1, A3\}$ con Costo Total $= 10 + 12 = \$22$. (En este caso coincide con el óptimo global).</p>
 <h4>3. Diagrama Visual de Cobertura de Conjuntos</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">graph TD
     U["Vecindarios No Cubiertos: {v1, v2, v3, v4}"] --> A1["Instalar A1: Cubre {v1, v2} a $5/vecino"]:::opt
@@ -3726,7 +3726,7 @@ Construcción de heurísticas paso a paso y formulación de contraejemplos matem
 </li>
 <li>
 <p><strong>Conclusión Formal:</strong>
-  $$\text{Costo}<em>{\text{greedy}} = 110 &gt; 25 = \text{Costo}</em>{\text{alternativo}}$$
+  $$\text{Costo}_{\text{greedy}} = 110 &gt; 25 = \text{Costo}_{\text{alternativo}}$$
   Como la solución voraz es estrictamente peor que la alternativa factible, queda demostrado que <strong>el enfoque greedy no garantiza la solución óptima</strong>.
   <em>Paradigma adecuado:</em> Este problema exhibe subestructura óptima con superposición de subproblemas y debe modelarse mediante <strong>Programación Dinámica</strong> en tiempo $O(V + E)$ (ver Ejercicio 32). $\blacksquare$</p>
 </li>
@@ -3872,7 +3872,7 @@ Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos
 <li>
 <p><strong>Paso 3: Poda por Factibilidad en $O(1)$:</strong>
    Una reina puede situarse en $(fila, col)$ si y solo si:
-   $$\neg \, col_ocupada[col] \quad \land \quad \neg \, diag_prin[fila - col + 7] \quad \land \quad \neg \, diag_sec[fila + col]$$
+   $$\neg \, col\_ocupada[col] \quad \land \quad \neg \, diag\_prin[fila - col + 7] \quad \land \quad \neg \, diag\_sec[fila + col]$$
    Esta consulta involucra exactamente 3 accesos indexados a memoria en tiempo $O(1)$.</p>
 </li>
 <li>
@@ -4315,19 +4315,84 @@ Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos 
 <li><strong>Espacio Auxiliar:</strong> $O(|V|)$ para almacenar el conjunto actual y la pila de recursión.</li>
 </ol>
 <h4>2. Ejemplo Concreto y Traza Paso a Paso</h4>
-<p>Sea el grafo con 4 vértices $V = {1, 2, 3, 4}$ y aristas $E = {(1, 2), (2, 3), (3, 4)}$ (camino de 4 vértices).</p>
-<p>| Paso / Rama | Cobertura Actual ($C$) | Cota Actual ($|C|$) | Arista No Cubierta Elegida | Decisión / Poda |
-| :---: | :---: | :---: | :---: | :--- |
-| <strong>Inicio</strong> | $\emptyset$ | $0$ | $(1, 2)$ | Mejor récord inicial: $|V| = 4$ |
-| <strong>Rama 1 (incluir 1)</strong> | ${1}$ | $1 &lt; 4$ | $(2, 3)$ | Ramificar con arista $(2, 3)$ |
-| <strong>Rama 1.1 (incluir 2)</strong> | ${1, 2}$ | $2 &lt; 4$ | $(3, 4)$ | Ramificar con arista $(3, 4)$ |
-| <strong>Rama 1.1.1 (incluir 3)</strong> | ${1, 2, 3}$ | $3 &lt; 4$ | Ninguna | <strong>Cobertura válida hallada! Récord = 3</strong> (${1, 2, 3}$) |
-| <strong>Rama 1.1.2 (incluir 4)</strong> | ${1, 2, 4}$ | $3 \ge 3$ | - | <strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 3$) |
-| <strong>Rama 1.2 (incluir 3)</strong> | ${1, 3}$ | $2 &lt; 3$ | $(3, 4)$ cubierta! Aristas libres: Ninguna! | <strong>¡Nuevo Récord Óptimo = 2!</strong> (${1, 3}$) |
-| <strong>Rama 2 (incluir 2)</strong> | ${2}$ | $1 &lt; 2$ | $(3, 4)$ | Ramificar con arista $(3, 4)$ |
-| <strong>Rama 2.1 (incluir 3)</strong> | ${2, 3}$ | $2 \ge 2$ | - | <strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 2$) |
-| <strong>Rama 2.2 (incluir 4)</strong> | ${2, 4}$ | $2 \ge 2$ | - | <strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 2$) |</p>
-<p><em>Resultado óptimo final:</em> Vertex Cover de tamaño mínimo <strong>$k = 2$</strong> (por ejemplo ${1, 3}$ o ${2, 3}$).</p>
+<p>Sea el grafo con 4 vértices $V = \{1, 2, 3, 4\}$ y aristas $E = \{(1, 2), (2, 3), (3, 4)\}$ (camino de 4 vértices).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: center;">Paso / Rama</th>
+<th style="text-align: center;">Cobertura Actual ($C$)</th>
+<th style="text-align: center;">Cota Actual ($|C|$)</th>
+<th style="text-align: center;">Arista No Cubierta Elegida</th>
+<th style="text-align: left;">Decisión / Poda</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: center;"><strong>Inicio</strong></td>
+<td style="text-align: center;">$\emptyset$</td>
+<td style="text-align: center;">$0$</td>
+<td style="text-align: center;">$(1, 2)$</td>
+<td style="text-align: left;">Mejor récord inicial: $|V| = 4$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 1 (incluir 1)</strong></td>
+<td style="text-align: center;">$\{1\}$</td>
+<td style="text-align: center;">$1 &lt; 4$</td>
+<td style="text-align: center;">$(2, 3)$</td>
+<td style="text-align: left;">Ramificar con arista $(2, 3)$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 1.1 (incluir 2)</strong></td>
+<td style="text-align: center;">$\{1, 2\}$</td>
+<td style="text-align: center;">$2 &lt; 4$</td>
+<td style="text-align: center;">$(3, 4)$</td>
+<td style="text-align: left;">Ramificar con arista $(3, 4)$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 1.1.1 (incluir 3)</strong></td>
+<td style="text-align: center;">$\{1, 2, 3\}$</td>
+<td style="text-align: center;">$3 &lt; 4$</td>
+<td style="text-align: center;">Ninguna</td>
+<td style="text-align: left;"><strong>Cobertura válida hallada! Récord = 3</strong> ($\{1, 2, 3\}$)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 1.1.2 (incluir 4)</strong></td>
+<td style="text-align: center;">$\{1, 2, 4\}$</td>
+<td style="text-align: center;">$3 \ge 3$</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: left;"><strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 3$)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 1.2 (incluir 3)</strong></td>
+<td style="text-align: center;">$\{1, 3\}$</td>
+<td style="text-align: center;">$2 &lt; 3$</td>
+<td style="text-align: center;">$(3, 4)$ cubierta! Aristas libres: Ninguna!</td>
+<td style="text-align: left;"><strong>¡Nuevo Récord Óptimo = 2!</strong> ($\{1, 3\}$)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 2 (incluir 2)</strong></td>
+<td style="text-align: center;">$\{2\}$</td>
+<td style="text-align: center;">$1 &lt; 2$</td>
+<td style="text-align: center;">$(3, 4)$</td>
+<td style="text-align: left;">Ramificar con arista $(3, 4)$</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 2.1 (incluir 3)</strong></td>
+<td style="text-align: center;">$\{2, 3\}$</td>
+<td style="text-align: center;">$2 \ge 2$</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: left;"><strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 2$)</td>
+</tr>
+<tr>
+<td style="text-align: center;"><strong>Rama 2.2 (incluir 4)</strong></td>
+<td style="text-align: center;">$\{2, 4\}$</td>
+<td style="text-align: center;">$2 \ge 2$</td>
+<td style="text-align: center;">-</td>
+<td style="text-align: left;"><strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 2$)</td>
+</tr>
+</tbody>
+</table>
+<p><em>Resultado óptimo final:</em> Vertex Cover de tamaño mínimo <strong>$k = 2$</strong> (por ejemplo $\{1, 3\}$ o $\{2, 3\}$).</p>
 <h4>3. Diagrama Visual del Árbol de Branch &amp; Bound</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">graph TD
     R["Raíz: C = {} | Récord = 4"] --> N1["Rama u=1: C = {1}"]:::opt
@@ -4477,7 +4542,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$14$</td>
 <td style="text-align: center;">$2 &gt; 14$ (No)</td>
 <td style="text-align: center;"><strong>Incluir 2</strong> $\implies R = 12$</td>
-<td style="text-align: left;">${2}$</td>
+<td style="text-align: left;">$\{2\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>1</strong></td>
@@ -4485,7 +4550,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$12$</td>
 <td style="text-align: center;">$3 &gt; 12$ (No)</td>
 <td style="text-align: center;"><strong>Incluir 3</strong> $\implies R = 9$</td>
-<td style="text-align: left;">${2, 3}$</td>
+<td style="text-align: left;">$\{2, 3\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>2</strong></td>
@@ -4493,7 +4558,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$9$</td>
 <td style="text-align: center;">$5 &gt; 9$ (No)</td>
 <td style="text-align: center;"><strong>Incluir 5</strong> $\implies R = 4$</td>
-<td style="text-align: left;">${2, 3, 5}$</td>
+<td style="text-align: left;">$\{2, 3, 5\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>3</strong></td>
@@ -4509,7 +4574,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$9$</td>
 <td style="text-align: center;">-</td>
 <td style="text-align: center;"><strong>Excluir 5</strong> $\implies R = 9$</td>
-<td style="text-align: left;">${2, 3}$</td>
+<td style="text-align: left;">$\{2, 3\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>3</strong></td>
@@ -4517,7 +4582,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$9$</td>
 <td style="text-align: center;">$7 &gt; 9$ (No)</td>
 <td style="text-align: center;"><strong>Incluir 7</strong> $\implies R = 2$</td>
-<td style="text-align: left;">${2, 3, 7}$</td>
+<td style="text-align: left;">$\{2, 3, 7\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>4</strong></td>
@@ -4533,7 +4598,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$9$</td>
 <td style="text-align: center;">-</td>
 <td style="text-align: center;"><strong>Excluir 7</strong> $\implies R = 9$</td>
-<td style="text-align: left;">${2, 3}$</td>
+<td style="text-align: left;">$\{2, 3\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>4</strong></td>
@@ -4549,7 +4614,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$12$</td>
 <td style="text-align: center;">-</td>
 <td style="text-align: center;"><strong>Excluir 3</strong> $\implies R = 12$</td>
-<td style="text-align: left;">${2}$</td>
+<td style="text-align: left;">$\{2\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>2</strong></td>
@@ -4557,7 +4622,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$12$</td>
 <td style="text-align: center;">$5 &gt; 12$ (No)</td>
 <td style="text-align: center;"><strong>Incluir 5</strong> $\implies R = 7$</td>
-<td style="text-align: left;">${2, 5}$</td>
+<td style="text-align: left;">$\{2, 5\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>3</strong></td>
@@ -4565,7 +4630,7 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 <td style="text-align: center;">$7$</td>
 <td style="text-align: center;">$7 &gt; 7$ (No)</td>
 <td style="text-align: center;"><strong>Incluir 7</strong> $\implies R = 0$</td>
-<td style="text-align: left;"><strong>¡ÉXITO: $R = 0$! Solución: ${2, 5, 7}$</strong></td>
+<td style="text-align: left;"><strong>¡ÉXITO: $R = 0$! Solución: $\{2, 5, 7\}$</strong></td>
 </tr>
 </tbody>
 </table>
@@ -4619,8 +4684,8 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Aplicar la poda <code>L[i] &gt; remanente</code> sin ordenar:</strong> La poda por exceso solo es válida si la lista está previamente ordenada. Si la lista contiene números desordenados (por ejemplo $[10, 2]$ con $R = 5$), descartar por $10 > 5$ omitiría erróneamente al $2$.</li>
-    <li><strong>Números negativos o nulos:</strong> Esta poda asume que todos los elementos son positivos ($L[i] > 0$). Si hubiera números negativos, sumar un elemento posterior podría reducir la suma actual y permitir alcanzar el objetivo.</li>
+    <li><strong>Aplicar la poda <code>L[i] &gt; remanente</code> sin ordenar:</strong> La poda por exceso solo es válida si la lista está previamente ordenada. Si la lista contiene números desordenados (por ejemplo $[10, 2]$ con $R = 5$), descartar por $10 &gt; 5$ omitiría erróneamente al $2$.</li>
+    <li><strong>Números negativos o nulos:</strong> Esta poda asume que todos los elementos son positivos ($L[i] &gt; 0$). Si hubiera números negativos, sumar un elemento posterior podría reducir la suma actual y permitir alcanzar el objetivo.</li>
   </ul>
 </div>
       </div>
@@ -4722,7 +4787,7 @@ Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguro
 <li>
 <p><strong>Ecuación de Recurrencia:</strong><br />
    Para todo $i \ge 1$:
-   $$OPT(i) = \begin{cases} OPT(i - 1) + 1 &amp; \text{si } i \text{ es impar} \ \min\Big(OPT(i - 1) + 1, \; OPT\left(\frac{i}{2}\right) + 1\Big) &amp; \text{si } i \text{ es par} \end{cases}$$</p>
+   $$OPT(i) = \begin{cases} OPT(i - 1) + 1 &amp; \text{si } i \text{ es impar} \\ \min\Big(OPT(i - 1) + 1, \; OPT\left(\frac{i}{2}\right) + 1\Big) &amp; \text{si } i \text{ es par} \end{cases}$$</p>
 </li>
 <li>
 <p><strong>Orden de Llenado de la Tabla:</strong><br />
@@ -4748,19 +4813,19 @@ Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguro
 <div class="proof-card">
   <div class="proof-card-header">🛡️ 2. Subestructura Óptima (Demostración por Reducción al Absurdo / Cut-and-Paste)</div>
   <p>Supongamos que el camino óptimo global para llegar a $i$ termina con la operación $+1$, viniendo de $i - 1$, con costo $C = \text{costo}(0 \to i-1) + 1$.</p>
-  <p>Si el subcamino $(0 \to i - 1)$ no fuera óptimo, existiría un camino alternativo con menor costo $C' < \text{costo}(0 \to i - 1)$. Reemplazando dicho subcamino, obtendríamos un camino a $i$ con costo $C' + 1 < C$, lo cual contradice que $C$ era la cantidad mínima de operaciones para $i$.</p>
+  <p>Si el subcamino $(0 \to i - 1)$ no fuera óptimo, existiría un camino alternativo con menor costo $C&#x27; &lt; \text{costo}(0 \to i - 1)$. Reemplazando dicho subcamino, obtendríamos un camino a $i$ con costo $C&#x27; + 1 &lt; C$, lo cual contradice que $C$ era la cantidad mínima de operaciones para $i$.</p>
   <p>El mismo razonamiento aplica si el último paso fue $\times 2$ desde $i / 2$. En consecuencia, $OPT(i)$ se construye necesariamente a partir de la solución óptima de uno de sus predecesores inmediatos.</p>
 </div>
 
 <div class="proof-card">
   <div class="proof-card-header">🛡️ 3. Ausencia de Ciclos y Orden Topológico</div>
-  <p>Para todo $i \ge 1$, se cumple estrictamente que $i - 1 < i$ y $i / 2 < i$. El grafo de dependencias de subproblemas es un <strong>DAG (Grafo Acíclico Dirigido)</strong>, garantizando que el llenado secuencial $1, 2, \dots, K$ respeta el orden topológico sin generar llamadas recursivas circulares.</p>
+  <p>Para todo $i \ge 1$, se cumple estrictamente que $i - 1 &lt; i$ y $i / 2 &lt; i$. El grafo de dependencias de subproblemas es un <strong>DAG (Grafo Acíclico Dirigido)</strong>, garantizando que el llenado secuencial $1, 2, \dots, K$ respeta el orden topológico sin generar llamadas recursivas circulares.</p>
 </div>
 
 <div class="proof-card">
   <div class="proof-card-header">🛡️ 4. Inducción Fuerte sobre K</div>
   <p><strong>Base ($K=0, K=1$):</strong> $OPT(0)=0$ y $OPT(1)=1$ son óptimos triviales comprobables de forma directa.</p>
-  <p><strong>Paso Inductivo:</strong> Asumiendo como hipótesis inductiva que $DP[j] = OPT(j)$ para todo $0 \le j < i$, el cálculo $DP[i] = \min_{p \in \text{Pred}(i)}(DP[p] + 1)$ evalúa exhaustivamente el óptimo sobre todos los predecesores válidos, garantizando por inducción matemática que $DP[i] = OPT(i)$ para todo $i \ge 0$.</p>
+  <p><strong>Paso Inductivo:</strong> Asumiendo como hipótesis inductiva que $DP[j] = OPT(j)$ para todo $0 \le j &lt; i$, el cálculo $DP[i] = \min_{p \in \text{Pred}(i)}(DP[p] + 1)$ evalúa exhaustivamente el óptimo sobre todos los predecesores válidos, garantizando por inducción matemática que $DP[i] = OPT(i)$ para todo $i \ge 0$.</p>
 </div>
 
 <h4>Diagrama de Flujo y Grafo Acíclico (DAG) de Decisiones</h4>
@@ -5654,7 +5719,7 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
 <li>
 <p><strong>Conjuntos y Parámetros:</strong> Definición rigurosa de índices, conjuntos de entrada y constantes numéricas con sus unidades físicas.</p>
 </li>
-<li><strong>Variables de Decisión y Dominios:</strong> Qué representa semánticamente cada variable, con su dominio matemático estricto ($x_i \in {0, 1}$, $y_j \ge 0$, $z \in \mathbb{R}$).</li>
+<li><strong>Variables de Decisión y Dominios:</strong> Qué representa semánticamente cada variable, con su dominio matemático estricto ($x_i \in \{0, 1\}$, $y_j \ge 0$, $z \in \mathbb{R}$).</li>
 <li><strong>Función Objetivo:</strong> Maximizar o minimizar una combinación lineal exacta. Está estrictamente prohibido multiplicar variables entre sí o emplear funciones no lineales directas ($\max$, $\min$, $|\cdot|$).</li>
 <li><strong>Restricciones Lineales:</strong> Desigualdades e igualdades lineales ($\le, \ge, =$) que delimitan el poliedro convexo de soluciones factibles.</li>
 <li>
@@ -5666,8 +5731,8 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
 <li>
 <p><strong>Minimización de un Máximo ($\min \max(f_1, f_2, \dots, f_k)$):</strong>
      Se introduce una variable auxiliar continua $Z \in \mathbb{R}$.
-     $$\min Z \quad \text{sujeto a:} \quad Z \ge f_r(x) \quad \forall r \in {1, \dots, k}$$
-     <em>Principio:</em> Al minimizar $Z$, el optimizador presiona $Z$ hacia abajo hasta topar con la cota más restrictiva, cumpliéndose en el óptimo que $Z^<em> = \max_r f_r(x^</em>)$.</p>
+     $$\min Z \quad \text{sujeto a:} \quad Z \ge f_r(x) \quad \forall r \in \{1, \dots, k\}$$
+     <em>Principio:</em> Al minimizar $Z$, el optimizador presiona $Z$ hacia abajo hasta topar con la cota más restrictiva, cumpliéndose en el óptimo que $Z^* = \max_r f_r(x^*)$.</p>
 </li>
 <li>
 <p><strong>Relación de Cobertura y Activación (<em>Linking Constraints</em>):</strong>
@@ -5708,7 +5773,7 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
   <div class="card-body">
     <div class="exercise-statement-box">
       <h4>1. Enunciado Completo</h4>
-<p>Paolo Casanova dispone de 2 días para realizar salidas a diferentes lugares cercanos y observar la mayor cantidad posible de especies de aves. Hay 10 especies en particular que desea encontrar ($E = {1, \dots, 10}$) y 6 lugares posibles a visitar ($L = {1, \dots, 6}$). Algunos lugares insumen medio día ($0.5$ días) y otros un día completo ($1.0$ días). Para cada lugar se conoce exactamente qué especies habitan allí según una matriz binaria de presencia $A_{ij}$ ($A_{ij} = 1$ si la especie $i$ habita en el lugar $j$, $0$ si no). Plantear un modelo de Programación Lineal Entera que determine qué lugares visitar para maximizar la cantidad de especies distintas encontradas en el tiempo disponible. Indicar la cantidad exacta de variables y restricciones del modelo.</p>
+<p>Paolo Casanova dispone de 2 días para realizar salidas a diferentes lugares cercanos y observar la mayor cantidad posible de especies de aves. Hay 10 especies en particular que desea encontrar ($E = \{1, \dots, 10\}$) y 6 lugares posibles a visitar ($L = \{1, \dots, 6\}$). Algunos lugares insumen medio día ($0.5$ días) y otros un día completo ($1.0$ días). Para cada lugar se conoce exactamente qué especies habitan allí según una matriz binaria de presencia $A_{ij}$ ($A_{ij} = 1$ si la especie $i$ habita en el lugar $j$, $0$ si no). Plantear un modelo de Programación Lineal Entera que determine qué lugares visitar para maximizar la cantidad de especies distintas encontradas en el tiempo disponible. Indicar la cantidad exacta de variables y restricciones del modelo.</p>
     </div>
 
     <details class="exercise-solution-drawer" id="solution-drawer-19">
@@ -5725,10 +5790,10 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
 <li>Decisión secundaria/beneficio: ¿Se logra observar la especie $i \in E$? (Variable binaria $x_i$).</li>
 <li>Recurso limitante: Presupuesto temporal global de $2.0$ días.</li>
 <li><strong>Definición de Conjuntos y Parámetros:</strong></li>
-<li>$E = {1, \dots, 10}$: Conjunto de especies objetivo.</li>
-<li>$L = {1, \dots, 6}$: Conjunto de sitios candidatos.</li>
-<li>$d_j \in {0.5, 1.0}$: Duración de la visita al sitio $j$.</li>
-<li>$A_{ij} \in {0, 1}$: Matriz de incidencia especie-sitio.</li>
+<li>$E = \{1, \dots, 10\}$: Conjunto de especies objetivo.</li>
+<li>$L = \{1, \dots, 6\}$: Conjunto de sitios candidatos.</li>
+<li>$d_j \in \{0.5, 1.0\}$: Duración de la visita al sitio $j$.</li>
+<li>$A_{ij} \in \{0, 1\}$: Matriz de incidencia especie-sitio.</li>
 <li>$T_{max} = 2.0$: Días disponibles.</li>
 <li>
 <p><strong>Formulación de la Función Objetivo:</strong>
@@ -5748,7 +5813,7 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
 </li>
 <li>
 <p><strong>Declaración Explícita de Dominios:</strong>
-   $$y_j \in {0, 1} \quad \forall j \in L, \qquad x_i \in {0, 1} \quad \forall i \in E$$</p>
+   $$y_j \in \{0, 1\} \quad \forall j \in L, \qquad x_i \in \{0, 1\} \quad \forall i \in E$$</p>
 </li>
 </ol>
 <h4>3. Demostración Rigurosa de Correctitud del Enlace</h4>
@@ -5763,7 +5828,7 @@ Bajo la función objetivo de maximizar $\sum_{i \in E} x_i$:</p>
 <li>
 <p><strong>Caso $\ge 1$ (Al menos un hábitat visitado):</strong> Si visita $k \ge 1$ sitios donde habita la especie $i$, entonces $\sum_{j \in L} A_{ij} y_j = k \ge 1$. La restricción se convierte en:
    $$x_i \le k$$
-   Dado que el dominio impone $x_i \in {0, 1}$ y la función objetivo maximiza $\sum x_i$ con coeficientes positivos ($+1$), el optimizador asignará el mayor valor factible: $x_i = 1$.</p>
+   Dado que el dominio impone $x_i \in \{0, 1\}$ y la función objetivo maximiza $\sum x_i$ con coeficientes positivos ($+1$), el optimizador asignará el mayor valor factible: $x_i = 1$.</p>
 </li>
 <li>
 <p><strong>Inmunidad al Doble Cómputo:</strong> Si visita 2 o más lugares con la misma especie, $x_i \le 2$ o $3$, pero al estar restringida por su dominio superior $x_i \le 1$, la especie aporta exactamente 1 a la función objetivo.</p>
@@ -5806,29 +5871,29 @@ Bajo la función objetivo de maximizar $\sum_{i \in E} x_i$:</p>
 <tr>
 <td style="text-align: left;"><strong>L1</strong></td>
 <td style="text-align: left;">0.5 días</td>
-<td style="text-align: left;">${E_1, E_2}$</td>
+<td style="text-align: left;">$\{E_1, E_2\}$</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>L2</strong></td>
 <td style="text-align: left;">1.0 días</td>
-<td style="text-align: left;">${E_2, E_3, E_4}$</td>
+<td style="text-align: left;">$\{E_2, E_3, E_4\}$</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>L3</strong></td>
 <td style="text-align: left;">0.5 días</td>
-<td style="text-align: left;">${E_3, E_5}$</td>
+<td style="text-align: left;">$\{E_3, E_5\}$</td>
 </tr>
 <tr>
 <td style="text-align: left;"><strong>L4</strong></td>
 <td style="text-align: left;">1.0 días</td>
-<td style="text-align: left;">${E_1, E_4, E_5}$</td>
+<td style="text-align: left;">$\{E_1, E_4, E_5\}$</td>
 </tr>
 </tbody>
 </table>
 <ul>
 <li><strong>Presupuesto:</strong> $T = 2.0$ días.</li>
 <li><strong>Evaluación de combinaciones:</strong><ul>
-<li>Visitar ${L_1, L_3, L_2}$: Duración $0.5 + 0.5 + 1.0 = 2.0$ días. Especies cubiertas: ${E_1, E_2} \cup {E_3, E_5} \cup {E_2, E_3, E_4} = {E_1, E_2, E_3, E_4, E_5}$ (5 especies).</li>
+<li>Visitar $\{L_1, L_3, L_2\}$: Duración $0.5 + 0.5 + 1.0 = 2.0$ días. Especies cubiertas: $\{E_1, E_2\} \cup \{E_3, E_5\} \cup \{E_2, E_3, E_4\} = \{E_1, E_2, E_3, E_4, E_5\}$ (5 especies).</li>
 <li>Valor objetivo óptimo: $Z^* = 5$.</li>
 <li>Variables: $y_1=1, y_2=1, y_3=1, y_4=0$; $x_1=x_2=x_3=x_4=x_5=1$.</li>
 </ul>
@@ -5977,7 +6042,7 @@ def resolver_observacion_aves(
 </li>
 <li>
 <p><strong>Dominios de las Variables:</strong>
-   $$y_c \in {0, 1} \quad \forall c \in C, \qquad x_v \in {0, 1} \quad \forall v \in V$$</p>
+   $$y_c \in \{0, 1\} \quad \forall c \in C, \qquad x_v \in \{0, 1\} \quad \forall v \in V$$</p>
 </li>
 </ol>
 <h4>3. Demostración de Validez del Modelo</h4>
@@ -6015,8 +6080,8 @@ def resolver_observacion_aves(
 <p>Supongamos una grilla pequeña con 10 vecindarios ($|V| = 10$).</p>
 <ul>
 <li>Umbral requerido: $\lceil 0.70 \times 10 \rceil = 7$ vecindarios.</li>
-<li>Supongamos que la antena $A_1$ cubre ${v_1, v_2, v_3, v_4}$, la antena $A_2$ cubre ${v_4, v_5, v_6, v_7}$ y la antena $A_3$ cubre ${v_8, v_9, v_{10}}$.</li>
-<li>Con 2 antenas ($A_1$ y $A_2$), se cubren ${v_1, \dots, v_7}$ (7 vecindarios).</li>
+<li>Supongamos que la antena $A_1$ cubre $\{v_1, v_2, v_3, v_4\}$, la antena $A_2$ cubre $\{v_4, v_5, v_6, v_7\}$ y la antena $A_3$ cubre $\{v_8, v_9, v_{10}\}$.</li>
+<li>Con 2 antenas ($A_1$ y $A_2$), se cubren $\{v_1, \dots, v_7\}$ (7 vecindarios).</li>
 <li>Inversión mínima: $2 \times CTE$.</li>
 <li>Solución factible óptima: $y_{A1}=1, y_{A2}=1, y_{A3}=0$; $x_1=x_2=\dots=x_7=1$, $x_8=x_9=x_{10}=0$.</li>
 </ul>
@@ -6097,7 +6162,7 @@ def modelar_antenas_70_porciento(
   <div class="card-body">
     <div class="exercise-statement-box">
       <h4>1. Enunciado Completo</h4>
-<p>El sistema interconectado argentino está dividido en 9 regiones eléctricas ($R = {1, \dots, 9}$). Para cada región $i$ se conoce su capacidad de generación prevista $G_i \ge 0$ (en MWh) y su demanda requerida $D_i \ge 0$ (en MWh). Desde cualquier región $i$ se puede transmitir energía a otra región $j$ con un costo unitario de transporte $C_{ij} \ge 0$ pesos por MWh. Cada línea de transmisión posee una capacidad máxima de transporte de $CAP_{ij} \ge 0$ MWh/día. Plantear un modelo de Programación Lineal continuo que determine el despacho de energía más económico para satisfacer plenamente la demanda de todas las regiones sin violar capacidades de transporte. Indicar variables y restricciones.</p>
+<p>El sistema interconectado argentino está dividido en 9 regiones eléctricas ($R = \{1, \dots, 9\}$). Para cada región $i$ se conoce su capacidad de generación prevista $G_i \ge 0$ (en MWh) y su demanda requerida $D_i \ge 0$ (en MWh). Desde cualquier región $i$ se puede transmitir energía a otra región $j$ con un costo unitario de transporte $C_{ij} \ge 0$ pesos por MWh. Cada línea de transmisión posee una capacidad máxima de transporte de $CAP_{ij} \ge 0$ MWh/día. Plantear un modelo de Programación Lineal continuo que determine el despacho de energía más económico para satisfacer plenamente la demanda de todas las regiones sin violar capacidades de transporte. Indicar variables y restricciones.</p>
     </div>
 
     <details class="exercise-solution-drawer" id="solution-drawer-21">
@@ -6116,8 +6181,8 @@ def modelar_antenas_70_porciento(
 <li>
 <p><strong>Definición de Conjuntos y Parámetros:</strong></p>
 </li>
-<li>$R = {1, \dots, 9}$: Conjunto de nodos regionales.</li>
-<li>$L = {(i, j) \in R \times R : i \ne j}$: Líneas de transmisión disponibles.</li>
+<li>$R = \{1, \dots, 9\}$: Conjunto de nodos regionales.</li>
+<li>$L = \{(i, j) \in R \times R : i \ne j\}$: Líneas de transmisión disponibles.</li>
 <li>$G_i \ge 0$: Generación inyectada en el nodo $i$.</li>
 <li>$D_i \ge 0$: Demanda consumida en el nodo $i$.</li>
 <li>$C_{ij} \ge 0$: Costo por MWh en el arco $(i, j)$.</li>
@@ -6297,7 +6362,7 @@ def resolver_flujo_costo_minimo(
    Para cada nodo $i \in V$, la diferencia neta entre el flujo que emite y el flujo que recibe debe coincidir con su inyección externa:
    $$\sum_{v : (i, v) \in E} x_{iv} - \sum_{u : (u, i) \in E} x_{ui} = b(i) \quad \forall i \in V$$
    donde el vector de balance externo $b(i)$ está definido por:
-   $$b(i) = \begin{cases} +1 &amp; \text{si } i = s \text{ (Ezeiza - Fuente)} \ -1 &amp; \text{si } i = t \text{ (Bariloche - Sumidero)} \ 0 &amp; \text{si } i \in V \setminus {s, t} \text{ (Puntos intermedios)} \end{cases}$$</p>
+   $$b(i) = \begin{cases} +1 &amp; \text{si } i = s \text{ (Ezeiza - Fuente)} \\ -1 &amp; \text{si } i = t \text{ (Bariloche - Sumidero)} \\ 0 &amp; \text{si } i \in V \setminus \{s, t\} \text{ (Puntos intermedios)} \end{cases}$$</p>
 </li>
 <li>
 <p><strong>Cotas de las Variables:</strong>
@@ -6306,12 +6371,12 @@ def resolver_flujo_costo_minimo(
 </ol>
 <h4>3. Demostración Teórica: Teorema de Unimodularidad Total (TUM)</h4>
 <p><strong>Teorema de Hoffman-Kruskal aplicado a Grafos:</strong><br />
-Sea $A \in {-1, 0, 1}^{|V| \times |E|}$ la matriz de incidencia nodo-arco del grafo $G$, donde cada columna correspondiente a la arista $(u, v)$ contiene exactamente dos elementos no nulos: $+1$ en la fila del nodo origen $u$ y $-1$ en la fila del nodo destino $v$.</p>
+Sea $A \in \{-1, 0, 1\}^{|V| \times |E|}$ la matriz de incidencia nodo-arco del grafo $G$, donde cada columna correspondiente a la arista $(u, v)$ contiene exactamente dos elementos no nulos: $+1$ en la fila del nodo origen $u$ y $-1$ en la fila del nodo destino $v$.</p>
 <ol>
-<li><strong>Propiedad TUM:</strong> Toda submatriz cuadrada de $A$ tiene determinante en ${-1, 0, 1}$.</li>
-<li><em>Demostración inductiva:</em> Para submatrices de orden $k$, si una columna tiene solo ceros, $\det = 0$. Si tiene un único $\pm 1$, por expansión de Laplace $\det = \pm 1 \cdot \det(M_{k-1}) \in {-1, 0, 1}$. Si todas las columnas tienen un $+1$ y un $-1$, la suma de todas las filas es el vector nulo $\mathbf{0}$, por lo que las filas son linealmente dependientes y $\det = 0$.</li>
-<li><strong>Integralidad de Vértices:</strong> Dado que $A$ es totalmente unimodular y el vector del lado derecho $b \in {-1, 0, 1}^{|V|}$ es entero, por la regla de Cramer <strong>todo vértice extremo del poliedro ${x \ge 0 : Ax = b}$ tiene componentes estrictamente enteras</strong>.</li>
-<li>Como la inyección total es 1, los únicos valores enteros factibles para las aristas en cualquier solución básica factible sin ciclos son $x_{uv} \in {0, 1}$, representando exactamente un camino simple de $s$ a $t$.</li>
+<li><strong>Propiedad TUM:</strong> Toda submatriz cuadrada de $A$ tiene determinante en $\{-1, 0, 1\}$.</li>
+<li><em>Demostración inductiva:</em> Para submatrices de orden $k$, si una columna tiene solo ceros, $\det = 0$. Si tiene un único $\pm 1$, por expansión de Laplace $\det = \pm 1 \cdot \det(M_{k-1}) \in \{-1, 0, 1\}$. Si todas las columnas tienen un $+1$ y un $-1$, la suma de todas las filas es el vector nulo $\mathbf{0}$, por lo que las filas son linealmente dependientes y $\det = 0$.</li>
+<li><strong>Integralidad de Vértices:</strong> Dado que $A$ es totalmente unimodular y el vector del lado derecho $b \in \{-1, 0, 1\}^{|V|}$ es entero, por la regla de Cramer <strong>todo vértice extremo del poliedro $\{x \ge 0 : Ax = b\}$ tiene componentes estrictamente enteras</strong>.</li>
+<li>Como la inyección total es 1, los únicos valores enteros factibles para las aristas en cualquier solución básica factible sin ciclos son $x_{uv} \in \{0, 1\}$, representando exactamente un camino simple de $s$ a $t$.</li>
 </ol>
 <h4>4. Diagrama Visual del Grafo de Traslado</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
@@ -6409,7 +6474,7 @@ def camino_minimo_pl_continuo(
   <div class="card-body">
     <div class="exercise-statement-box">
       <h4>1. Enunciado Completo</h4>
-<p>Dado un conjunto de $n$ tareas con tiempos de procesamiento enteros positivos $T = {T_1, T_2, \dots, T_n}$, se desea particionar las tareas entre dos procesadores idénticos $P_1$ y $P_2$ de manera que se minimice el <em>makespan</em> (el tiempo de finalización de la máquina más cargada):
+<p>Dado un conjunto de $n$ tareas con tiempos de procesamiento enteros positivos $T = \{T_1, T_2, \dots, T_n\}$, se desea particionar las tareas entre dos procesadores idénticos $P_1$ y $P_2$ de manera que se minimice el <em>makespan</em> (el tiempo de finalización de la máquina más cargada):
 $$\min \max \left( \sum_{i \in P_1} T_i, \sum_{j \in P_2} T_j \right)$$
 Formular el problema como un modelo de Programación Lineal Entera, linealizando rigurosamente el operador $\max$. Indicar variables, dominios y conteo de restricciones.</p>
     </div>
@@ -6425,8 +6490,8 @@ Formular el problema como un modelo de Programación Lineal Entera, linealizando
 <ol>
 <li>
 <p><strong>Definición de Variables de Partición:</strong>
-   Para cada tarea $i \in {1, \dots, n}$, definimos una variable binaria:
-   $$x_i = \begin{cases} 1 &amp; \text{si la tarea } i \text{ se asigna al procesador } P_1 \ 0 &amp; \text{si la tarea } i \text{ se asigna al procesador } P_2 \end{cases}$$</p>
+   Para cada tarea $i \in \{1, \dots, n\}$, definimos una variable binaria:
+   $$x_i = \begin{cases} 1 &amp; \text{si la tarea } i \text{ se asigna al procesador } P_1 \\ 0 &amp; \text{si la tarea } i \text{ se asigna al procesador } P_2 \end{cases}$$</p>
 </li>
 <li>
 <p><strong>Expresión de Carga de cada Máquina:</strong></p>
@@ -6451,18 +6516,18 @@ Formular el problema como un modelo de Programación Lineal Entera, linealizando
 </ol>
 <h4>3. Demostración Matemática de Equivalencia</h4>
 <p><strong>Teorema de Equivalencia de la Linealización Minimax:</strong><br />
-Sea $(x^<em>, Z^</em>)$ una solución óptima del modelo linealizado.</p>
+Sea $(x^*, Z^*)$ una solución óptima del modelo linealizado.</p>
 <ol>
 <li>
 <p>Por definición de las restricciones:
-   $$Z^<em> \ge L_1(x^</em>) \quad \text{y} \quad Z^<em> \ge L_2(x^</em>) \implies Z^<em> \ge \max(L_1(x^</em>), L_2(x^*))$$</p>
+   $$Z^* \ge L_1(x^*) \quad \text{y} \quad Z^* \ge L_2(x^*) \implies Z^* \ge \max(L_1(x^*), L_2(x^*))$$</p>
 </li>
 <li>
-<p>Supongamos por contradicción que $Z^<em> &gt; \max(L_1(x^</em>), L_2(x^<em>))$. Entonces podríamos definir un valor $Z' = \max(L_1(x^</em>), L_2(x^<em>)) &lt; Z^</em>$.</p>
+<p>Supongamos por contradicción que $Z^* &gt; \max(L_1(x^*), L_2(x^*))$. Entonces podríamos definir un valor $Z&#x27; = \max(L_1(x^*), L_2(x^*)) &lt; Z^*$.</p>
 </li>
-<li>La solución $(x^<em>, Z')$ satisface todas las restricciones del modelo y produce un valor objetivo $Z' &lt; Z^</em>$, contradiciendo la optimalidad de $(x^<em>, Z^</em>)$.</li>
+<li>La solución $(x^*, Z&#x27;)$ satisface todas las restricciones del modelo y produce un valor objetivo $Z&#x27; &lt; Z^*$, contradiciendo la optimalidad de $(x^*, Z^*)$.</li>
 <li>Por lo tanto, en toda solución óptima se cumple estrictamente que:
-   $$Z^<em> = \max(L_1(x^</em>), L_2(x^*))$$
+   $$Z^* = \max(L_1(x^*), L_2(x^*))$$
    lo que demuestra que el modelo lineal es exactamente equivalente al problema no lineal original.</li>
 </ol>
 <h4>4. Diagrama Visual de Acotamiento de la Variable Z</h4>
@@ -6474,18 +6539,18 @@ Sea $(x^<em>, Z^</em>)$ una solución óptima del modelo linealizado.</p>
     MinZ["min Z"] -->|Presiona| Z
 </pre></div>
 <h4>5. Ejemplo Numérico y Traza</h4>
-<p>Consideremos las tareas $T = {3, 5, 8, 2, 4}$:</p>
+<p>Consideremos las tareas $T = \{3, 5, 8, 2, 4\}$:</p>
 <ul>
 <li>Suma total: $3 + 5 + 8 + 2 + 4 = 22$. Carga ideal perfecta: $22 / 2 = 11$.</li>
 <li>Asignación factible 1:<ul>
-<li>$P_1 = {8, 3} \implies L_1 = 11$.</li>
-<li>$P_2 = {5, 4, 2} \implies L_2 = 11$.</li>
+<li>$P_1 = \{8, 3\} \implies L_1 = 11$.</li>
+<li>$P_2 = \{5, 4, 2\} \implies L_2 = 11$.</li>
 <li>Restricciones: $Z \ge 11$ y $Z \ge 11 \implies Z^* = 11$.</li>
 </ul>
 </li>
 <li>Asignación factible 2:<ul>
-<li>$P_1 = {8, 5} \implies L_1 = 13$.</li>
-<li>$P_2 = {4, 3, 2} \implies L_2 = 9$.</li>
+<li>$P_1 = \{8, 5\} \implies L_1 = 13$.</li>
+<li>$P_2 = \{4, 3, 2\} \implies L_2 = 9$.</li>
 <li>Restricciones: $Z \ge 13$ y $Z \ge 9 \implies Z = 13$ (peor que el óptimo).</li>
 </ul>
 </li>
@@ -6494,7 +6559,7 @@ Sea $(x^<em>, Z^</em>)$ una solución óptima del modelo linealizado.</p>
 <h4>6. Conteo Formal de Variables y Restricciones</h4>
 <ul>
 <li><strong>Variables de Decisión:</strong><ul>
-<li>$n$ variables binarias de asignación $x_i \in {0, 1}$.</li>
+<li>$n$ variables binarias de asignación $x_i \in \{0, 1\}$.</li>
 <li>1 variable continua auxiliar $Z \ge 0$.</li>
 <li><strong>Total:</strong> $n + 1$ variables ($n$ binarias, 1 continua).</li>
 </ul>
@@ -6571,7 +6636,7 @@ def resolver_2_partition_minmax(tiempos: List[float]) -&gt; Tuple[float, List[in
 <ol>
 <li><strong>Multiplicar dos variables de decisión:</strong> Escribir términos como $x_i \cdot y_j$ destruye la linealidad del modelo. En PL/PLI todos los términos deben ser el producto de una constante conocida por una única variable.</li>
 <li><strong>Usar operadores $\max$, $\min$ o valores absolutos $|\cdot|$ directamente:</strong> Deben linealizarse obligatoriamente mediante variables auxiliares continuas ($Z$) y sistemas de desigualdades.</li>
-<li><strong>No declarar el dominio estricto de las variables:</strong> Omitir si una variable es binaria ($x_i \in {0, 1}$), continua no negativa ($x_{ij} \ge 0$) o entera no negativa ($z_k \in \mathbb{Z}^+$) es motivo de descuento directo del $40\%$ del valor de la pregunta.</li>
+<li><strong>No declarar el dominio estricto de las variables:</strong> Omitir si una variable es binaria ($x_i \in \{0, 1\}$), continua no negativa ($x_{ij} \ge 0$) o entera no negativa ($z_k \in \mathbb{Z}^+$) es motivo de descuento directo del $40\%$ del valor de la pregunta.</li>
 <li><strong>Omitir el conteo analítico de variables y restricciones:</strong> Si la consigna indica <em>"indicar variables y restricciones"</em>, debe tabularse cuántas variables continuas, cuántas binarias y cuántas restricciones lineales componen el modelo en función de los parámetros de entrada.</li>
 </ol>
 <hr />
@@ -6582,7 +6647,7 @@ def resolver_2_partition_minmax(tiempos: List[float]) -&gt; Tuple[float, List[in
 <li><strong>Red de Transporte:</strong> Grafo dirigido $G = (V, E)$ con un nodo fuente $s$, un nodo sumidero $t$, y capacidades no negativas $c(u, v) \ge 0$ en cada arista. Si $(u, v) \notin E$, $c(u, v) = 0$.</li>
 <li><strong>Restricción de Capacidad:</strong> Para toda arista $(u, v) \in E$: $0 \le f(u, v) \le c(u, v)$.</li>
 <li>
-<p><strong>Conservación de Flujo:</strong> Para todo vértice intermedio $u \in V \setminus {s, t}$:
+<p><strong>Conservación de Flujo:</strong> Para todo vértice intermedio $u \in V \setminus \{s, t\}$:
      $$\sum_{v \in V} f(v, u) = \sum_{w \in V} f(u, w)$$
      <em>(El caudal entrante es idéntico al caudal saliente).</em></p>
 </li>
@@ -6692,7 +6757,7 @@ Detallar la topología formal de la red, capacidades, algoritmo empleado, demost
 <p><strong>Teorema de Integralidad de Flujo (Dantzig-Fulkerson):</strong><br />
 Si todas las capacidades de la red son números enteros, entonces existe un flujo máximo en el cual el flujo en cada arista es un número entero.</p>
 <ol>
-<li><strong>Flujo Binario:</strong> Dado que $c(e) = 1$ para todas las aristas de la red, en el flujo máximo calculado se cumple que $f(e) \in {0, 1}$ para toda arista $e \in E$.</li>
+<li><strong>Flujo Binario:</strong> Dado que $c(e) = 1$ para todas las aristas de la red, en el flujo máximo calculado se cumple que $f(e) \in \{0, 1\}$ para toda arista $e \in E$.</li>
 <li>
 <p><strong>Unicidad de Paciente:</strong> Para cada paciente $p$, la arista de entrada tiene capacidad $c(s, p) = 1$. Por conservación:
    $$\sum_{(m, h)} f(p, (m, h)) = f(s, p) \le 1$$
@@ -6726,7 +6791,7 @@ Si todas las capacidades de la red son números enteros, entonces existe un fluj
 <ul>
 <li>Pacientes: $P_1, P_2, P_3$.</li>
 <li>Turnos: $T_1 = (\text{Perez}, 9), T_2 = (\text{Perez}, 10), T_3 = (\text{Gomez}, 9)$.</li>
-<li>Compatibilidades: $P_1 \to {T_1, T_2}$; $P_2 \to {T_2, T_3}$; $P_3 \to {T_3}$.</li>
+<li>Compatibilidades: $P_1 \to \{T_1, T_2\}$; $P_2 \to \{T_2, T_3\}$; $P_3 \to \{T_3\}$.</li>
 </ul>
 <table>
 <thead>
@@ -6955,7 +7020,7 @@ def asignar_turnos_medicos(
 </ol>
 <h4>3. Demostración Teórica de Conservación y Despacho</h4>
 <p><strong>Teorema de Conservación Nodal en Regiones:</strong><br />
-Para cualquier región $i \in {R_1, \dots, R_9}$, la ecuación de conservación de flujo impone:
+Para cualquier región $i \in \{R_1, \dots, R_9\}$, la ecuación de conservación de flujo impone:
 $$\sum_{\text{entradas}} f(u, R_i) = \sum_{\text{salidas}} f(R_i, v)$$
 Desglosando las conexiones con los super-nodos:
 $$f(S, R_i) + \sum_{k \ne i} f(R_k, R_i) = f(R_i, T) + \sum_{j \ne i} f(R_i, R_j)$$
@@ -7093,7 +7158,7 @@ def diagnosticar_red_energetica(
     <div class="exercise-statement-box">
       <h4>1. Enunciado Completo</h4>
 <p>Indicar si la siguiente afirmación es verdadera o falsa. Si es verdadera, proveer una demostración formal rigurosa. Si es falsa, construir un contraejemplo explícito indicando nodos, aristas, capacidades originales, corte original, nuevas capacidades y el nuevo corte mínimo:<br />
-<em>“Sea $G = (V, E)$ una red de flujo arbitraria con fuente $s$, sumidero $t$ y capacidades enteras positivas $c(e)$ en cada arista $e \in E$. Sea $(A, B)$ un corte mínimo $s-t$ con respecto a las capacidades $c$. Si se suma $1$ a la capacidad de cada arista de la red ($c'(e) = c(e) + 1$), el corte $(A, B)$ sigue siendo obligatoriamente un corte mínimo respecto a las nuevas capacidades $c'$.”</em></p>
+<em>“Sea $G = (V, E)$ una red de flujo arbitraria con fuente $s$, sumidero $t$ y capacidades enteras positivas $c(e)$ en cada arista $e \in E$. Sea $(A, B)$ un corte mínimo $s-t$ con respecto a las capacidades $c$. Si se suma $1$ a la capacidad de cada arista de la red ($c&#x27;(e) = c(e) + 1$), el corte $(A, B)$ sigue siendo obligatoriamente un corte mínimo respecto a las nuevas capacidades $c&#x27;$.”</em></p>
     </div>
 
     <details class="exercise-solution-drawer" id="solution-drawer-26">
@@ -7108,13 +7173,13 @@ def diagnosticar_red_energetica(
 <p><strong>Análisis de Sensibilidad de la Capacidad de un Corte:</strong><br />
 Sea $(A, B)$ un corte $s-t$ cualquiera. Su capacidad bajo la función original $c$ es:
 $$C(A, B) = \sum_{e \in \delta^+(A)} c(e)$$
-donde $\delta^+(A) = {(u, v) \in E : u \in A, v \in B}$ es el conjunto de aristas que cruzan el corte.<br />
-Al aplicar la perturbación $c'(e) = c(e) + 1$, la nueva capacidad es:
-$$C'(A, B) = \sum_{e \in \delta^+(A)} (c(e) + 1) = \sum_{e \in \delta^+(A)} c(e) + \sum_{e \in \delta^+(A)} 1 = C(A, B) + |\delta^+(A)|$$
+donde $\delta^+(A) = \{(u, v) \in E : u \in A, v \in B\}$ es el conjunto de aristas que cruzan el corte.<br />
+Al aplicar la perturbación $c&#x27;(e) = c(e) + 1$, la nueva capacidad es:
+$$C&#x27;(A, B) = \sum_{e \in \delta^+(A)} (c(e) + 1) = \sum_{e \in \delta^+(A)} c(e) + \sum_{e \in \delta^+(A)} 1 = C(A, B) + |\delta^+(A)|$$
 <strong>Conclusión Analítica:</strong> La nueva capacidad del corte <strong>depende linealmente de la cantidad de aristas que lo componen ($|\delta^+(A)|$)</strong>.<br />
 Un corte con muchas aristas sufrirá un incremento mucho mayor que un corte compuesto por pocas aristas. Si dos cortes tenían capacidades originales cercanas, la perturbación penalizará al corte con más aristas, pudiendo invertir el orden de minimalidad.</p>
 <h4>3. Contraejemplo Formal Minimal (4 Nodos)</h4>
-<p>Construyamos la red más simple posible con $V = {s, a, b, t}$:</p>
+<p>Construyamos la red más simple posible con $V = \{s, a, b, t\}$:</p>
 <ul>
 <li>
 <p>Aristas y capacidades originales:</p>
@@ -7127,11 +7192,11 @@ Un corte con muchas aristas sufrirá un incremento mucho mayor que un corte comp
 <li>Grafo con 3 caminos paralelos entre $s$ y $t$:</li>
 <li>Camino 1: arista directa $(s, t_1)$ no; consideremos dos cortes competidores:</li>
 <li>
-<p><strong>Corte 1 ($A_1 = {s}, B_1 = V \setminus {s}$):</strong> Contiene <strong>5 aristas</strong> saliendo de $s$, cada una de capacidad $c=2$.
+<p><strong>Corte 1 ($A_1 = \{s\}, B_1 = V \setminus \{s\}$):</strong> Contiene <strong>5 aristas</strong> saliendo de $s$, cada una de capacidad $c=2$.
     $$C(A_1, B_1) = 2 + 2 + 2 + 2 + 2 = 10, \qquad |\delta^+(A_1)| = 5$$</p>
 </li>
 <li>
-<p><strong>Corte 2 ($A_2 = V \setminus {t}, B_2 = {t}$):</strong> Contiene <strong>1 única arista</strong> entrando a $t$, con capacidad $c=11$.
+<p><strong>Corte 2 ($A_2 = V \setminus \{t\}, B_2 = \{t\}$):</strong> Contiene <strong>1 única arista</strong> entrando a $t$, con capacidad $c=11$.
     $$C(A_2, B_2) = 11, \qquad |\delta^+(A_2)| = 1$$</p>
 </li>
 </ul>
@@ -7144,21 +7209,21 @@ Un corte con muchas aristas sufrirá un incremento mucho mayor que un corte comp
 </ul>
 </li>
 <li>
-<p><strong>Evaluación tras la Perturbación ($c'(e) = c(e) + 1$):</strong></p>
+<p><strong>Evaluación tras la Perturbación ($c&#x27;(e) = c(e) + 1$):</strong></p>
 <ul>
 <li>
 <p>Para el Corte 1 (5 aristas):
-$$C'(A_1, B_1) = (2 + 1) \times 5 = 3 \times 5 = 15$$</p>
+$$C&#x27;(A_1, B_1) = (2 + 1) \times 5 = 3 \times 5 = 15$$</p>
 </li>
 <li>
 <p>Para el Corte 2 (1 arista):
-$$C'(A_2, B_2) = 11 + 1 = 12$$</p>
+$$C&#x27;(A_2, B_2) = 11 + 1 = 12$$</p>
 </li>
 </ul>
 </li>
 <li>
 <p><strong>Comparación Final:</strong>
-  $$C'(A_2, B_2) = 12 &lt; 15 = C'(A_1, B_1)$$
+  $$C&#x27;(A_2, B_2) = 12 &lt; 15 = C&#x27;(A_1, B_1)$$
   Bajo las nuevas capacidades, el corte mínimo es ahora $(A_2, B_2)$ y <strong>ha dejado de serlo $(A_1, B_1)$</strong>.</p>
 </li>
 <li>
@@ -7180,15 +7245,41 @@ $$C'(A_2, B_2) = 11 + 1 = 12$$</p>
     v -->|c=11 mas 1| T_SNK["Sumidero t"]
 </pre></div>
 <h4>5. Tabla Comparativa de Capacidades de Corte</h4>
-<p>| Corte | Composición de Aristas | Capacidad Original $C$ | Aristas $|\delta^+|$ | Nueva Capacidad $C'$ | ¿Es Mínimo? |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| <strong>Corte 1 ($A_1={s}$)</strong> | 5 aristas de capacidad 2 | <strong>$10$</strong> | $5$ | $10 + 5 = \mathbf{15}$ | <strong>NO</strong> (Pierde minimalidad) |
-| <strong>Corte 2 ($B_2={t}$)</strong> | 1 arista de capacidad 11 | $11$ | $1$ | $11 + 1 = \mathbf{12}$ | <strong>SÍ (Nuevo Corte Mínimo)</strong> |</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Corte</th>
+<th style="text-align: center;">Composición de Aristas</th>
+<th style="text-align: center;">Capacidad Original $C$</th>
+<th style="text-align: center;">Aristas $|\delta^+|$</th>
+<th style="text-align: center;">Nueva Capacidad $C&#x27;$</th>
+<th style="text-align: center;">¿Es Mínimo?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Corte 1 ($A_1=\{s\}$)</strong></td>
+<td style="text-align: center;">5 aristas de capacidad 2</td>
+<td style="text-align: center;"><strong>$10$</strong></td>
+<td style="text-align: center;">$5$</td>
+<td style="text-align: center;">$10 + 5 = \mathbf{15}$</td>
+<td style="text-align: center;"><strong>NO</strong> (Pierde minimalidad)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Corte 2 ($B_2=\{t\}$)</strong></td>
+<td style="text-align: center;">1 arista de capacidad 11</td>
+<td style="text-align: center;">$11$</td>
+<td style="text-align: center;">$1$</td>
+<td style="text-align: center;">$11 + 1 = \mathbf{12}$</td>
+<td style="text-align: center;"><strong>SÍ (Nuevo Corte Mínimo)</strong></td>
+</tr>
+</tbody>
+</table>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Decir que es Verdadera asumiendo que "sumar una constante no cambia el mínimo":</strong> En optimización lineal, sumar una constante a la función objetivo no cambia el óptimo. Pero aquí **no se suma una constante al corte**, se suma 1 a cada arista, por lo que a cada corte se le suma una constante distinta proporcional a su cantidad de aristas ($C' = C + k$).</li>
+    <li><strong>Decir que es Verdadera asumiendo que "sumar una constante no cambia el mínimo":</strong> En optimización lineal, sumar una constante a la función objetivo no cambia el óptimo. Pero aquí **no se suma una constante al corte**, se suma 1 a cada arista, por lo que a cada corte se le suma una constante distinta proporcional a su cantidad de aristas ($C&#x27; = C + k$).</li>
     <li><strong>Dar un contraejemplo sin valores numéricos explícitos:</strong> Un contraejemplo debe incluir el grafo completo, los conjuntos de vértices $A$ y $B$, y la cuenta aritmética explícita de antes y después.</li>
   </ul>
 </div>
@@ -7238,31 +7329,31 @@ $$C'(A_2, B_2) = 11 + 1 = 12$$</p>
 <ol>
 <li>
 <p><strong>Impacto Local en la Red Residual:</strong>
-   Al modificarse únicamente la arista $(u, v)$, en la red residual $G_f$ la capacidad residual de esa arista pasa de $c_f(u, v) = c(u, v) - f^<em>(u, v)$ a:
-   $$c_f'(u, v) = c(u, v) + 1 - f^</em>(u, v) = c_f(u, v) + 1$$
+   Al modificarse únicamente la arista $(u, v)$, en la red residual $G_f$ la capacidad residual de esa arista pasa de $c_f(u, v) = c(u, v) - f^*(u, v)$ a:
+   $$c_f&#x27;(u, v) = c(u, v) + 1 - f^*(u, v) = c_f(u, v) + 1$$
    Todas las demás capacidades residuales de la red permanecen inalteradas.</p>
 </li>
 <li>
 <p><strong>Propiedad de Acotamiento del Incremento:</strong>
-   Por el Teorema Max-Flow Min-Cut, la capacidad de cualquier corte que contenga a $(u, v)$ aumenta a lo sumo en $1$, y los cortes que no la contienen mantienen su capacidad idéntica. Por lo tanto, el nuevo flujo máximo $f_{nuevo}^<em>$ satisface estrictamente:
-   $$|f^</em>| \le |f_{nuevo}^<em>| \le |f^</em>| + 1$$</p>
+   Por el Teorema Max-Flow Min-Cut, la capacidad de cualquier corte que contenga a $(u, v)$ aumenta a lo sumo en $1$, y los cortes que no la contienen mantienen su capacidad idéntica. Por lo tanto, el nuevo flujo máximo $f_{nuevo}^*$ satisface estrictamente:
+   $$|f^*| \le |f_{nuevo}^*| \le |f^*| + 1$$</p>
 </li>
 <li>
 <p><strong>Búsqueda de Camino de Aumento Único:</strong>
-   Dado que las capacidades son enteras y el incremento es a lo sumo 1, alcanza con buscar <strong>a lo sumo un camino de aumento</strong> desde $s$ hasta $t$ en la red residual actualizada $G_f'$ mediante BFS o DFS.</p>
+   Dado que las capacidades son enteras y el incremento es a lo sumo 1, alcanza con buscar <strong>a lo sumo un camino de aumento</strong> desde $s$ hasta $t$ en la red residual actualizada $G_f&#x27;$ mediante BFS o DFS.</p>
 </li>
 <li>
 <p><strong>Actualización de Flujos:</strong></p>
 </li>
 <li>Si se encuentra un camino de aumento $P$ de $s$ a $t$: su cuello de botella es necesariamente $\ge 1$ (al ser capacidades enteras). Se empuja exactamente 1 unidad de flujo a lo largo de $P$, actualizando las aristas forward y backward. El nuevo flujo máximo es $|f^*| + 1$.</li>
-<li>Si no existe ningún camino de aumento en $G_f'$: $t$ sigue siendo inalcanzable desde $s$. El flujo máximo se mantiene en $|f^*|$.</li>
+<li>Si no existe ningún camino de aumento en $G_f&#x27;$: $t$ sigue siendo inalcanzable desde $s$. El flujo máximo se mantiene en $|f^*|$.</li>
 <li><strong>Cómputo en Tiempo Lineal:</strong>
    Un único recorrido BFS/DFS sobre la red residual toma $O(|V| + |E|)$.</li>
 </ol>
 <h4>3. Demostración Rigurosa de Correctitud</h4>
 <ol>
-<li><strong>Caso 1 (Arista no saturada originalmente):</strong> Si antes del cambio $f^<em>(u, v) &lt; c(u, v)$, la arista no era un cuello de botella activo del corte mínimo. El flujo máximo previo ya era el óptimo y al no existir camino de aumento, el algoritmo termina inmediatamente en $O(V + E)$ con $|f_{nuevo}^</em>| = |f^*|$.</li>
-<li><strong>Caso 2 (Arista saturada que habilita aumento):</strong> Si $f^*(u, v) = c(u, v)$, su capacidad residual previa era $0$ y ahora pasa a $1$. Si dicha arista permite conectar las componentes $s$ y $t$ en $G_f'$, existirá un camino simple $P$. Dado que todas las capacidades en $G_f$ son enteras y positivas a lo largo de $P$, la capacidad residual mínima es $\Delta \ge 1$.</li>
+<li><strong>Caso 1 (Arista no saturada originalmente):</strong> Si antes del cambio $f^*(u, v) &lt; c(u, v)$, la arista no era un cuello de botella activo del corte mínimo. El flujo máximo previo ya era el óptimo y al no existir camino de aumento, el algoritmo termina inmediatamente en $O(V + E)$ con $|f_{nuevo}^*| = |f^*|$.</li>
+<li><strong>Caso 2 (Arista saturada que habilita aumento):</strong> Si $f^*(u, v) = c(u, v)$, su capacidad residual previa era $0$ y ahora pasa a $1$. Si dicha arista permite conectar las componentes $s$ y $t$ en $G_f&#x27;$, existirá un camino simple $P$. Dado que todas las capacidades en $G_f$ son enteras y positivas a lo largo de $P$, la capacidad residual mínima es $\Delta \ge 1$.</li>
 <li>Al aumentar $1$ unidad de flujo, la capacidad residual de $(u, v)$ vuelve a $0$, restaurando el estado sin caminos de aumento a través de ella.</li>
 <li>Por el Teorema de Ford-Fulkerson, una red residual sin caminos de aumento certifica que el flujo resultante es estrictamente el flujo máximo.</li>
 </ol>
@@ -7281,7 +7372,7 @@ $$C'(A_2, B_2) = 11 + 1 = 12$$</p>
 <li>Flujo máximo previo: $f^* = 3$ (cuello de botella en $(u, v)$).</li>
 <li>Red residual inicial $G_f$: $c_f(u, v) = 3 - 3 = 0$. No hay camino de $s$ a $t$.</li>
 <li>Se aumenta la capacidad de $(u, v)$ de 3 a 4:<ul>
-<li>$c_f'(u, v) = 0 + 1 = 1$.</li>
+<li>$c_f&#x27;(u, v) = 0 + 1 = 1$.</li>
 <li>BFS halla el camino $s \to u \to v \to t$ con capacidades residuales $(2, 1, 2)$.</li>
 <li>Cuello de botella del camino: $\min(2, 1, 2) = 1$.</li>
 <li>Se empuja 1 unidad: $f(s, u) = 4, f(u, v) = 4, f(v, t) = 4$.</li>
@@ -7353,7 +7444,7 @@ def actualizar_flujo_aumento_unitario(
 <li><strong>Omitir las aristas hacia atrás en la red residual:</strong> No graficar o no considerar las capacidades $c_f(v, u) = f(u, v)$ impide deshacer decisiones subóptimas y es motivo de anulación del algoritmo.</li>
 <li><strong>Confundir la capacidad del corte:</strong> Sumar erróneamente aristas dirigidas que van desde el conjunto de destino $B$ hacia el conjunto de origen $A$. La definición matemática solo suma aristas orientadas de $A \to B$.</li>
 <li><strong>Ignorar el Teorema de Integralidad:</strong> Asumir que se pueden obtener flujos fraccionarios en redes con capacidades enteras, o no citar este teorema al modelar problemas combinatorios discretos.</li>
-<li><strong>Afirmar que Ford-Fulkerson es polinomial:</strong> Ford-Fulkerson depende del valor del flujo $|f^<em>|$ ($O(E \cdot |f^</em>|)$), lo que lo hace pseudo-polinomial. El algoritmo polinomial estándar evaluado es <strong>Edmonds-Karp</strong> ($O(V E^2)$).</li>
+<li><strong>Afirmar que Ford-Fulkerson es polinomial:</strong> Ford-Fulkerson depende del valor del flujo $|f^*|$ ($O(E \cdot |f^*|)$), lo que lo hace pseudo-polinomial. El algoritmo polinomial estándar evaluado es <strong>Edmonds-Karp</strong> ($O(V E^2)$).</li>
 </ol>
 <hr />
 <h2>10. Tema 7: Reducciones Polinomiales y NP-Completitud</h2>
@@ -7364,7 +7455,7 @@ def actualizar_flujo_aumento_unitario(
 <li><strong>Clase NP (Nondeterministic Polynomial):</strong> Problemas de decisión cuyas instancias afirmativas (<em>instancias YES</em>) admiten un <strong>certificado polinomial</strong> (o testigo $C$) que puede ser verificado por un algoritmo determinístico en tiempo polinomial $O(P(n))$.</li>
 <li>
 <p><strong>Reducción Polinomial de Karp ($A \le_P B$):</strong> Significa que el problema $A$ se reduce en tiempo polinomial al problema $B$.
-     $$\text{Interpretación:} \quad \text{"El problema } A \text{ no es más difícil que el problema } B \text{ (a lo sumo tan difícil como } B\text{)"}$$
+     $$\text{Interpretación:} \quad \text{&quot;El problema } A \text{ no es más difícil que el problema } B \text{ (a lo sumo tan difícil como } B\text{)&quot;}$$
      Si contamos con una subrutina polinomial para resolver $B$, podemos resolver $A$ en tiempo polinomial.</p>
 </li>
 <li>
@@ -7465,69 +7556,69 @@ Demostrar formalmente que <strong>Dominating Set es NP-Completo</strong>, reduci
 <em>Dado un grafo no dirigido $G = (V, E)$ y un entero $k$, ¿existe un subconjunto $S \subseteq V$ con $|S| \le k$ tal que toda arista $(u, v) \in E$ tenga al menos uno de sus extremos en $S$?</em><br />
 Objetivo: Demostrar que:
 $$\text{Vertex Cover} \le_P \text{Dominating Set}$$</p>
-<h5>Paso 3: Transformación Polinomial $f(G, k) \to (G', k')$ (Diseño del Gadget)</h5>
+<h5>Paso 3: Transformación Polinomial $f(G, k) \to (G&#x27;, k&#x27;)$ (Diseño del Gadget)</h5>
 <p>Sea $(G = (V, E), k)$ una instancia arbitraria de Vertex Cover.</p>
 <ol>
 <li>Asumimos sin pérdida de generalidad que $G$ no posee vértices aislados (un vértice aislado no cubre aristas en VC y puede ser eliminado de la instancia de forma trivial en $O(|V|)$).</li>
-<li>Construimos el grafo transformado $G' = (V', E')$ mediante el siguiente gadget de aristas:</li>
+<li>Construimos el grafo transformado $G&#x27; = (V&#x27;, E&#x27;)$ mediante el siguiente gadget de aristas:</li>
 <li>
 <p><strong>Vértices:</strong> Conservamos todos los vértices originales de $V$ y agregamos un <strong>nuevo vértice auxiliar $w_e$ por cada arista $e \in E$</strong>:
-     $$V' = V \cup {w_e : e \in E}$$
-     Por lo tanto, $|V'| = |V| + |E|$.</p>
+     $$V&#x27; = V \cup \{w_e : e \in E\}$$
+     Por lo tanto, $|V&#x27;| = |V| + |E|$.</p>
 </li>
 <li>
 <p><strong>Aristas:</strong> Para cada arista $e = (u, v) \in E$:</p>
 <ul>
-<li>Mantenemos la arista original $(u, v) \in E'$.</li>
+<li>Mantenemos la arista original $(u, v) \in E&#x27;$.</li>
 <li>Agregamos aristas entre el vértice auxiliar $w_e$ y ambos extremos originales $u$ y $v$: $(u, w_e)$ y $(v, w_e)$.
- $$E' = E \cup {(u, w_e), (v, w_e) : e = (u, v) \in E}$$
- Por lo tanto, $|E'| = |E| + 2|E| = 3|E|$. Cada arista original forma un triángulo ${u, v, w_e}$.</li>
+ $$E&#x27; = E \cup \{(u, w_e), (v, w_e) : e = (u, v) \in E\}$$
+ Por lo tanto, $|E&#x27;| = |E| + 2|E| = 3|E|$. Cada arista original forma un triángulo $\{u, v, w_e\}$.</li>
 </ul>
 </li>
 <li>
 <p>Fijamos la cota del conjunto dominante:
-   $$k' = k$$</p>
+   $$k&#x27; = k$$</p>
 </li>
 <li>
 <p><strong>Complejidad Temporal de la Construcción:</strong> Duplicar nodos y aristas toma tiempo $O(|V| + |E|)$, que es estrictamente polinomial.</p>
 </li>
 </ol>
 <h4>3. Demostración Rigurosa de Equivalencia Bidireccional</h4>
-<h5>($\implies$) Si $G$ tiene un Vertex Cover $S$ con $|S| \le k$, entonces $G'$ tiene un Dominating Set $D$ con $|D| \le k$:</h5>
+<h5>($\implies$) Si $G$ tiene un Vertex Cover $S$ con $|S| \le k$, entonces $G&#x27;$ tiene un Dominating Set $D$ con $|D| \le k$:</h5>
 <ul>
 <li>Proponemos el conjunto dominante $D = S$. Como $|S| \le k$, tenemos inmediatamente que $|D| \le k$.</li>
-<li>Verifiquemos que $D$ domina a todos los vértices de $V'$:<ol>
-<li><strong>Vértices auxiliares $w_e \in V' \setminus V$:</strong> Cada $w_e$ corresponde a una arista original $e = (u, v) \in E$. Dado que $S$ es un Vertex Cover de $G$, al menos uno de los extremos pertenece a $S$ (es decir, $u \in S$ o $v \in S$). Dado que en $G'$ existen las aristas $(u, w_e)$ y $(v, w_e)$, $w_e$ es adyacente a al menos un vértice en $D = S$. Por lo tanto, todo $w_e$ queda dominado.</li>
-<li><strong>Vértices originales $u \in V$:</strong> Como $G$ no tiene vértices aislados, $u$ pertenece a al menos una arista $e = (u, v) \in E$. Si $u \in S$, entonces $u \in D$ y se domina a sí mismo. Si $u \notin S$, por ser $S$ un Vertex Cover, necesariamente el otro extremo $v$ pertenece a $S = D$. Como $(u, v) \in E'$, $u$ es adyacente a $v \in D$. Por lo tanto, $u$ está dominado.</li>
+<li>Verifiquemos que $D$ domina a todos los vértices de $V&#x27;$:<ol>
+<li><strong>Vértices auxiliares $w_e \in V&#x27; \setminus V$:</strong> Cada $w_e$ corresponde a una arista original $e = (u, v) \in E$. Dado que $S$ es un Vertex Cover de $G$, al menos uno de los extremos pertenece a $S$ (es decir, $u \in S$ o $v \in S$). Dado que en $G&#x27;$ existen las aristas $(u, w_e)$ y $(v, w_e)$, $w_e$ es adyacente a al menos un vértice en $D = S$. Por lo tanto, todo $w_e$ queda dominado.</li>
+<li><strong>Vértices originales $u \in V$:</strong> Como $G$ no tiene vértices aislados, $u$ pertenece a al menos una arista $e = (u, v) \in E$. Si $u \in S$, entonces $u \in D$ y se domina a sí mismo. Si $u \notin S$, por ser $S$ un Vertex Cover, necesariamente el otro extremo $v$ pertenece a $S = D$. Como $(u, v) \in E&#x27;$, $u$ es adyacente a $v \in D$. Por lo tanto, $u$ está dominado.</li>
 </ol>
 </li>
-<li>En conclusión, $D$ es un conjunto dominante válido de $G'$ de tamaño $\le k$.</li>
+<li>En conclusión, $D$ es un conjunto dominante válido de $G&#x27;$ de tamaño $\le k$.</li>
 </ul>
-<h5>($\impliedby$) Si $G'$ tiene un Dominating Set $D'$ con $|D'| \le k$, entonces $G$ tiene un Vertex Cover $S$ con $|S| \le k$:</h5>
+<h5>($\impliedby$) Si $G&#x27;$ tiene un Dominating Set $D&#x27;$ con $|D&#x27;| \le k$, entonces $G$ tiene un Vertex Cover $S$ con $|S| \le k$:</h5>
 <ul>
-<li>Supongamos que $D'$ contiene vértices auxiliares $w_e$ correspondientes a aristas $e = (u, v)$.</li>
-<li>En $G'$, el vértice $w_e$ solo tiene dos vecinos: $u$ y $v$.</li>
-<li>Si reemplazamos en $D'$ al vértice auxiliar $w_e$ por el vértice original $u$ (o $v$):<ul>
+<li>Supongamos que $D&#x27;$ contiene vértices auxiliares $w_e$ correspondientes a aristas $e = (u, v)$.</li>
+<li>En $G&#x27;$, el vértice $w_e$ solo tiene dos vecinos: $u$ y $v$.</li>
+<li>Si reemplazamos en $D&#x27;$ al vértice auxiliar $w_e$ por el vértice original $u$ (o $v$):<ul>
 <li>El propio $w_e$ sigue dominado porque es vecino de $u$.</li>
 <li>El vértice $u$ ahora se domina a sí mismo.</li>
 <li>Cualquier vecino original de $w_e$ (que solo podían ser $u$ y $v$) sigue dominado. Además, $u$ puede dominar a otros vecinos en $G$.</li>
-<li>El tamaño del conjunto no se incrementa: $|(D' \setminus {w_e}) \cup {u}| \le |D'| \le k$.</li>
+<li>El tamaño del conjunto no se incrementa: $|(D&#x27; \setminus \{w_e\}) \cup \{u\}| \le |D&#x27;| \le k$.</li>
 </ul>
 </li>
-<li>Aplicando esta sustitución a todo vértice auxiliar en $D'$, obtenemos un nuevo conjunto dominante $D'' \subseteq V$ compuesto <strong>exclusivamente por vértices originales de $G$</strong>, con $|D''| \le |D'| \le k$.</li>
+<li>Aplicando esta sustitución a todo vértice auxiliar en $D&#x27;$, obtenemos un nuevo conjunto dominante $D&#x27;&#x27; \subseteq V$ compuesto <strong>exclusivamente por vértices originales de $G$</strong>, con $|D&#x27;&#x27;| \le |D&#x27;| \le k$.</li>
 <li>
-<p>Demostremos que $D''$ es un Vertex Cover en $G$:</p>
+<p>Demostremos que $D&#x27;&#x27;$ es un Vertex Cover en $G$:</p>
 <ul>
-<li>Consideremos cualquier arista $e = (u, v) \in E$. En $G'$, el vértice auxiliar $w_e$ debe estar dominado por $D''$.</li>
-<li>Como $w_e \notin D''$ (porque $D'' \subseteq V$), $w_e$ debe ser adyacente a algún vértice en $D''$.</li>
+<li>Consideremos cualquier arista $e = (u, v) \in E$. En $G&#x27;$, el vértice auxiliar $w_e$ debe estar dominado por $D&#x27;&#x27;$.</li>
+<li>Como $w_e \notin D&#x27;&#x27;$ (porque $D&#x27;&#x27; \subseteq V$), $w_e$ debe ser adyacente a algún vértice en $D&#x27;&#x27;$.</li>
 <li>
-<p>Pero los únicos vecinos de $w_e$ en $G'$ son $u$ y $v$. Por lo tanto, necesariamente:
-$$u \in D'' \quad \lor \quad v \in D''$$</p>
+<p>Pero los únicos vecinos de $w_e$ en $G&#x27;$ son $u$ y $v$. Por lo tanto, necesariamente:
+$$u \in D&#x27;&#x27; \quad \lor \quad v \in D&#x27;&#x27;$$</p>
 </li>
 <li>
-<p>Esto significa que toda arista $(u, v) \in E$ tiene al menos un extremo en $D''$.</p>
+<p>Esto significa que toda arista $(u, v) \in E$ tiene al menos un extremo en $D&#x27;&#x27;$.</p>
 </li>
-<li>Por lo tanto, $S = D''$ es un Vertex Cover válido de $G$ con $|S| \le k$.</li>
+<li>Por lo tanto, $S = D&#x27;&#x27;$ es un Vertex Cover válido de $G$ con $|S| \le k$.</li>
 </ul>
 </li>
 </ul>
@@ -7547,21 +7638,21 @@ $$u \in D'' \quad \lor \quad v \in D''$$</p>
 <p>Consideremos un grafo simple $G$ con 3 vértices en línea: $1 - 2 - 3$.</p>
 <ul>
 <li>Aristas: $e_1 = (1, 2)$ y $e_2 = (2, 3)$.</li>
-<li>Vertex Cover óptimo en $G$: $S = {2}$ de tamaño $k = 1$ (el nodo 2 cubre ambas aristas).</li>
-<li>Construcción de $G'$:<ul>
-<li>Vértices: $V' = {1, 2, 3, w_{e1}, w_{e2}}$.</li>
+<li>Vertex Cover óptimo en $G$: $S = \{2\}$ de tamaño $k = 1$ (el nodo 2 cubre ambas aristas).</li>
+<li>Construcción de $G&#x27;$:<ul>
+<li>Vértices: $V&#x27; = \{1, 2, 3, w_{e1}, w_{e2}\}$.</li>
 <li>Aristas de $w_{e1}$: $(1, w_{e1})$ y $(2, w_{e1})$.</li>
 <li>Aristas de $w_{e2}$: $(2, w_{e2})$ y $(3, w_{e2})$.</li>
 <li>Aristas originales: $(1, 2)$ y $(2, 3)$.</li>
 </ul>
 </li>
-<li>Evaluemos $D = {2}$ en $G'$ ($k'=1$):<ul>
+<li>Evaluemos $D = \{2\}$ en $G&#x27;$ ($k&#x27;=1$):<ul>
 <li>Nodo 2 se domina a sí mismo.</li>
 <li>Nodos 1 y 3 son adyacentes a 2 $\implies$ dominados.</li>
 <li>Nodos $w_{e1}$ y $w_{e2}$ son adyacentes a 2 $\implies$ dominados.</li>
 </ul>
 </li>
-<li>¡Todos los 5 vértices de $G'$ quedan dominados con un único nodo $D = {2}$!</li>
+<li>¡Todos los 5 vértices de $G&#x27;$ quedan dominados con un único nodo $D = \{2\}$!</li>
 </ul>
 <h4>6. Implementación en Python con Verificador Polinomial</h4>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-python">from typing import Dict, List, Set, Tuple
@@ -7654,7 +7745,7 @@ def transformar_vc_a_dominating_set(
 Definiciones formales:</p>
 <ul>
 <li><strong>Ciclo Hamiltoniano (HC):</strong> Dado un grafo no dirigido $G = (V, E)$, determinar si existe un ciclo simple que visite todos los vértices de $V$ exactamente una vez y retorne al origen.</li>
-<li><strong>TSP (Decisión):</strong> Dado un grafo completo $G' = (V', E')$ con pesos enteros $w(e) \ge 0$ en las aristas y un entero $k$, determinar si existe un tour cerrado que visite cada vértice una única vez con costo total $\le k$.
+<li><strong>TSP (Decisión):</strong> Dado un grafo completo $G&#x27; = (V&#x27;, E&#x27;)$ con pesos enteros $w(e) \ge 0$ en las aristas y un entero $k$, determinar si existe un tour cerrado que visite cada vértice una única vez con costo total $\le k$.
 Determinar con fundamento formal si el vendedor tiene razón o si hay que despedir a Marco. Desarrollar la reducción polinomial completa con demostración de equivalencia.</li>
 </ul>
     </div>
@@ -7670,46 +7761,46 @@ Determinar con fundamento formal si el vendedor tiene razón o si hay que desped
 <p><strong>El vendedor tiene razón.</strong> Demostraremos que:
 $$\text{Ciclo Hamiltoniano} \le_P \text{TSP (Decisión)}$$
 lo que significa que una subrutina que resuelve TSP permite resolver Ciclo Hamiltoniano de manera directa.</p>
-<h5>1. Transformación Polinomial $f(G) \to (G', w, k)$</h5>
+<h5>1. Transformación Polinomial $f(G) \to (G&#x27;, w, k)$</h5>
 <p>Dada una instancia arbitraria de Ciclo Hamiltoniano $G = (V, E)$ con $n = |V|$ vértices:</p>
 <ol>
-<li>Construimos un grafo completo $G' = (V, E')$ con el mismo conjunto de vértices $V$. Como es completo, para todo par de vértices distintos $u, v \in V$, existe la arista $(u, v) \in E'$.</li>
+<li>Construimos un grafo completo $G&#x27; = (V, E&#x27;)$ con el mismo conjunto de vértices $V$. Como es completo, para todo par de vértices distintos $u, v \in V$, existe la arista $(u, v) \in E&#x27;$.</li>
 <li>
-<p>Definimos la función de ponderación $w: E' \to \mathbb{Z}^+$ según pertenezcan o no al grafo original:
-   $$w(u, v) = \begin{cases} 1 &amp; \text{si } (u, v) \in E \text{ (la arista existía en el grafo original)} \ 2 &amp; \text{si } (u, v) \notin E \text{ (arista artificial de penalización)} \end{cases}$$</p>
+<p>Definimos la función de ponderación $w: E&#x27; \to \mathbb{Z}^+$ según pertenezcan o no al grafo original:
+   $$w(u, v) = \begin{cases} 1 &amp; \text{si } (u, v) \in E \text{ (la arista existía en el grafo original)} \\ 2 &amp; \text{si } (u, v) \notin E \text{ (arista artificial de penalización)} \end{cases}$$</p>
 </li>
 <li>
 <p>Fijamos el umbral de costo del tour TSP:
    $$k = n = |V|$$</p>
 </li>
 <li>
-<p><strong>Complejidad de la Transformación:</strong> El grafo $G'$ contiene $\binom{n}{2} = \frac{n(n-1)}{2} = O(n^2)$ aristas. Asignar los pesos 1 o 2 consultando la matriz de adyacencia de $G$ toma tiempo $O(n^2)$, estrictamente polinomial.</p>
+<p><strong>Complejidad de la Transformación:</strong> El grafo $G&#x27;$ contiene $\binom{n}{2} = \frac{n(n-1)}{2} = O(n^2)$ aristas. Asignar los pesos 1 o 2 consultando la matriz de adyacencia de $G$ toma tiempo $O(n^2)$, estrictamente polinomial.</p>
 </li>
 </ol>
 <h5>2. Demostración de Equivalencia Bidireccional</h5>
 <ul>
 <li>
-<p><strong>($\implies$) Si $G$ tiene un Ciclo Hamiltoniano, entonces $G'$ tiene un tour TSP de costo $\le n$:</strong></p>
+<p><strong>($\implies$) Si $G$ tiene un Ciclo Hamiltoniano, entonces $G&#x27;$ tiene un tour TSP de costo $\le n$:</strong></p>
 <ul>
 <li>Sea $C = (v_1, v_2, \dots, v_n, v_1)$ un ciclo hamiltoniano en $G$.</li>
 <li>Como $C$ es un ciclo en $G$, todas sus $n$ aristas $(v_i, v_{i+1})$ y $(v_n, v_1)$ pertenecen a $E$.</li>
-<li>Por la regla de construcción, cada una de estas aristas tiene peso $w = 1$ en $G'$.</li>
-<li>El ciclo $C$ visita los $n$ vértices sin repetir y regresa al origen, constituyendo un tour válido de TSP en $G'$.</li>
+<li>Por la regla de construcción, cada una de estas aristas tiene peso $w = 1$ en $G&#x27;$.</li>
+<li>El ciclo $C$ visita los $n$ vértices sin repetir y regresa al origen, constituyendo un tour válido de TSP en $G&#x27;$.</li>
 <li>
 <p>El costo acumulado del tour es:
 $$\text{Costo}(C) = \sum_{i=1}^n w(v_i, v_{i+1}) = \sum_{i=1}^n 1 = n \le k$$</p>
 </li>
 <li>
-<p>Por lo tanto, $(G', w, k)$ es una instancia $\text{YES}$ de TSP.</p>
+<p>Por lo tanto, $(G&#x27;, w, k)$ es una instancia $\text{YES}$ de TSP.</p>
 </li>
 </ul>
 </li>
 <li>
-<p><strong>($\impliedby$) Si $G'$ tiene un tour TSP de costo $\le n$, entonces $G$ tiene un Ciclo Hamiltoniano:</strong></p>
+<p><strong>($\impliedby$) Si $G&#x27;$ tiene un tour TSP de costo $\le n$, entonces $G$ tiene un Ciclo Hamiltoniano:</strong></p>
 <ul>
-<li>Sea $T = (u_1, u_2, \dots, u_n, u_1)$ un tour cerrado en $G'$ que visita los $n$ vértices con costo total $\le n$.</li>
+<li>Sea $T = (u_1, u_2, \dots, u_n, u_1)$ un tour cerrado en $G&#x27;$ que visita los $n$ vértices con costo total $\le n$.</li>
 <li>El tour consta de exactamente $n$ aristas.</li>
-<li>Por construcción de $G'$, todas las aristas tienen peso $w \in {1, 2}$.</li>
+<li>Por construcción de $G&#x27;$, todas las aristas tienen peso $w \in \{1, 2\}$.</li>
 <li>Supongamos por contradicción que al menos una arista del tour $T$, digamos $(u_j, u_{j+1})$, no pertenecía a $E$ ($w=2$).</li>
 <li>
 <p>Dado que las restantes $n-1$ aristas tienen peso como mínimo $1$, el costo total del tour sería:
@@ -7766,8 +7857,8 @@ def reducir_ciclo_hamiltoniano_a_tsp(
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Asignar peso 0 a las aristas existentes y 1 a las inexistentes:</strong> Si se pone peso 0 a las aristas existentes y cota $k = 0$, matemáticamente es válido, pero muchos docentes exigen pesos estrictamente positivos ($w(e) > 0$). Con pesos $\{1, 2\}$ y cota $k = n$, se respeta la formulación clásica de TSP métrico.</li>
-    <li><strong>No demostrar la cota $n+1 > n$ en la vuelta:</strong> Omitir la desigualdad aritmética que prueba por qué una sola arista de peso 2 hace imposible alcanzar el costo $n$.</li>
+    <li><strong>Asignar peso 0 a las aristas existentes y 1 a las inexistentes:</strong> Si se pone peso 0 a las aristas existentes y cota $k = 0$, matemáticamente es válido, pero muchos docentes exigen pesos estrictamente positivos ($w(e) &gt; 0$). Con pesos $\{1, 2\}$ y cota $k = n$, se respeta la formulación clásica de TSP métrico.</li>
+    <li><strong>No demostrar la cota $n+1 &gt; n$ en la vuelta:</strong> Omitir la desigualdad aritmética que prueba por qué una sola arista de peso 2 hace imposible alcanzar el costo $n$.</li>
   </ul>
 </div>
       </div>
@@ -7802,7 +7893,7 @@ def reducir_ciclo_hamiltoniano_a_tsp(
   <div class="card-body">
     <div class="exercise-statement-box">
       <h4>1. Enunciado Completo</h4>
-<p>Demostrar formalmente que el problema del <strong>Cambio de Monedas</strong> (en su versión de decisión: dadas denominaciones enteras $D = {d_1, \dots, d_m}$, un entero objetivo $V$ y una cota $k$, ¿es posible dar cambio de valor exacto $V$ utilizando a lo sumo $k$ monedas?) <strong>no es más difícil</strong> que el problema de la <strong>Suma de Subconjuntos (Subset Sum)</strong>.<br />
+<p>Demostrar formalmente que el problema del <strong>Cambio de Monedas</strong> (en su versión de decisión: dadas denominaciones enteras $D = \{d_1, \dots, d_m\}$, un entero objetivo $V$ y una cota $k$, ¿es posible dar cambio de valor exacto $V$ utilizando a lo sumo $k$ monedas?) <strong>no es más difícil</strong> que el problema de la <strong>Suma de Subconjuntos (Subset Sum)</strong>.<br />
 ¿Es posible demostrar la reducción en sentido inverso? Fundamentar en base a las clases de complejidad teóricas.</p>
     </div>
 
@@ -7823,7 +7914,7 @@ $$\text{Cambio de Monedas} \le_P \text{Subset Sum}$$</p>
 <li>Como a lo sumo se usarán $k$ monedas en total, ninguna moneda individual puede usarse más de $k$ veces.</li>
 <li>
 <p>Construimos una lista de enteros $L$ creando $k$ copias independientes de cada denominación $d_i \in D$:
-   $$L = {d_{i}^{(1)}, d_{i}^{(2)}, \dots, d_{i}^{(k)} : \forall d_i \in D}$$
+   $$L = \{d_{i}^{(1)}, d_{i}^{(2)}, \dots, d_{i}^{(k)} : \forall d_i \in D\}$$
    El conjunto $L$ contiene exactamente $m \cdot k$ enteros.</p>
 </li>
 <li>
@@ -7836,7 +7927,7 @@ $$\text{Cambio de Monedas} \le_P \text{Subset Sum}$$</p>
 </li>
 <li>
 <p>Fijamos el objetivo de Subset Sum:
-     $$W = V \cdot M + k' \quad \text{probando para cada } k' \in {1, \dots, k}$$</p>
+     $$W = V \cdot M + k&#x27; \quad \text{probando para cada } k&#x27; \in \{1, \dots, k\}$$</p>
 </li>
 <li>
 <p><em>Alternativa directa estándar:</em> Dado que la versión de decisión de Cambio de Monedas con $k$ libre admite réplicas de elementos, se reduce directamente a Subset Sum con réplicas en tiempo $O(m \cdot k)$.</p>
@@ -7898,7 +7989,7 @@ $$\text{Cambio de Monedas} \equiv_P \text{Subset Sum}$$</li>
   <div class="card-body">
     <div class="exercise-statement-box">
       <h4>1. Enunciado Completo</h4>
-<p>Dados los problemas de decisión de <strong>Independent Set</strong> (¿existe un subconjunto de vértices $I \subseteq V$ de tamaño $|I| \ge k$ tal que no existan aristas entre vértices de $I$?) y <strong>Vertex Cover</strong> (¿existe un subconjunto $S \subseteq V$ de tamaño $|S| \le k'$ que cubra todas las aristas de $E$?):</p>
+<p>Dados los problemas de decisión de <strong>Independent Set</strong> (¿existe un subconjunto de vértices $I \subseteq V$ de tamaño $|I| \ge k$ tal que no existan aristas entre vértices de $I$?) y <strong>Vertex Cover</strong> (¿existe un subconjunto $S \subseteq V$ de tamaño $|S| \le k&#x27;$ que cubra todas las aristas de $E$?):</p>
 <ol>
 <li>Diseñar una reducción polinomial formal de <strong>Independent Set a Vertex Cover</strong>.</li>
 <li>Demostrar rigurosamente la equivalencia lógica fundamentando el teorema del complemento en teoría de grafos.</li>
@@ -7939,10 +8030,10 @@ En cualquier grafo no dirigido $G = (V, E)$, un subconjunto de vértices $S \sub
 <h4>3. Construcción de la Reducción Polinomial</h4>
 <p>Dada una instancia $(G = (V, E), k)$ de Independent Set:</p>
 <ol>
-<li>El grafo transformado es idéntico: $G' = G$.</li>
+<li>El grafo transformado es idéntico: $G&#x27; = G$.</li>
 <li>
 <p>Fijamos la cota de Vertex Cover:
-   $$k' = |V| - k$$</p>
+   $$k&#x27; = |V| - k$$</p>
 </li>
 <li>
 <p><strong>Complejidad:</strong> La transformación simplemente lee la cantidad de vértices y efectúa una resta entera en tiempo $O(1)$.</p>
@@ -7953,11 +8044,11 @@ En cualquier grafo no dirigido $G = (V, E)$, un subconjunto de vértices $S \sub
 <ul>
 <li>
 <p>Si existe $S$ independiente con $|S| \ge k$, su complemento $V \setminus S$ es un Vertex Cover con tamaño:
-  $$|V \setminus S| = |V| - |S| \le |V| - k = k'$$</p>
+  $$|V \setminus S| = |V| - |S| \le |V| - k = k&#x27;$$</p>
 </li>
 <li>
-<p>Si existe un Vertex Cover $C$ con $|C| \le k'$, su complemento $V \setminus C$ es un Independent Set con tamaño:
-  $$|V \setminus C| = |V| - |C| \ge |V| - k' = |V| - (|V| - k) = k$$</p>
+<p>Si existe un Vertex Cover $C$ con $|C| \le k&#x27;$, su complemento $V \setminus C$ es un Independent Set con tamaño:
+  $$|V \setminus C| = |V| - |C| \ge |V| - k&#x27; = |V| - (|V| - k) = k$$</p>
 </li>
 </ul>
 <h4>5. Diagrama Visual de la Dualidad</h4>
@@ -7968,7 +8059,7 @@ En cualquier grafo no dirigido $G = (V, E)$, un subconjunto de vértices $S \sub
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Invertir el sentido de las desigualdades:</strong> Olvidar que Independent Set es un problema de **maximización** ($|S| \ge k$) mientras que Vertex Cover es de **minimización** ($|C| \le k'$). Al restar del total $|V|$, la desigualdad se invierte automáticamente ($|S| \ge k \iff |V| - |S| \le |V| - k$).</li>
+    <li><strong>Invertir el sentido de las desigualdades:</strong> Olvidar que Independent Set es un problema de **maximización** ($|S| \ge k$) mientras que Vertex Cover es de **minimización** ($|C| \le k&#x27;$). Al restar del total $|V|$, la desigualdad se invierte automáticamente ($|S| \ge k \iff |V| - |S| \le |V| - k$).</li>
   </ul>
 </div>
       </div>
@@ -8319,7 +8410,7 @@ Para el problema de Vertex Cover Mínimo en un grafo G = (V, E), comparar tres e
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado Integrador</strong><br />
-Se dispone de una mochila con capacidad entera máxima de peso $W &gt; 0$ y un conjunto de $n$ elementos disponibles, donde cada elemento $i \in {1, \dots, n}$ posee un peso entero $w_i &gt; 0$ y un valor o beneficio entero $v_i &gt; 0$.<br />
+Se dispone de una mochila con capacidad entera máxima de peso $W &gt; 0$ y un conjunto de $n$ elementos disponibles, donde cada elemento $i \in \{1, \dots, n\}$ posee un peso entero $w_i &gt; 0$ y un valor o beneficio entero $v_i &gt; 0$.<br />
 Resolver y contrastar el problema a través de todos los paradigmas algorítmicos fundamentales evaluados en la materia:</p>
 <ol>
 <li><strong>Paradigma Greedy (Algoritmo Voraz):</strong></li>
@@ -8397,19 +8488,19 @@ Resolver y contrastar el problema a través de todos los paradigmas algorítmico
 <li>Como la mochila está llena en ambas soluciones (o todos los elementos entraron), para compensar el déficit en el ítem $k$, la solución óptima $O$ debe haber tomado una cantidad de elementos posteriores $j &gt; k$ donde la densidad es menor o igual ($r_j \le r_k$).</li>
 <li>Modificamos la solución óptima $O$ incrementando $y_k$ en $\Delta w$ y reduciendo elementos posteriores $y_j$ en el mismo peso $\Delta w$.</li>
 <li>
-<p>La variación del beneficio en la nueva solución $O'$ es:
+<p>La variación del beneficio en la nueva solución $O&#x27;$ es:
    $$\Delta Valor = \Delta w \cdot r_k - \Delta w \cdot r_j = \Delta w \cdot (r_k - r_j) \ge 0$$
    dado que $r_k \ge r_j$.</p>
 </li>
 <li>
-<p>Por ende, el valor de $O'$ no disminuye ($Valor(O') \ge Valor(O)$). Repitiendo este proceso de intercambio para todos los elementos donde difieran, podemos transformar $O$ en $G$ sin reducir nunca el valor total.</p>
+<p>Por ende, el valor de $O&#x27;$ no disminuye ($Valor(O&#x27;) \ge Valor(O)$). Repitiendo este proceso de intercambio para todos los elementos donde difieran, podemos transformar $O$ en $G$ sin reducir nunca el valor total.</p>
 </li>
 <li>Conclusión: la solución voraz $G$ es óptima.</li>
 <li><strong>Complejidad:</strong> Tiempo $O(n \log n)$ por el ordenamiento inicial; Espacio $O(n)$.</li>
 </ol>
 <hr />
 <h5>B. Mochila 0-1: Por qué Greedy Falla y Algoritmo 1/2-Aproximado</h5>
-<p>En la mochila 0-1 los objetos son indivisibles ($x_i \in {0, 1}$).</p>
+<p>En la mochila 0-1 los objetos son indivisibles ($x_i \in \{0, 1\}$).</p>
 <ul>
 <li>
 <p><strong>Contraejemplo Minimal de No-Optimalidad para Greedy por Densidad:</strong></p>
@@ -8426,7 +8517,7 @@ Resolver y contrastar el problema a través de todos los paradigmas algorítmico
 <p><strong>Algoritmo Greedy 1/2-Aproximado para Mochila 0-1:</strong></p>
 <ol>
 <li>Ejecutar la regla voraz por densidad tomando ítems completos hasta el primer ítem $k$ que no quepa entero (ítem de corte). Sea $V_{greedy}$ el valor de los ítems tomados.</li>
-<li>Hallar el ítem individual más valioso que quepa en la mochila: $v_{max} = \max { v_i : w_i \le W }$.</li>
+<li>Hallar el ítem individual más valioso que quepa en la mochila: $v_{max} = \max \{ v_i : w_i \le W \}$.</li>
 <li>Retornar la mejor de las dos opciones:
  $$V_{aprox} = \max(V_{greedy}, v_{max})$$</li>
 </ol>
@@ -8550,7 +8641,7 @@ Como la fila $i$ solo depende estrictamente de la fila inmediata anterior $i - 1
 <li><strong>Subproblema:</strong> $OPT(w) =$ beneficio máximo que se puede obtener con capacidad exacta $w$.</li>
 <li>
 <p><strong>Recurrencia:</strong>
-  $$OPT(w) = \max_{i: w_i \le w} { OPT(w - w_i) + v_i }, \quad \text{con } OPT(0) = 0$$</p>
+  $$OPT(w) = \max_{i: w_i \le w} \{ OPT(w - w_i) + v_i \}, \quad \text{con } OPT(0) = 0$$</p>
 </li>
 <li>
 <p>En este caso, el recorrido del vector 1D se realiza <strong>de izquierda a derecha (creciente de $w_i$ a $W$)</strong>, permitiendo explícitamente reutilizar el mismo ítem múltiples veces. Tiempo: $O(n \cdot W)$, Espacio: $O(W)$.</p>
@@ -8562,7 +8653,7 @@ Como la fila $i$ solo depende estrictamente de la fila inmediata anterior $i - 1
 <ul>
 <li>
 <p><strong>Estructura del Árbol de Búsqueda:</strong>
-  Árbol binario de profundidad $n$. En el nivel $i$, decidimos si incluimos o no el elemento $i$ ($x_i \in {0, 1}$).</p>
+  Árbol binario de profundidad $n$. En el nivel $i$, decidimos si incluimos o no el elemento $i$ ($x_i \in \{0, 1\}$).</p>
 </li>
 <li>
 <p><strong>Las Dos Clases de Podas Obligatorias en Parcial:</strong></p>
@@ -8639,7 +8730,7 @@ FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
 <ul>
 <li>
 <p><strong>Variables de Decisión:</strong>
-  $$x_i \in {0, 1} \quad \forall i \in {1, \dots, n}$$
+  $$x_i \in \{0, 1\} \quad \forall i \in \{1, \dots, n\}$$
   donde $x_i = 1$ si el elemento $i$ se introduce en la mochila, y $0$ en caso contrario.</p>
 </li>
 <li>
@@ -8652,7 +8743,7 @@ FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
 </li>
 <li>
 <p><strong>Restricciones de Dominio:</strong>
-  $$x_i \in {0, 1} \quad \forall i \in {1, \dots, n}$$</p>
+  $$x_i \in \{0, 1\} \quad \forall i \in \{1, \dots, n\}$$</p>
 </li>
 <li>
 <p><strong>Recuento Riguroso para Examen:</strong></p>
@@ -8662,7 +8753,7 @@ FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
 </ul>
 </li>
 <li><strong>Vínculo con la Relajación Lineal (LP Relaxation):</strong>
-  Si reemplazamos $x_i \in {0, 1}$ por $0 \le x_i \le 1$ (variables continuas), el problema de PL continuo resultante se resuelve en tiempo polinomial y <strong>su solución óptima es idéntica a la Mochila Fraccionaria Greedy</strong>.</li>
+  Si reemplazamos $x_i \in \{0, 1\}$ por $0 \le x_i \le 1$ (variables continuas), el problema de PL continuo resultante se resuelve en tiempo polinomial y <strong>su solución óptima es idéntica a la Mochila Fraccionaria Greedy</strong>.</li>
 </ul>
 <hr />
 <h4>5. Por qué Falla División y Conquista (DyC) Puro en la Mochila</h4>
@@ -8773,7 +8864,7 @@ FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado Integrador</strong><br />
-Dado un conjunto de $n$ ciudades numeradas ${1, 2, \dots, n}$ y una matriz de distancias o costos $C = [c_{ij}]$ no negativos entre cada par de ciudades, el <strong>Problema del Viajante de Comercio (TSP - Travelling Salesperson Problem)</strong> consiste en encontrar un circuito simple (tour cerrado) que visite <strong>exactamente una vez cada ciudad y retorne a la ciudad de origen</strong> minimizando la distancia total recorrida.<br />
+Dado un conjunto de $n$ ciudades numeradas $\{1, 2, \dots, n\}$ y una matriz de distancias o costos $C = [c_{ij}]$ no negativos entre cada par de ciudades, el <strong>Problema del Viajante de Comercio (TSP - Travelling Salesperson Problem)</strong> consiste en encontrar un circuito simple (tour cerrado) que visite <strong>exactamente una vez cada ciudad y retorne a la ciudad de origen</strong> minimizando la distancia total recorrida.<br />
 Resolver y comparar este problema a través de todos los paradigmas algorítmicos fundamentales:</p>
 <ol>
 <li><strong>Paradigma Backtracking y Branch &amp; Bound (Búsqueda Exacta):</strong></li>
@@ -8882,23 +8973,23 @@ PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO
 <li>
 <p><strong>Definición Formal del Subproblema:</strong></p>
 <blockquote>
-<p><strong>$C(S, j)$:</strong> Longitud mínima de un camino simple que comienza en la ciudad 1, visita <strong>exactamente</strong> todas las ciudades del subconjunto $S \subseteq {2, 3, \dots, n}$ y finaliza en la ciudad $j \in S$.</p>
+<p><strong>$C(S, j)$:</strong> Longitud mínima de un camino simple que comienza en la ciudad 1, visita <strong>exactamente</strong> todas las ciudades del subconjunto $S \subseteq \{2, 3, \dots, n\}$ y finaliza en la ciudad $j \in S$.</p>
 </blockquote>
 </li>
 <li>
 <p><strong>Casos Base:</strong>
-  Para subconjuntos de tamaño 1 ($S = {j}$):
-  $$C({j}, j) = c_{1, j} \quad \forall j \in {2, \dots, n}$$</p>
+  Para subconjuntos de tamaño 1 ($S = \{j\}$):
+  $$C(\{j\}, j) = c_{1, j} \quad \forall j \in \{2, \dots, n\}$$</p>
 </li>
 <li>
 <p><strong>Ecuación de Recurrencia:</strong>
   Para cualquier subconjunto $S$ de tamaño $|S| \ge 2$ y cualquier ciudad de llegada $j \in S$:
-  $$C(S, j) = \min_{k \in S \setminus {j}} \left[ C(S \setminus {j}, k) + c_{kj} \right]$$</p>
+  $$C(S, j) = \min_{k \in S \setminus \{j\}} \left[ C(S \setminus \{j\}, k) + c_{kj} \right]$$</p>
 </li>
 <li>
 <p><strong>Cálculo del Tour Cerrado Óptimo:</strong>
-  Una vez calculada la tabla para el conjunto completo $V' = {2, 3, \dots, n}$:
-  $$OPT = \min_{j \in {2, \dots, n}} \left[ C({2, \dots, n}, j) + c_{j, 1} \right]$$</p>
+  Una vez calculada la tabla para el conjunto completo $V&#x27; = \{2, 3, \dots, n\}$:
+  $$OPT = \min_{j \in \{2, \dots, n\}} \left[ C(\{2, \dots, n\}, j) + c_{j, 1} \right]$$</p>
 </li>
 </ul>
 <p><strong>Pseudocódigo de Held-Karp</strong></p>
@@ -9018,7 +9109,7 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
 </code></pre></div>
 <p><strong>Demostración Rigurosa de la Garantía de Aproximación 2:</strong></p>
 <ol>
-<li>Sea $T^<em>$ el tour óptimo de TSP y sea $OPT = Costo(T^</em>)$.</li>
+<li>Sea $T^*$ el tour óptimo de TSP y sea $OPT = Costo(T^*)$.</li>
 <li>Si removemos una arista cualquiera del tour óptimo $T^*$, obtenemos un camino simple que conecta todos los vértices del grafo. Todo camino que conecta todos los vértices es, por definición, un árbol generador.</li>
 <li>
 <p>Como el MST es el árbol generador de <strong>mínimo costo posible</strong>, se cumple estrictamente:
@@ -9045,8 +9136,8 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
 <p>Para formular TSP en PLI, no basta con exigir que cada nodo tenga grado de entrada 1 y grado de salida 1 (eso admitiría <strong>subtours desconectados</strong>, por ejemplo dos triángulos aislados de 3 nodos en vez de un ciclo de 6). Se utiliza la <strong>formulación de Miller-Tucker-Zemlin (MTZ)</strong>:</p>
 <ul>
 <li><strong>Variables de Decisión:</strong><ul>
-<li>$x_{ij} \in {0, 1}$ para todo $i, j \in {1, \dots, n}$ con $i \neq j$ (1 si se viaja directamente de la ciudad $i$ a la $j$, 0 si no).</li>
-<li>$u_i \in \mathbb{R}$ para $i \in {2, \dots, n}$: variable continua auxiliar que representa el <strong>orden de visita</strong> de la ciudad $i$ a lo largo del tour.</li>
+<li>$x_{ij} \in \{0, 1\}$ para todo $i, j \in \{1, \dots, n\}$ con $i \neq j$ (1 si se viaja directamente de la ciudad $i$ a la $j$, 0 si no).</li>
+<li>$u_i \in \mathbb{R}$ para $i \in \{2, \dots, n\}$: variable continua auxiliar que representa el <strong>orden de visita</strong> de la ciudad $i$ a lo largo del tour.</li>
 </ul>
 </li>
 <li>
@@ -9058,17 +9149,17 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
 <ol>
 <li>
 <p>Salir exactamente una vez de cada ciudad:
- $$\sum_{j=1, j \neq i}^n x_{ij} = 1 \quad \forall i \in {1, \dots, n}$$</p>
+ $$\sum_{j=1, j \neq i}^n x_{ij} = 1 \quad \forall i \in \{1, \dots, n\}$$</p>
 </li>
 <li>
 <p>Llegar exactamente una vez a cada ciudad:
- $$\sum_{i=1, i \neq j}^n x_{ij} = 1 \quad \forall j \in {1, \dots, n}$$</p>
+ $$\sum_{i=1, i \neq j}^n x_{ij} = 1 \quad \forall j \in \{1, \dots, n\}$$</p>
 </li>
 </ol>
 </li>
 <li>
 <p><strong>Restricciones de Eliminación de Subtours (MTZ):</strong>
-  Para cada par de ciudades $i, j \in {2, \dots, n}$ con $i \neq j$:
+  Para cada par de ciudades $i, j \in \{2, \dots, n\}$ con $i \neq j$:
   $$u_i - u_j + n \cdot x_{ij} \le n - 1$$</p>
 </li>
 <li>
@@ -9106,18 +9197,18 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
 <p><strong>Paso 3: Transformación Polinomial ($\text{HC} \le_P \text{TSP}$):</strong>
   Dada una instancia de HC con grafo $G = (V, E)$:</p>
 <ol>
-<li>Construimos un grafo completo $G' = (V, E')$ con el mismo conjunto de vértices.</li>
+<li>Construimos un grafo completo $G&#x27; = (V, E&#x27;)$ con el mismo conjunto de vértices.</li>
 <li>
-<p>Asignamos pesos a las aristas de $G'$:
- $$c_{uv} = \begin{cases} 1 &amp; \text{si } (u, v) \in E \ 2 &amp; \text{si } (u, v) \notin E \end{cases}$$</p>
+<p>Asignamos pesos a las aristas de $G&#x27;$:
+ $$c_{uv} = \begin{cases} 1 &amp; \text{si } (u, v) \in E \\ 2 &amp; \text{si } (u, v) \notin E \end{cases}$$</p>
 </li>
 <li>
 <p>Fijamos la cota $K = |V|$.</p>
 </li>
 <li>La construcción se realiza en tiempo $O(|V|^2)$, estrictamente polinomial.</li>
 <li><strong>Paso 4: Equivalencia Lógica Bidireccional:</strong></li>
-<li>($\implies$) Si $G$ tiene un Ciclo Hamiltoniano, ese ciclo utiliza únicamente aristas que pertenecían a $E$, las cuales tienen peso 1 en $G'$. El costo total del ciclo en $G'$ es exactamente $1 \cdot |V| = |V| \le K$. Por lo tanto, existe un tour de TSP con costo $\le K$.</li>
-<li>($\impliedby$) Si $G'$ tiene un tour de TSP con costo total $\le |V|$: como el tour recorre exactamente $|V|$ aristas y cada arista cuesta al menos 1, la <strong>única forma</strong> de que la suma sea $\le |V|$ es que <strong>cada arista del tour cueste exactamente 1</strong>. Como solo las aristas originales de $E$ tienen costo 1, todas las aristas del tour pertenecen a $E$, constituyendo un Ciclo Hamiltoniano válido en $G$.</li>
+<li>($\implies$) Si $G$ tiene un Ciclo Hamiltoniano, ese ciclo utiliza únicamente aristas que pertenecían a $E$, las cuales tienen peso 1 en $G&#x27;$. El costo total del ciclo en $G&#x27;$ es exactamente $1 \cdot |V| = |V| \le K$. Por lo tanto, existe un tour de TSP con costo $\le K$.</li>
+<li>($\impliedby$) Si $G&#x27;$ tiene un tour de TSP con costo total $\le |V|$: como el tour recorre exactamente $|V|$ aristas y cada arista cuesta al menos 1, la <strong>única forma</strong> de que la suma sea $\le |V|$ es que <strong>cada arista del tour cueste exactamente 1</strong>. Como solo las aristas originales de $E$ tienen costo 1, todas las aristas del tour pertenecen a $E$, constituyendo un Ciclo Hamiltoniano válido en $G$.</li>
 <li><strong>Conclusión:</strong> TSP es <strong>NP-Completo</strong>.</li>
 </ol>
 </li>
@@ -9243,14 +9334,14 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
 <p><strong>Preprocesamiento de Compatibilidad:</strong>
    Un dron $i$ es compatible con un puesto $j$ si y solo si:
    $$\text{Distancia}(i, j) \le \text{AlcanceMax}_i \quad \land \quad t_i^{ini} \le h_j^{min} \quad \land \quad h_j^{max} \le t_i^{fin}$$
-   Sea $Comp(i, j) \in {0, 1}$ el indicador de dicha compatibilidad calculable en tiempo $O(D \cdot P)$.</p>
+   Sea $Comp(i, j) \in \{0, 1\}$ el indicador de dicha compatibilidad calculable en tiempo $O(D \cdot P)$.</p>
 </li>
 <li>
 <p><strong>Topología en Capas Nodal:</strong></p>
 </li>
 <li>Super-fuente $s$.</li>
-<li>Capa de drones: un nodo $d_i$ por cada dron $i \in {1, \dots, D}$.</li>
-<li>Capa de puestos sanitarios: un nodo $p_j$ por cada puesto $j \in {1, \dots, P}$.</li>
+<li>Capa de drones: un nodo $d_i$ por cada dron $i \in \{1, \dots, D\}$.</li>
+<li>Capa de puestos sanitarios: un nodo $p_j$ por cada puesto $j \in \{1, \dots, P\}$.</li>
 <li>Super-sumidero $t$.</li>
 <li><strong>Asignación de Aristas y Capacidades:</strong></li>
 <li><strong>Aristas de Fuente a Drones:</strong> $(s, d_i)$ con capacidad $c(s, d_i) = 2$ para todo $i$. <em>Justificación:</em> Modela directamente que cada dron puede efectuar a lo sumo 2 entregas.</li>
@@ -9268,7 +9359,7 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
 <h4>3. Demostración Teórica de Correctitud e Integralidad</h4>
 <p><strong>Lema de Flujo Entero y Validez:</strong></p>
 <ol>
-<li>Como todas las capacidades de la red son números enteros ($c \in {1, 2}$), por el <strong>Teorema de Integralidad de Flujo</strong>, el flujo óptimo calculado por Edmonds-Karp asignará valores enteros a todas las aristas: $f(e) \in {0, 1, 2}$.</li>
+<li>Como todas las capacidades de la red son números enteros ($c \in \{1, 2\}$), por el <strong>Teorema de Integralidad de Flujo</strong>, el flujo óptimo calculado por Edmonds-Karp asignará valores enteros a todas las aristas: $f(e) \in \{0, 1, 2\}$.</li>
 <li>
 <p>Para cada dron $i$, por conservación en el nodo $d_i$:
    $$\sum_{j} f(d_i, p_j) = f(s, d_i) \le c(s, d_i) = 2$$
@@ -9416,7 +9507,7 @@ def despachar_drones_emergencia(
 <strong>Paradigma:</strong> Programación Dinámica (Exclusión Multidía con Restricción de Presupuesto)<br />
 <strong>Qué evalúa la cátedra:</strong> Definición formal de subproblemas 2D, manejo riguroso de saltos de índice ($i - 3$) por cooldown y reconstrucción exacta de decisiones.</p>
 <h4>1. Enunciado Completo</h4>
-<p>Una empresa de marketing digital planifica su campaña durante los próximos $n$ días. Para cada día $i \in {1, \dots, n}$ se dispone de una propuesta de pauta publicitaria que cuesta $C[i]$ pesos y genera una conversión estimada de $B[i]$ nuevos clientes ($C[i], B[i] &gt; 0$). El presupuesto global disponible es de $P$ pesos. Por políticas de saturación de audiencia, si se pauta en el día $i$, <strong>no se puede volver a pautar durante los siguientes 2 días</strong> (es decir, los días $i+1$ e $i+2$ son de enfriamiento obligatorio; recién se podría volver a pautar el día $i+3$). Diseñar un algoritmo de Programación Dinámica que maximice las conversiones acumuladas sin exceder el presupuesto $P$.</p>
+<p>Una empresa de marketing digital planifica su campaña durante los próximos $n$ días. Para cada día $i \in \{1, \dots, n\}$ se dispone de una propuesta de pauta publicitaria que cuesta $C[i]$ pesos y genera una conversión estimada de $B[i]$ nuevos clientes ($C[i], B[i] &gt; 0$). El presupuesto global disponible es de $P$ pesos. Por políticas de saturación de audiencia, si se pauta en el día $i$, <strong>no se puede volver a pautar durante los siguientes 2 días</strong> (es decir, los días $i+1$ e $i+2$ son de enfriamiento obligatorio; recién se podría volver a pautar el día $i+3$). Diseñar un algoritmo de Programación Dinámica que maximice las conversiones acumuladas sin exceder el presupuesto $P$.</p>
     </div>
 
     <details class="exercise-solution-drawer" id="solution-drawer-38">
@@ -9430,14 +9521,14 @@ def despachar_drones_emergencia(
 <ol>
 <li>
 <p><strong>Definición Formal del Subproblema:</strong>
-   $$OPT(i, p): \text{Máxima conversión obtenible considerando el prefijo de días } {1, \dots, i} \text{ con un presupuesto disponible de } p \text{ pesos}$$
+   $$OPT(i, p): \text{Máxima conversión obtenible considerando el prefijo de días } \{1, \dots, i\} \text{ con un presupuesto disponible de } p \text{ pesos}$$
    donde $0 \le i \le n$ y $0 \le p \le P$.</p>
 </li>
 <li>
 <p><strong>Casos Base:</strong></p>
 </li>
-<li>$OPT(0, p) = 0 \quad \forall p \in {0, \dots, P}$ (sin días disponibles no hay conversiones).</li>
-<li>$OPT(i, 0) = 0 \quad \forall i \in {0, \dots, n}$ (sin dinero no es posible pautar, asumiendo $C[i] &gt; 0$).</li>
+<li>$OPT(0, p) = 0 \quad \forall p \in \{0, \dots, P\}$ (sin días disponibles no hay conversiones).</li>
+<li>$OPT(i, 0) = 0 \quad \forall i \in \{0, \dots, n\}$ (sin dinero no es posible pautar, asumiendo $C[i] &gt; 0$).</li>
 <li>
 <p><strong>Ecuación de Recurrencia de Bellman:</strong>
    Para el día $i$, existen exactamente dos decisiones excluyentes:</p>
@@ -9448,7 +9539,7 @@ def despachar_drones_emergencia(
 <li>
 <p><strong>Opción B (Pautar el día $i$):</strong> Factible solo si $p \ge C[i]$. Ganamos $B[i]$ conversiones y el día publicitario previo pudo ser a lo sumo el día $i-3$ (por el enfriamiento obligatorio de 2 días). El valor es $OPT(\max(0, i-3), p - C[i]) + B[i]$.
    Combinando ambas alternativas:
-   $$OPT(i, p) = \begin{cases} OPT(i-1, p) &amp; \text{si } C[i] &gt; p \ \max \left( OPT(i-1, p), \; OPT(\max(0, i-3), p - C[i]) + B[i] \right) &amp; \text{si } C[i] \le p \end{cases}$$</p>
+   $$OPT(i, p) = \begin{cases} OPT(i-1, p) &amp; \text{si } C[i] &gt; p \\ \max \left( OPT(i-1, p), \; OPT(\max(0, i-3), p - C[i]) + B[i] \right) &amp; \text{si } C[i] \le p \end{cases}$$</p>
 </li>
 <li>
 <p><strong>Orden de Llenado de la Tabla:</strong>
@@ -9486,7 +9577,7 @@ def despachar_drones_emergencia(
 <li>Si pautamos día 1 (costo 5, ben 10) $\implies$ enfriamiento días 2 y 3 $\implies$ podemos pautar día 4 (costo 5, ben 12).</li>
 <li>Costo total: $5 + 5 = 10 \le 10$. Beneficio total: $10 + 12 = 22$.</li>
 <li>Si pautáramos día 3 (costo 6, ben 14), no podríamos pautar día 1 ni 2 ni 4. Total = 14.</li>
-<li>El algoritmo devuelve $OPT(4, 10) = 22$ con días elegidos ${1, 4}$.</li>
+<li>El algoritmo devuelve $OPT(4, 10) = 22$ con días elegidos $\{1, 4\}$.</li>
 </ul>
 <h4>6. Implementación en Python con Tipado Estricto</h4>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-python">from typing import List, Tuple
@@ -9585,9 +9676,9 @@ Plantear un modelo formal de Programación Lineal Entera indicando variables, do
         <h4>2. Los 5 Pasos Metodológicos de Modelado en PLI</h4>
 <ol>
 <li><strong>Variables de Decisión:</strong></li>
-<li>$y_i \in {0, 1} \quad \forall i \in S$: Vale 1 si se instala un servidor en la ubicación $i$, 0 si no.</li>
-<li>$u_j \in {0, 1} \quad \forall j \in U$: Vale 1 si el cliente corporativo $j$ recibe servicio, 0 si no.</li>
-<li>$x_{ji} \in {0, 1} \quad \forall j \in U, i \in S_j$: Vale 1 si el cliente $j$ es atendido específicamente por el servidor $i$, 0 si no.</li>
+<li>$y_i \in \{0, 1\} \quad \forall i \in S$: Vale 1 si se instala un servidor en la ubicación $i$, 0 si no.</li>
+<li>$u_j \in \{0, 1\} \quad \forall j \in U$: Vale 1 si el cliente corporativo $j$ recibe servicio, 0 si no.</li>
+<li>$x_{ji} \in \{0, 1\} \quad \forall j \in U, i \in S_j$: Vale 1 si el cliente $j$ es atendido específicamente por el servidor $i$, 0 si no.</li>
 <li>
 <p><strong>Función Objetivo:</strong>
    Minimizar el gasto de inversión en infraestructura física:
@@ -9610,7 +9701,7 @@ Plantear un modelo formal de Programación Lineal Entera indicando variables, do
 </li>
 <li>
 <p><strong>Dominios de las Variables:</strong>
-   $$y_i \in {0, 1} \quad \forall i \in S, \qquad u_j \in {0, 1} \quad \forall j \in U, \qquad x_{ji} \in {0, 1} \quad \forall j \in U, i \in S_j$$</p>
+   $$y_i \in \{0, 1\} \quad \forall i \in S, \qquad u_j \in \{0, 1\} \quad \forall j \in U, \qquad x_{ji} \in \{0, 1\} \quad \forall j \in U, i \in S_j$$</p>
 </li>
 </ol>
 <h4>3. Conteo Formal de Variables y Restricciones</h4>
@@ -9653,7 +9744,7 @@ Plantear un modelo formal de Programación Lineal Entera indicando variables, do
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
     <li><strong>Olvidar multiplicar la capacidad por $y_i$:</strong> Si se escribe $\sum d_j x_{ji} \le T_i$, el modelo asignará clientes a servidores no instalados ($y_i = 0$), teniendo costo 0 y violando la lógica física. La restricción debe ser estrictamente $\le T_i \cdot y_i$.</li>
-    <li><strong>No imponer $x_{ji} = 0$ para servidores con latencia $> 5$ ms:</strong> Se debe indexar $x_{ji}$ únicamente sobre el subconjunto $S_j$ de baja latencia.</li>
+    <li><strong>No imponer $x_{ji} = 0$ para servidores con latencia $&gt; 5$ ms:</strong> Se debe indexar $x_{ji}$ únicamente sobre el subconjunto $S_j$ de baja latencia.</li>
   </ul>
 </div>
 
@@ -9705,7 +9796,7 @@ Demostrar formalmente que <strong>Asignación de Frecuencias es NP-Completo</str
         <h4>2. Demostración en el Esquema Sagrado de 4 Pasos</h4>
 <h5>Paso 1: Pertenencia a NP ($AF \in \text{NP}$)</h5>
 <ul>
-<li><strong>Certificado Candidato ($C$):</strong> Un vector de enteros $C \in {1, \dots, k}^A$ donde $C[a]$ representa el canal asignado a la antena $a$. Tamaño del certificado: $|A|$ enteros de tamaño $O(\log k)$ bits $\implies O(|A| \log k)$ bits (tamaño polinomial).</li>
+<li><strong>Certificado Candidato ($C$):</strong> Un vector de enteros $C \in \{1, \dots, k\}^A$ donde $C[a]$ representa el canal asignado a la antena $a$. Tamaño del certificado: $|A|$ enteros de tamaño $O(\log k)$ bits $\implies O(|A| \log k)$ bits (tamaño polinomial).</li>
 <li><strong>Algoritmo Verificador Polinomial $V(A, I, k, C)$:</strong><ol>
 <li>Verificar que para cada antena $a \in A$, $1 \le C[a] \le k$.</li>
 <li>Para cada par de interferencia $(u, v) \in I$:</li>
@@ -9717,7 +9808,7 @@ Demostrar formalmente que <strong>Asignación de Frecuencias es NP-Completo</str
 </ul>
 <h5>Paso 2: Selección del Problema Conocido</h5>
 <p>Elegimos el problema <strong>k-Coloring de Grafos</strong> ($k \ge 3$), conocido NP-Completo (Karp, 1972):<br />
-<em>Dado un grafo $G = (V, E)$ y un entero $k$, ¿es posible asignar un color de ${1, \dots, k}$ a cada vértice de modo que dos vértices adyacentes tengan colores distintos?</em><br />
+<em>Dado un grafo $G = (V, E)$ y un entero $k$, ¿es posible asignar un color de $\{1, \dots, k\}$ a cada vértice de modo que dos vértices adyacentes tengan colores distintos?</em><br />
 Objetivo: Demostrar que:
 $$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
 <h5>Paso 3: Transformación Polinomial $f(G, k) \to (A, I, k)$</h5>
@@ -9733,7 +9824,7 @@ $$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
 <li>
 <p><strong>($\implies$) Si $G$ es $k$-coloreable, entonces existe una asignación de frecuencias válida sin interferencias:</strong></p>
 <ul>
-<li>Si $G$ admite un coloreo válido con $k$ colores, existe una función $col: V \to {1, \dots, k}$ tal que $(u, v) \in E \implies col(u) \ne col(v)$.</li>
+<li>Si $G$ admite un coloreo válido con $k$ colores, existe una función $col: V \to \{1, \dots, k\}$ tal que $(u, v) \in E \implies col(u) \ne col(v)$.</li>
 <li>Asignamos al canal de la antena $v$ el color de su vértice: $\text{Canal}(v) = col(v)$.</li>
 <li>Para todo par de interferencia $(u, v) \in I$, como $(u, v) \in E$, se tiene que $\text{Canal}(u) = col(u) \ne col(v) = \text{Canal}(v)$.</li>
 <li>Por lo tanto, ninguna antena en interferencia comparte canal: es una asignación válida para AF.</li>
@@ -9742,7 +9833,7 @@ $$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
 <li>
 <p><strong>($\impliedby$) Si existe una asignación válida de $k$ frecuencias, entonces $G$ es $k$-coloreable:</strong></p>
 <ul>
-<li>Supongamos que existe una asignación de canales válida $F: A \to {1, \dots, k}$.</li>
+<li>Supongamos que existe una asignación de canales válida $F: A \to \{1, \dots, k\}$.</li>
 <li>Definimos el coloreo de vértices asignando $col(v) = F(v)$ para cada $v \in V$.</li>
 <li>Para toda arista $(u, v) \in E$, por la construcción existe el par de interferencia $(u, v) \in I$. Como la asignación es válida, necesariamente $F(u) \ne F(v)$, lo que implica que $col(u) \ne col(v)$.</li>
 <li>Por lo tanto, ningún par de vértices vecinos tiene el mismo color, constituyendo un $k$-coloreo válido de $G$.</li>
@@ -9819,20 +9910,20 @@ $$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
 <p>Utilizá esta lista de verificación durante tu última hora de repaso antes de ingresar al aula:</p>
 <h3>A. Dominio de Paradigmas</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_72274" onchange="toggleChecklistItem('chk_72274', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_78520" onchange="toggleChecklistItem('chk_78520', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_39215" onchange="toggleChecklistItem('chk_39215', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_79963" onchange="toggleChecklistItem('chk_79963', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_18405" onchange="toggleChecklistItem('chk_18405', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_43260" onchange="toggleChecklistItem('chk_43260', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_58913" onchange="toggleChecklistItem('chk_58913', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_34747" onchange="toggleChecklistItem('chk_34747', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_79916" onchange="toggleChecklistItem('chk_79916', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_71192" onchange="toggleChecklistItem('chk_71192', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_31095" onchange="toggleChecklistItem('chk_31095', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_29246" onchange="toggleChecklistItem('chk_29246', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_47790" onchange="toggleChecklistItem('chk_47790', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_58615" onchange="toggleChecklistItem('chk_58615', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
 </ul>
 <h3>B. Ejecución en la Hoja de Examen</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_43348" onchange="toggleChecklistItem('chk_43348', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_85527" onchange="toggleChecklistItem('chk_85527', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_18771" onchange="toggleChecklistItem('chk_18771', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_26786" onchange="toggleChecklistItem('chk_26786', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_29477" onchange="toggleChecklistItem('chk_29477', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_97569" onchange="toggleChecklistItem('chk_97569', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_72946" onchange="toggleChecklistItem('chk_72946', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_6557" onchange="toggleChecklistItem('chk_6557', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
 </ul>
 </main>
 <script>

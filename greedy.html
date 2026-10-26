@@ -1897,8 +1897,8 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 <ul>
 <li>
 <p><strong>Definición de Soluciones:</strong>
-  Sea $G = {g_1, g_2, \dots, g_k}$ el conjunto de intervalos elegidos por el algoritmo Greedy, ordenados cronológicamente por tiempo de fin.
-  Sea $OPT = {o_1, o_2, \dots, o_m}$ el conjunto de intervalos de una solución óptima arbitraria, también ordenados por tiempo de fin, con $m \ge k$.</p>
+  Sea $G = \{g_1, g_2, \dots, g_k\}$ el conjunto de intervalos elegidos por el algoritmo Greedy, ordenados cronológicamente por tiempo de fin.
+  Sea $OPT = \{o_1, o_2, \dots, o_m\}$ el conjunto de intervalos de una solución óptima arbitraria, también ordenados por tiempo de fin, con $m \ge k$.</p>
 </li>
 <li>
 <p><strong>Lema Inductivo:</strong> Para todo $r \le k$, el tiempo de fin del $r$-ésimo elemento voraz es menor o igual al del $r$-ésimo elemento óptimo:
@@ -1996,7 +1996,7 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 <td style="text-align: center;">$0$ (inicial)</td>
 <td style="text-align: center;">$1 \ge 0$ (Sí)</td>
 <td style="text-align: center;"><strong>ACEPTAR A</strong></td>
-<td style="text-align: left;">${A}$, $f_{\text{último}} = 4$</td>
+<td style="text-align: left;">$\{A\}$, $f_{\text{último}} = 4$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>2</strong></td>
@@ -2005,7 +2005,7 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 <td style="text-align: center;">$4$</td>
 <td style="text-align: center;">$3 \ge 4$ (No)</td>
 <td style="text-align: center;"><strong>RECHAZAR</strong> (conflicto)</td>
-<td style="text-align: left;">${A}$</td>
+<td style="text-align: left;">$\{A\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>3</strong></td>
@@ -2014,7 +2014,7 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 <td style="text-align: center;">$4$</td>
 <td style="text-align: center;">$0 \ge 4$ (No)</td>
 <td style="text-align: center;"><strong>RECHAZAR</strong> (conflicto)</td>
-<td style="text-align: left;">${A}$</td>
+<td style="text-align: left;">$\{A\}$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>4</strong></td>
@@ -2023,7 +2023,7 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 <td style="text-align: center;">$4$</td>
 <td style="text-align: center;">$4 \ge 4$ (Sí)</td>
 <td style="text-align: center;"><strong>ACEPTAR D</strong></td>
-<td style="text-align: left;">${A, D}$, $f_{\text{último}} = 7$</td>
+<td style="text-align: left;">$\{A, D\}$, $f_{\text{último}} = 7$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>5</strong></td>
@@ -2032,11 +2032,11 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 <td style="text-align: center;">$7$</td>
 <td style="text-align: center;">$6 \ge 7$ (No)</td>
 <td style="text-align: center;"><strong>RECHAZAR</strong> (conflicto)</td>
-<td style="text-align: left;">${A, D}$</td>
+<td style="text-align: left;">$\{A, D\}$</td>
 </tr>
 </tbody>
 </table>
-<p><em>Total de permisos máximos otorgados:</em> 2 mafias (${A, D}$).</p>
+<p><em>Total de permisos máximos otorgados:</em> 2 mafias ($\{A, D\}$).</p>
 <h4>4. Diagrama Visual de Intervalos</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">graph LR
     subgraph Ruta [Ocupación en Ruta Costera]
@@ -2075,7 +2075,7 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
     <li><strong>Confundir Interval Scheduling con Interval Scheduling Ponderado:</strong> Si las mafias ofrecieran dinero diferente por cada permiso ($v_i$), la regla voraz por fin más temprano **deja de ser óptima**. Se debe resolver obligatoriamente mediante Programación Dinámica con búsqueda binaria en $O(n \log n)$ (ver Ejercicio 18).</li>
-    <li><strong>Solapamiento en extremos ($s_j == f_i$):</strong> Prestar atención a si el enunciado indica si compartir el kilómetro exacto está permitido o no ($s_j \ge f_i$ vs $s_j > f_i$). En la ruta costera, la frontera compartida es admisible ($s_j \ge f_{\text{último}}$).</li>
+    <li><strong>Solapamiento en extremos ($s_j == f_i$):</strong> Prestar atención a si el enunciado indica si compartir el kilómetro exacto está permitido o no ($s_j \ge f_i$ vs $s_j &gt; f_i$). En la ruta costera, la frontera compartida es admisible ($s_j \ge f_{\text{último}}$).</li>
     <li><strong>Ordenar por duración ($f_i - s_i$):</strong> Es el error intuitivo más frecuente en parciales. Recuerde que un intervalo de duración 2 puede arruinar a dos intervalos adyacentes de duración 3, obteniendo 1 en lugar de 2.</li>
   </ul>
 </div>
@@ -2228,10 +2228,10 @@ Capacidad de analizar por qué un algoritmo voraz falla en problemas NP-Hard, di
 </table>
 <p><em>Comparación:</em></p>
 <ul>
-<li>$V_{\text{greedy}} = 60 + 100 = 160$ (elementos ${1, 2}$, peso 30).</li>
+<li>$V_{\text{greedy}} = 60 + 100 = 160$ (elementos $\{1, 2\}$, peso 30).</li>
 <li>Elemento Crítico en solitario: Ítem 3 ($v_3 = 120$, peso $30 \le 50$).</li>
 <li>$V_{\text{aprox}} = \max(160, 120) = 160$.</li>
-<li><em>Óptimo entero real (DP):</em> Ítems ${2, 3}$ con peso $20 + 30 = 50$, valor $100 + 120 = 220$.</li>
+<li><em>Óptimo entero real (DP):</em> Ítems $\{2, 3\}$ con peso $20 + 30 = 50$, valor $100 + 120 = 220$.</li>
 <li><em>Ratio obtenido:</em> $160 / 220 \approx 72.7\% &gt; 50\%$ (satisface holgadamente la cota $\ge 1/2$).</li>
 </ul>
 <h4>4. Diagrama del Proceso de Selección</h4>
@@ -2355,25 +2355,25 @@ Técnica de ordenamiento por fecha de vencimiento más temprana (<em>Earliest De
 <li><strong>Existencia de Inversión Adyacente:</strong> Si un cronograma tiene inversiones, necesariamente contiene al menos un par de tareas <strong>adyacentes y consecutivas</strong> $i$ y $j$ con $d_i &gt; d_j$.</li>
 <li>
 <p><strong>Efecto del Intercambio Adyacente:</strong>
-  Sea $S$ un cronograma óptimo con la menor cantidad de inversiones. Si $S$ tiene inversiones, tomamos un par adyacente $i, j$ tal que $i$ precede inmediatamente a $j$ con $d_i &gt; d_j$. Intercambiamos el orden de ejecución de $i$ y $j$, obteniendo un nuevo cronograma $S'$.</p>
+  Sea $S$ un cronograma óptimo con la menor cantidad de inversiones. Si $S$ tiene inversiones, tomamos un par adyacente $i, j$ tal que $i$ precede inmediatamente a $j$ con $d_i &gt; d_j$. Intercambiamos el orden de ejecución de $i$ y $j$, obteniendo un nuevo cronograma $S&#x27;$.</p>
 <ul>
 <li>Las tareas programadas antes de $i$ y después de $j$ no modifican sus tiempos de inicio ni fin. Sus latencias permanecen idénticas.</li>
-<li>La tarea $j$ se ejecuta antes en $S'$ que en $S$: su tiempo de finalización se reduce de $f_j$ a $f'_j = f_j - t_i$. Por ende, su latencia $L'_j \le L_j$.</li>
+<li>La tarea $j$ se ejecuta antes en $S&#x27;$ que en $S$: su tiempo de finalización se reduce de $f_j$ a $f&#x27;_j = f_j - t_i$. Por ende, su latencia $L&#x27;_j \le L_j$.</li>
 <li>
-<p>La tarea $i$ finaliza en $S'$ exactamente en el instante en que antes finalizaba $j$: $f'_i = f_j$.
+<p>La tarea $i$ finaliza en $S&#x27;$ exactamente en el instante en que antes finalizaba $j$: $f&#x27;_i = f_j$.
 Calculamos su nueva latencia:
-$$L'_i = \max(0, f'_i - d_i) = \max(0, f_j - d_i)$$
+$$L&#x27;_i = \max(0, f&#x27;_i - d_i) = \max(0, f_j - d_i)$$
 Como $d_i &gt; d_j$, se cumple:
 $$f_j - d_i &lt; f_j - d_j \le L_j$$
-Por lo tanto, $L'_i \le L_j$.</p>
+Por lo tanto, $L&#x27;_i \le L_j$.</p>
 </li>
 <li>
 <p>La nueva latencia máxima del par es:
-$$\max(L'_i, L'_j) \le \max(L_i, L_j)$$</p>
+$$\max(L&#x27;_i, L&#x27;_j) \le \max(L_i, L_j)$$</p>
 </li>
 <li>
-<p>Por consiguiente, la latencia máxima global del cronograma $S'$ <strong>no aumentó</strong>:
-$$L_{\max}(S') \le L_{\max}(S)$$</p>
+<p>Por consiguiente, la latencia máxima global del cronograma $S&#x27;$ <strong>no aumentó</strong>:
+$$L_{\max}(S&#x27;) \le L_{\max}(S)$$</p>
 </li>
 </ul>
 </li>
@@ -2577,12 +2577,12 @@ Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heur
    $$\Delta(c) = |S_c \cap U_{\text{restantes}}|$$
    Definimos el ratio voraz:
    $$\text{Ratio}(c) = \frac{CTO_c}{\Delta(c)}$$
-   Se selecciona vorazmente la celda $c^<em>$ que </em><em>minimiza el costo por cada nuevo vecindario cubierto</em><em>:
-   $$c^</em> = \arg\min_{c: \Delta(c) &gt; 0} \frac{CTO_c}{\Delta(c)}$$</p>
+   Se selecciona vorazmente la celda $c^*$ que <strong>minimiza el costo por cada nuevo vecindario cubierto</strong>:
+   $$c^* = \arg\min_{c: \Delta(c) &gt; 0} \frac{CTO_c}{\Delta(c)}$$</p>
 </li>
 <li>
 <p><strong>Paso 3: Actualización y Terminación:</strong>
-   Se incorpora $c^<em>$ a la solución y se actualiza $U_{\text{restantes}} = U_{\text{restantes}} \setminus S_{c^</em>}$. Se repite hasta que $U_{\text{restantes}} = \emptyset$.</p>
+   Se incorpora $c^*$ a la solución y se actualiza $U_{\text{restantes}} = U_{\text{restantes}} \setminus S_{c^*}$. Se repite hasta que $U_{\text{restantes}} = \emptyset$.</p>
 </li>
 <li>
 <p><strong>Paso 4: Factor de Garantía de Aproximación (Teorema de Chvátal):</strong>
@@ -2598,7 +2598,7 @@ Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heur
 <li>Complejidad temporal: $O(V \cdot M)$. Espacio: $O(V + M)$.</li>
 </ol>
 <h4>2. Ejemplo Concreto y Traza Paso a Paso</h4>
-<p>Sean 4 vecindarios ${v_1, v_2, v_3, v_4}$ y 3 antenas candidatas:</p>
+<p>Sean 4 vecindarios $\{v_1, v_2, v_3, v_4\}$ y 3 antenas candidatas:</p>
 <table>
 <thead>
 <tr>
@@ -2610,35 +2610,35 @@ Modelado del problema canónico de <em>Weighted Set Cover</em> mediante una heur
 <tbody>
 <tr>
 <td style="text-align: center;"><strong>A1</strong></td>
-<td style="text-align: center;">${v_1, v_2}$</td>
+<td style="text-align: center;">$\{v_1, v_2\}$</td>
 <td style="text-align: center;">$\$10$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>A2</strong></td>
-<td style="text-align: center;">${v_2, v_3, v_4}$</td>
+<td style="text-align: center;">$\{v_2, v_3, v_4\}$</td>
 <td style="text-align: center;">$\$24$</td>
 </tr>
 <tr>
 <td style="text-align: center;"><strong>A3</strong></td>
-<td style="text-align: center;">${v_3, v_4}$</td>
+<td style="text-align: center;">$\{v_3, v_4\}$</td>
 <td style="text-align: center;">$\$12$</td>
 </tr>
 </tbody>
 </table>
-<p><em>Iteración 1 ($U_{\text{restantes}} = {v_1, v_2, v_3, v_4}$):</em></p>
+<p><em>Iteración 1 ($U_{\text{restantes}} = \{v_1, v_2, v_3, v_4\}$):</em></p>
 <ul>
 <li>A1: cubre $2$ nuevos $\implies$ Ratio $= 10 / 2 = 5.0$.</li>
 <li>A2: cubre $3$ nuevos $\implies$ Ratio $= 24 / 3 = 8.0$.</li>
 <li>A3: cubre $2$ nuevos $\implies$ Ratio $= 12 / 2 = 6.0$.</li>
-<li><strong>Elección voraz:</strong> Se instala <strong>A1</strong> (costo $\$10$). Quedan sin cubrir ${v_3, v_4}$.</li>
+<li><strong>Elección voraz:</strong> Se instala <strong>A1</strong> (costo $\$10$). Quedan sin cubrir $\{v_3, v_4\}$.</li>
 </ul>
-<p><em>Iteración 2 ($U_{\text{restantes}} = {v_3, v_4}$):</em></p>
+<p><em>Iteración 2 ($U_{\text{restantes}} = \{v_3, v_4\}$):</em></p>
 <ul>
-<li>A2: cubre ${v_3, v_4}$ ($2$ nuevos) $\implies$ Ratio $= 24 / 2 = 12.0$.</li>
-<li>A3: cubre ${v_3, v_4}$ ($2$ nuevos) $\implies$ Ratio $= 12 / 2 = 6.0$.</li>
+<li>A2: cubre $\{v_3, v_4\}$ ($2$ nuevos) $\implies$ Ratio $= 24 / 2 = 12.0$.</li>
+<li>A3: cubre $\{v_3, v_4\}$ ($2$ nuevos) $\implies$ Ratio $= 12 / 2 = 6.0$.</li>
 <li><strong>Elección voraz:</strong> Se instala <strong>A3</strong> (costo $\$12$). Quedan sin cubrir $\emptyset$.</li>
 </ul>
-<p><em>Resultado Greedy:</em> Antenas ${A1, A3}$ con Costo Total $= 10 + 12 = \$22$. (En este caso coincide con el óptimo global).</p>
+<p><em>Resultado Greedy:</em> Antenas $\{A1, A3\}$ con Costo Total $= 10 + 12 = \$22$. (En este caso coincide con el óptimo global).</p>
 <h4>3. Diagrama Visual de Cobertura de Conjuntos</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">graph TD
     U["Vecindarios No Cubiertos: {v1, v2, v3, v4}"] --> A1["Instalar A1: Cubre {v1, v2} a $5/vecino"]:::opt
@@ -2783,7 +2783,7 @@ Construcción de heurísticas paso a paso y formulación de contraejemplos matem
 </li>
 <li>
 <p><strong>Conclusión Formal:</strong>
-  $$\text{Costo}<em>{\text{greedy}} = 110 &gt; 25 = \text{Costo}</em>{\text{alternativo}}$$
+  $$\text{Costo}_{\text{greedy}} = 110 &gt; 25 = \text{Costo}_{\text{alternativo}}$$
   Como la solución voraz es estrictamente peor que la alternativa factible, queda demostrado que <strong>el enfoque greedy no garantiza la solución óptima</strong>.
   <em>Paradigma adecuado:</em> Este problema exhibe subestructura óptima con superposición de subproblemas y debe modelarse mediante <strong>Programación Dinámica</strong> en tiempo $O(V + E)$ (ver Ejercicio 32). $\blacksquare$</p>
 </li>

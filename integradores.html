@@ -2122,7 +2122,7 @@ Para el problema de Vertex Cover Mínimo en un grafo G = (V, E), comparar tres e
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado Integrador</strong><br />
-Se dispone de una mochila con capacidad entera máxima de peso $W &gt; 0$ y un conjunto de $n$ elementos disponibles, donde cada elemento $i \in {1, \dots, n}$ posee un peso entero $w_i &gt; 0$ y un valor o beneficio entero $v_i &gt; 0$.<br />
+Se dispone de una mochila con capacidad entera máxima de peso $W &gt; 0$ y un conjunto de $n$ elementos disponibles, donde cada elemento $i \in \{1, \dots, n\}$ posee un peso entero $w_i &gt; 0$ y un valor o beneficio entero $v_i &gt; 0$.<br />
 Resolver y contrastar el problema a través de todos los paradigmas algorítmicos fundamentales evaluados en la materia:</p>
 <ol>
 <li><strong>Paradigma Greedy (Algoritmo Voraz):</strong></li>
@@ -2200,19 +2200,19 @@ Resolver y contrastar el problema a través de todos los paradigmas algorítmico
 <li>Como la mochila está llena en ambas soluciones (o todos los elementos entraron), para compensar el déficit en el ítem $k$, la solución óptima $O$ debe haber tomado una cantidad de elementos posteriores $j &gt; k$ donde la densidad es menor o igual ($r_j \le r_k$).</li>
 <li>Modificamos la solución óptima $O$ incrementando $y_k$ en $\Delta w$ y reduciendo elementos posteriores $y_j$ en el mismo peso $\Delta w$.</li>
 <li>
-<p>La variación del beneficio en la nueva solución $O'$ es:
+<p>La variación del beneficio en la nueva solución $O&#x27;$ es:
    $$\Delta Valor = \Delta w \cdot r_k - \Delta w \cdot r_j = \Delta w \cdot (r_k - r_j) \ge 0$$
    dado que $r_k \ge r_j$.</p>
 </li>
 <li>
-<p>Por ende, el valor de $O'$ no disminuye ($Valor(O') \ge Valor(O)$). Repitiendo este proceso de intercambio para todos los elementos donde difieran, podemos transformar $O$ en $G$ sin reducir nunca el valor total.</p>
+<p>Por ende, el valor de $O&#x27;$ no disminuye ($Valor(O&#x27;) \ge Valor(O)$). Repitiendo este proceso de intercambio para todos los elementos donde difieran, podemos transformar $O$ en $G$ sin reducir nunca el valor total.</p>
 </li>
 <li>Conclusión: la solución voraz $G$ es óptima.</li>
 <li><strong>Complejidad:</strong> Tiempo $O(n \log n)$ por el ordenamiento inicial; Espacio $O(n)$.</li>
 </ol>
 <hr />
 <h5>B. Mochila 0-1: Por qué Greedy Falla y Algoritmo 1/2-Aproximado</h5>
-<p>En la mochila 0-1 los objetos son indivisibles ($x_i \in {0, 1}$).</p>
+<p>En la mochila 0-1 los objetos son indivisibles ($x_i \in \{0, 1\}$).</p>
 <ul>
 <li>
 <p><strong>Contraejemplo Minimal de No-Optimalidad para Greedy por Densidad:</strong></p>
@@ -2229,7 +2229,7 @@ Resolver y contrastar el problema a través de todos los paradigmas algorítmico
 <p><strong>Algoritmo Greedy 1/2-Aproximado para Mochila 0-1:</strong></p>
 <ol>
 <li>Ejecutar la regla voraz por densidad tomando ítems completos hasta el primer ítem $k$ que no quepa entero (ítem de corte). Sea $V_{greedy}$ el valor de los ítems tomados.</li>
-<li>Hallar el ítem individual más valioso que quepa en la mochila: $v_{max} = \max { v_i : w_i \le W }$.</li>
+<li>Hallar el ítem individual más valioso que quepa en la mochila: $v_{max} = \max \{ v_i : w_i \le W \}$.</li>
 <li>Retornar la mejor de las dos opciones:
  $$V_{aprox} = \max(V_{greedy}, v_{max})$$</li>
 </ol>
@@ -2353,7 +2353,7 @@ Como la fila $i$ solo depende estrictamente de la fila inmediata anterior $i - 1
 <li><strong>Subproblema:</strong> $OPT(w) =$ beneficio máximo que se puede obtener con capacidad exacta $w$.</li>
 <li>
 <p><strong>Recurrencia:</strong>
-  $$OPT(w) = \max_{i: w_i \le w} { OPT(w - w_i) + v_i }, \quad \text{con } OPT(0) = 0$$</p>
+  $$OPT(w) = \max_{i: w_i \le w} \{ OPT(w - w_i) + v_i \}, \quad \text{con } OPT(0) = 0$$</p>
 </li>
 <li>
 <p>En este caso, el recorrido del vector 1D se realiza <strong>de izquierda a derecha (creciente de $w_i$ a $W$)</strong>, permitiendo explícitamente reutilizar el mismo ítem múltiples veces. Tiempo: $O(n \cdot W)$, Espacio: $O(W)$.</p>
@@ -2365,7 +2365,7 @@ Como la fila $i$ solo depende estrictamente de la fila inmediata anterior $i - 1
 <ul>
 <li>
 <p><strong>Estructura del Árbol de Búsqueda:</strong>
-  Árbol binario de profundidad $n$. En el nivel $i$, decidimos si incluimos o no el elemento $i$ ($x_i \in {0, 1}$).</p>
+  Árbol binario de profundidad $n$. En el nivel $i$, decidimos si incluimos o no el elemento $i$ ($x_i \in \{0, 1\}$).</p>
 </li>
 <li>
 <p><strong>Las Dos Clases de Podas Obligatorias en Parcial:</strong></p>
@@ -2442,7 +2442,7 @@ FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
 <ul>
 <li>
 <p><strong>Variables de Decisión:</strong>
-  $$x_i \in {0, 1} \quad \forall i \in {1, \dots, n}$$
+  $$x_i \in \{0, 1\} \quad \forall i \in \{1, \dots, n\}$$
   donde $x_i = 1$ si el elemento $i$ se introduce en la mochila, y $0$ en caso contrario.</p>
 </li>
 <li>
@@ -2455,7 +2455,7 @@ FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
 </li>
 <li>
 <p><strong>Restricciones de Dominio:</strong>
-  $$x_i \in {0, 1} \quad \forall i \in {1, \dots, n}$$</p>
+  $$x_i \in \{0, 1\} \quad \forall i \in \{1, \dots, n\}$$</p>
 </li>
 <li>
 <p><strong>Recuento Riguroso para Examen:</strong></p>
@@ -2465,7 +2465,7 @@ FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
 </ul>
 </li>
 <li><strong>Vínculo con la Relajación Lineal (LP Relaxation):</strong>
-  Si reemplazamos $x_i \in {0, 1}$ por $0 \le x_i \le 1$ (variables continuas), el problema de PL continuo resultante se resuelve en tiempo polinomial y <strong>su solución óptima es idéntica a la Mochila Fraccionaria Greedy</strong>.</li>
+  Si reemplazamos $x_i \in \{0, 1\}$ por $0 \le x_i \le 1$ (variables continuas), el problema de PL continuo resultante se resuelve en tiempo polinomial y <strong>su solución óptima es idéntica a la Mochila Fraccionaria Greedy</strong>.</li>
 </ul>
 <hr />
 <h4>5. Por qué Falla División y Conquista (DyC) Puro en la Mochila</h4>
@@ -2576,7 +2576,7 @@ FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
   <div class="card-body">
     <div class="exercise-statement-box">
       <p><strong>Enunciado Integrador</strong><br />
-Dado un conjunto de $n$ ciudades numeradas ${1, 2, \dots, n}$ y una matriz de distancias o costos $C = [c_{ij}]$ no negativos entre cada par de ciudades, el <strong>Problema del Viajante de Comercio (TSP - Travelling Salesperson Problem)</strong> consiste en encontrar un circuito simple (tour cerrado) que visite <strong>exactamente una vez cada ciudad y retorne a la ciudad de origen</strong> minimizando la distancia total recorrida.<br />
+Dado un conjunto de $n$ ciudades numeradas $\{1, 2, \dots, n\}$ y una matriz de distancias o costos $C = [c_{ij}]$ no negativos entre cada par de ciudades, el <strong>Problema del Viajante de Comercio (TSP - Travelling Salesperson Problem)</strong> consiste en encontrar un circuito simple (tour cerrado) que visite <strong>exactamente una vez cada ciudad y retorne a la ciudad de origen</strong> minimizando la distancia total recorrida.<br />
 Resolver y comparar este problema a través de todos los paradigmas algorítmicos fundamentales:</p>
 <ol>
 <li><strong>Paradigma Backtracking y Branch &amp; Bound (Búsqueda Exacta):</strong></li>
@@ -2685,23 +2685,23 @@ PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO
 <li>
 <p><strong>Definición Formal del Subproblema:</strong></p>
 <blockquote>
-<p><strong>$C(S, j)$:</strong> Longitud mínima de un camino simple que comienza en la ciudad 1, visita <strong>exactamente</strong> todas las ciudades del subconjunto $S \subseteq {2, 3, \dots, n}$ y finaliza en la ciudad $j \in S$.</p>
+<p><strong>$C(S, j)$:</strong> Longitud mínima de un camino simple que comienza en la ciudad 1, visita <strong>exactamente</strong> todas las ciudades del subconjunto $S \subseteq \{2, 3, \dots, n\}$ y finaliza en la ciudad $j \in S$.</p>
 </blockquote>
 </li>
 <li>
 <p><strong>Casos Base:</strong>
-  Para subconjuntos de tamaño 1 ($S = {j}$):
-  $$C({j}, j) = c_{1, j} \quad \forall j \in {2, \dots, n}$$</p>
+  Para subconjuntos de tamaño 1 ($S = \{j\}$):
+  $$C(\{j\}, j) = c_{1, j} \quad \forall j \in \{2, \dots, n\}$$</p>
 </li>
 <li>
 <p><strong>Ecuación de Recurrencia:</strong>
   Para cualquier subconjunto $S$ de tamaño $|S| \ge 2$ y cualquier ciudad de llegada $j \in S$:
-  $$C(S, j) = \min_{k \in S \setminus {j}} \left[ C(S \setminus {j}, k) + c_{kj} \right]$$</p>
+  $$C(S, j) = \min_{k \in S \setminus \{j\}} \left[ C(S \setminus \{j\}, k) + c_{kj} \right]$$</p>
 </li>
 <li>
 <p><strong>Cálculo del Tour Cerrado Óptimo:</strong>
-  Una vez calculada la tabla para el conjunto completo $V' = {2, 3, \dots, n}$:
-  $$OPT = \min_{j \in {2, \dots, n}} \left[ C({2, \dots, n}, j) + c_{j, 1} \right]$$</p>
+  Una vez calculada la tabla para el conjunto completo $V&#x27; = \{2, 3, \dots, n\}$:
+  $$OPT = \min_{j \in \{2, \dots, n\}} \left[ C(\{2, \dots, n\}, j) + c_{j, 1} \right]$$</p>
 </li>
 </ul>
 <p><strong>Pseudocódigo de Held-Karp</strong></p>
@@ -2821,7 +2821,7 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
 </code></pre></div>
 <p><strong>Demostración Rigurosa de la Garantía de Aproximación 2:</strong></p>
 <ol>
-<li>Sea $T^<em>$ el tour óptimo de TSP y sea $OPT = Costo(T^</em>)$.</li>
+<li>Sea $T^*$ el tour óptimo de TSP y sea $OPT = Costo(T^*)$.</li>
 <li>Si removemos una arista cualquiera del tour óptimo $T^*$, obtenemos un camino simple que conecta todos los vértices del grafo. Todo camino que conecta todos los vértices es, por definición, un árbol generador.</li>
 <li>
 <p>Como el MST es el árbol generador de <strong>mínimo costo posible</strong>, se cumple estrictamente:
@@ -2848,8 +2848,8 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
 <p>Para formular TSP en PLI, no basta con exigir que cada nodo tenga grado de entrada 1 y grado de salida 1 (eso admitiría <strong>subtours desconectados</strong>, por ejemplo dos triángulos aislados de 3 nodos en vez de un ciclo de 6). Se utiliza la <strong>formulación de Miller-Tucker-Zemlin (MTZ)</strong>:</p>
 <ul>
 <li><strong>Variables de Decisión:</strong><ul>
-<li>$x_{ij} \in {0, 1}$ para todo $i, j \in {1, \dots, n}$ con $i \neq j$ (1 si se viaja directamente de la ciudad $i$ a la $j$, 0 si no).</li>
-<li>$u_i \in \mathbb{R}$ para $i \in {2, \dots, n}$: variable continua auxiliar que representa el <strong>orden de visita</strong> de la ciudad $i$ a lo largo del tour.</li>
+<li>$x_{ij} \in \{0, 1\}$ para todo $i, j \in \{1, \dots, n\}$ con $i \neq j$ (1 si se viaja directamente de la ciudad $i$ a la $j$, 0 si no).</li>
+<li>$u_i \in \mathbb{R}$ para $i \in \{2, \dots, n\}$: variable continua auxiliar que representa el <strong>orden de visita</strong> de la ciudad $i$ a lo largo del tour.</li>
 </ul>
 </li>
 <li>
@@ -2861,17 +2861,17 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
 <ol>
 <li>
 <p>Salir exactamente una vez de cada ciudad:
- $$\sum_{j=1, j \neq i}^n x_{ij} = 1 \quad \forall i \in {1, \dots, n}$$</p>
+ $$\sum_{j=1, j \neq i}^n x_{ij} = 1 \quad \forall i \in \{1, \dots, n\}$$</p>
 </li>
 <li>
 <p>Llegar exactamente una vez a cada ciudad:
- $$\sum_{i=1, i \neq j}^n x_{ij} = 1 \quad \forall j \in {1, \dots, n}$$</p>
+ $$\sum_{i=1, i \neq j}^n x_{ij} = 1 \quad \forall j \in \{1, \dots, n\}$$</p>
 </li>
 </ol>
 </li>
 <li>
 <p><strong>Restricciones de Eliminación de Subtours (MTZ):</strong>
-  Para cada par de ciudades $i, j \in {2, \dots, n}$ con $i \neq j$:
+  Para cada par de ciudades $i, j \in \{2, \dots, n\}$ con $i \neq j$:
   $$u_i - u_j + n \cdot x_{ij} \le n - 1$$</p>
 </li>
 <li>
@@ -2909,18 +2909,18 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
 <p><strong>Paso 3: Transformación Polinomial ($\text{HC} \le_P \text{TSP}$):</strong>
   Dada una instancia de HC con grafo $G = (V, E)$:</p>
 <ol>
-<li>Construimos un grafo completo $G' = (V, E')$ con el mismo conjunto de vértices.</li>
+<li>Construimos un grafo completo $G&#x27; = (V, E&#x27;)$ con el mismo conjunto de vértices.</li>
 <li>
-<p>Asignamos pesos a las aristas de $G'$:
- $$c_{uv} = \begin{cases} 1 &amp; \text{si } (u, v) \in E \ 2 &amp; \text{si } (u, v) \notin E \end{cases}$$</p>
+<p>Asignamos pesos a las aristas de $G&#x27;$:
+ $$c_{uv} = \begin{cases} 1 &amp; \text{si } (u, v) \in E \\ 2 &amp; \text{si } (u, v) \notin E \end{cases}$$</p>
 </li>
 <li>
 <p>Fijamos la cota $K = |V|$.</p>
 </li>
 <li>La construcción se realiza en tiempo $O(|V|^2)$, estrictamente polinomial.</li>
 <li><strong>Paso 4: Equivalencia Lógica Bidireccional:</strong></li>
-<li>($\implies$) Si $G$ tiene un Ciclo Hamiltoniano, ese ciclo utiliza únicamente aristas que pertenecían a $E$, las cuales tienen peso 1 en $G'$. El costo total del ciclo en $G'$ es exactamente $1 \cdot |V| = |V| \le K$. Por lo tanto, existe un tour de TSP con costo $\le K$.</li>
-<li>($\impliedby$) Si $G'$ tiene un tour de TSP con costo total $\le |V|$: como el tour recorre exactamente $|V|$ aristas y cada arista cuesta al menos 1, la <strong>única forma</strong> de que la suma sea $\le |V|$ es que <strong>cada arista del tour cueste exactamente 1</strong>. Como solo las aristas originales de $E$ tienen costo 1, todas las aristas del tour pertenecen a $E$, constituyendo un Ciclo Hamiltoniano válido en $G$.</li>
+<li>($\implies$) Si $G$ tiene un Ciclo Hamiltoniano, ese ciclo utiliza únicamente aristas que pertenecían a $E$, las cuales tienen peso 1 en $G&#x27;$. El costo total del ciclo en $G&#x27;$ es exactamente $1 \cdot |V| = |V| \le K$. Por lo tanto, existe un tour de TSP con costo $\le K$.</li>
+<li>($\impliedby$) Si $G&#x27;$ tiene un tour de TSP con costo total $\le |V|$: como el tour recorre exactamente $|V|$ aristas y cada arista cuesta al menos 1, la <strong>única forma</strong> de que la suma sea $\le |V|$ es que <strong>cada arista del tour cueste exactamente 1</strong>. Como solo las aristas originales de $E$ tienen costo 1, todas las aristas del tour pertenecen a $E$, constituyendo un Ciclo Hamiltoniano válido en $G$.</li>
 <li><strong>Conclusión:</strong> TSP es <strong>NP-Completo</strong>.</li>
 </ol>
 </li>

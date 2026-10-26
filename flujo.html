@@ -1794,7 +1794,7 @@ body.dark-mode .warning-box {
 <li><strong>Red de Transporte:</strong> Grafo dirigido $G = (V, E)$ con un nodo fuente $s$, un nodo sumidero $t$, y capacidades no negativas $c(u, v) \ge 0$ en cada arista. Si $(u, v) \notin E$, $c(u, v) = 0$.</li>
 <li><strong>Restricción de Capacidad:</strong> Para toda arista $(u, v) \in E$: $0 \le f(u, v) \le c(u, v)$.</li>
 <li>
-<p><strong>Conservación de Flujo:</strong> Para todo vértice intermedio $u \in V \setminus {s, t}$:
+<p><strong>Conservación de Flujo:</strong> Para todo vértice intermedio $u \in V \setminus \{s, t\}$:
      $$\sum_{v \in V} f(v, u) = \sum_{w \in V} f(u, w)$$
      <em>(El caudal entrante es idéntico al caudal saliente).</em></p>
 </li>
@@ -1904,7 +1904,7 @@ Detallar la topología formal de la red, capacidades, algoritmo empleado, demost
 <p><strong>Teorema de Integralidad de Flujo (Dantzig-Fulkerson):</strong><br />
 Si todas las capacidades de la red son números enteros, entonces existe un flujo máximo en el cual el flujo en cada arista es un número entero.</p>
 <ol>
-<li><strong>Flujo Binario:</strong> Dado que $c(e) = 1$ para todas las aristas de la red, en el flujo máximo calculado se cumple que $f(e) \in {0, 1}$ para toda arista $e \in E$.</li>
+<li><strong>Flujo Binario:</strong> Dado que $c(e) = 1$ para todas las aristas de la red, en el flujo máximo calculado se cumple que $f(e) \in \{0, 1\}$ para toda arista $e \in E$.</li>
 <li>
 <p><strong>Unicidad de Paciente:</strong> Para cada paciente $p$, la arista de entrada tiene capacidad $c(s, p) = 1$. Por conservación:
    $$\sum_{(m, h)} f(p, (m, h)) = f(s, p) \le 1$$
@@ -1938,7 +1938,7 @@ Si todas las capacidades de la red son números enteros, entonces existe un fluj
 <ul>
 <li>Pacientes: $P_1, P_2, P_3$.</li>
 <li>Turnos: $T_1 = (\text{Perez}, 9), T_2 = (\text{Perez}, 10), T_3 = (\text{Gomez}, 9)$.</li>
-<li>Compatibilidades: $P_1 \to {T_1, T_2}$; $P_2 \to {T_2, T_3}$; $P_3 \to {T_3}$.</li>
+<li>Compatibilidades: $P_1 \to \{T_1, T_2\}$; $P_2 \to \{T_2, T_3\}$; $P_3 \to \{T_3\}$.</li>
 </ul>
 <table>
 <thead>
@@ -2167,7 +2167,7 @@ def asignar_turnos_medicos(
 </ol>
 <h4>3. Demostración Teórica de Conservación y Despacho</h4>
 <p><strong>Teorema de Conservación Nodal en Regiones:</strong><br />
-Para cualquier región $i \in {R_1, \dots, R_9}$, la ecuación de conservación de flujo impone:
+Para cualquier región $i \in \{R_1, \dots, R_9\}$, la ecuación de conservación de flujo impone:
 $$\sum_{\text{entradas}} f(u, R_i) = \sum_{\text{salidas}} f(R_i, v)$$
 Desglosando las conexiones con los super-nodos:
 $$f(S, R_i) + \sum_{k \ne i} f(R_k, R_i) = f(R_i, T) + \sum_{j \ne i} f(R_i, R_j)$$
@@ -2305,7 +2305,7 @@ def diagnosticar_red_energetica(
     <div class="exercise-statement-box">
       <h4>1. Enunciado Completo</h4>
 <p>Indicar si la siguiente afirmación es verdadera o falsa. Si es verdadera, proveer una demostración formal rigurosa. Si es falsa, construir un contraejemplo explícito indicando nodos, aristas, capacidades originales, corte original, nuevas capacidades y el nuevo corte mínimo:<br />
-<em>“Sea $G = (V, E)$ una red de flujo arbitraria con fuente $s$, sumidero $t$ y capacidades enteras positivas $c(e)$ en cada arista $e \in E$. Sea $(A, B)$ un corte mínimo $s-t$ con respecto a las capacidades $c$. Si se suma $1$ a la capacidad de cada arista de la red ($c'(e) = c(e) + 1$), el corte $(A, B)$ sigue siendo obligatoriamente un corte mínimo respecto a las nuevas capacidades $c'$.”</em></p>
+<em>“Sea $G = (V, E)$ una red de flujo arbitraria con fuente $s$, sumidero $t$ y capacidades enteras positivas $c(e)$ en cada arista $e \in E$. Sea $(A, B)$ un corte mínimo $s-t$ con respecto a las capacidades $c$. Si se suma $1$ a la capacidad de cada arista de la red ($c&#x27;(e) = c(e) + 1$), el corte $(A, B)$ sigue siendo obligatoriamente un corte mínimo respecto a las nuevas capacidades $c&#x27;$.”</em></p>
     </div>
 
     <details class="exercise-solution-drawer" id="solution-drawer-26">
@@ -2320,13 +2320,13 @@ def diagnosticar_red_energetica(
 <p><strong>Análisis de Sensibilidad de la Capacidad de un Corte:</strong><br />
 Sea $(A, B)$ un corte $s-t$ cualquiera. Su capacidad bajo la función original $c$ es:
 $$C(A, B) = \sum_{e \in \delta^+(A)} c(e)$$
-donde $\delta^+(A) = {(u, v) \in E : u \in A, v \in B}$ es el conjunto de aristas que cruzan el corte.<br />
-Al aplicar la perturbación $c'(e) = c(e) + 1$, la nueva capacidad es:
-$$C'(A, B) = \sum_{e \in \delta^+(A)} (c(e) + 1) = \sum_{e \in \delta^+(A)} c(e) + \sum_{e \in \delta^+(A)} 1 = C(A, B) + |\delta^+(A)|$$
+donde $\delta^+(A) = \{(u, v) \in E : u \in A, v \in B\}$ es el conjunto de aristas que cruzan el corte.<br />
+Al aplicar la perturbación $c&#x27;(e) = c(e) + 1$, la nueva capacidad es:
+$$C&#x27;(A, B) = \sum_{e \in \delta^+(A)} (c(e) + 1) = \sum_{e \in \delta^+(A)} c(e) + \sum_{e \in \delta^+(A)} 1 = C(A, B) + |\delta^+(A)|$$
 <strong>Conclusión Analítica:</strong> La nueva capacidad del corte <strong>depende linealmente de la cantidad de aristas que lo componen ($|\delta^+(A)|$)</strong>.<br />
 Un corte con muchas aristas sufrirá un incremento mucho mayor que un corte compuesto por pocas aristas. Si dos cortes tenían capacidades originales cercanas, la perturbación penalizará al corte con más aristas, pudiendo invertir el orden de minimalidad.</p>
 <h4>3. Contraejemplo Formal Minimal (4 Nodos)</h4>
-<p>Construyamos la red más simple posible con $V = {s, a, b, t}$:</p>
+<p>Construyamos la red más simple posible con $V = \{s, a, b, t\}$:</p>
 <ul>
 <li>
 <p>Aristas y capacidades originales:</p>
@@ -2339,11 +2339,11 @@ Un corte con muchas aristas sufrirá un incremento mucho mayor que un corte comp
 <li>Grafo con 3 caminos paralelos entre $s$ y $t$:</li>
 <li>Camino 1: arista directa $(s, t_1)$ no; consideremos dos cortes competidores:</li>
 <li>
-<p><strong>Corte 1 ($A_1 = {s}, B_1 = V \setminus {s}$):</strong> Contiene <strong>5 aristas</strong> saliendo de $s$, cada una de capacidad $c=2$.
+<p><strong>Corte 1 ($A_1 = \{s\}, B_1 = V \setminus \{s\}$):</strong> Contiene <strong>5 aristas</strong> saliendo de $s$, cada una de capacidad $c=2$.
     $$C(A_1, B_1) = 2 + 2 + 2 + 2 + 2 = 10, \qquad |\delta^+(A_1)| = 5$$</p>
 </li>
 <li>
-<p><strong>Corte 2 ($A_2 = V \setminus {t}, B_2 = {t}$):</strong> Contiene <strong>1 única arista</strong> entrando a $t$, con capacidad $c=11$.
+<p><strong>Corte 2 ($A_2 = V \setminus \{t\}, B_2 = \{t\}$):</strong> Contiene <strong>1 única arista</strong> entrando a $t$, con capacidad $c=11$.
     $$C(A_2, B_2) = 11, \qquad |\delta^+(A_2)| = 1$$</p>
 </li>
 </ul>
@@ -2356,21 +2356,21 @@ Un corte con muchas aristas sufrirá un incremento mucho mayor que un corte comp
 </ul>
 </li>
 <li>
-<p><strong>Evaluación tras la Perturbación ($c'(e) = c(e) + 1$):</strong></p>
+<p><strong>Evaluación tras la Perturbación ($c&#x27;(e) = c(e) + 1$):</strong></p>
 <ul>
 <li>
 <p>Para el Corte 1 (5 aristas):
-$$C'(A_1, B_1) = (2 + 1) \times 5 = 3 \times 5 = 15$$</p>
+$$C&#x27;(A_1, B_1) = (2 + 1) \times 5 = 3 \times 5 = 15$$</p>
 </li>
 <li>
 <p>Para el Corte 2 (1 arista):
-$$C'(A_2, B_2) = 11 + 1 = 12$$</p>
+$$C&#x27;(A_2, B_2) = 11 + 1 = 12$$</p>
 </li>
 </ul>
 </li>
 <li>
 <p><strong>Comparación Final:</strong>
-  $$C'(A_2, B_2) = 12 &lt; 15 = C'(A_1, B_1)$$
+  $$C&#x27;(A_2, B_2) = 12 &lt; 15 = C&#x27;(A_1, B_1)$$
   Bajo las nuevas capacidades, el corte mínimo es ahora $(A_2, B_2)$ y <strong>ha dejado de serlo $(A_1, B_1)$</strong>.</p>
 </li>
 <li>
@@ -2392,15 +2392,41 @@ $$C'(A_2, B_2) = 11 + 1 = 12$$</p>
     v -->|c=11 mas 1| T_SNK["Sumidero t"]
 </pre></div>
 <h4>5. Tabla Comparativa de Capacidades de Corte</h4>
-<p>| Corte | Composición de Aristas | Capacidad Original $C$ | Aristas $|\delta^+|$ | Nueva Capacidad $C'$ | ¿Es Mínimo? |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| <strong>Corte 1 ($A_1={s}$)</strong> | 5 aristas de capacidad 2 | <strong>$10$</strong> | $5$ | $10 + 5 = \mathbf{15}$ | <strong>NO</strong> (Pierde minimalidad) |
-| <strong>Corte 2 ($B_2={t}$)</strong> | 1 arista de capacidad 11 | $11$ | $1$ | $11 + 1 = \mathbf{12}$ | <strong>SÍ (Nuevo Corte Mínimo)</strong> |</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Corte</th>
+<th style="text-align: center;">Composición de Aristas</th>
+<th style="text-align: center;">Capacidad Original $C$</th>
+<th style="text-align: center;">Aristas $|\delta^+|$</th>
+<th style="text-align: center;">Nueva Capacidad $C&#x27;$</th>
+<th style="text-align: center;">¿Es Mínimo?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Corte 1 ($A_1=\{s\}$)</strong></td>
+<td style="text-align: center;">5 aristas de capacidad 2</td>
+<td style="text-align: center;"><strong>$10$</strong></td>
+<td style="text-align: center;">$5$</td>
+<td style="text-align: center;">$10 + 5 = \mathbf{15}$</td>
+<td style="text-align: center;"><strong>NO</strong> (Pierde minimalidad)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Corte 2 ($B_2=\{t\}$)</strong></td>
+<td style="text-align: center;">1 arista de capacidad 11</td>
+<td style="text-align: center;">$11$</td>
+<td style="text-align: center;">$1$</td>
+<td style="text-align: center;">$11 + 1 = \mathbf{12}$</td>
+<td style="text-align: center;"><strong>SÍ (Nuevo Corte Mínimo)</strong></td>
+</tr>
+</tbody>
+</table>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Decir que es Verdadera asumiendo que "sumar una constante no cambia el mínimo":</strong> En optimización lineal, sumar una constante a la función objetivo no cambia el óptimo. Pero aquí **no se suma una constante al corte**, se suma 1 a cada arista, por lo que a cada corte se le suma una constante distinta proporcional a su cantidad de aristas ($C' = C + k$).</li>
+    <li><strong>Decir que es Verdadera asumiendo que "sumar una constante no cambia el mínimo":</strong> En optimización lineal, sumar una constante a la función objetivo no cambia el óptimo. Pero aquí **no se suma una constante al corte**, se suma 1 a cada arista, por lo que a cada corte se le suma una constante distinta proporcional a su cantidad de aristas ($C&#x27; = C + k$).</li>
     <li><strong>Dar un contraejemplo sin valores numéricos explícitos:</strong> Un contraejemplo debe incluir el grafo completo, los conjuntos de vértices $A$ y $B$, y la cuenta aritmética explícita de antes y después.</li>
   </ul>
 </div>
@@ -2450,31 +2476,31 @@ $$C'(A_2, B_2) = 11 + 1 = 12$$</p>
 <ol>
 <li>
 <p><strong>Impacto Local en la Red Residual:</strong>
-   Al modificarse únicamente la arista $(u, v)$, en la red residual $G_f$ la capacidad residual de esa arista pasa de $c_f(u, v) = c(u, v) - f^<em>(u, v)$ a:
-   $$c_f'(u, v) = c(u, v) + 1 - f^</em>(u, v) = c_f(u, v) + 1$$
+   Al modificarse únicamente la arista $(u, v)$, en la red residual $G_f$ la capacidad residual de esa arista pasa de $c_f(u, v) = c(u, v) - f^*(u, v)$ a:
+   $$c_f&#x27;(u, v) = c(u, v) + 1 - f^*(u, v) = c_f(u, v) + 1$$
    Todas las demás capacidades residuales de la red permanecen inalteradas.</p>
 </li>
 <li>
 <p><strong>Propiedad de Acotamiento del Incremento:</strong>
-   Por el Teorema Max-Flow Min-Cut, la capacidad de cualquier corte que contenga a $(u, v)$ aumenta a lo sumo en $1$, y los cortes que no la contienen mantienen su capacidad idéntica. Por lo tanto, el nuevo flujo máximo $f_{nuevo}^<em>$ satisface estrictamente:
-   $$|f^</em>| \le |f_{nuevo}^<em>| \le |f^</em>| + 1$$</p>
+   Por el Teorema Max-Flow Min-Cut, la capacidad de cualquier corte que contenga a $(u, v)$ aumenta a lo sumo en $1$, y los cortes que no la contienen mantienen su capacidad idéntica. Por lo tanto, el nuevo flujo máximo $f_{nuevo}^*$ satisface estrictamente:
+   $$|f^*| \le |f_{nuevo}^*| \le |f^*| + 1$$</p>
 </li>
 <li>
 <p><strong>Búsqueda de Camino de Aumento Único:</strong>
-   Dado que las capacidades son enteras y el incremento es a lo sumo 1, alcanza con buscar <strong>a lo sumo un camino de aumento</strong> desde $s$ hasta $t$ en la red residual actualizada $G_f'$ mediante BFS o DFS.</p>
+   Dado que las capacidades son enteras y el incremento es a lo sumo 1, alcanza con buscar <strong>a lo sumo un camino de aumento</strong> desde $s$ hasta $t$ en la red residual actualizada $G_f&#x27;$ mediante BFS o DFS.</p>
 </li>
 <li>
 <p><strong>Actualización de Flujos:</strong></p>
 </li>
 <li>Si se encuentra un camino de aumento $P$ de $s$ a $t$: su cuello de botella es necesariamente $\ge 1$ (al ser capacidades enteras). Se empuja exactamente 1 unidad de flujo a lo largo de $P$, actualizando las aristas forward y backward. El nuevo flujo máximo es $|f^*| + 1$.</li>
-<li>Si no existe ningún camino de aumento en $G_f'$: $t$ sigue siendo inalcanzable desde $s$. El flujo máximo se mantiene en $|f^*|$.</li>
+<li>Si no existe ningún camino de aumento en $G_f&#x27;$: $t$ sigue siendo inalcanzable desde $s$. El flujo máximo se mantiene en $|f^*|$.</li>
 <li><strong>Cómputo en Tiempo Lineal:</strong>
    Un único recorrido BFS/DFS sobre la red residual toma $O(|V| + |E|)$.</li>
 </ol>
 <h4>3. Demostración Rigurosa de Correctitud</h4>
 <ol>
-<li><strong>Caso 1 (Arista no saturada originalmente):</strong> Si antes del cambio $f^<em>(u, v) &lt; c(u, v)$, la arista no era un cuello de botella activo del corte mínimo. El flujo máximo previo ya era el óptimo y al no existir camino de aumento, el algoritmo termina inmediatamente en $O(V + E)$ con $|f_{nuevo}^</em>| = |f^*|$.</li>
-<li><strong>Caso 2 (Arista saturada que habilita aumento):</strong> Si $f^*(u, v) = c(u, v)$, su capacidad residual previa era $0$ y ahora pasa a $1$. Si dicha arista permite conectar las componentes $s$ y $t$ en $G_f'$, existirá un camino simple $P$. Dado que todas las capacidades en $G_f$ son enteras y positivas a lo largo de $P$, la capacidad residual mínima es $\Delta \ge 1$.</li>
+<li><strong>Caso 1 (Arista no saturada originalmente):</strong> Si antes del cambio $f^*(u, v) &lt; c(u, v)$, la arista no era un cuello de botella activo del corte mínimo. El flujo máximo previo ya era el óptimo y al no existir camino de aumento, el algoritmo termina inmediatamente en $O(V + E)$ con $|f_{nuevo}^*| = |f^*|$.</li>
+<li><strong>Caso 2 (Arista saturada que habilita aumento):</strong> Si $f^*(u, v) = c(u, v)$, su capacidad residual previa era $0$ y ahora pasa a $1$. Si dicha arista permite conectar las componentes $s$ y $t$ en $G_f&#x27;$, existirá un camino simple $P$. Dado que todas las capacidades en $G_f$ son enteras y positivas a lo largo de $P$, la capacidad residual mínima es $\Delta \ge 1$.</li>
 <li>Al aumentar $1$ unidad de flujo, la capacidad residual de $(u, v)$ vuelve a $0$, restaurando el estado sin caminos de aumento a través de ella.</li>
 <li>Por el Teorema de Ford-Fulkerson, una red residual sin caminos de aumento certifica que el flujo resultante es estrictamente el flujo máximo.</li>
 </ol>
@@ -2493,7 +2519,7 @@ $$C'(A_2, B_2) = 11 + 1 = 12$$</p>
 <li>Flujo máximo previo: $f^* = 3$ (cuello de botella en $(u, v)$).</li>
 <li>Red residual inicial $G_f$: $c_f(u, v) = 3 - 3 = 0$. No hay camino de $s$ a $t$.</li>
 <li>Se aumenta la capacidad de $(u, v)$ de 3 a 4:<ul>
-<li>$c_f'(u, v) = 0 + 1 = 1$.</li>
+<li>$c_f&#x27;(u, v) = 0 + 1 = 1$.</li>
 <li>BFS halla el camino $s \to u \to v \to t$ con capacidades residuales $(2, 1, 2)$.</li>
 <li>Cuello de botella del camino: $\min(2, 1, 2) = 1$.</li>
 <li>Se empuja 1 unidad: $f(s, u) = 4, f(u, v) = 4, f(v, t) = 4$.</li>
@@ -2565,7 +2591,7 @@ def actualizar_flujo_aumento_unitario(
 <li><strong>Omitir las aristas hacia atrás en la red residual:</strong> No graficar o no considerar las capacidades $c_f(v, u) = f(u, v)$ impide deshacer decisiones subóptimas y es motivo de anulación del algoritmo.</li>
 <li><strong>Confundir la capacidad del corte:</strong> Sumar erróneamente aristas dirigidas que van desde el conjunto de destino $B$ hacia el conjunto de origen $A$. La definición matemática solo suma aristas orientadas de $A \to B$.</li>
 <li><strong>Ignorar el Teorema de Integralidad:</strong> Asumir que se pueden obtener flujos fraccionarios en redes con capacidades enteras, o no citar este teorema al modelar problemas combinatorios discretos.</li>
-<li><strong>Afirmar que Ford-Fulkerson es polinomial:</strong> Ford-Fulkerson depende del valor del flujo $|f^<em>|$ ($O(E \cdot |f^</em>|)$), lo que lo hace pseudo-polinomial. El algoritmo polinomial estándar evaluado es <strong>Edmonds-Karp</strong> ($O(V E^2)$).</li>
+<li><strong>Afirmar que Ford-Fulkerson es polinomial:</strong> Ford-Fulkerson depende del valor del flujo $|f^*|$ ($O(E \cdot |f^*|)$), lo que lo hace pseudo-polinomial. El algoritmo polinomial estándar evaluado es <strong>Edmonds-Karp</strong> ($O(V E^2)$).</li>
 </ol>
 </main>
 <script>
