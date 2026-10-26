@@ -293,7 +293,11 @@ flowchart TD
 #### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
 ```text
-Algoritmo MultiplicarMatricesDyC(A, B, n):
+Algoritmo MultiplicarMatrices(A, B):
+    n = dimension(A)  // Matriz de n x n (suponiendo n potencia de 2)
+    devolver MultiplicarMatricesDyC(A, B, n)
+
+función MultiplicarMatricesDyC(A, B, n):
     // Caso Base: matriz de 1x1
     si n == 1:
         devolver [[ A[0][0] * B[0][0] ]]
@@ -412,19 +416,23 @@ flowchart LR
 
 ```text
 Algoritmo EncontrarPico(A, n):
-    si n == 0: devolver -1
-    ini = 0, fin = n - 1
+    si n == 0:
+        devolver -1
+    devolver EncontrarPicoRec(A, 0, n - 1)
 
-    mientras ini < fin:
-        m = (ini + fin) / 2
-        // Lema de la pendiente: si sube hacia la derecha, el pico está a la derecha
-        si A[m] < A[m + 1]:
-            ini = m + 1
-        sino:
-            // Si la pendiente desciende, m puede ser el pico
-            fin = m
+función EncontrarPicoRec(A, ini, fin):
+    // Caso Base: un único elemento en el subarreglo es garantizadamente pico
+    si ini == fin:
+        devolver ini
 
-    devolver ini  // Índice del elemento pico garantizado en O(log n)
+    m = (ini + fin) / 2
+
+    // Lema de la pendiente: si sube hacia la derecha, el pico está a la derecha
+    si A[m] < A[m + 1]:
+        devolver EncontrarPicoRec(A, m + 1, fin)
+    sino:
+        // Si la pendiente desciende, m puede ser el propio pico
+        devolver EncontrarPicoRec(A, ini, m)
 ```
 
 <div class="trap-callout">
@@ -516,20 +524,26 @@ graph LR
 
 ```text
 Algoritmo BuscarPrimerCero(A, n):
-    ini = 0, fin = n - 1
-    primer_cero = -1
+    si n == 0:
+        devolver -1
+    devolver BuscarPrimerCeroRec(A, 0, n - 1)
 
-    mientras ini <= fin:
-        m = (ini + fin) / 2
-        si A[m] == 0:
-            primer_cero = m
-            // Continuar buscando un cero previo más a la izquierda
-            fin = m - 1
-        sino:
-            // A[m] == 1: el primer cero debe residir a la derecha
-            ini = m + 1
+función BuscarPrimerCeroRec(A, ini, fin):
+    // Caso Base: rango inválido sin ceros
+    si ini > fin:
+        devolver -1
 
-    devolver primer_cero  // Retorna -1 si el arreglo contiene exclusivamente unos
+    m = (ini + fin) / 2
+
+    si A[m] == 0:
+        // Si es el primer elemento o el anterior es 1, encontramos el primer cero
+        si m == 0 o A[m - 1] == 1:
+            devolver m
+        // Continuar buscando un cero previo más a la izquierda
+        devolver BuscarPrimerCeroRec(A, ini, m - 1)
+    sino:
+        // A[m] == 1: por orden monótono, el primer cero debe residir a la derecha
+        devolver BuscarPrimerCeroRec(A, m + 1, fin)
 ```
 
 <div class="trap-callout">
@@ -1361,39 +1375,39 @@ Algoritmo Resolver8Reinas():
     diag_prin = arreglo de tamaño (2n - 1) en Falso  // fila - col + (n - 1)
     diag_sec = arreglo de tamaño (2n - 1) en Falso   // fila + col
 
-    función Backtrack(fila):
-        // Caso Base: se ubicaron las 8 reinas sin conflictos
-        si fila == n:
-            devolver Verdadero
-
-        para col desde 0 hasta n - 1:
-            dp = fila - col + 7
-            ds = fila + col
-
-            // Poda por Factibilidad en O(1)
-            si no col_ocupada[col] y no diag_prin[dp] y no diag_sec[ds]:
-                // 1. Marcar decisión
-                solucion[fila] = col
-                col_ocupada[col] = Verdadero
-                diag_prin[dp] = Verdadero
-                diag_sec[ds] = Verdadero
-
-                // 2. Recursión a fila siguiente
-                si Backtrack(fila + 1):
-                    devolver Verdadero
-
-                // 3. Deshacer decisión (Backtrack)
-                solucion[fila] = -1
-                col_ocupada[col] = Falso
-                diag_prin[dp] = Falso
-                diag_sec[ds] = Falso
-
-        devolver Falso
-
-    si Backtrack(0):
+    si Resolver8ReinasBT(0, solucion, col_ocupada, diag_prin, diag_sec, n):
         devolver solucion
     sino:
         devolver "Sin solución"
+
+función Resolver8ReinasBT(fila, solucion, col_ocupada, diag_prin, diag_sec, n):
+    // Caso Base: se ubicaron las 8 reinas sin conflictos
+    si fila == n:
+        devolver Verdadero
+
+    para col desde 0 hasta n - 1:
+        dp = fila - col + (n - 1)
+        ds = fila + col
+
+        // Poda por Factibilidad en O(1)
+        si no col_ocupada[col] y no diag_prin[dp] y no diag_sec[ds]:
+            // 1. Marcar decisión
+            solucion[fila] = col
+            col_ocupada[col] = Verdadero
+            diag_prin[dp] = Verdadero
+            diag_sec[ds] = Verdadero
+
+            // 2. Recursión a fila siguiente
+            si Resolver8ReinasBT(fila + 1, solucion, col_ocupada, diag_prin, diag_sec, n):
+                devolver Verdadero
+
+            // 3. Deshacer decisión (Backtrack)
+            solucion[fila] = -1
+            col_ocupada[col] = Falso
+            diag_prin[dp] = Falso
+            diag_sec[ds] = Falso
+
+    devolver Falso
 ```
 
 <div class="trap-callout">
@@ -1484,33 +1498,35 @@ graph TD
 ```text
 Algoritmo CuatroCuadradosLagrange(n):
     solucion = arreglo [0, 0, 0, 0]
+    limite_inicial = entero(raiz(n))
 
-    función Backtrack(paso, remanente, max_limite):
-        // En el 4to término, se calcula directamente por raíz exacta en O(1)
-        si paso == 3:
-            z = entero(raiz(remanente))
-            si z * z == remanente y z <= max_limite:
-                solucion[3] = z
-                devolver Verdadero
-            devolver Falso
+    si CuatroCuadradosBT(0, n, limite_inicial, solucion):
+        devolver solucion
+    sino:
+        devolver "Sin solución"
 
-        limite_sup = min(max_limite, entero(raiz(remanente)))
-
-        para v desde limite_sup bajando hasta 0:
-            // Poda por cota inferior: ni usando v en todos los restantes alcanzamos remanente
-            terminos_restantes = 4 - paso
-            si terminos_restantes * (v * v) < remanente:
-                romper bucle // Ningún valor menor podrá alcanzarlo
-
-            solucion[paso] = v
-            si Backtrack(paso + 1, remanente - v * v, v):
-                devolver Verdadero
-
+función CuatroCuadradosBT(paso, remanente, max_limite, solucion):
+    // En el 4to término, se calcula directamente por raíz exacta en O(1)
+    si paso == 3:
+        z = entero(raiz(remanente))
+        si z * z == remanente y z <= max_limite:
+            solucion[3] = z
+            devolver Verdadero
         devolver Falso
 
-    si Backtrack(0, n, entero(raiz(n))):
-        devolver solucion
-    devolver nulo
+    limite_sup = min(max_limite, entero(raiz(remanente)))
+
+    para v desde limite_sup bajando hasta 0:
+        // Poda por cota inferior: ni usando v en todos los restantes alcanzamos remanente
+        terminos_restantes = 4 - paso
+        si terminos_restantes * (v * v) < remanente:
+            romper bucle // Ningún valor menor podrá alcanzarlo
+
+        solucion[paso] = v
+        si CuatroCuadradosBT(paso + 1, remanente - v * v, v, solucion):
+            devolver Verdadero
+
+    devolver Falso
 ```
 
 <div class="trap-callout">
@@ -1605,34 +1621,34 @@ graph TD
 
 ```text
 Algoritmo MinimoVertexCover(V, E):
-    mejor_cobertura = copiar(V)  // Cota superior inicial
+    mejor_cobertura = copiar(V)  // Cota superior inicial (todos los vértices)
     actual = conjunto_vacío()
 
-    función Backtrack(actual):
-        // Poda Branch & Bound: si el tamaño actual ya iguala o supera al mejor récord
-        si tamaño(actual) >= tamaño(mejor_cobertura):
-            retornar
-
-        arista = BuscarAristaNoCubierta(E, actual)
-        si arista es nulo:
-            // Todas las aristas cubiertas con un tamaño estrictamente menor
-            mejor_cobertura = copiar(actual)
-            retornar
-
-        (u, v) = arista
-
-        // Rama 1: Incluir u
-        agregar u a actual
-        Backtrack(actual)
-        quitar u de actual  // Deshacer
-
-        // Rama 2: Incluir v
-        agregar v a actual
-        Backtrack(actual)
-        quitar v de actual  // Deshacer
-
-    Backtrack(actual)
+    MinimoVertexCoverBT(actual, mejor_cobertura, E)
     devolver mejor_cobertura
+
+función MinimoVertexCoverBT(actual, mejor_cobertura, E):
+    // Poda Branch & Bound: si el tamaño actual ya iguala o supera al mejor récord
+    si tamaño(actual) >= tamaño(mejor_cobertura):
+        retornar
+
+    arista = BuscarAristaNoCubierta(E, actual)
+    si arista es nulo:
+        // Todas las aristas cubiertas con un tamaño estrictamente menor
+        mejor_cobertura = copiar(actual)
+        retornar
+
+    (u, v) = arista
+
+    // Rama 1: Incluir u
+    agregar u a actual
+    MinimoVertexCoverBT(actual, mejor_cobertura, E)
+    quitar u de actual  // Deshacer (Backtrack)
+
+    // Rama 2: Incluir v
+    agregar v a actual
+    MinimoVertexCoverBT(actual, mejor_cobertura, E)
+    quitar v de actual  // Deshacer (Backtrack)
 ```
 
 <div class="trap-callout">
@@ -1728,31 +1744,32 @@ Algoritmo SubsetSumBacktracking(nums, target):
     ordenar nums de menor a mayor
     solucion = []
 
-    función Backtrack(indice, remanente):
-        si remanente == 0:
-            devolver Verdadero
-        si indice >= longitud(nums) o remanente < 0:
-            devolver Falso
+    si SubsetSumBT(0, target, nums, solucion):
+        devolver solucion
+    sino:
+        devolver nulo
 
-        // Poda temprana: al estar ordenado, ningún elemento posterior entrará
-        si nums[indice] > remanente:
-            devolver Falso
-
-        // Rama 1: Incluir nums[indice]
-        agregar nums[indice] a solucion
-        si Backtrack(indice + 1, remanente - nums[indice]):
-            devolver Verdadero
-        quitar_ultimo(solucion)  // Deshacer (Backtrack)
-
-        // Rama 2: Excluir nums[indice]
-        si Backtrack(indice + 1, remanente):
-            devolver Verdadero
-
+función SubsetSumBT(indice, remanente, nums, solucion):
+    si remanente == 0:
+        devolver Verdadero
+    si indice >= longitud(nums) o remanente < 0:
         devolver Falso
 
-    si Backtrack(0, target):
-        devolver solucion
-    devolver nulo
+    // Poda temprana: al estar ordenado, ningún elemento posterior entrará
+    si nums[indice] > remanente:
+        devolver Falso
+
+    // Rama 1: Incluir nums[indice]
+    agregar nums[indice] a solucion
+    si SubsetSumBT(indice + 1, remanente - nums[indice], nums, solucion):
+        devolver Verdadero
+    quitar_ultimo(solucion)  // Deshacer (Backtrack)
+
+    // Rama 2: Excluir nums[indice]
+    si SubsetSumBT(indice + 1, remanente, nums, solucion):
+        devolver Verdadero
+
+    devolver Falso
 ```
 
 <div class="trap-callout">

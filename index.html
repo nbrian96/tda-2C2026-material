@@ -2325,7 +2325,11 @@ $$C = \begin{pmatrix} 19 &amp; 22 \\ 43 &amp; 50 \end{pmatrix}$$
     L8 --> H8["Hojas caso base"]
 </pre></div>
 <h4>5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo MultiplicarMatricesDyC(A, B, n):
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo MultiplicarMatrices(A, B):
+    n = dimension(A)  // Matriz de n x n (suponiendo n potencia de 2)
+    devolver MultiplicarMatricesDyC(A, B, n)
+
+función MultiplicarMatricesDyC(A, B, n):
     // Caso Base: matriz de 1x1
     si n == 1:
         devolver [[ A[0][0] * B[0][0] ]]
@@ -2509,19 +2513,23 @@ $$A = [1, 2, 1, 3, 5, 6, 4]$$</p>
 </pre></div>
 <h4>5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)</h4>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo EncontrarPico(A, n):
-    si n == 0: devolver -1
-    ini = 0, fin = n - 1
+    si n == 0:
+        devolver -1
+    devolver EncontrarPicoRec(A, 0, n - 1)
 
-    mientras ini &lt; fin:
-        m = (ini + fin) / 2
-        // Lema de la pendiente: si sube hacia la derecha, el pico está a la derecha
-        si A[m] &lt; A[m + 1]:
-            ini = m + 1
-        sino:
-            // Si la pendiente desciende, m puede ser el pico
-            fin = m
+función EncontrarPicoRec(A, ini, fin):
+    // Caso Base: un único elemento en el subarreglo es garantizadamente pico
+    si ini == fin:
+        devolver ini
 
-    devolver ini  // Índice del elemento pico garantizado en O(log n)
+    m = (ini + fin) / 2
+
+    // Lema de la pendiente: si sube hacia la derecha, el pico está a la derecha
+    si A[m] &lt; A[m + 1]:
+        devolver EncontrarPicoRec(A, m + 1, fin)
+    sino:
+        // Si la pendiente desciende, m puede ser el propio pico
+        devolver EncontrarPicoRec(A, ini, m)
 </code></pre></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -2674,20 +2682,26 @@ $$A = [1, 1, 1, 1, 0, 0, 0, 0]$$</p>
 </pre></div>
 <h4>5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)</h4>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo BuscarPrimerCero(A, n):
-    ini = 0, fin = n - 1
-    primer_cero = -1
+    si n == 0:
+        devolver -1
+    devolver BuscarPrimerCeroRec(A, 0, n - 1)
 
-    mientras ini &lt;= fin:
-        m = (ini + fin) / 2
-        si A[m] == 0:
-            primer_cero = m
-            // Continuar buscando un cero previo más a la izquierda
-            fin = m - 1
-        sino:
-            // A[m] == 1: el primer cero debe residir a la derecha
-            ini = m + 1
+función BuscarPrimerCeroRec(A, ini, fin):
+    // Caso Base: rango inválido sin ceros
+    si ini &gt; fin:
+        devolver -1
 
-    devolver primer_cero  // Retorna -1 si el arreglo contiene exclusivamente unos
+    m = (ini + fin) / 2
+
+    si A[m] == 0:
+        // Si es el primer elemento o el anterior es 1, encontramos el primer cero
+        si m == 0 o A[m - 1] == 1:
+            devolver m
+        // Continuar buscando un cero previo más a la izquierda
+        devolver BuscarPrimerCeroRec(A, ini, m - 1)
+    sino:
+        // A[m] == 1: por orden monótono, el primer cero debe residir a la derecha
+        devolver BuscarPrimerCeroRec(A, m + 1, fin)
 </code></pre></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -3988,39 +4002,39 @@ Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos
     diag_prin = arreglo de tamaño (2n - 1) en Falso  // fila - col + (n - 1)
     diag_sec = arreglo de tamaño (2n - 1) en Falso   // fila + col
 
-    función Backtrack(fila):
-        // Caso Base: se ubicaron las 8 reinas sin conflictos
-        si fila == n:
-            devolver Verdadero
-
-        para col desde 0 hasta n - 1:
-            dp = fila - col + 7
-            ds = fila + col
-
-            // Poda por Factibilidad en O(1)
-            si no col_ocupada[col] y no diag_prin[dp] y no diag_sec[ds]:
-                // 1. Marcar decisión
-                solucion[fila] = col
-                col_ocupada[col] = Verdadero
-                diag_prin[dp] = Verdadero
-                diag_sec[ds] = Verdadero
-
-                // 2. Recursión a fila siguiente
-                si Backtrack(fila + 1):
-                    devolver Verdadero
-
-                // 3. Deshacer decisión (Backtrack)
-                solucion[fila] = -1
-                col_ocupada[col] = Falso
-                diag_prin[dp] = Falso
-                diag_sec[ds] = Falso
-
-        devolver Falso
-
-    si Backtrack(0):
+    si Resolver8ReinasBT(0, solucion, col_ocupada, diag_prin, diag_sec, n):
         devolver solucion
     sino:
         devolver &quot;Sin solución&quot;
+
+función Resolver8ReinasBT(fila, solucion, col_ocupada, diag_prin, diag_sec, n):
+    // Caso Base: se ubicaron las 8 reinas sin conflictos
+    si fila == n:
+        devolver Verdadero
+
+    para col desde 0 hasta n - 1:
+        dp = fila - col + (n - 1)
+        ds = fila + col
+
+        // Poda por Factibilidad en O(1)
+        si no col_ocupada[col] y no diag_prin[dp] y no diag_sec[ds]:
+            // 1. Marcar decisión
+            solucion[fila] = col
+            col_ocupada[col] = Verdadero
+            diag_prin[dp] = Verdadero
+            diag_sec[ds] = Verdadero
+
+            // 2. Recursión a fila siguiente
+            si Resolver8ReinasBT(fila + 1, solucion, col_ocupada, diag_prin, diag_sec, n):
+                devolver Verdadero
+
+            // 3. Deshacer decisión (Backtrack)
+            solucion[fila] = -1
+            col_ocupada[col] = Falso
+            diag_prin[dp] = Falso
+            diag_sec[ds] = Falso
+
+    devolver Falso
 </code></pre></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -4170,33 +4184,35 @@ Diseño de un árbol de backtracking acotado a profundidad 4, imposición de ord
 <h4>4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)</h4>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo CuatroCuadradosLagrange(n):
     solucion = arreglo [0, 0, 0, 0]
+    limite_inicial = entero(raiz(n))
 
-    función Backtrack(paso, remanente, max_limite):
-        // En el 4to término, se calcula directamente por raíz exacta en O(1)
-        si paso == 3:
-            z = entero(raiz(remanente))
-            si z * z == remanente y z &lt;= max_limite:
-                solucion[3] = z
-                devolver Verdadero
-            devolver Falso
+    si CuatroCuadradosBT(0, n, limite_inicial, solucion):
+        devolver solucion
+    sino:
+        devolver &quot;Sin solución&quot;
 
-        limite_sup = min(max_limite, entero(raiz(remanente)))
-
-        para v desde limite_sup bajando hasta 0:
-            // Poda por cota inferior: ni usando v en todos los restantes alcanzamos remanente
-            terminos_restantes = 4 - paso
-            si terminos_restantes * (v * v) &lt; remanente:
-                romper bucle // Ningún valor menor podrá alcanzarlo
-
-            solucion[paso] = v
-            si Backtrack(paso + 1, remanente - v * v, v):
-                devolver Verdadero
-
+función CuatroCuadradosBT(paso, remanente, max_limite, solucion):
+    // En el 4to término, se calcula directamente por raíz exacta en O(1)
+    si paso == 3:
+        z = entero(raiz(remanente))
+        si z * z == remanente y z &lt;= max_limite:
+            solucion[3] = z
+            devolver Verdadero
         devolver Falso
 
-    si Backtrack(0, n, entero(raiz(n))):
-        devolver solucion
-    devolver nulo
+    limite_sup = min(max_limite, entero(raiz(remanente)))
+
+    para v desde limite_sup bajando hasta 0:
+        // Poda por cota inferior: ni usando v en todos los restantes alcanzamos remanente
+        terminos_restantes = 4 - paso
+        si terminos_restantes * (v * v) &lt; remanente:
+            romper bucle // Ningún valor menor podrá alcanzarlo
+
+        solucion[paso] = v
+        si CuatroCuadradosBT(paso + 1, remanente - v * v, v, solucion):
+            devolver Verdadero
+
+    devolver Falso
 </code></pre></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -4379,34 +4395,34 @@ Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos 
 </pre></div>
 <h4>4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)</h4>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo MinimoVertexCover(V, E):
-    mejor_cobertura = copiar(V)  // Cota superior inicial
+    mejor_cobertura = copiar(V)  // Cota superior inicial (todos los vértices)
     actual = conjunto_vacío()
 
-    función Backtrack(actual):
-        // Poda Branch &amp; Bound: si el tamaño actual ya iguala o supera al mejor récord
-        si tamaño(actual) &gt;= tamaño(mejor_cobertura):
-            retornar
-
-        arista = BuscarAristaNoCubierta(E, actual)
-        si arista es nulo:
-            // Todas las aristas cubiertas con un tamaño estrictamente menor
-            mejor_cobertura = copiar(actual)
-            retornar
-
-        (u, v) = arista
-
-        // Rama 1: Incluir u
-        agregar u a actual
-        Backtrack(actual)
-        quitar u de actual  // Deshacer
-
-        // Rama 2: Incluir v
-        agregar v a actual
-        Backtrack(actual)
-        quitar v de actual  // Deshacer
-
-    Backtrack(actual)
+    MinimoVertexCoverBT(actual, mejor_cobertura, E)
     devolver mejor_cobertura
+
+función MinimoVertexCoverBT(actual, mejor_cobertura, E):
+    // Poda Branch &amp; Bound: si el tamaño actual ya iguala o supera al mejor récord
+    si tamaño(actual) &gt;= tamaño(mejor_cobertura):
+        retornar
+
+    arista = BuscarAristaNoCubierta(E, actual)
+    si arista es nulo:
+        // Todas las aristas cubiertas con un tamaño estrictamente menor
+        mejor_cobertura = copiar(actual)
+        retornar
+
+    (u, v) = arista
+
+    // Rama 1: Incluir u
+    agregar u a actual
+    MinimoVertexCoverBT(actual, mejor_cobertura, E)
+    quitar u de actual  // Deshacer (Backtrack)
+
+    // Rama 2: Incluir v
+    agregar v a actual
+    MinimoVertexCoverBT(actual, mejor_cobertura, E)
+    quitar v de actual  // Deshacer (Backtrack)
 </code></pre></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -4619,31 +4635,32 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
     ordenar nums de menor a mayor
     solucion = []
 
-    función Backtrack(indice, remanente):
-        si remanente == 0:
-            devolver Verdadero
-        si indice &gt;= longitud(nums) o remanente &lt; 0:
-            devolver Falso
+    si SubsetSumBT(0, target, nums, solucion):
+        devolver solucion
+    sino:
+        devolver nulo
 
-        // Poda temprana: al estar ordenado, ningún elemento posterior entrará
-        si nums[indice] &gt; remanente:
-            devolver Falso
-
-        // Rama 1: Incluir nums[indice]
-        agregar nums[indice] a solucion
-        si Backtrack(indice + 1, remanente - nums[indice]):
-            devolver Verdadero
-        quitar_ultimo(solucion)  // Deshacer (Backtrack)
-
-        // Rama 2: Excluir nums[indice]
-        si Backtrack(indice + 1, remanente):
-            devolver Verdadero
-
+función SubsetSumBT(indice, remanente, nums, solucion):
+    si remanente == 0:
+        devolver Verdadero
+    si indice &gt;= longitud(nums) o remanente &lt; 0:
         devolver Falso
 
-    si Backtrack(0, target):
-        devolver solucion
-    devolver nulo
+    // Poda temprana: al estar ordenado, ningún elemento posterior entrará
+    si nums[indice] &gt; remanente:
+        devolver Falso
+
+    // Rama 1: Incluir nums[indice]
+    agregar nums[indice] a solucion
+    si SubsetSumBT(indice + 1, remanente - nums[indice], nums, solucion):
+        devolver Verdadero
+    quitar_ultimo(solucion)  // Deshacer (Backtrack)
+
+    // Rama 2: Excluir nums[indice]
+    si SubsetSumBT(indice + 1, remanente, nums, solucion):
+        devolver Verdadero
+
+    devolver Falso
 </code></pre></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -9577,20 +9594,20 @@ $$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
 <p>Utilizá esta lista de verificación durante tu última hora de repaso antes de ingresar al aula:</p>
 <h3>A. Dominio de Paradigmas</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_3353" onchange="toggleChecklistItem('chk_3353', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_39198" onchange="toggleChecklistItem('chk_39198', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_36330" onchange="toggleChecklistItem('chk_36330', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_14675" onchange="toggleChecklistItem('chk_14675', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_28653" onchange="toggleChecklistItem('chk_28653', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_82394" onchange="toggleChecklistItem('chk_82394', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_3017" onchange="toggleChecklistItem('chk_3017', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_25955" onchange="toggleChecklistItem('chk_25955', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro (T(n) = a · T(n/b) + O(nᶜ)) y sé identificar a, b y c.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_89709" onchange="toggleChecklistItem('chk_89709', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_23361" onchange="toggleChecklistItem('chk_23361', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en O(1) y deshaciendo el estado al retornar.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_63285" onchange="toggleChecklistItem('chk_63285', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_4090" onchange="toggleChecklistItem('chk_4090', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de min max y conteo de variables/restricciones.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_59244" onchange="toggleChecklistItem('chk_59244', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_19901" onchange="toggleChecklistItem('chk_19901', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida (⟹) y vuelta (⟸).</span></label></li>
 </ul>
 <h3>B. Ejecución en la Hoja de Examen</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_1614" onchange="toggleChecklistItem('chk_1614', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_63493" onchange="toggleChecklistItem('chk_63493', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_22076" onchange="toggleChecklistItem('chk_22076', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_41415" onchange="toggleChecklistItem('chk_41415', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_20118" onchange="toggleChecklistItem('chk_20118', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_47599" onchange="toggleChecklistItem('chk_47599', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_36838" onchange="toggleChecklistItem('chk_36838', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_70075" onchange="toggleChecklistItem('chk_70075', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término (O(n log n), O(V · E), etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
 </ul>
 </main>
 <script>

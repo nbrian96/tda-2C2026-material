@@ -142,7 +142,11 @@ flowchart TD
 #### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
 ```text
-Algoritmo MultiplicarMatricesDyC(A, B, n):
+Algoritmo MultiplicarMatrices(A, B):
+    n = dimension(A)  // Matriz de n x n (suponiendo n potencia de 2)
+    devolver MultiplicarMatricesDyC(A, B, n)
+
+función MultiplicarMatricesDyC(A, B, n):
     // Caso Base: matriz de 1x1
     si n == 1:
         devolver [[ A[0][0] * B[0][0] ]]
@@ -257,19 +261,23 @@ flowchart LR
 
 ```text
 Algoritmo EncontrarPico(A, n):
-    si n == 0: devolver -1
-    ini = 0, fin = n - 1
+    si n == 0:
+        devolver -1
+    devolver EncontrarPicoRec(A, 0, n - 1)
 
-    mientras ini < fin:
-        m = (ini + fin) / 2
-        // Lema de la pendiente: si sube hacia la derecha, el pico está a la derecha
-        si A[m] < A[m + 1]:
-            ini = m + 1
-        sino:
-            // Si la pendiente desciende, m puede ser el pico
-            fin = m
+función EncontrarPicoRec(A, ini, fin):
+    // Caso Base: un único elemento en el subarreglo es garantizadamente pico
+    si ini == fin:
+        devolver ini
 
-    devolver ini  // Índice del elemento pico garantizado en O(log n)
+    m = (ini + fin) / 2
+
+    // Lema de la pendiente: si sube hacia la derecha, el pico está a la derecha
+    si A[m] < A[m + 1]:
+        devolver EncontrarPicoRec(A, m + 1, fin)
+    sino:
+        // Si la pendiente desciende, m puede ser el propio pico
+        devolver EncontrarPicoRec(A, ini, m)
 ```
 
 <div class="trap-callout">
@@ -357,20 +365,26 @@ graph LR
 
 ```text
 Algoritmo BuscarPrimerCero(A, n):
-    ini = 0, fin = n - 1
-    primer_cero = -1
+    si n == 0:
+        devolver -1
+    devolver BuscarPrimerCeroRec(A, 0, n - 1)
 
-    mientras ini <= fin:
-        m = (ini + fin) / 2
-        si A[m] == 0:
-            primer_cero = m
-            // Continuar buscando un cero previo más a la izquierda
-            fin = m - 1
-        sino:
-            // A[m] == 1: el primer cero debe residir a la derecha
-            ini = m + 1
+función BuscarPrimerCeroRec(A, ini, fin):
+    // Caso Base: rango inválido sin ceros
+    si ini > fin:
+        devolver -1
 
-    devolver primer_cero  // Retorna -1 si el arreglo contiene exclusivamente unos
+    m = (ini + fin) / 2
+
+    si A[m] == 0:
+        // Si es el primer elemento o el anterior es 1, encontramos el primer cero
+        si m == 0 o A[m - 1] == 1:
+            devolver m
+        // Continuar buscando un cero previo más a la izquierda
+        devolver BuscarPrimerCeroRec(A, ini, m - 1)
+    sino:
+        // A[m] == 1: por orden monótono, el primer cero debe residir a la derecha
+        devolver BuscarPrimerCeroRec(A, m + 1, fin)
 ```
 
 <div class="trap-callout">
