@@ -2450,31 +2450,32 @@ Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos 
     mejor_cobertura = copiar(V)  // Cota superior inicial (todos los vértices)
     actual = conjunto_vacío()
 
-    MinimoVertexCoverBT(actual, mejor_cobertura, E)
+    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
     devolver mejor_cobertura
 
 función MinimoVertexCoverBT(actual, mejor_cobertura, E):
     // Poda Branch &amp; Bound: si el tamaño actual ya iguala o supera al mejor récord
     si tamaño(actual) &gt;= tamaño(mejor_cobertura):
-        retornar
+        devolver mejor_cobertura
 
     arista = BuscarAristaNoCubierta(E, actual)
     si arista es nulo:
         // Todas las aristas cubiertas con un tamaño estrictamente menor
-        mejor_cobertura = copiar(actual)
-        retornar
+        devolver copiar(actual)
 
     (u, v) = arista
 
     // Rama 1: Incluir u
     agregar u a actual
-    MinimoVertexCoverBT(actual, mejor_cobertura, E)
+    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
     quitar u de actual  // Deshacer (Backtrack)
 
     // Rama 2: Incluir v
     agregar v a actual
-    MinimoVertexCoverBT(actual, mejor_cobertura, E)
+    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
     quitar v de actual  // Deshacer (Backtrack)
+
+    devolver mejor_cobertura
 </code></pre></div></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>

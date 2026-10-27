@@ -120,8 +120,8 @@ flowchart LR
 Algoritmo ConcederPermisosMafias(pedidos):
     si pedidos está vacío: devolver []
 
-    // 1. Regla voraz: ordenar por tiempo de finalización f_i creciente
-    ordenar pedidos por f_i ascendente
+    // 1. Regla voraz: ordenar por tiempo de finalización (p.fin) creciente
+    ordenar pedidos por p.fin ascendente
 
     seleccionados = [ pedidos[0] ]
     ultimo_fin = pedidos[0].fin

@@ -82,14 +82,14 @@ Algoritmo DespacharDronesEmergencia(Drones, Puestos, Compatibilidades):
     para cada p in Puestos:
         agregar_arco(G, p, t, capacidad = 1)
 
-    // Ejecución de flujo máximo en tiempo O(|Puestos| * |E|):
-    flujo_total = EdmondsKarp(G, s, t)
+    // 4. Ejecución de flujo máximo en tiempo O(|Puestos| * |E|):
+    flujo_maximo = EdmondsKarp(G, s, t)
+    despachos = [ (d, p) para cada (d, p) en Compatibilidades si flujo_maximo(d, p) == 1 ]
 
-    si flujo_total == cantidad(Puestos):
-        despachos = [ (d, p) para cada (d, p) en Compatibilidades si flujo(d, p) == 1 ]
-        devolver (flujo_total, despachos)
+    si cantidad(despachos) == cantidad(Puestos):
+        devolver (cantidad(despachos), despachos)
     sino:
-        devolver (flujo_total, "Infactible: no es posible abastecer a todos los puestos")
+        devolver (cantidad(despachos), "Infactible: no es posible abastecer a todos los puestos")
 ```
 
 <div class="trap-callout">

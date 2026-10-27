@@ -2034,12 +2034,12 @@ body.dark-mode .warning-box {
 
     // (b) Enlace lógico de presencia por especie:
     Para cada especie i in Especies:
-        x[i] &lt;= Sumatoria_{j in Lugares donde habita i} y[j]
+        x[i] &lt;= Sumatoria_{j in Lugares} (presencia[i, j] * y[j])
 
     // 4. Resolución mediante solver PLI estándar:
     (Z_opt, valores_y, valores_x) = ResolverSolverPLI(modelo)
 
-    devolver (Z_opt, LugaresCon(y == 1), EspeciesCon(x == 1))
+    devolver (Z_opt, LugaresCon(valores_y == 1), EspeciesCon(valores_x == 1))
 </code></pre></div></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -2177,7 +2177,7 @@ body.dark-mode .warning-box {
 </li>
 </ul>
 <h4>7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo FormularAntenas70PLI(Celdas, Vecindarios, Costo_antena):
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo FormularAntenas70PLI(Celdas, Vecindarios, Cubren, Costo_antena):
     Crear modelo PLI:
 
     // 1. Variables de decisión binarias:
@@ -2195,7 +2195,7 @@ body.dark-mode .warning-box {
 
     // (b) Cobertura física por vecindario:
     Para cada vecindario v in Vecindarios:
-        x[v] &lt;= Sumatoria_{c in Celdas que cubren a v} y[c]
+        x[v] &lt;= Sumatoria_{c in Cubren[v]} y[c]
 
     (Costo_opt, antenas_activas) = ResolverSolverPLI(modelo)
     devolver (Costo_opt, antenas_activas)
@@ -2329,7 +2329,7 @@ $$\text{Generación}_i + \text{Entra}_i - \text{Sale}_i = \text{Demanda}_i$$
 </li>
 </ul>
 <h4>7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo FormularDistribucionFlujoPL(Regiones, Aristas, Generacion, Demanda):
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo FormularDistribucionFlujoPL(Regiones, Aristas, Generacion, Demanda, Costo, Capacidad):
     Crear modelo de Programación Lineal Continua:
 
     // 1. Variables de decisión continuas:
@@ -2337,7 +2337,7 @@ $$\text{Generación}_i + \text{Entra}_i - \text{Sale}_i = \text{Demanda}_i$$
         Definir x[u, v] &gt;= 0         // Potencia transportada por la línea
 
     // 2. Función Objetivo: minimizar costo de transmisión
-    Minimizar Costo = Sumatoria_{(u, v) in Aristas} (costo[u, v] * x[u, v])
+    Minimizar CostoTotal = Sumatoria_{(u, v) in Aristas} (Costo[u, v] * x[u, v])
 
     // 3. Restricciones:
     // (a) Balance nodal de potencia para cada región i in Regiones:
@@ -2457,7 +2457,7 @@ $$\text{Generación}_i + \text{Entra}_i - \text{Sale}_i = \text{Demanda}_i$$
 <li><em>(Nota: Una de las restricciones es linealmente dependiente porque la suma de todos los balances es $1 + (-1) + 0 = 0$).</em></li>
 </ul>
 <h4>7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo FormularCaminoMinimoPL(Vertices, Aristas, origen, destino):
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo FormularCaminoMinimoPL(Vertices, Aristas, Costo, origen, destino):
     Crear modelo de Programación Lineal Continua:
 
     // 1. Variables continuas (por TUM serán naturalmente enteras en {0, 1})
@@ -2465,7 +2465,7 @@ $$\text{Generación}_i + \text{Entra}_i - \text{Sale}_i = \text{Demanda}_i$$
         Definir x[u, v] &gt;= 0
 
     // 2. Función Objetivo: minimizar costo de seguro acumulado
-    Minimizar Costo = Sumatoria_{(u, v) in Aristas} (costo[u, v] * x[u, v])
+    Minimizar CostoSeguro = Sumatoria_{(u, v) in Aristas} (Costo[u, v] * x[u, v])
 
     // 3. Restricciones de conservación de flujo unitario:
     Para cada vértice i in Vertices:

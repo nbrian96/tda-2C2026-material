@@ -146,12 +146,12 @@ Algoritmo ResolverObservacionAvesPLI(Especies, Lugares, duraciones, presencia, T
 
     // (b) Enlace lógico de presencia por especie:
     Para cada especie i in Especies:
-        x[i] <= Sumatoria_{j in Lugares donde habita i} y[j]
+        x[i] <= Sumatoria_{j in Lugares} (presencia[i, j] * y[j])
 
     // 4. Resolución mediante solver PLI estándar:
     (Z_opt, valores_y, valores_x) = ResolverSolverPLI(modelo)
 
-    devolver (Z_opt, LugaresCon(y == 1), EspeciesCon(x == 1))
+    devolver (Z_opt, LugaresCon(valores_y == 1), EspeciesCon(valores_x == 1))
 ```
 
 <div class="trap-callout">
@@ -257,7 +257,7 @@ Supongamos una grilla pequeña con 10 vecindarios ($|V| = 10$).
 #### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
 ```text
-Algoritmo FormularAntenas70PLI(Celdas, Vecindarios, Costo_antena):
+Algoritmo FormularAntenas70PLI(Celdas, Vecindarios, Cubren, Costo_antena):
     Crear modelo PLI:
 
     // 1. Variables de decisión binarias:
@@ -275,7 +275,7 @@ Algoritmo FormularAntenas70PLI(Celdas, Vecindarios, Costo_antena):
 
     // (b) Cobertura física por vecindario:
     Para cada vecindario v in Vecindarios:
-        x[v] <= Sumatoria_{c in Celdas que cubren a v} y[c]
+        x[v] <= Sumatoria_{c in Cubren[v]} y[c]
 
     (Costo_opt, antenas_activas) = ResolverSolverPLI(modelo)
     devolver (Costo_opt, antenas_activas)
@@ -371,7 +371,7 @@ Analicemos 3 regiones simplificadas:
 #### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
 ```text
-Algoritmo FormularDistribucionFlujoPL(Regiones, Aristas, Generacion, Demanda):
+Algoritmo FormularDistribucionFlujoPL(Regiones, Aristas, Generacion, Demanda, Costo, Capacidad):
     Crear modelo de Programación Lineal Continua:
 
     // 1. Variables de decisión continuas:
@@ -379,7 +379,7 @@ Algoritmo FormularDistribucionFlujoPL(Regiones, Aristas, Generacion, Demanda):
         Definir x[u, v] >= 0         // Potencia transportada por la línea
 
     // 2. Función Objetivo: minimizar costo de transmisión
-    Minimizar Costo = Sumatoria_{(u, v) in Aristas} (costo[u, v] * x[u, v])
+    Minimizar CostoTotal = Sumatoria_{(u, v) in Aristas} (Costo[u, v] * x[u, v])
 
     // 3. Restricciones:
     // (a) Balance nodal de potencia para cada región i in Regiones:
@@ -471,7 +471,7 @@ Rutas alternativas en el grafo del diagrama:
 #### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
 ```text
-Algoritmo FormularCaminoMinimoPL(Vertices, Aristas, origen, destino):
+Algoritmo FormularCaminoMinimoPL(Vertices, Aristas, Costo, origen, destino):
     Crear modelo de Programación Lineal Continua:
 
     // 1. Variables continuas (por TUM serán naturalmente enteras en {0, 1})
@@ -479,7 +479,7 @@ Algoritmo FormularCaminoMinimoPL(Vertices, Aristas, origen, destino):
         Definir x[u, v] >= 0
 
     // 2. Función Objetivo: minimizar costo de seguro acumulado
-    Minimizar Costo = Sumatoria_{(u, v) in Aristas} (costo[u, v] * x[u, v])
+    Minimizar CostoSeguro = Sumatoria_{(u, v) in Aristas} (Costo[u, v] * x[u, v])
 
     // 3. Restricciones de conservación de flujo unitario:
     Para cada vértice i in Vertices:

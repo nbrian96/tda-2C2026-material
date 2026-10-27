@@ -2450,39 +2450,41 @@ Como la fila $i$ solo depende estrictamente de la fila inmediata anterior $i - 1
 <p><strong>Pseudocódigo de Backtracking con Branch &amp; Bound</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MochilaBranchAndBound(pesos, valores, n, W):
     // Preordenar elementos por densidad decreciente maximiza la efectividad de las podas
-    ORDENAR elementos DECRECIENTE por (valor / peso)
+    ORDENAR pesos y valores DECRECIENTE según (valores[i] / pesos[i])
 
     mejor_valor &lt;- 0
     INICIALIZAR mejor_solucion como arreglo de tamaño n en 0
     INICIALIZAR solucion_actual como arreglo de tamaño n en 0
 
-    MochilaBT(0, 0, 0, solucion_actual, mejor_solucion, mejor_valor, pesos, valores, n, W)
+    (mejor_valor, mejor_solucion) &lt;- MochilaBT(0, 0, 0, solucion_actual, mejor_solucion, mejor_valor, pesos, valores, n, W)
     RETORNAR (mejor_valor, mejor_solucion)
 
-PROCEDIMIENTO MochilaBT(idx, peso_act, valor_act, sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W):
+FUNCION MochilaBT(idx, peso_act, valor_act, sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W):
     // Caso base: se evaluaron los n elementos
     SI idx = n:
         SI valor_act &gt; MEJOR_VAL:
             MEJOR_VAL &lt;- valor_act
             MEJOR_SOL &lt;- COPIAR(sol_act)
-        RETORNAR
+        RETORNAR (MEJOR_VAL, MEJOR_SOL)
 
     // 1. Poda por Branch and Bound: Cota superior con relajación fraccionaria
     cota_sup &lt;- valor_act + CalcularCotaFraccionaria(idx, W - peso_act, pesos, valores, n)
     SI cota_sup &lt;= MEJOR_VAL:
-        RETORNAR // Poda: imposible mejorar la mejor solución registrada
+        RETORNAR (MEJOR_VAL, MEJOR_SOL) // Poda: imposible mejorar la mejor solución registrada
 
     // Rama 1: Intentar INCLUIR el elemento idx (si cabe: poda por factibilidad)
     SI peso_act + pesos[idx] &lt;= W:
         sol_act[idx] &lt;- 1
-        MochilaBT(idx + 1, peso_act + pesos[idx], valor_act + valores[idx], 
-                  sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
+        (MEJOR_VAL, MEJOR_SOL) &lt;- MochilaBT(idx + 1, peso_act + pesos[idx], valor_act + valores[idx], 
+                                            sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
         sol_act[idx] &lt;- 0 // Backtrack: restaurar estado
 
     // Rama 2: EXCLUIR el elemento idx
     sol_act[idx] &lt;- 0
-    MochilaBT(idx + 1, peso_act, valor_act, 
-              sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
+    (MEJOR_VAL, MEJOR_SOL) &lt;- MochilaBT(idx + 1, peso_act, valor_act, 
+                                        sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
+
+    RETORNAR (MEJOR_VAL, MEJOR_SOL)
 
 FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
     cota &lt;- 0.0
@@ -2719,10 +2721,10 @@ Resolver y comparar este problema a través de todos los paradigmas algorítmico
     ruta_actual[0] &lt;- 0
     visitado[0] &lt;- VERDADERO
 
-    TSP_BT(1, 0, 0, ruta_actual, mejor_ruta, mejor_costo, visitado, matriz_costos, n)
+    (mejor_costo, mejor_ruta) &lt;- TSP_BT(1, 0, 0, ruta_actual, mejor_ruta, mejor_costo, visitado, matriz_costos, n)
     RETORNAR (mejor_costo, mejor_ruta)
 
-PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n):
+FUNCION TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n):
     // Caso base: visitamos las n ciudades, cerramos el tour retornando al origen (nodo 0)
     SI paso = n:
         costo_cierre &lt;- C[actual][0]
@@ -2731,11 +2733,11 @@ PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO
             SI costo_total &lt; MEJOR_COSTO:
                 MEJOR_COSTO &lt;- costo_total
                 MEJOR_RUTA &lt;- COPIAR(ruta_act)
-        RETORNAR
+        RETORNAR (MEJOR_COSTO, MEJOR_RUTA)
 
     // Poda por cota superior básica
     SI costo_acum &gt;= MEJOR_COSTO:
-        RETORNAR
+        RETORNAR (MEJOR_COSTO, MEJOR_RUTA)
 
     // Probar cada ciudad candidata no visitada
     PARA candidata &lt;- 1 HASTA n - 1:
@@ -2747,11 +2749,13 @@ PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO
                 visitado[candidata] &lt;- VERDADERO
                 ruta_act[paso] &lt;- candidata
 
-                TSP_BT(paso + 1, candidata, nuevo_costo, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n)
+                (MEJOR_COSTO, MEJOR_RUTA) &lt;- TSP_BT(paso + 1, candidata, nuevo_costo, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n)
 
                 // Backtrack: desmarcar estado
                 visitado[candidata] &lt;- FALSO
                 ruta_act[paso] &lt;- 0
+
+    RETORNAR (MEJOR_COSTO, MEJOR_RUTA)
 </code></pre></div></div>
 <ul>
 <li><strong>Complejidad:</strong> Peor caso asintótico $O(n!)$, pero con podas de cota inferior resuelve óptimamente instancias de hasta $n \approx 25$ ciudades. Espacio: $O(n)$ en pila de llamadas.</li>

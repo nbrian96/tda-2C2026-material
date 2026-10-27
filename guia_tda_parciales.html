@@ -3000,8 +3000,8 @@ Comprensión del arquetipo de <em>Interval Scheduling</em>, diseño del criterio
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo ConcederPermisosMafias(pedidos):
     si pedidos está vacío: devolver []
 
-    // 1. Regla voraz: ordenar por tiempo de finalización f_i creciente
-    ordenar pedidos por f_i ascendente
+    // 1. Regla voraz: ordenar por tiempo de finalización (p.fin) creciente
+    ordenar pedidos por p.fin ascendente
 
     seleccionados = [ pedidos[0] ]
     ultimo_fin = pedidos[0].fin
@@ -4358,31 +4358,32 @@ Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos 
     mejor_cobertura = copiar(V)  // Cota superior inicial (todos los vértices)
     actual = conjunto_vacío()
 
-    MinimoVertexCoverBT(actual, mejor_cobertura, E)
+    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
     devolver mejor_cobertura
 
 función MinimoVertexCoverBT(actual, mejor_cobertura, E):
     // Poda Branch &amp; Bound: si el tamaño actual ya iguala o supera al mejor récord
     si tamaño(actual) &gt;= tamaño(mejor_cobertura):
-        retornar
+        devolver mejor_cobertura
 
     arista = BuscarAristaNoCubierta(E, actual)
     si arista es nulo:
         // Todas las aristas cubiertas con un tamaño estrictamente menor
-        mejor_cobertura = copiar(actual)
-        retornar
+        devolver copiar(actual)
 
     (u, v) = arista
 
     // Rama 1: Incluir u
     agregar u a actual
-    MinimoVertexCoverBT(actual, mejor_cobertura, E)
+    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
     quitar u de actual  // Deshacer (Backtrack)
 
     // Rama 2: Incluir v
     agregar v a actual
-    MinimoVertexCoverBT(actual, mejor_cobertura, E)
+    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
     quitar v de actual  // Deshacer (Backtrack)
+
+    devolver mejor_cobertura
 </code></pre></div></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -6122,12 +6123,12 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
 
     // (b) Enlace lógico de presencia por especie:
     Para cada especie i in Especies:
-        x[i] &lt;= Sumatoria_{j in Lugares donde habita i} y[j]
+        x[i] &lt;= Sumatoria_{j in Lugares} (presencia[i, j] * y[j])
 
     // 4. Resolución mediante solver PLI estándar:
     (Z_opt, valores_y, valores_x) = ResolverSolverPLI(modelo)
 
-    devolver (Z_opt, LugaresCon(y == 1), EspeciesCon(x == 1))
+    devolver (Z_opt, LugaresCon(valores_y == 1), EspeciesCon(valores_x == 1))
 </code></pre></div></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -6265,7 +6266,7 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
 </li>
 </ul>
 <h4>7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo FormularAntenas70PLI(Celdas, Vecindarios, Costo_antena):
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo FormularAntenas70PLI(Celdas, Vecindarios, Cubren, Costo_antena):
     Crear modelo PLI:
 
     // 1. Variables de decisión binarias:
@@ -6283,7 +6284,7 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
 
     // (b) Cobertura física por vecindario:
     Para cada vecindario v in Vecindarios:
-        x[v] &lt;= Sumatoria_{c in Celdas que cubren a v} y[c]
+        x[v] &lt;= Sumatoria_{c in Cubren[v]} y[c]
 
     (Costo_opt, antenas_activas) = ResolverSolverPLI(modelo)
     devolver (Costo_opt, antenas_activas)
@@ -6417,7 +6418,7 @@ $$\text{Generación}_i + \text{Entra}_i - \text{Sale}_i = \text{Demanda}_i$$
 </li>
 </ul>
 <h4>7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo FormularDistribucionFlujoPL(Regiones, Aristas, Generacion, Demanda):
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo FormularDistribucionFlujoPL(Regiones, Aristas, Generacion, Demanda, Costo, Capacidad):
     Crear modelo de Programación Lineal Continua:
 
     // 1. Variables de decisión continuas:
@@ -6425,7 +6426,7 @@ $$\text{Generación}_i + \text{Entra}_i - \text{Sale}_i = \text{Demanda}_i$$
         Definir x[u, v] &gt;= 0         // Potencia transportada por la línea
 
     // 2. Función Objetivo: minimizar costo de transmisión
-    Minimizar Costo = Sumatoria_{(u, v) in Aristas} (costo[u, v] * x[u, v])
+    Minimizar CostoTotal = Sumatoria_{(u, v) in Aristas} (Costo[u, v] * x[u, v])
 
     // 3. Restricciones:
     // (a) Balance nodal de potencia para cada región i in Regiones:
@@ -6545,7 +6546,7 @@ $$\text{Generación}_i + \text{Entra}_i - \text{Sale}_i = \text{Demanda}_i$$
 <li><em>(Nota: Una de las restricciones es linealmente dependiente porque la suma de todos los balances es $1 + (-1) + 0 = 0$).</em></li>
 </ul>
 <h4>7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo FormularCaminoMinimoPL(Vertices, Aristas, origen, destino):
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo FormularCaminoMinimoPL(Vertices, Aristas, Costo, origen, destino):
     Crear modelo de Programación Lineal Continua:
 
     // 1. Variables continuas (por TUM serán naturalmente enteras en {0, 1})
@@ -6553,7 +6554,7 @@ $$\text{Generación}_i + \text{Entra}_i - \text{Sale}_i = \text{Demanda}_i$$
         Definir x[u, v] &gt;= 0
 
     // 2. Función Objetivo: minimizar costo de seguro acumulado
-    Minimizar Costo = Sumatoria_{(u, v) in Aristas} (costo[u, v] * x[u, v])
+    Minimizar CostoSeguro = Sumatoria_{(u, v) in Aristas} (Costo[u, v] * x[u, v])
 
     // 3. Restricciones de conservación de flujo unitario:
     Para cada vértice i in Vertices:
@@ -6949,12 +6950,12 @@ Detallar la topología formal de la red, capacidades, algoritmo empleado, demost
     // 4. Ejecución de flujo máximo mediante algoritmo polinomial estándar:
     flujo_maximo = EdmondsKarp(G, s, t)
 
-    // 5. Decodificar asignaciones (aristas intermedias p -&gt; (m, h) con flujo f == 1)
+    // 5. Decodificar asignaciones (aristas intermedias p -&gt; (m, h) con flujo_maximo == 1)
     citas_confirmadas = []
-    para cada arco (p, (m, h)) con flujo(p, (m, h)) == 1:
+    para cada arco (p, (m, h)) con flujo_maximo(p, (m, h)) == 1:
         agregar (p, m, h) a citas_confirmadas
 
-    devolver (flujo_maximo, citas_confirmadas)
+    devolver (cantidad(citas_confirmadas), citas_confirmadas)
 </code></pre></div></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -7102,16 +7103,16 @@ Detallar la topología formal de la red, capacidades, algoritmo empleado, demost
     para cada (u, v, cap) in Lineas:
         agregar_arco(G, u, v, capacidad = cap)
 
-    // Flujo máximo con algoritmo polinomial
-    flujo_obtenido = EdmondsKarp(G, S, T)
+    // 4. Flujo máximo y red residual final con algoritmo polinomial
+    (valor_flujo, flujo_maximo, G_f) = EdmondsKarp(G, S, T)
 
-    si flujo_obtenido == demanda_total:
-        devolver (Verdadero, flujo_obtenido, &quot;Demanda satisfecha al 100%&quot;)
+    si valor_flujo == demanda_total:
+        devolver (Verdadero, flujo_maximo, &quot;Demanda satisfecha al 100%&quot;)
     sino:
         // Hallar corte mínimo (A, B) por BFS en red residual G_f desde S
         A_alcanzables = NodosAlcanzablesDesde(G_f, S)
-        cuellos_botella = [ (u, v) para (u, v) en Lineas si u in A_alcanzables y v no in A_alcanzables ]
-        devolver (Falso, flujo_obtenido, cuellos_botella)
+        cuellos_botella = [ (u, v) para (u, v, cap) en Lineas si u in A_alcanzables y v no in A_alcanzables ]
+        devolver (Falso, flujo_maximo, cuellos_botella)
 </code></pre></div></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -7347,7 +7348,7 @@ Detallar la topología formal de la red, capacidades, algoritmo empleado, demost
 </li>
 </ul>
 <h4>6. Pseudocódigo del Algoritmo en O(V + E) (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo ActualizarFlujoAumentoUnitario(G_f, f, s, t, u, v):
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo ActualizarFlujoAumentoUnitario(G_f, f, valor_flujo, s, t, u, v):
     // 1. Incrementar en 1 unidad la capacidad residual de la arista modificada
     c_f(u, v) = c_f(u, v) + 1
 
@@ -7361,10 +7362,10 @@ Detallar la topología formal de la red, capacidades, algoritmo empleado, demost
             f(x, y) = f(x, y) + 1
             c_f(x, y) = c_f(x, y) - 1
             c_f(y, x) = c_f(y, x) + 1
-        devolver (|f| + 1, f)
+        devolver (valor_flujo + 1, f)
     sino:
         // Si no hay camino de aumento, el flujo previo sigue siendo el óptimo
-        devolver (|f|, f)
+        devolver (valor_flujo, f)
 </code></pre></div></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -8513,39 +8514,41 @@ Como la fila $i$ solo depende estrictamente de la fila inmediata anterior $i - 1
 <p><strong>Pseudocódigo de Backtracking con Branch &amp; Bound</strong></p>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION MochilaBranchAndBound(pesos, valores, n, W):
     // Preordenar elementos por densidad decreciente maximiza la efectividad de las podas
-    ORDENAR elementos DECRECIENTE por (valor / peso)
+    ORDENAR pesos y valores DECRECIENTE según (valores[i] / pesos[i])
 
     mejor_valor &lt;- 0
     INICIALIZAR mejor_solucion como arreglo de tamaño n en 0
     INICIALIZAR solucion_actual como arreglo de tamaño n en 0
 
-    MochilaBT(0, 0, 0, solucion_actual, mejor_solucion, mejor_valor, pesos, valores, n, W)
+    (mejor_valor, mejor_solucion) &lt;- MochilaBT(0, 0, 0, solucion_actual, mejor_solucion, mejor_valor, pesos, valores, n, W)
     RETORNAR (mejor_valor, mejor_solucion)
 
-PROCEDIMIENTO MochilaBT(idx, peso_act, valor_act, sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W):
+FUNCION MochilaBT(idx, peso_act, valor_act, sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W):
     // Caso base: se evaluaron los n elementos
     SI idx = n:
         SI valor_act &gt; MEJOR_VAL:
             MEJOR_VAL &lt;- valor_act
             MEJOR_SOL &lt;- COPIAR(sol_act)
-        RETORNAR
+        RETORNAR (MEJOR_VAL, MEJOR_SOL)
 
     // 1. Poda por Branch and Bound: Cota superior con relajación fraccionaria
     cota_sup &lt;- valor_act + CalcularCotaFraccionaria(idx, W - peso_act, pesos, valores, n)
     SI cota_sup &lt;= MEJOR_VAL:
-        RETORNAR // Poda: imposible mejorar la mejor solución registrada
+        RETORNAR (MEJOR_VAL, MEJOR_SOL) // Poda: imposible mejorar la mejor solución registrada
 
     // Rama 1: Intentar INCLUIR el elemento idx (si cabe: poda por factibilidad)
     SI peso_act + pesos[idx] &lt;= W:
         sol_act[idx] &lt;- 1
-        MochilaBT(idx + 1, peso_act + pesos[idx], valor_act + valores[idx], 
-                  sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
+        (MEJOR_VAL, MEJOR_SOL) &lt;- MochilaBT(idx + 1, peso_act + pesos[idx], valor_act + valores[idx], 
+                                            sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
         sol_act[idx] &lt;- 0 // Backtrack: restaurar estado
 
     // Rama 2: EXCLUIR el elemento idx
     sol_act[idx] &lt;- 0
-    MochilaBT(idx + 1, peso_act, valor_act, 
-              sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
+    (MEJOR_VAL, MEJOR_SOL) &lt;- MochilaBT(idx + 1, peso_act, valor_act, 
+                                        sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
+
+    RETORNAR (MEJOR_VAL, MEJOR_SOL)
 
 FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
     cota &lt;- 0.0
@@ -8782,10 +8785,10 @@ Resolver y comparar este problema a través de todos los paradigmas algorítmico
     ruta_actual[0] &lt;- 0
     visitado[0] &lt;- VERDADERO
 
-    TSP_BT(1, 0, 0, ruta_actual, mejor_ruta, mejor_costo, visitado, matriz_costos, n)
+    (mejor_costo, mejor_ruta) &lt;- TSP_BT(1, 0, 0, ruta_actual, mejor_ruta, mejor_costo, visitado, matriz_costos, n)
     RETORNAR (mejor_costo, mejor_ruta)
 
-PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n):
+FUNCION TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n):
     // Caso base: visitamos las n ciudades, cerramos el tour retornando al origen (nodo 0)
     SI paso = n:
         costo_cierre &lt;- C[actual][0]
@@ -8794,11 +8797,11 @@ PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO
             SI costo_total &lt; MEJOR_COSTO:
                 MEJOR_COSTO &lt;- costo_total
                 MEJOR_RUTA &lt;- COPIAR(ruta_act)
-        RETORNAR
+        RETORNAR (MEJOR_COSTO, MEJOR_RUTA)
 
     // Poda por cota superior básica
     SI costo_acum &gt;= MEJOR_COSTO:
-        RETORNAR
+        RETORNAR (MEJOR_COSTO, MEJOR_RUTA)
 
     // Probar cada ciudad candidata no visitada
     PARA candidata &lt;- 1 HASTA n - 1:
@@ -8810,11 +8813,13 @@ PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO
                 visitado[candidata] &lt;- VERDADERO
                 ruta_act[paso] &lt;- candidata
 
-                TSP_BT(paso + 1, candidata, nuevo_costo, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n)
+                (MEJOR_COSTO, MEJOR_RUTA) &lt;- TSP_BT(paso + 1, candidata, nuevo_costo, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n)
 
                 // Backtrack: desmarcar estado
                 visitado[candidata] &lt;- FALSO
                 ruta_act[paso] &lt;- 0
+
+    RETORNAR (MEJOR_COSTO, MEJOR_RUTA)
 </code></pre></div></div>
 <ul>
 <li><strong>Complejidad:</strong> Peor caso asintótico $O(n!)$, pero con podas de cota inferior resuelve óptimamente instancias de hasta $n \approx 25$ ciudades. Espacio: $O(n)$ en pila de llamadas.</li>
@@ -9220,14 +9225,14 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
     para cada p in Puestos:
         agregar_arco(G, p, t, capacidad = 1)
 
-    // Ejecución de flujo máximo en tiempo O(|Puestos| * |E|):
-    flujo_total = EdmondsKarp(G, s, t)
+    // 4. Ejecución de flujo máximo en tiempo O(|Puestos| * |E|):
+    flujo_maximo = EdmondsKarp(G, s, t)
+    despachos = [ (d, p) para cada (d, p) en Compatibilidades si flujo_maximo(d, p) == 1 ]
 
-    si flujo_total == cantidad(Puestos):
-        despachos = [ (d, p) para cada (d, p) en Compatibilidades si flujo(d, p) == 1 ]
-        devolver (flujo_total, despachos)
+    si cantidad(despachos) == cantidad(Puestos):
+        devolver (cantidad(despachos), despachos)
     sino:
-        devolver (flujo_total, &quot;Infactible: no es posible abastecer a todos los puestos&quot;)
+        devolver (cantidad(despachos), &quot;Infactible: no es posible abastecer a todos los puestos&quot;)
 </code></pre></div></div>
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -9644,20 +9649,20 @@ Transformamos cualquier entrada <code>(G, k)</code> de k-Coloring en una entrada
 <p>Utilizá esta lista de verificación durante tu última hora de repaso antes de ingresar al aula:</p>
 <h3>A. Dominio de Paradigmas</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_57382" onchange="toggleChecklistItem('chk_57382', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro ($T(n) = a \cdot T(n/b) + \Theta(n^c)$) y sé identificar $a, b$ y $c$.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_38822" onchange="toggleChecklistItem('chk_38822', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_14755" onchange="toggleChecklistItem('chk_14755', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en $O(1)$ y deshaciendo el estado al retornar.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_45293" onchange="toggleChecklistItem('chk_45293', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_30210" onchange="toggleChecklistItem('chk_30210', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de $\min \max$ y conteo de variables/restricciones.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_94383" onchange="toggleChecklistItem('chk_94383', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_40894" onchange="toggleChecklistItem('chk_40894', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida ($\implies$) y vuelta ($\impliedby$).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_58118" onchange="toggleChecklistItem('chk_58118', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro ($T(n) = a \cdot T(n/b) + \Theta(n^c)$) y sé identificar $a, b$ y $c$.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_53922" onchange="toggleChecklistItem('chk_53922', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_28205" onchange="toggleChecklistItem('chk_28205', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en $O(1)$ y deshaciendo el estado al retornar.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_36692" onchange="toggleChecklistItem('chk_36692', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_72793" onchange="toggleChecklistItem('chk_72793', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de $\min \max$ y conteo de variables/restricciones.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_85781" onchange="toggleChecklistItem('chk_85781', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_35927" onchange="toggleChecklistItem('chk_35927', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida ($\implies$) y vuelta ($\impliedby$).</span></label></li>
 </ul>
 <h3>B. Ejecución en la Hoja de Examen</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_57495" onchange="toggleChecklistItem('chk_57495', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_7179" onchange="toggleChecklistItem('chk_7179', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_4326" onchange="toggleChecklistItem('chk_4326', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_72916" onchange="toggleChecklistItem('chk_72916', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término ($O(n \log n)$, $O(V \cdot E)$, etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_21842" onchange="toggleChecklistItem('chk_21842', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_11912" onchange="toggleChecklistItem('chk_11912', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_21076" onchange="toggleChecklistItem('chk_21076', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_55135" onchange="toggleChecklistItem('chk_55135', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término ($O(n \log n)$, $O(V \cdot E)$, etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
 </ul>
 <div class="search-empty-state" id="searchEmptyState" style="display: none;">
   <div class="empty-state-icon">🔍</div>

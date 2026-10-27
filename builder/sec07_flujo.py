@@ -142,12 +142,12 @@ Algoritmo AsignarTurnosMedicos(Medicos, Pacientes, HorariosPorMedico, Compatibil
     // 4. Ejecución de flujo máximo mediante algoritmo polinomial estándar:
     flujo_maximo = EdmondsKarp(G, s, t)
 
-    // 5. Decodificar asignaciones (aristas intermedias p -> (m, h) con flujo f == 1)
+    // 5. Decodificar asignaciones (aristas intermedias p -> (m, h) con flujo_maximo == 1)
     citas_confirmadas = []
-    para cada arco (p, (m, h)) con flujo(p, (m, h)) == 1:
+    para cada arco (p, (m, h)) con flujo_maximo(p, (m, h)) == 1:
         agregar (p, m, h) a citas_confirmadas
 
-    devolver (flujo_maximo, citas_confirmadas)
+    devolver (cantidad(citas_confirmadas), citas_confirmadas)
 ```
 
 <div class="trap-callout">
@@ -260,16 +260,16 @@ Algoritmo DiagnosticarRedEnergetica(Generacion, Demanda, Lineas):
     para cada (u, v, cap) in Lineas:
         agregar_arco(G, u, v, capacidad = cap)
 
-    // Flujo máximo con algoritmo polinomial
-    flujo_obtenido = EdmondsKarp(G, S, T)
+    // 4. Flujo máximo y red residual final con algoritmo polinomial
+    (valor_flujo, flujo_maximo, G_f) = EdmondsKarp(G, S, T)
 
-    si flujo_obtenido == demanda_total:
-        devolver (Verdadero, flujo_obtenido, "Demanda satisfecha al 100%")
+    si valor_flujo == demanda_total:
+        devolver (Verdadero, flujo_maximo, "Demanda satisfecha al 100%")
     sino:
         // Hallar corte mínimo (A, B) por BFS en red residual G_f desde S
         A_alcanzables = NodosAlcanzablesDesde(G_f, S)
-        cuellos_botella = [ (u, v) para (u, v) en Lineas si u in A_alcanzables y v no in A_alcanzables ]
-        devolver (Falso, flujo_obtenido, cuellos_botella)
+        cuellos_botella = [ (u, v) para (u, v, cap) en Lineas si u in A_alcanzables y v no in A_alcanzables ]
+        devolver (Falso, flujo_maximo, cuellos_botella)
 ```
 
 <div class="trap-callout">
@@ -425,7 +425,7 @@ Sea una red con $s \to u \to v \to t$:
 #### 6. Pseudocódigo del Algoritmo en O(V + E) (Estilo Examen Presencial)
 
 ```text
-Algoritmo ActualizarFlujoAumentoUnitario(G_f, f, s, t, u, v):
+Algoritmo ActualizarFlujoAumentoUnitario(G_f, f, valor_flujo, s, t, u, v):
     // 1. Incrementar en 1 unidad la capacidad residual de la arista modificada
     c_f(u, v) = c_f(u, v) + 1
 
@@ -439,10 +439,10 @@ Algoritmo ActualizarFlujoAumentoUnitario(G_f, f, s, t, u, v):
             f(x, y) = f(x, y) + 1
             c_f(x, y) = c_f(x, y) - 1
             c_f(y, x) = c_f(y, x) + 1
-        devolver (|f| + 1, f)
+        devolver (valor_flujo + 1, f)
     sino:
         // Si no hay camino de aumento, el flujo previo sigue siendo el óptimo
-        devolver (|f|, f)
+        devolver (valor_flujo, f)
 ```
 
 <div class="trap-callout">

@@ -685,8 +685,8 @@ flowchart LR
 Algoritmo ConcederPermisosMafias(pedidos):
     si pedidos está vacío: devolver []
 
-    // 1. Regla voraz: ordenar por tiempo de finalización f_i creciente
-    ordenar pedidos por f_i ascendente
+    // 1. Regla voraz: ordenar por tiempo de finalización (p.fin) creciente
+    ordenar pedidos por p.fin ascendente
 
     seleccionados = [ pedidos[0] ]
     ultimo_fin = pedidos[0].fin
@@ -1564,31 +1564,32 @@ Algoritmo MinimoVertexCover(V, E):
     mejor_cobertura = copiar(V)  // Cota superior inicial (todos los vértices)
     actual = conjunto_vacío()
 
-    MinimoVertexCoverBT(actual, mejor_cobertura, E)
+    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
     devolver mejor_cobertura
 
 función MinimoVertexCoverBT(actual, mejor_cobertura, E):
     // Poda Branch & Bound: si el tamaño actual ya iguala o supera al mejor récord
     si tamaño(actual) >= tamaño(mejor_cobertura):
-        retornar
+        devolver mejor_cobertura
 
     arista = BuscarAristaNoCubierta(E, actual)
     si arista es nulo:
         // Todas las aristas cubiertas con un tamaño estrictamente menor
-        mejor_cobertura = copiar(actual)
-        retornar
+        devolver copiar(actual)
 
     (u, v) = arista
 
     // Rama 1: Incluir u
     agregar u a actual
-    MinimoVertexCoverBT(actual, mejor_cobertura, E)
+    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
     quitar u de actual  // Deshacer (Backtrack)
 
     // Rama 2: Incluir v
     agregar v a actual
-    MinimoVertexCoverBT(actual, mejor_cobertura, E)
+    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
     quitar v de actual  // Deshacer (Backtrack)
+
+    devolver mejor_cobertura
 ```
 
 <div class="trap-callout">
@@ -2716,12 +2717,12 @@ Algoritmo ResolverObservacionAvesPLI(Especies, Lugares, duraciones, presencia, T
 
     // (b) Enlace lógico de presencia por especie:
     Para cada especie i in Especies:
-        x[i] <= Sumatoria_{j in Lugares donde habita i} y[j]
+        x[i] <= Sumatoria_{j in Lugares} (presencia[i, j] * y[j])
 
     // 4. Resolución mediante solver PLI estándar:
     (Z_opt, valores_y, valores_x) = ResolverSolverPLI(modelo)
 
-    devolver (Z_opt, LugaresCon(y == 1), EspeciesCon(x == 1))
+    devolver (Z_opt, LugaresCon(valores_y == 1), EspeciesCon(valores_x == 1))
 ```
 
 <div class="trap-callout">
@@ -2831,7 +2832,7 @@ Supongamos una grilla pequeña con 10 vecindarios ($|V| = 10$).
 #### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
 ```text
-Algoritmo FormularAntenas70PLI(Celdas, Vecindarios, Costo_antena):
+Algoritmo FormularAntenas70PLI(Celdas, Vecindarios, Cubren, Costo_antena):
     Crear modelo PLI:
 
     // 1. Variables de decisión binarias:
@@ -2849,7 +2850,7 @@ Algoritmo FormularAntenas70PLI(Celdas, Vecindarios, Costo_antena):
 
     // (b) Cobertura física por vecindario:
     Para cada vecindario v in Vecindarios:
-        x[v] <= Sumatoria_{c in Celdas que cubren a v} y[c]
+        x[v] <= Sumatoria_{c in Cubren[v]} y[c]
 
     (Costo_opt, antenas_activas) = ResolverSolverPLI(modelo)
     devolver (Costo_opt, antenas_activas)
@@ -2950,7 +2951,7 @@ Analicemos 3 regiones simplificadas:
 #### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
 ```text
-Algoritmo FormularDistribucionFlujoPL(Regiones, Aristas, Generacion, Demanda):
+Algoritmo FormularDistribucionFlujoPL(Regiones, Aristas, Generacion, Demanda, Costo, Capacidad):
     Crear modelo de Programación Lineal Continua:
 
     // 1. Variables de decisión continuas:
@@ -2958,7 +2959,7 @@ Algoritmo FormularDistribucionFlujoPL(Regiones, Aristas, Generacion, Demanda):
         Definir x[u, v] >= 0         // Potencia transportada por la línea
 
     // 2. Función Objetivo: minimizar costo de transmisión
-    Minimizar Costo = Sumatoria_{(u, v) in Aristas} (costo[u, v] * x[u, v])
+    Minimizar CostoTotal = Sumatoria_{(u, v) in Aristas} (Costo[u, v] * x[u, v])
 
     // 3. Restricciones:
     // (a) Balance nodal de potencia para cada región i in Regiones:
@@ -3055,7 +3056,7 @@ Rutas alternativas en el grafo del diagrama:
 #### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
 
 ```text
-Algoritmo FormularCaminoMinimoPL(Vertices, Aristas, origen, destino):
+Algoritmo FormularCaminoMinimoPL(Vertices, Aristas, Costo, origen, destino):
     Crear modelo de Programación Lineal Continua:
 
     // 1. Variables continuas (por TUM serán naturalmente enteras en {0, 1})
@@ -3063,7 +3064,7 @@ Algoritmo FormularCaminoMinimoPL(Vertices, Aristas, origen, destino):
         Definir x[u, v] >= 0
 
     // 2. Función Objetivo: minimizar costo de seguro acumulado
-    Minimizar Costo = Sumatoria_{(u, v) in Aristas} (costo[u, v] * x[u, v])
+    Minimizar CostoSeguro = Sumatoria_{(u, v) in Aristas} (Costo[u, v] * x[u, v])
 
     // 3. Restricciones de conservación de flujo unitario:
     Para cada vértice i in Vertices:
@@ -3364,12 +3365,12 @@ Algoritmo AsignarTurnosMedicos(Medicos, Pacientes, HorariosPorMedico, Compatibil
     // 4. Ejecución de flujo máximo mediante algoritmo polinomial estándar:
     flujo_maximo = EdmondsKarp(G, s, t)
 
-    // 5. Decodificar asignaciones (aristas intermedias p -> (m, h) con flujo f == 1)
+    // 5. Decodificar asignaciones (aristas intermedias p -> (m, h) con flujo_maximo == 1)
     citas_confirmadas = []
-    para cada arco (p, (m, h)) con flujo(p, (m, h)) == 1:
+    para cada arco (p, (m, h)) con flujo_maximo(p, (m, h)) == 1:
         agregar (p, m, h) a citas_confirmadas
 
-    devolver (flujo_maximo, citas_confirmadas)
+    devolver (cantidad(citas_confirmadas), citas_confirmadas)
 ```
 
 <div class="trap-callout">
@@ -3486,16 +3487,16 @@ Algoritmo DiagnosticarRedEnergetica(Generacion, Demanda, Lineas):
     para cada (u, v, cap) in Lineas:
         agregar_arco(G, u, v, capacidad = cap)
 
-    // Flujo máximo con algoritmo polinomial
-    flujo_obtenido = EdmondsKarp(G, S, T)
+    // 4. Flujo máximo y red residual final con algoritmo polinomial
+    (valor_flujo, flujo_maximo, G_f) = EdmondsKarp(G, S, T)
 
-    si flujo_obtenido == demanda_total:
-        devolver (Verdadero, flujo_obtenido, "Demanda satisfecha al 100%")
+    si valor_flujo == demanda_total:
+        devolver (Verdadero, flujo_maximo, "Demanda satisfecha al 100%")
     sino:
         // Hallar corte mínimo (A, B) por BFS en red residual G_f desde S
         A_alcanzables = NodosAlcanzablesDesde(G_f, S)
-        cuellos_botella = [ (u, v) para (u, v) en Lineas si u in A_alcanzables y v no in A_alcanzables ]
-        devolver (Falso, flujo_obtenido, cuellos_botella)
+        cuellos_botella = [ (u, v) para (u, v, cap) en Lineas si u in A_alcanzables y v no in A_alcanzables ]
+        devolver (Falso, flujo_maximo, cuellos_botella)
 ```
 
 <div class="trap-callout">
@@ -3656,7 +3657,7 @@ Sea una red con $s \to u \to v \to t$:
 #### 6. Pseudocódigo del Algoritmo en O(V + E) (Estilo Examen Presencial)
 
 ```text
-Algoritmo ActualizarFlujoAumentoUnitario(G_f, f, s, t, u, v):
+Algoritmo ActualizarFlujoAumentoUnitario(G_f, f, valor_flujo, s, t, u, v):
     // 1. Incrementar en 1 unidad la capacidad residual de la arista modificada
     c_f(u, v) = c_f(u, v) + 1
 
@@ -3670,10 +3671,10 @@ Algoritmo ActualizarFlujoAumentoUnitario(G_f, f, s, t, u, v):
             f(x, y) = f(x, y) + 1
             c_f(x, y) = c_f(x, y) - 1
             c_f(y, x) = c_f(y, x) + 1
-        devolver (|f| + 1, f)
+        devolver (valor_flujo + 1, f)
     sino:
         // Si no hay camino de aumento, el flujo previo sigue siendo el óptimo
-        devolver (|f|, f)
+        devolver (valor_flujo, f)
 ```
 
 <div class="trap-callout">
@@ -4568,39 +4569,41 @@ Cuando $W$ es gigantesco pero $n$ es moderado ($n \le 40$), la Programación Din
 ```text
 FUNCION MochilaBranchAndBound(pesos, valores, n, W):
     // Preordenar elementos por densidad decreciente maximiza la efectividad de las podas
-    ORDENAR elementos DECRECIENTE por (valor / peso)
+    ORDENAR pesos y valores DECRECIENTE según (valores[i] / pesos[i])
     
     mejor_valor <- 0
     INICIALIZAR mejor_solucion como arreglo de tamaño n en 0
     INICIALIZAR solucion_actual como arreglo de tamaño n en 0
 
-    MochilaBT(0, 0, 0, solucion_actual, mejor_solucion, mejor_valor, pesos, valores, n, W)
+    (mejor_valor, mejor_solucion) <- MochilaBT(0, 0, 0, solucion_actual, mejor_solucion, mejor_valor, pesos, valores, n, W)
     RETORNAR (mejor_valor, mejor_solucion)
 
-PROCEDIMIENTO MochilaBT(idx, peso_act, valor_act, sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W):
+FUNCION MochilaBT(idx, peso_act, valor_act, sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W):
     // Caso base: se evaluaron los n elementos
     SI idx = n:
         SI valor_act > MEJOR_VAL:
             MEJOR_VAL <- valor_act
             MEJOR_SOL <- COPIAR(sol_act)
-        RETORNAR
+        RETORNAR (MEJOR_VAL, MEJOR_SOL)
 
     // 1. Poda por Branch and Bound: Cota superior con relajación fraccionaria
     cota_sup <- valor_act + CalcularCotaFraccionaria(idx, W - peso_act, pesos, valores, n)
     SI cota_sup <= MEJOR_VAL:
-        RETORNAR // Poda: imposible mejorar la mejor solución registrada
+        RETORNAR (MEJOR_VAL, MEJOR_SOL) // Poda: imposible mejorar la mejor solución registrada
 
     // Rama 1: Intentar INCLUIR el elemento idx (si cabe: poda por factibilidad)
     SI peso_act + pesos[idx] <= W:
         sol_act[idx] <- 1
-        MochilaBT(idx + 1, peso_act + pesos[idx], valor_act + valores[idx], 
-                  sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
+        (MEJOR_VAL, MEJOR_SOL) <- MochilaBT(idx + 1, peso_act + pesos[idx], valor_act + valores[idx], 
+                                            sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
         sol_act[idx] <- 0 // Backtrack: restaurar estado
 
     // Rama 2: EXCLUIR el elemento idx
     sol_act[idx] <- 0
-    MochilaBT(idx + 1, peso_act, valor_act, 
-              sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
+    (MEJOR_VAL, MEJOR_SOL) <- MochilaBT(idx + 1, peso_act, valor_act, 
+                                        sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
+
+    RETORNAR (MEJOR_VAL, MEJOR_SOL)
 
 FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
     cota <- 0.0
@@ -4742,10 +4745,10 @@ FUNCION TSP_BranchAndBound(ciudades, matriz_costos, n):
     ruta_actual[0] <- 0
     visitado[0] <- VERDADERO
 
-    TSP_BT(1, 0, 0, ruta_actual, mejor_ruta, mejor_costo, visitado, matriz_costos, n)
+    (mejor_costo, mejor_ruta) <- TSP_BT(1, 0, 0, ruta_actual, mejor_ruta, mejor_costo, visitado, matriz_costos, n)
     RETORNAR (mejor_costo, mejor_ruta)
 
-PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n):
+FUNCION TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n):
     // Caso base: visitamos las n ciudades, cerramos el tour retornando al origen (nodo 0)
     SI paso = n:
         costo_cierre <- C[actual][0]
@@ -4754,11 +4757,11 @@ PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO
             SI costo_total < MEJOR_COSTO:
                 MEJOR_COSTO <- costo_total
                 MEJOR_RUTA <- COPIAR(ruta_act)
-        RETORNAR
+        RETORNAR (MEJOR_COSTO, MEJOR_RUTA)
 
     // Poda por cota superior básica
     SI costo_acum >= MEJOR_COSTO:
-        RETORNAR
+        RETORNAR (MEJOR_COSTO, MEJOR_RUTA)
 
     // Probar cada ciudad candidata no visitada
     PARA candidata <- 1 HASTA n - 1:
@@ -4770,11 +4773,13 @@ PROCEDIMIENTO TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO
                 visitado[candidata] <- VERDADERO
                 ruta_act[paso] <- candidata
 
-                TSP_BT(paso + 1, candidata, nuevo_costo, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n)
+                (MEJOR_COSTO, MEJOR_RUTA) <- TSP_BT(paso + 1, candidata, nuevo_costo, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n)
 
                 // Backtrack: desmarcar estado
                 visitado[candidata] <- FALSO
                 ruta_act[paso] <- 0
+
+    RETORNAR (MEJOR_COSTO, MEJOR_RUTA)
 ```
 
 * **Complejidad:** Peor caso asintótico $O(n!)$, pero con podas de cota inferior resuelve óptimamente instancias de hasta $n \approx 25$ ciudades. Espacio: $O(n)$ en pila de llamadas.
@@ -5069,14 +5074,14 @@ Algoritmo DespacharDronesEmergencia(Drones, Puestos, Compatibilidades):
     para cada p in Puestos:
         agregar_arco(G, p, t, capacidad = 1)
 
-    // Ejecución de flujo máximo en tiempo O(|Puestos| * |E|):
-    flujo_total = EdmondsKarp(G, s, t)
+    // 4. Ejecución de flujo máximo en tiempo O(|Puestos| * |E|):
+    flujo_maximo = EdmondsKarp(G, s, t)
+    despachos = [ (d, p) para cada (d, p) en Compatibilidades si flujo_maximo(d, p) == 1 ]
 
-    si flujo_total == cantidad(Puestos):
-        despachos = [ (d, p) para cada (d, p) en Compatibilidades si flujo(d, p) == 1 ]
-        devolver (flujo_total, despachos)
+    si cantidad(despachos) == cantidad(Puestos):
+        devolver (cantidad(despachos), despachos)
     sino:
-        devolver (flujo_total, "Infactible: no es posible abastecer a todos los puestos")
+        devolver (cantidad(despachos), "Infactible: no es posible abastecer a todos los puestos")
 ```
 
 <div class="trap-callout">
