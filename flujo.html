@@ -1935,24 +1935,12 @@ Detallar la topología formal de la red, capacidades, algoritmo empleado, demost
    Toda arista $(p, (m, h))$ con flujo residual saturado $f(p, (m, h)) = 1$ representa una cita médica confirmada entre el paciente $p$, el médico $m$ y el horario $h$.</p>
 </li>
 </ol>
-<h4>3. Demostración Teórica de Correctitud e Integralidad</h4>
-<p><strong>Teorema de Integralidad de Flujo (Dantzig-Fulkerson):</strong><br />
-Si todas las capacidades de la red son números enteros, entonces existe un flujo máximo en el cual el flujo en cada arista es un número entero.</p>
+<h4>3. Justificación Directa de Correctitud e Integralidad (Lista para Examen)</h4>
 <ol>
-<li><strong>Flujo Binario:</strong> Dado que $c(e) = 1$ para todas las aristas de la red, en el flujo máximo calculado se cumple que $f(e) \in \{0, 1\}$ para toda arista $e \in E$.</li>
-<li>
-<p><strong>Unicidad de Paciente:</strong> Para cada paciente $p$, la arista de entrada tiene capacidad $c(s, p) = 1$. Por conservación:
-   $$\sum_{(m, h)} f(p, (m, h)) = f(s, p) \le 1$$
-   Por lo tanto, ningún paciente puede ser asignado a más de un turno simultáneo.</p>
-</li>
-<li>
-<p><strong>Unicidad de Médico en Horario:</strong> Para cada turno $(m, h)$, la arista de salida hacia $t$ tiene $c((m, h), t) = 1$. Por conservación:
-   $$\sum_{p} f(p, (m, h)) = f((m, h), t) \le 1$$
-   Por lo tanto, ningún médico puede recibir más de un paciente en la franja $h$.</p>
-</li>
-<li>
-<p><strong>Biyección con el Matching Máximo:</strong> Todo flujo entero factible de valor $k$ corresponde biyectivamente a un emparejamiento válido de cardinalidad $k$. Maximizar el flujo maximiza rigurosamente la cantidad de citas.</p>
-</li>
+<li><strong>Por qué no da medios turnos (Teorema de Integralidad):</strong> Como todas las capacidades de la red son números enteros (<code>1</code>), el algoritmo de flujo máximo garantiza que el flujo por cada arista será entero (<code>0</code> o <code>1</code>). Ningún paciente queda partido entre dos médicos.</li>
+<li><strong>A lo sumo 1 turno por paciente:</strong> Como la arista que entra a cada paciente desde la fuente <code>s</code> tiene capacidad <code>1</code>, por conservación de flujo de ese paciente puede salir como máximo <code>1</code> unidad de flujo hacia un único turno <code>(m, h)</code>.</li>
+<li><strong>A lo sumo 1 paciente por médico y horario:</strong> Como la arista que sale de cada nodo <code>(m, h)</code> hacia el sumidero <code>t</code> tiene capacidad <code>1</code>, a ese turno puede entrar como máximo <code>1</code> paciente.</li>
+<li><strong>Por qué maximiza las citas:</strong> Cada unidad de flujo que llega a <code>t</code> equivale exactamente a 1 cita médica válida asignada, por lo que hallar el flujo máximo equivale a encontrar la mayor cantidad posible de citas.</li>
 </ol>
 <h4>4. Diagrama Visual de la Red en 4 Capas</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
@@ -2137,15 +2125,13 @@ Si todas las capacidades de la red son números enteros, entonces existe un fluj
    Para cada línea $(R_i, R_j)$, el valor $f(R_i, R_j)$ representa exactamente la energía a transmitir en MWh/día.</p>
 </li>
 </ol>
-<h4>3. Demostración Teórica de Conservación y Despacho</h4>
-<p><strong>Teorema de Conservación Nodal en Regiones:</strong><br />
-Para cualquier región $i \in \{R_1, \dots, R_9\}$, la ecuación de conservación de flujo impone:
-$$\sum_{\text{entradas}} f(u, R_i) = \sum_{\text{salidas}} f(R_i, v)$$
-Desglosando las conexiones con los super-nodos:
-$$f(S, R_i) + \sum_{k \ne i} f(R_k, R_i) = f(R_i, T) + \sum_{j \ne i} f(R_i, R_j)$$
-Dado que $f(S, R_i) \le G_i$ y si el sistema es factible $f(R_i, T) = D_i$:
-$$(\text{Generación utilizada}) + (\text{Importación}) = (\text{Demanda cubierta}) + (\text{Exportación})$$
-lo que coincide de manera idéntica con la primera ley de Kirchhoff y el balance termodinámico del sistema eléctrico.</p>
+<h4>3. Justificación Directa de Conservación y Factibilidad</h4>
+<p>En cada región <code>i</code>, por ley de conservación de flujo en la red, todo lo que entra tiene que ser igual a todo lo que sale:</p>
+<ul>
+<li><strong>Lo que entra a la región <code>i</code>:</strong> La energía que genera localmente (que viene desde la super-fuente <code>S</code>, con tope <code>G_i</code>) más la energía que importa desde otras regiones.</li>
+<li><strong>Lo que sale de la región <code>i</code>:</strong> La energía que consume su propia demanda (que va hacia el super-sumidero <code>T</code>, con tope <code>D_i</code>) más la energía que exporta a otras regiones.</li>
+</ul>
+<p>Si el flujo máximo que llega al super-sumidero <code>T</code> alcanza la suma de todas las demandas <code>D_total</code>, significa que todas las aristas hacia <code>T</code> se llenaron al 100% y <strong>toda la demanda del país quedó cubierta</strong>. Si da menos que <code>D_total</code>, es imposible cubrir la demanda y las aristas que cruzan el corte mínimo <code>(A, B)</code> son los cuellos de botella.</p>
 <h4>4. Diagrama Visual de la Red con Super-Fuente y Super-Sumidero</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">graph LR
     S((Super-Fuente S)) -->|G1| R1["R1 (Generadora)"]
@@ -2266,55 +2252,33 @@ lo que coincide de manera idéntica con la primera ley de Kirchhoff y el balance
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <h4>2. Demostración de Falsedad mediante Análisis Analítico</h4>
+        <h4>2. Explicación Directa de por qué es FALSA</h4>
 <p><strong>La afirmación es FALSA.</strong></p>
-<p><strong>Análisis de Sensibilidad de la Capacidad de un Corte:</strong><br />
-Sea $(A, B)$ un corte $s-t$ cualquiera. Su capacidad bajo la función original $c$ es:
-$$C(A, B) = \sum_{e \in \delta^+(A)} c(e)$$
-donde $\delta^+(A) = \{(u, v) \in E : u \in A, v \in B\}$ es el conjunto de aristas que cruzan el corte.<br />
-Al aplicar la perturbación $c&#x27;(e) = c(e) + 1$, la nueva capacidad es:
-$$C&#x27;(A, B) = \sum_{e \in \delta^+(A)} (c(e) + 1) = \sum_{e \in \delta^+(A)} c(e) + \sum_{e \in \delta^+(A)} 1 = C(A, B) + |\delta^+(A)|$$
-<strong>Conclusión Analítica:</strong> La nueva capacidad del corte <strong>depende linealmente de la cantidad de aristas que lo componen ($|\delta^+(A)|$)</strong>.<br />
-Un corte con muchas aristas sufrirá un incremento mucho mayor que un corte compuesto por pocas aristas. Si dos cortes tenían capacidades originales cercanas, la perturbación penalizará al corte con más aristas, pudiendo invertir el orden de minimalidad.</p>
-<h4>3. Contraejemplo Formal Minimal (4 Nodos)</h4>
-<p>Construyamos la red más simple posible con $V = \{s, u_1, u_2, u_3, u_4, u_5, v, t\}$ donde compiten dos cortes:</p>
 <ul>
-<li>
-<p><strong>Corte 1 ($A_1 = \{s\}, B_1 = V \setminus \{s\}$):</strong> Contiene <strong>5 aristas</strong> saliendo de $s$ hacia $u_1 \dots u_5$, cada una de capacidad $c = 2$:
-  $$C(A_1, B_1) = 2 + 2 + 2 + 2 + 2 = 10, \qquad |\delta^+(A_1)| = 5$$</p>
-</li>
-<li>
-<p><strong>Corte 2 ($A_2 = V \setminus \{t\}, B_2 = \{t\}$):</strong> Contiene <strong>1 única arista</strong> $(v, t)$ entrando a $t$, con capacidad $c = 11$:
-  $$C(A_2, B_2) = 11, \qquad |\delta^+(A_2)| = 1$$</p>
-</li>
-<li>
-<p><strong>Evaluación Inicial:</strong></p>
-<ul>
-<li>$C(A_1, B_1) = 10 &lt; 11 = C(A_2, B_2)$.</li>
-<li>El <strong>corte mínimo original es $(A_1, B_1)$</strong> con capacidad $10$.</li>
+<li><strong>Por qué falla la intuición:</strong> Cuando sumamos <code>+1</code> a la capacidad de <strong>cada arista</strong>, la capacidad de un corte <strong>no aumenta en <code>+1</code></strong>, sino que aumenta en <strong><code>+1</code> por cada arista que tenga ese corte</strong>.<ul>
+<li>Es decir: <code>Capacidad_Nueva = Capacidad_Vieja + cantidad_de_aristas_del_corte</code>.</li>
 </ul>
 </li>
-<li>
-<p><strong>Evaluación tras la Perturbación ($c&#x27;(e) = c(e) + 1$):</strong></p>
+<li>Por lo tanto, un corte que era mínimo pero tenía <strong>muchas aristas chicas</strong> va a subir mucho más de capacidad que otro corte que tenía <strong>una sola arista grande</strong>, perdiendo el primer puesto como corte mínimo.</li>
+</ul>
+<h4>3. Contraejemplo Numérico Directo</h4>
+<p>Armemos una red donde compiten dos cortes entre <code>s</code> y <code>t</code>:</p>
 <ul>
-<li>
-<p>Para el Corte 1 (5 aristas):
-$$C&#x27;(A_1, B_1) = (2 + 1) \times 5 = 3 \times 5 = 15$$</p>
-</li>
-<li>
-<p>Para el Corte 2 (1 arista):
-$$C&#x27;(A_2, B_2) = 11 + 1 = 12$$</p>
-</li>
+<li><strong>Corte 1 (del lado de <code>s</code>):</strong> Tiene <strong>5 aristas</strong> en paralelo saliendo de <code>s</code>, cada una de capacidad <code>2</code>:<ul>
+<li>Capacidad original: <code>2 + 2 + 2 + 2 + 2 = 10</code>.</li>
 </ul>
 </li>
-<li>
-<p><strong>Comparación Final:</strong>
-  $$C&#x27;(A_2, B_2) = 12 &lt; 15 = C&#x27;(A_1, B_1)$$
-  Bajo las nuevas capacidades, el corte mínimo es ahora $(A_2, B_2)$ y <strong>ha dejado de serlo $(A_1, B_1)$</strong>.</p>
+<li><strong>Corte 2 (del lado de <code>t</code>):</strong> Tiene <strong>1 sola arista</strong> entrando a <code>t</code>, de capacidad <code>11</code>:<ul>
+<li>Capacidad original: <code>11</code>.</li>
+</ul>
 </li>
-<li>
-<p><strong>Queda formalmente refutada la afirmación.</strong></p>
+<li><strong>Antes de sumar 1:</strong> El corte mínimo es el <strong>Corte 1</strong> porque <code>10 &lt; 11</code>.</li>
+<li><strong>Después de sumar <code>+1</code> a cada arista:</strong><ul>
+<li><strong>Corte 1 (5 aristas):</strong> Cada una de las 5 aristas pasa de <code>2</code> a <code>3</code> $\to$ Nueva capacidad: <code>3 * 5 = 15</code>.</li>
+<li><strong>Corte 2 (1 arista):</strong> Su única arista pasa de <code>11</code> a <code>12</code> $\to$ Nueva capacidad: <code>12</code>.</li>
+</ul>
 </li>
+<li><strong>Conclusión:</strong> Ahora <code>12 &lt; 15</code>, por lo que el Corte 1 <strong>dejó de ser el corte mínimo</strong> y el nuevo corte mínimo pasó a ser el Corte 2. Queda refutada la afirmación.</li>
 </ul>
 <h4>4. Diagrama Visual del Contraejemplo</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
@@ -2436,12 +2400,14 @@ $$C&#x27;(A_2, B_2) = 11 + 1 = 12$$</p>
 <li><strong>Cómputo en Tiempo Lineal:</strong>
    Un único recorrido BFS/DFS sobre la red residual toma $O(|V| + |E|)$.</li>
 </ol>
-<h4>3. Demostración Rigurosa de Correctitud</h4>
+<h4>3. Justificación Directa de Correctitud (Lista para Examen)</h4>
 <ol>
-<li><strong>Caso 1 (Arista no saturada originalmente):</strong> Si antes del cambio $f^*(u, v) &lt; c(u, v)$, la arista no era un cuello de botella activo del corte mínimo. El flujo máximo previo ya era el óptimo y al no existir camino de aumento, el algoritmo termina inmediatamente en $O(V + E)$ con $|f_{nuevo}^*| = |f^*|$.</li>
-<li><strong>Caso 2 (Arista saturada que habilita aumento):</strong> Si $f^*(u, v) = c(u, v)$, su capacidad residual previa era $0$ y ahora pasa a $1$. Si dicha arista permite conectar las componentes $s$ y $t$ en $G_f&#x27;$, existirá un camino simple $P$. Dado que todas las capacidades en $G_f$ son enteras y positivas a lo largo de $P$, la capacidad residual mínima es $\Delta \ge 1$.</li>
-<li>Al aumentar $1$ unidad de flujo, la capacidad residual de $(u, v)$ vuelve a $0$, restaurando el estado sin caminos de aumento a través de ella.</li>
-<li>Por el Teorema de Ford-Fulkerson, una red residual sin caminos de aumento certifica que el flujo resultante es estrictamente el flujo máximo.</li>
+<li><strong>El flujo máximo solo puede subir en <code>0</code> o en <code>1</code>:</strong> Como las capacidades son enteras y solo subimos en <code>+1</code> la capacidad de una única arista <code>(u, v)</code>, cualquier corte de la red aumentó su capacidad a lo sumo en <code>1</code>.</li>
+<li><strong>Alcanza con un solo recorrido BFS/DFS:</strong></li>
+<li>Actualizamos la red residual sumando <code>+1</code> a la arista <code>(u, v)</code>.</li>
+<li>Hacemos <strong>un único BFS</strong> desde <code>s</code> hasta <code>t</code> en <code>O(V + E)</code>.</li>
+<li>Si encontramos un camino de <code>s</code> a <code>t</code>, mandamos <code>1</code> unidad de flujo más por ese camino y ya tenemos el nuevo flujo máximo (<code>|f*| + 1</code>).</li>
+<li>Si no hay camino de <code>s</code> a <code>t</code>, significa que hay otro cuello de botella que frena el flujo, así que el flujo máximo sigue siendo el mismo (<code>|f*|</code>).</li>
 </ol>
 <h4>4. Diagrama Visual del Proceso de Actualización</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR

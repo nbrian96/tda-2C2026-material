@@ -82,16 +82,16 @@ Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas
    Dado que $\log_b a > c$, aplica estrictamente el **Caso 1 del Teorema Maestro** (el trabajo en las hojas del árbol domina el costo global):
    $$T(n) = \Theta(n^{\log_b a}) = \Theta(n^{\log_2 8}) = \Theta(n^3)$$
 
-#### 2. Demostración Formal de Correctitud por Inducción Matemática
+#### 2. Justificación Directa de Correctitud (Lista para Examen)
 
-* **Proposición $P(k)$:** El algoritmo calcula exactamente el producto $C = A \times B$ para cualquier par de matrices de orden $n = 2^k$.
-* **Caso Base ($k = 0 \implies n = 2^0 = 1$):**
-  Las matrices $A$ y $B$ tienen dimensión $1 \times 1$. El algoritmo ejecuta $C[0][0] = A[0][0] \cdot B[0][0]$, lo cual coincide exactamente con la definición del producto escalar $C_{11} = A_{11} \cdot B_{11}$. $P(0)$ es verdadero.
-* **Hipótesis Inductiva:** Supongamos que el algoritmo calcula correctamente el producto de matrices para toda dimensión $m = 2^j$ con $j \le k - 1$.
-* **Paso Inductivo ($k$ con $n = 2^k$):**
-  La matriz se divide en bloques de dimensión $m = 2^{k-1}$. Por hipótesis inductiva, cada uno de los 8 productos recursivos $M_1, \dots, M_8$ produce el resultado exacto de multiplicar los bloques correspondientes. Por las propiedades distributivas del álgebra lineal:
-  $$C_{ij} = \sum_{k=1}^n A_{ik} B_{kj} = \sum_{k=1}^{n/2} A_{ik} B_{kj} + \sum_{k=n/2 + 1}^n A_{ik} B_{kj}$$
-  La primera sumatoria corresponde al producto del primer bloque y la segunda sumatoria al segundo bloque. Al sumar matricialmente $M_1 + M_2$ se obtiene la suma exacta de ambas componentes para cada celda $(i, j)$ del cuadrante superior izquierdo, e idénticamente para los demás cuadrantes. Por lo tanto, $P(k)$ es verdadero $\forall k \ge 0$. $\blacksquare$
+* **Caso Base ($n = 1$):** Cuando las matrices son de $1 \times 1$, tienen un solo número cada una y el algoritmo multiplica directamente $A[0][0] \cdot B[0][0]$ en tiempo $O(1)$.
+* **Paso Recursivo ($n > 1$):**
+  Por propiedad de multiplicación de matrices por bloques, para obtener cada cuadrante de $C$ basta con multiplicar las mitades correspondientes de las filas de $A$ por las mitades de las columnas de $B$ y sumar ambos resultados parciales:
+  * Cuadrante superior izquierdo: $C_{11} = A_{11} B_{11} + A_{12} B_{21}$
+  * Cuadrante superior derecho: $C_{12} = A_{11} B_{12} + A_{12} B_{22}$
+  * Cuadrante inferior izquierdo: $C_{21} = A_{21} B_{11} + A_{22} B_{21}$
+  * Cuadrante inferior derecho: $C_{22} = A_{21} B_{12} + A_{22} B_{22}$
+  Como las 8 llamadas recursivas resuelven submatrices de la mitad de tamaño ($n/2$) hasta llegar al caso base de $1 \times 1$, la suma de los bloques reconstruye exactamente la matriz producto $C$.
 
 #### 3. Ejemplo Concreto y Traza Paso a Paso ($n = 2$)
 
@@ -229,11 +229,11 @@ Capacidad de descarte logarítmico aprovechando la dirección de la pendiente lo
    Aplica el **Caso 2 del Teorema Maestro** con $k = 0$:
    $$T(n) = \Theta(n^c \log n) = \Theta(n^0 \log n) = \Theta(\log n)$$
 
-#### 2. Demostración Formal de Existencia del Pico
+#### 2. Justificación Directa de Correctitud (Por qué siempre hay un pico en la mitad elegida)
 
-* **Lema de la Pendiente:** Si $A[m] < A[m + 1]$, entonces el subarreglo $A[m + 1 \dots fin]$ contiene al menos un elemento pico.
-* **Demostración por el Principio del Buen Orden / Contradicción:**
-  Consideremos el subarreglo $A[m + 1 \dots fin]$. Si el último elemento $A[fin]$ es mayor que $A[fin - 1]$, entonces $A[fin]$ es un pico (pues no tiene vecino derecho). Si no lo es, retrocedemos: como $A[m] < A[m + 1]$, no todos los elementos pueden ser decrecientes hacia la izquierda sin toparse con una cresta. Dado que no hay elementos adyacentes iguales, debe existir un primer índice $k \in \{m + 1, \dots, fin - 1\}$ tal que $A[k] > A[k + 1]$. Como $k$ es el primer punto de caída, necesariamente $A[k] > A[k - 1]$, lo que convierte a $A[k]$ en un pico. $\blacksquare$
+* **Idea de la pendiente:** En el centro miramos los vecinos $A[m]$ y $A[m + 1]$. Como no hay elementos consecutivos iguales, los valores sí o sí suben o bajan:
+  * **Si $A[m] < A[m + 1]$ (sube hacia la derecha):** Como a partir de $m + 1$ los números van subiendo, pasan dos cosas posibles: o bien siguen subiendo sin parar hasta el borde derecho `fin` (entonces $A[fin]$ es un pico porque es más grande que el anterior y no tiene a nadie a la derecha), o bien en algún momento dejan de subir y bajan (y el primer número donde empieza a bajar es un pico porque le gana al de su izquierda y al de su derecha). Por eso **seguro hay un pico en la mitad derecha $[m + 1, fin]$**.
+  * **Si $A[m] > A[m + 1]$ (sube hacia la izquierda):** Por el mismo razonamiento hacia la izquierda, **seguro hay un pico en la mitad izquierda $[ini, m]$** (incluso el propio $A[m]$ podría ser el pico).
 
 #### 3. Ejemplo Concreto y Traza Paso a Paso
 
@@ -327,16 +327,13 @@ Identificación de la propiedad de frontera de transición, manejo riguroso de c
    $$\log_2 1 = 0 = c \implies T(n) = \Theta(\log n)$$
    Espacio auxiliar: $O(1)$ en implementación iterativa, $O(\log n)$ en la pila de recursión.
 
-#### 2. Demostración Formal de Correctitud por Inducción Fuerte
+#### 2. Justificación Directa de Correctitud (Lista para Examen)
 
-* **Hipótesis:** Para cualquier subrango $A[ini \dots fin]$ de longitud $L = fin - ini + 1$:
-  * Si contiene al menos un cero, el algoritmo retorna el menor índice $k \in [ini, fin]$ tal que $A[k] = 0$.
-  * Si no contiene ceros, retorna $-1$.
-* **Base ($L = 0 \implies ini > fin$):** El subarreglo es vacío. Retorna $-1$. Correcto.
-* **Paso Inductivo ($L \ge 1$):**
-  Se inspecciona $A[m]$. 
-  * Si $A[m] = 1$: Como el arreglo tiene la estructura $1^* 0^*$, si la posición $m$ tiene un 1, todas las posiciones $j \le m$ tienen $A[j] = 1$. Por lo tanto, ningún índice $\le m$ puede ser cero. El primer cero, de existir, debe residir en $[m + 1, fin]$, un subrango de longitud $\le \lfloor L/2 \rfloor$. Por hipótesis inductiva, la llamada recursiva devolverá el resultado correcto.
-  * Si $A[m] = 0$: Si $m = 0$ o $A[m-1] = 1$, por definición $m$ es el primer cero y se retorna. Si $A[m-1] = 0$, el primer cero está estrictamente antes de $m$, residiendo en $[ini, m - 1]$. Por hipótesis inductiva, la recursión encuentra el resultado exacto. $\blacksquare$
+* Como el arreglo tiene todos los `1` al principio y todos los `0` al final, al mirar la posición del medio `m` solo pueden pasar tres cosas:
+  1. **Si `A[m] == 1`:** Como antes de un `1` solo puede haber otros `1`, es imposible que el primer `0` esté a la izquierda. Descartamos toda la mitad izquierda y buscamos a la derecha (`[m + 1, fin]`).
+  2. **Si `A[m] == 0` y su anterior es `1` (o `m == 0`):** Estamos parados justo en el cambio de `1` a `0`, así que `m` es el primer cero y lo devolvemos.
+  3. **Si `A[m] == 0` y su anterior también es `0`:** El primer cero está más atrás, así que descartamos la mitad derecha y buscamos a la izquierda (`[ini, m - 1]`).
+* Si el rango se queda sin elementos (`ini > fin`), significa que eran todos `1` y devolvemos `-1`.
 
 #### 3. Ejemplo Concreto y Traza Paso a Paso
 

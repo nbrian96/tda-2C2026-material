@@ -64,27 +64,17 @@ Comprensión del arquetipo de *Interval Scheduling*, diseño del criterio voraz 
    * **Tiempo:** $O(n \log n)$ por el ordenamiento inicial y $O(n)$ en el barrido secuencial. Total: $\Theta(n \log n)$.
    * **Espacio:** $O(n)$ para la lista de permisos seleccionados.
 
-#### 2. Demostración Formal de Optimalidad (Greedy Stays Ahead)
+#### 2. Demostración Directa de Optimalidad ("El Voraz se Mantiene Adelante" / Greedy Stays Ahead)
 
-* **Definición de Soluciones:**
-  Sea $G = \{g_1, g_2, \dots, g_k\}$ el conjunto de intervalos elegidos por el algoritmo Greedy, ordenados cronológicamente por tiempo de fin.
-  Sea $OPT = \{o_1, o_2, \dots, o_m\}$ el conjunto de intervalos de una solución óptima arbitraria, también ordenados por tiempo de fin, con $m \ge k$.
-* **Lema Inductivo:** Para todo $r \le k$, el tiempo de fin del $r$-ésimo elemento voraz es menor o igual al del $r$-ésimo elemento óptimo:
-  $$f(g_r) \le f(o_r)$$
-* **Caso Base ($r = 1$):** El algoritmo voraz selecciona como primer elemento aquel con el menor tiempo de fin absoluto en todo el conjunto de entrada. Por ende, $f(g_1) \le f(o_1)$ por definición.
-* **Hipótesis Inductiva:** Asumimos que para un $r - 1 < k$ se cumple $f(g_{r-1}) \le f(o_{r-1})$.
-* **Paso Inductivo ($r$):**
-  Como $OPT$ es una solución factible, el intervalo $o_r$ no se solapa con $o_{r-1}$, lo que implica $s(o_r) \ge f(o_{r-1})$.
-  Aplicando la hipótesis inductiva:
-  $$s(o_r) \ge f(o_{r-1}) \ge f(g_{r-1})$$
-  Esto demuestra que cuando el algoritmo voraz buscaba su $r$-ésimo elemento tras haber seleccionado $g_{r-1}$, el intervalo $o_r$ era una alternativa perfectamente **factible y compatible**.
-  Dado que el algoritmo voraz selecciona el intervalo compatible con el menor tiempo de fin disponible, su elección $g_r$ debe satisfacer:
-  $$f(g_r) \le f(o_r)$$
-* **Conclusión de Optimalidad ($k = m$):**
-  Supongamos por contradicción que $m > k$, lo que significa que la solución óptima tiene al menos un intervalo adicional $o_{k+1}$.
-  Por el lema anterior aplicado a $r = k$:
-  $$s(o_{k+1}) \ge f(o_k) \ge f(g_k)$$
-  Esto significa que $o_{k+1}$ es compatible con el último elemento voraz $g_k$. Pero el algoritmo voraz terminó en $g_k$ precisamente porque no existía ningún intervalo compatible remanente en el conjunto. Contradicción. Por ende, $k = m$ y la solución voraz es **estrictamente óptima**. $\blacksquare$
+* **Idea central:** Comparemos paso a paso los permisos que elige nuestro algoritmo Greedy ($g_1, g_2, \dots, g_k$) contra los de cualquier solución óptima ($o_1, o_2, \dots, o_m$), ambos ordenados de izquierda a derecha en la ruta.
+* **1. En el primer permiso ($r = 1$):** Como Greedy elige el pedido que termina en el kilómetro más chico de todos, seguro termina antes o igual que el primero de la solución óptima (`fin(g_1) <= fin(o_1)`).
+* **2. En cualquier permiso siguiente ($r$):**
+  * Como el permiso anterior de Greedy terminó antes o igual que el del óptimo (`fin(g_{r-1}) <= fin(o_{r-1})`), a Greedy le queda libre la ruta desde antes.
+  * Por lo tanto, el $r$-ésimo pedido que eligió el óptimo ($o_r$) también está disponible y sin solaparse para Greedy.
+  * Como entre todos los disponibles Greedy siempre agarra el que termina primero, su elección $g_r$ también termina antes o igual que $o_r$ (`fin(g_r) <= fin(o_r)`).
+* **3. Por qué tienen la misma cantidad de permisos ($k = m$):**
+  * Si la solución óptima tuviera un permiso más ($o_{k+1}$), como empieza después de que termina $o_k$, también empezaría después de que termina $g_k$ (porque `fin(g_k) <= fin(o_k)`).
+  * Entonces ese permiso $o_{k+1}$ no se chocaba con $g_k$ y Greedy lo habría agregado antes de frenar. Como Greedy solo frena cuando ya no entra ningún pedido más, el óptimo no puede tener más permisos que Greedy. **Greedy es óptimo.**
 
 #### 3. Ejemplo Concreto y Tabla de Traza Paso a Paso
 
@@ -197,27 +187,13 @@ Capacidad de analizar por qué un algoritmo voraz falla en problemas NP-Hard, di
    * Barrido voraz en $O(n)$.
    * Complejidad total: $\Theta(n \log n)$ en tiempo y $O(n)$ en espacio auxiliar.
 
-#### 2. Demostración Formal de la Garantía de Aproximación 1/2
+#### 2. Demostración Directa de la Garantía 1/2 (Lista para Examen)
 
-* **Paso A (Cota Superior por Relajación Continua):**
-  Sea $OPT$ el valor de la solución óptima del problema entero 0-1, y sea $OPT_{\text{frac}}$ el valor de la solución óptima del problema de la mochila fraccionaria (donde se permiten fracciones de ítems).
-  Como toda solución entera es una solución fraccionaria factible, se cumple:
-  $$OPT \le OPT_{\text{frac}}$$
-* **Paso B (Composición de la Solución Fraccionaria):**
-  La solución fraccionaria óptima coincide exactamente con los primeros $k-1$ elementos enteros tomados por el greedy ($V_{\text{greedy}}$) más una fracción estricta $\alpha \in [0, 1)$ del elemento crítico $k$:
-  $$OPT_{\text{frac}} = V_{\text{greedy}} + \alpha \cdot v_k < V_{\text{greedy}} + v_k$$
-* **Paso C (Desigualdad Fundamental):**
-  Por transitividad de las cotas anteriores:
-  $$OPT < V_{\text{greedy}} + v_k$$
-* **Paso D (Cota del Máximo):**
-  Dado que $V_{\text{aprox}} = \max(V_{\text{greedy}}, v_k)$, es inmediato que:
-  $$V_{\text{greedy}} \le V_{\text{aprox}} \quad \text{y} \quad v_k \le V_{\text{aprox}}$$
-  Sumando ambas desigualdades:
-  $$V_{\text{greedy}} + v_k \le 2 \cdot V_{\text{aprox}}$$
-* **Paso E (Conclusión de la Garantía 1/2):**
-  Sustituyendo en la cota de $OPT$:
-  $$OPT < 2 \cdot V_{\text{aprox}} \implies \frac{V_{\text{aprox}}}{OPT} > \frac{1}{2}$$
-  El algoritmo garantiza estrictamente más del $50\%$ del valor óptimo global en tiempo $O(n \log n)$. $\blacksquare$
+1. **Comparación con la mochila fraccionaria:** Si pudiéramos partir los objetos (mochila fraccionaria), el valor obtenido $OPT_{\text{frac}}$ sería mayor o igual al mejor valor posible sin partir objetos ($OPT$), es decir: `OPT <= OPT_frac`.
+2. **Qué entra en la fraccionaria:** La mochila fraccionaria mete exactamente los mismos objetos enteros que metió nuestro Greedy ($V_{\text{greedy}}$) más un pedazo del primer objeto que ya no entró entero (el objeto crítico, de valor $v_k$).
+3. **Por lo tanto:** El óptimo entero nunca llega a superar la suma de esas dos partes:
+   `OPT < V_greedy + v_k`
+4. **Cierre en un renglón:** Como nuestro algoritmo elige el más grande entre `V_greedy` y `v_k`, ese más grande tiene que ser sí o sí **al menos la mitad de la suma de los dos** (porque si dos números suman más que `OPT`, el mayor de los dos vale al menos la mitad de `OPT`). Así queda probado que `V_aprox > OPT / 2`.
 
 #### 3. Ejemplo Concreto y Tabla de Traza Paso a Paso
 
@@ -323,26 +299,15 @@ Técnica de ordenamiento por fecha de vencimiento más temprana (*Earliest Deadl
    * **Tiempo:** $\Theta(n \log n)$ por el ordenamiento inicial.
    * **Espacio:** $O(n)$ para la lista del cronograma.
 
-#### 2. Demostración Formal de Optimalidad (Argumento de Intercambio)
+#### 2. Demostración Directa de Optimalidad (Argumento de Intercambio)
 
-* **Definición de Inversión:** Decimos que un cronograma $S$ tiene una inversión si existen dos tareas $i$ y $j$ tales que $i$ se ejecuta antes que $j$, pero $d_i > d_j$ (la tarea que vence más tarde se ejecuta antes).
-* **Propiedad de la Solución Voraz:** La solución voraz $S_{\text{greedy}}$ no tiene inversiones por definición (está ordenada por $d$ ascendente).
-* **Existencia de Inversión Adyacente:** Si un cronograma tiene inversiones, necesariamente contiene al menos un par de tareas **adyacentes y consecutivas** $i$ y $j$ con $d_i > d_j$.
-* **Efecto del Intercambio Adyacente:**
-  Sea $S$ un cronograma óptimo con la menor cantidad de inversiones. Si $S$ tiene inversiones, tomamos un par adyacente $i, j$ tal que $i$ precede inmediatamente a $j$ con $d_i > d_j$. Intercambiamos el orden de ejecución de $i$ y $j$, obteniendo un nuevo cronograma $S'$.
-  * Las tareas programadas antes de $i$ y después de $j$ no modifican sus tiempos de inicio ni fin. Sus latencias permanecen idénticas.
-  * La tarea $j$ se ejecuta antes en $S'$ que en $S$: su tiempo de finalización se reduce de $f_j$ a $f'_j = f_j - t_i$. Por ende, su latencia $L'_j \le L_j$.
-  * La tarea $i$ finaliza en $S'$ exactamente en el instante en que antes finalizaba $j$: $f'_i = f_j$.
-    Calculamos su nueva latencia:
-    $$L'_i = \max(0, f'_i - d_i) = \max(0, f_j - d_i)$$
-    Como $d_i > d_j$, se cumple:
-    $$f_j - d_i < f_j - d_j \le L_j$$
-    Por lo tanto, $L'_i \le L_j$.
-  * La nueva latencia máxima del par es:
-    $$\max(L'_i, L'_j) \le \max(L_i, L_j)$$
-  * Por consiguiente, la latencia máxima global del cronograma $S'$ **no aumentó**:
-    $$L_{\max}(S') \le L_{\max}(S)$$
-* **Conclusión:** Mediante intercambios de pares adyacentes invertidos, se puede transformar cualquier solución óptima $OPT$ en la solución voraz $S_{\text{greedy}}$ sin incrementar jamás la latencia máxima. Esto prueba que $S_{\text{greedy}}$ es **estrictamente óptima**. $\blacksquare$
+* **¿Qué es una inversión?:** Decimos que un orden de tareas tiene una "inversión" si hay dos tareas pegadas $i$ y $j$ donde $i$ se hace antes que $j$, pero $j$ vencía antes ($d_i > d_j$). Nuestro algoritmo Greedy ordena por vencimiento, así que **no tiene ninguna inversión**.
+* **Qué pasa si intercambiamos un par invertido $(i, j)$ en una solución óptima:**
+  Supongamos que una solución óptima tiene a la tarea $i$ justo antes de $j$ con $d_i > d_j$, y las cambiamos de lugar (hacemos primero $j$ y después $i$):
+  1. **El resto de las tareas no cambia:** Todas las tareas anteriores a $i$ y posteriores a $j$ terminan exactamente a la misma hora que antes.
+  2. **La tarea $j$ mejora:** Como ahora se hace antes, termina más temprano y su retraso baja (o sigue en 0).
+  3. **La tarea $i$ no supera el retraso que antes tenía $j$:** Al pasar atrás, la tarea $i$ termina exactamente a la hora en que antes terminaba $j$. Pero como el vencimiento de $i$ es más holgado que el de $j$ ($d_i > d_j$), el retraso que sufre ahora $i$ es menor que el retraso que sufría antes $j$.
+* **Conclusión:** Al desarmar cualquier inversión entre dos tareas vecinas, el retraso máximo nunca empeora. Repitiendo estos cambios hasta quitar todas las inversiones, llegamos al orden de nuestro algoritmo Greedy sin empeorar el resultado óptimo. **Por lo tanto, Greedy es óptimo.**
 
 #### 3. Ejemplo Concreto y Tabla de Traza Paso a Paso
 
@@ -440,24 +405,19 @@ Modelado del problema canónico de *Weighted Set Cover* mediante una heurística
 
 #### 1. Deducción Metodológica Formal (Los 5 Pasos)
 
-1. **Paso 1: Formulación como Weighted Set Cover:**
-   Sea $U$ el universo de todos los vecindarios a cubrir ($|U| = V$). Cada celda candidata $c = (i, j)$ cubre un subconjunto $S_c \subseteq U$ de vecindarios y tiene costo $CTO_c$.
-2. **Paso 2: Métrica de Selección Voraz (Costo Marginal por Elemento Nuevo):**
-   En cada paso, sea $U_{\text{restantes}}$ el conjunto de vecindarios aún no cubiertos. Para cada celda candidata $c$, calculamos la ganancia marginal:
-   $$\Delta(c) = |S_c \cap U_{\text{restantes}}|$$
-   Definimos el ratio voraz:
-   $$\text{Ratio}(c) = \frac{CTO_c}{\Delta(c)}$$
-   Se selecciona vorazmente la celda $c^*$ que **minimiza el costo por cada nuevo vecindario cubierto**:
-   $$c^* = \arg\min_{c: \Delta(c) > 0} \frac{CTO_c}{\Delta(c)}$$
+1. **Paso 1: Formulación como Set Cover con Costos:**
+   Tenemos el conjunto de todos los vecindarios a cubrir ($V$ en total). Cada celda candidata $c = (i, j)$ cubre un grupo de vecindarios en su bloque de $3 \times 3$ y cuesta $CTO_c$.
+2. **Paso 2: Regla Voraz (Menor costo por cada vecindario nuevo):**
+   En cada paso miramos cuántos vecindarios **que todavía no tienen cobertura** ($\text{nuevos}(c)$) cubriría cada antena candidata $c$, y calculamos su costo por vecindario nuevo:
+   $$\text{Ratio}(c) = \frac{CTO_c}{\text{nuevos}(c)}$$
+   Elegimos la antena con el **menor ratio** (la más barata por cada nuevo vecindario que suma).
 3. **Paso 3: Actualización y Terminación:**
-   Se incorpora $c^*$ a la solución y se actualiza $U_{\text{restantes}} = U_{\text{restantes}} \setminus S_{c^*}$. Se repite hasta que $U_{\text{restantes}} = \emptyset$.
-4. **Paso 4: Factor de Garantía de Aproximación (Teorema de Chvátal):**
-   Como Set Cover es NP-Duro, ningún algoritmo polinomial garantiza el óptimo global a menos que $P = NP$. El algoritmo voraz garantiza una cota de aproximación armónica:
-   $$\text{Costo}(\text{Greedy}) \le H(d_{\max}) \cdot OPT \le (\ln |U| + 1) \cdot OPT$$
-   donde $H(k) = \sum_{i=1}^k \frac{1}{i}$ es el $k$-ésimo número armónico.
+   Agregamos la antena elegida, marcamos sus vecindarios como cubiertos y repetimos hasta que no queden vecindarios sin cubrir.
+4. **Paso 4: ¿Es óptimo? (Garantía de Aproximación):**
+   **No garantiza el óptimo** porque *Set Cover* es NP-Completo. Es una heurística que garantiza un costo de a lo sumo $(\ln V + 1) \cdot OPT$ (aproximación logarítmica).
 5. **Paso 5: Complejidad:**
-   * En cada iteración se evalúan a lo sumo $M$ celdas candidatas. La inspección de las 9 celdas vecinas toma $O(1)$.
-   * Se realizan a lo sumo $V$ iteraciones (en cada una se cubre al menos 1 vecindario nuevo).
+   * En cada paso evaluamos las $M$ celdas candidatas mirando sus 9 casillas vecinas en $O(1)$.
+   * Como en cada paso cubrimos al menos 1 vecindario nuevo, damos a lo sumo $V$ vueltas.
    * Complejidad temporal: $O(V \cdot M)$. Espacio: $O(V + M)$.
 
 #### 2. Ejemplo Concreto y Traza Paso a Paso

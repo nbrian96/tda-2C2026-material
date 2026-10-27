@@ -1929,23 +1929,11 @@ body.dark-mode .warning-box {
    $$y_j \in \{0, 1\} \quad \forall j \in L, \qquad x_i \in \{0, 1\} \quad \forall i \in E$$</p>
 </li>
 </ol>
-<h4>3. Demostración Rigurosa de Correctitud del Enlace</h4>
-<p><strong>Lema de Validez del Enlace Lógico:</strong><br />
-Bajo la función objetivo de maximizar $\sum_{i \in E} x_i$:</p>
+<h4>3. Explicación Directa de por qué Funciona la Restricción de Enlace</h4>
 <ol>
-<li>
-<p><strong>Caso 0 (Ningún hábitat visitado):</strong> Si Paolo no visita ningún sitio donde habite la especie $i$, entonces $y_j = 0$ para todo $j$ con $A_{ij} = 1$. En consecuencia:
-   $$\sum_{j \in L} A_{ij} \cdot y_j = 0 \implies x_i \le 0 \implies x_i = 0$$
-   Es imposible que el modelo contabilice una especie no observada.</p>
-</li>
-<li>
-<p><strong>Caso $\ge 1$ (Al menos un hábitat visitado):</strong> Si visita $k \ge 1$ sitios donde habita la especie $i$, entonces $\sum_{j \in L} A_{ij} y_j = k \ge 1$. La restricción se convierte en:
-   $$x_i \le k$$
-   Dado que el dominio impone $x_i \in \{0, 1\}$ y la función objetivo maximiza $\sum x_i$ con coeficientes positivos ($+1$), el optimizador asignará el mayor valor factible: $x_i = 1$.</p>
-</li>
-<li>
-<p><strong>Inmunidad al Doble Cómputo:</strong> Si visita 2 o más lugares con la misma especie, $x_i \le 2$ o $3$, pero al estar restringida por su dominio superior $x_i \le 1$, la especie aporta exactamente 1 a la función objetivo.</p>
-</li>
+<li><strong>Si no visitamos ningún lugar donde viva la especie <code>i</code>:</strong> La suma de los <code>y_j</code> de sus lugares da <code>0</code>. Como <code>x_i &lt;= 0</code> y es binaria, la restricción obliga a que <code>x_i = 0</code> (no podemos contar un ave que no vimos).</li>
+<li><strong>Si visitamos al menos un lugar donde vive la especie <code>i</code>:</strong> La suma de sus <code>y_j</code> da <code>1</code> o más. Como buscamos maximizar la suma de <code>x_i</code>, el modelo automáticamente le pone el mayor valor permitido a <code>x_i</code>, que es <code>1</code>.</li>
+<li><strong>No cuenta dos veces la misma especie:</strong> Aunque visitemos 2 o 3 lugares donde está la misma ave (la suma da <code>2</code> o <code>3</code>), como <code>x_i</code> es binaria (<code>{0, 1}</code>), nunca puede pasar de <code>1</code>. Así cada especie distinta suma como máximo <code>1</code>.</li>
 </ol>
 <h4>4. Diagrama Visual del Grafo de Cobertura Bipartito</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
@@ -2134,12 +2122,11 @@ Bajo la función objetivo de maximizar $\sum_{i \in E} x_i$:</p>
    $$y_c \in \{0, 1\} \quad \forall c \in C, \qquad x_v \in \{0, 1\} \quad \forall v \in V$$</p>
 </li>
 </ol>
-<h4>3. Demostración de Validez del Modelo</h4>
-<p><strong>Teorema de Factibilidad y Presión de Costo:</strong>  </p>
+<h4>3. Explicación Directa de por qué Funciona el Modelo</h4>
 <ol>
-<li><em>Cota sobre cobertura:</em> Para cualquier vecindario $v$, si ninguna antena cubre su celda ($\sum_{c \in Cubren(v)} y_c = 0$), la restricción impone $x_v \le 0 \implies x_v = 0$.</li>
-<li><em>Minimización del costo:</em> Dado que $CTE &gt; 0$ y minimizamos $\sum y_c$, el solucionador nunca activará antenas superfluas. Si un vecindario $v$ no es necesario para alcanzar el umbral del $70\%$, el modelo preferirá mantener $x_v = 0$ con tal de ahorrar la activación de $y_c$.</li>
-<li><em>Umbral estricto:</em> La restricción $\sum x_v \ge \lceil 0.70 |V| \rceil$ garantiza que el compromiso de servicio se satisfaga plenamente.</li>
+<li><strong>Si ninguna antena cubre al vecindario <code>v</code>:</strong> La suma de las antenas en su bloque de $3 \times 3$ da <code>0</code>, lo que fuerza <code>x_v = 0</code>.</li>
+<li><strong>Meta del 70%:</strong> La restricción <code>sum(x_v) &gt;= 0.70 * |V|</code> obliga a que al menos el 70% de los vecindarios tengan <code>x_v = 1</code>, lo que a su vez obliga a encender las antenas <code>y_c</code> necesarias para cubrirlos.</li>
+<li><strong>No se instalan antenas de más:</strong> Como la función objetivo minimiza el gasto total en antenas, el modelo solo activa las antenas estrictamente necesarias para llegar al 70%.</li>
 </ol>
 <h4>4. Diagrama Visual de Vecindad de Cobertura (3x3)</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">graph TD
@@ -2300,12 +2287,10 @@ Bajo la función objetivo de maximizar $\sum_{i \in E} x_i$:</p>
    $$x_{ij} \ge 0 \quad \forall (i, j) \in L$$</p>
 </li>
 </ol>
-<h4>3. Demostración Teórica de Conservación y Factibilidad</h4>
-<p>Sumando la ecuación de balance sobre todas las regiones $i \in R$:
-$$\sum_{i \in R} G_i + \sum_{i \in R} \sum_{k \ne i} x_{ki} - \sum_{i \in R} \sum_{j \ne i} x_{ij} = \sum_{i \in R} D_i$$
-Dado que cada flujo $x_{ab}$ aparece una vez como entrada ($x_{ki}$ cuando $i=b, k=a$) y una vez como salida ($x_{ij}$ cuando $i=a, j=b$), las dobles sumatorias de flujos internos se cancelan mutuamente:
-$$\sum_{i \in R} G_i = \sum_{i \in R} D_i$$
-<strong>Condición Necesaria de Factibilidad:</strong> La generación global del país debe ser suficiente para satisfacer la demanda global. Si la generación total excede a la demanda, se escribe con desigualdad $\ge D_i$ para absorber el superávit.</p>
+<h4>3. Explicación Directa del Balance de Energía</h4>
+<p>En cada región $i$, toda la energía que se genera localmente más la que entra desde otras regiones tiene que ser igual a la que se consume allí más la que se envía hacia afuera:
+$$\text{Generación}_i + \text{Entra}_i - \text{Sale}_i = \text{Demanda}_i$$
+<em>(Nota: Si el país puede generar más energía de la que consume en total, basta con poner <code>Sale - Entra &lt;= Generación - Demanda</code> para que las centrales no estén obligadas a inyectar el sobrante).</em></p>
 <h4>4. Diagrama Visual de Red de Flujo con Costos</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
     R1["Region 1: G1=100 D1=20"] -->|x12 Costo 5 Cap 50| R2["Region 2: G2=10 D2=80"]
@@ -2442,14 +2427,11 @@ $$\sum_{i \in R} G_i = \sum_{i \in R} D_i$$
    $$x_{uv} \ge 0 \quad \forall (u, v) \in E$$</p>
 </li>
 </ol>
-<h4>3. Demostración Teórica: Teorema de Unimodularidad Total (TUM)</h4>
-<p><strong>Teorema de Hoffman-Kruskal aplicado a Grafos:</strong><br />
-Sea $A \in \{-1, 0, 1\}^{|V| \times |E|}$ la matriz de incidencia nodo-arco del grafo $G$, donde cada columna correspondiente a la arista $(u, v)$ contiene exactamente dos elementos no nulos: $+1$ en la fila del nodo origen $u$ y $-1$ en la fila del nodo destino $v$.</p>
+<h4>3. ¿Por qué no hace falta declarar variables binarias? (Justificación Directa para Examen)</h4>
 <ol>
-<li><strong>Propiedad TUM:</strong> Toda submatriz cuadrada de $A$ tiene determinante en $\{-1, 0, 1\}$.</li>
-<li><em>Demostración inductiva:</em> Para submatrices de orden $k$, si una columna tiene solo ceros, $\det = 0$. Si tiene un único $\pm 1$, por expansión de Laplace $\det = \pm 1 \cdot \det(M_{k-1}) \in \{-1, 0, 1\}$. Si todas las columnas tienen un $+1$ y un $-1$, la suma de todas las filas es el vector nulo $\mathbf{0}$, por lo que las filas son linealmente dependientes y $\det = 0$.</li>
-<li><strong>Integralidad de Vértices:</strong> Dado que $A$ es totalmente unimodular y el vector del lado derecho $b \in \{-1, 0, 1\}^{|V|}$ es entero, por la regla de Cramer <strong>todo vértice extremo del poliedro $\{x \ge 0 : Ax = b\}$ tiene componentes estrictamente enteras</strong>.</li>
-<li>Como la inyección total es 1, los únicos valores enteros factibles para las aristas en cualquier solución básica factible sin ciclos son $x_{uv} \in \{0, 1\}$, representando exactamente un camino simple de $s$ a $t$.</li>
+<li><strong>Propiedad de Unimodularidad Total (TUM):</strong> En cualquier problema de flujo o camino mínimo sobre un grafo donde las restricciones son únicamente de conservación (<code>flujo que sale - flujo que entra = balance</code>), la matriz del sistema es <strong>Totalmente Unimodular</strong>.</li>
+<li><strong>Qué garantiza esta propiedad:</strong> Siempre que los valores de entrada/salida sean enteros (<code>+1</code> en Ezeiza, <code>-1</code> en Bariloche y <code>0</code> en el resto), <strong>todos los vértices del poliedro tienen coordenadas enteras</strong>.</li>
+<li><strong>Conclusión:</strong> Al resolver el modelo con <strong>PL continua</strong> (Simplex en tiempo polinomial), el óptimo dará automáticamente valores enteros <code>0</code> o <code>1</code> en cada arista sin necesidad de partir la carga ni usar programación entera (PLI).</li>
 </ol>
 <h4>4. Diagrama Visual del Grafo de Traslado</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
@@ -2575,21 +2557,11 @@ Formular el problema como un modelo de Programación Lineal Entera, linealizando
    $$\min Z$$</p>
 </li>
 </ol>
-<h4>3. Demostración Matemática de Equivalencia</h4>
-<p><strong>Teorema de Equivalencia de la Linealización Minimax:</strong><br />
-Sea $(x^*, Z^*)$ una solución óptima del modelo linealizado.</p>
+<h4>3. Explicación Directa de por qué Funciona la Linealización</h4>
 <ol>
-<li>
-<p>Por definición de las restricciones:
-   $$Z^* \ge L_1(x^*) \quad \text{y} \quad Z^* \ge L_2(x^*) \implies Z^* \ge \max(L_1(x^*), L_2(x^*))$$</p>
-</li>
-<li>
-<p>Supongamos por contradicción que $Z^* &gt; \max(L_1(x^*), L_2(x^*))$. Entonces podríamos definir un valor $Z&#x27; = \max(L_1(x^*), L_2(x^*)) &lt; Z^*$.</p>
-</li>
-<li>La solución $(x^*, Z&#x27;)$ satisface todas las restricciones del modelo y produce un valor objetivo $Z&#x27; &lt; Z^*$, contradiciendo la optimalidad de $(x^*, Z^*)$.</li>
-<li>Por lo tanto, en toda solución óptima se cumple estrictamente que:
-   $$Z^* = \max(L_1(x^*), L_2(x^*))$$
-   lo que demuestra que el modelo lineal es exactamente equivalente al problema no lineal original.</li>
+<li>Como imponemos las dos restricciones <code>Z &gt;= Carga_P1</code> y <code>Z &gt;= Carga_P2</code>, la variable <code>Z</code> está obligada a ser <strong>al menos tan grande como la máquina más cargada</strong>.</li>
+<li>Como la función objetivo pide <strong>minimizar <code>Z</code></strong>, el modelo "aprieta" a <code>Z</code> hacia abajo todo lo que puede hasta que choca contra la mayor de las dos cargas (<code>Z = max(Carga_P1, Carga_P2)</code>).</li>
+<li>De esa forma, achicar <code>Z</code> al mínimo es exactamente lo mismo que achicar la carga de la máquina más ocupada.</li>
 </ol>
 <h4>4. Diagrama Visual de Acotamiento de la Variable Z</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR

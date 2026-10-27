@@ -23,9 +23,7 @@ El sistema de emergencias médicas de una provincia dispone de una flota de $D$ 
 #### 2. Los 5 Pasos Metodológicos de Modelado
 
 1. **Preprocesamiento de Compatibilidad:**
-   Un dron $i$ es compatible con un puesto $j$ si y solo si:
-   $$\text{Distancia}(i, j) \le \text{AlcanceMax}_i \quad \land \quad t_i^{ini} \le h_j^{min} \quad \land \quad h_j^{max} \le t_i^{fin}$$
-   Sea $Comp(i, j) \in \{0, 1\}$ el indicador de dicha compatibilidad calculable en tiempo $O(D \cdot P)$.
+   Un dron $i$ es compatible con un puesto $j$ si y solo si está dentro de su alcance de vuelo y la ventana horaria del puesto entra dentro del horario de batería del dron (`Distancia(i, j) <= Alcance_i` y `t_ini_i <= h_min_j` y `h_max_j <= t_fin_i`). Esto se precalcula para todos los pares en `O(D * P)`.
 2. **Topología en Capas Nodal:**
    - Super-fuente $s$.
    - Capa de drones: un nodo $d_i$ por cada dron $i \in \{1, \dots, D\}$.
@@ -33,24 +31,19 @@ El sistema de emergencias médicas de una provincia dispone de una flota de $D$ 
    - Super-sumidero $t$.
 3. **Asignación de Aristas y Capacidades:**
    - **Aristas de Fuente a Drones:** $(s, d_i)$ con capacidad $c(s, d_i) = 2$ para todo $i$. *Justificación:* Modela directamente que cada dron puede efectuar a lo sumo 2 entregas.
-   - **Aristas de Compatibilidad Dron-Puesto:** $(d_i, p_j)$ con capacidad $c(d_i, p_j) = 1$ para cada par compatible ($Comp(i, j) = 1$). *Justificación:* Un mismo dron realiza como máximo 1 viaje hacia un puesto determinado.
+   - **Aristas de Compatibilidad Dron-Puesto:** $(d_i, p_j)$ con capacidad $c(d_i, p_j) = 1$ para cada par compatible. *Justificación:* Un mismo dron realiza como máximo 1 viaje hacia un puesto determinado.
    - **Aristas de Puestos a Sumidero:** $(p_j, t)$ con capacidad $c(p_j, t) = 1$ para todo puesto $j$. *Justificación:* Cada puesto solo requiere y absorbe 1 entrega médica.
 4. **Algoritmo de Resolución:**
    Ejecutar el algoritmo de **Edmonds-Karp** desde $s$ hasta $t$.
 5. **Decodificación de la Solución:**
    Toda arista $(d_i, p_j)$ con flujo $f(d_i, p_j) = 1$ representa el despacho efectivo del dron $i$ hacia el puesto sanitario $j$.
 
-#### 3. Demostración Teórica de Correctitud e Integralidad
+#### 3. Justificación Directa de Correctitud e Integralidad (Lista para Examen)
 
-**Lema de Flujo Entero y Validez:**
-1. Como todas las capacidades de la red son números enteros ($c \in \{1, 2\}$), por el **Teorema de Integralidad de Flujo**, el flujo óptimo calculado por Edmonds-Karp asignará valores enteros a todas las aristas: $f(e) \in \{0, 1, 2\}$.
-2. Para cada dron $i$, por conservación en el nodo $d_i$:
-   $$\sum_{j} f(d_i, p_j) = f(s, d_i) \le c(s, d_i) = 2$$
-   Ningún dron realizará más de dos entregas.
-3. Para cada puesto $j$, por conservación en el nodo $p_j$:
-   $$\sum_{i} f(d_i, p_j) = f(p_j, t) \le c(p_j, t) = 1$$
-   Ningún puesto recibirá más de una entrega, y cada entrega provendrá de un único dron compatible con flujo $1$.
-4. Al maximizar el flujo saliente de $s$, se maximiza la suma de puestos que reciben servicio $\sum_j f(p_j, t)$, garantizando la cobertura óptima del sistema.
+1. **Entregas enteras (Teorema de Integralidad):** Como todas las capacidades de la red son enteras (`1` y `2`), Edmonds-Karp garantiza que el flujo por cada arista entre un dron y un puesto será `0` o `1` (nunca medio viaje).
+2. **A lo sumo 2 viajes por dron:** Como la arista desde la fuente `s` hacia cada dron tiene capacidad `2`, por conservación de flujo ese dron solo puede enviar flujo hacia como máximo `2` puestos distintos.
+3. **A lo sumo 1 entrega por puesto:** Como la arista desde cada puesto hacia el sumidero `t` tiene capacidad `1`, cada puesto recibe a lo sumo `1` dron.
+4. **Maximización:** Cada unidad de flujo que llega a `t` representa un puesto sanitario abastecido, por lo que el flujo máximo encuentra la mayor cantidad posible de puestos cubiertos.
 
 #### 4. Diagrama Visual de la Red de Flujo
 
@@ -139,14 +132,13 @@ Una empresa de marketing digital planifica su campaña durante los próximos $n$
 5. **Reconstrucción del Plan Óptimo:**
    Comenzando desde $(n, P)$, si $OPT(i, p) = OPT(\max(0, i-3), p - C[i]) + B[i]$, se incluye el día $i$ y se transiciona a $(\max(0, i-3), p - C[i])$; si no, se transiciona a $(i-1, p)$.
 
-#### 3. Demostración de Optimalidad por Inducción Matemática
+#### 3. Justificación Directa de Optimalidad (Lista para Examen)
 
-- **Base:** Para $i = 0$, $OPT(0, p) = 0$ es trivialmente óptimo pues no hay días.
-- **Hipótesis Inductiva:** Supongamos que $OPT(k, p)$ calcula la conversión óptima para todo $k < i$ y todo $p \le P$.
-- **Paso Inductivo:** En el día $i$, cualquier plan óptimo o bien pauta el día $i$ o no pauta el día $i$:
-  - Si no pauta el día $i$, la solución óptima restringida a los primeros $i-1$ días con presupuesto $p$ es, por hipótesis inductiva, $OPT(i-1, p)$.
-  - Si pauta el día $i$, consume $C[i]$ de presupuesto, quedando $p - C[i]$. Por la regla de enfriamiento de 2 días, no se pudo pautar ni en $i-1$ ni en $i-2$. Por ende, la subsolución previa óptima corresponde a los primeros $i-3$ días con presupuesto $p - C[i]$, que por hipótesis es $OPT(i-3, p - C[i])$.
-  - Tomar el máximo entre ambas opciones cubre todo el espacio de decisiones factibles, garantizando que $OPT(i, p)$ es estrictamente óptimo.
+En cada día `i` con presupuesto `p`, solo hay dos opciones posibles:
+1. **No pautar en el día `i`:** Nos queda intacto el presupuesto `p` para usar en los primeros `i - 1` días (`OPT(i - 1, p)`).
+2. **Pautar en el día `i` (si `p >= C[i]`):** Ganamos `B[i]`, gastamos `C[i]` (nos queda `p - C[i]`) y, como hay 2 días obligatorios de enfriamiento, los días `i - 1` e `i - 2` quedan prohibidos, por lo que sumamos la mejor campaña posible hasta el día `i - 3` (`OPT(i - 3, p - C[i]) + B[i]`).
+
+Como la tabla se llena desde el día `1` hasta `n` y desde presupuesto `0` hasta `P`, cuando calculamos `OPT(i, p)` tanto la fila `i - 1` como la `i - 3` ya fueron resueltas de forma óptima.
 
 #### 4. Diagrama Visual de la Decisión con Cooldown
 
@@ -254,15 +246,15 @@ Plantear un modelo formal de Programación Lineal Entera indicando variables, do
 #### 3. Conteo Formal de Variables y Restricciones
 
 - **Variables de Decisión:**
-  - $|S|$ variables de apertura de servidor $y_i$.
-  - $|U|$ variables de cliente atendido $u_j$.
-  - $\sum_{j \in U} |S_j|$ variables de asignación cliente-servidor $x_{ji}$.
-  - **Total:** $|S| + |U| + \sum_{j \in U} |S_j|$ variables binarias.
+   - $|S|$ variables de apertura de servidor $y_i$.
+   - $|U|$ variables de cliente atendido $u_j$.
+   - $\sum_{j \in U} |S_j|$ variables de asignación cliente-servidor $x_{ji}$.
+   - **Total:** $|S| + |U| + \sum_{j \in U} |S_j|$ variables binarias.
 - **Restricciones Lineales:**
-  - 1 restricción de umbral mínimo del 80%.
-  - $|U|$ restricciones de asignación exclusiva.
-  - $|S|$ restricciones de capacidad de tráfico con enlace de activación.
-  - **Total:** $1 + |U| + |S|$ restricciones funcionales.
+   - 1 restricción de umbral mínimo del 80%.
+   - $|U|$ restricciones de asignación exclusiva.
+   - $|S|$ restricciones de capacidad de tráfico con enlace de activación.
+   - **Total:** $1 + |U| + |S|$ restricciones funcionales.
 
 #### 4. Diagrama Visual de Enlace Lógico Cliente-Servidor
 
@@ -308,45 +300,29 @@ Se define formalmente el problema de **Asignación de Frecuencias (AF)** de la s
 Dado un conjunto de $A$ antenas de transmisión y un conjunto $I$ de pares no ordenados de antenas que generan interferencia destructiva si operan en la misma frecuencia, junto con un número entero $k$ de canales de radiofrecuencia disponibles, determinar si es posible asignar un canal a cada antena de modo que ningún par de antenas con interferencia comparta canal.  
 Demostrar formalmente que **Asignación de Frecuencias es NP-Completo** mediante una reducción polinomial desde **k-Coloring de Grafos**.
 
-#### 2. Demostración en el Esquema Sagrado de 4 Pasos
+#### 2. Demostración Directa en 4 Pasos (Lista para Hoja de Examen)
 
-##### Paso 1: Pertenencia a NP ($AF \in \text{NP}$)
-- **Certificado Candidato ($C$):** Un vector de enteros $C \in \{1, \dots, k\}^A$ donde $C[a]$ representa el canal asignado a la antena $a$. Tamaño del certificado: $|A|$ enteros de tamaño $O(\log k)$ bits $\implies O(|A| \log k)$ bits (tamaño polinomial).
-- **Algoritmo Verificador Polinomial $V(A, I, k, C)$:**
-  1. Verificar que para cada antena $a \in A$, $1 \le C[a] \le k$.
-  2. Para cada par de interferencia $(u, v) \in I$:
-     - Si $C[u] == C[v]$, retornar $\text{FALSO}$ (colisión destructiva detectada).
-  3. Retornar $\text{VERDADERO}$.
-- **Complejidad del Verificador:** Recorrer las aristas de interferencia toma tiempo $O(|A| + |I|)$, estrictamente lineal-polinomial. Por lo tanto, **$AF \in \text{NP}$**.
+##### Paso 1: Asignación de Frecuencias (AF) está en NP
+Si nos dan una asignación candidata `C` que indica qué canal (de `1` a `k`) usa cada antena:
+1. Chequeamos que todas las antenas tengan asignado un número de canal entre `1` y `k`.
+2. Recorremos cada par de antenas con interferencia `(u, v)` y verificamos que sus canales sean distintos (`C[u] != C[v]`).
+Como solo recorremos las antenas y los pares de interferencia una vez, el verificador tarda `O(A + I)` (polinomial). Luego, **AF pertenece a NP**.
 
-##### Paso 2: Selección del Problema Conocido
-Elegimos el problema **k-Coloring de Grafos** ($k \ge 3$), conocido NP-Completo (Karp, 1972):  
-*Dado un grafo $G = (V, E)$ y un entero $k$, ¿es posible asignar un color de $\{1, \dots, k\}$ a cada vértice de modo que dos vértices adyacentes tengan colores distintos?*  
-Objetivo: Demostrar que:
-$$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$
+##### Paso 2 y 3: Reducción Polinomial desde k-Coloring (`k-Coloring <=p AF`)
+Sabemos que **k-Coloring** (para `k >= 3`) es NP-Completo: dado un grafo `G = (V, E)` y `k` colores, ¿se puede pintar cada vértice de modo que ningún par unido por una arista tenga el mismo color?  
+Transformamos cualquier entrada `(G, k)` de k-Coloring en una entrada de Asignación de Frecuencias así:
+1. **Antenas:** Por cada vértice de `V`, creamos una antena en `A`.
+2. **Interferencias:** Por cada arista `(u, v)` de `E`, agregamos un par de interferencia `(u, v)` en `I`.
+3. **Canales:** Usamos la misma cantidad `k` de canales que de colores.
+- *Complejidad:* Copiar vértices y aristas toma tiempo `O(V + E)` (polinomial).
 
-##### Paso 3: Transformación Polinomial $f(G, k) \to (A, I, k)$
-Dada una instancia de k-Coloring con grafo $G = (V, E)$ y entero $k$:
-1. Por cada vértice $v \in V$, creamos una antena de transmisión $v \in A$.
-2. Por cada arista $(u, v) \in E$, declaramos un par de interferencia $(u, v) \in I$.
-3. El número de canales disponibles es exactamente $k$.
-- **Complejidad:** La transformación es la función identidad estructural $f(G, k) = (G, k)$ y se construye en tiempo $O(|V| + |E|)$, que es estrictamente polinomial.
+##### Paso 4: Equivalencia (Ida y Vuelta)
+- **($\implies$) Ida: Si `G` se puede pintar con `k` colores $\to$ hay asignación válida de `k` frecuencias:**
+  Le asignamos a cada antena el número del color que recibió su vértice. Como ningún par de vértices unidos por arista tiene el mismo color, ningún par de antenas con interferencia comparte el mismo canal.
+- **($\impliedby$) Vuelta: Si hay una asignación válida de `k` frecuencias $\to$ `G` se puede pintar con `k` colores:**
+  Pintamos cada vértice con el número de canal que recibió su antena. Como ningún par de antenas con interferencia tiene el mismo canal, ningún par de vértices vecinos queda con el mismo color.
 
-##### Paso 4: Demostración Bidireccional de Equivalencia
-
-- **($\implies$) Si $G$ es $k$-coloreable, entonces existe una asignación de frecuencias válida sin interferencias:**
-  - Si $G$ admite un coloreo válido con $k$ colores, existe una función $col: V \to \{1, \dots, k\}$ tal que $(u, v) \in E \implies col(u) \ne col(v)$.
-  - Asignamos al canal de la antena $v$ el color de su vértice: $\text{Canal}(v) = col(v)$.
-  - Para todo par de interferencia $(u, v) \in I$, como $(u, v) \in E$, se tiene que $\text{Canal}(u) = col(u) \ne col(v) = \text{Canal}(v)$.
-  - Por lo tanto, ninguna antena en interferencia comparte canal: es una asignación válida para AF.
-
-- **($\impliedby$) Si existe una asignación válida de $k$ frecuencias, entonces $G$ es $k$-coloreable:**
-  - Supongamos que existe una asignación de canales válida $F: A \to \{1, \dots, k\}$.
-  - Definimos el coloreo de vértices asignando $col(v) = F(v)$ para cada $v \in V$.
-  - Para toda arista $(u, v) \in E$, por la construcción existe el par de interferencia $(u, v) \in I$. Como la asignación es válida, necesariamente $F(u) \ne F(v)$, lo que implica que $col(u) \ne col(v)$.
-  - Por lo tanto, ningún par de vértices vecinos tiene el mismo color, constituyendo un $k$-coloreo válido de $G$.
-
-**Conclusión:** Habiendo demostrado que $AF \in \text{NP}$ y que $\text{k-Coloring} \le_P AF$ con equivalencia en ambos sentidos en tiempo polinomial, queda formalmente demostrado que **Asignación de Frecuencias es NP-Completo**.
+**Conclusión:** Como AF está en NP y redujimos k-Coloring a AF en tiempo polinomial probando la equivalencia de ida y vuelta, **Asignación de Frecuencias es NP-Completo**.
 
 #### 3. Diagrama Visual de la Reducción Identidad
 
@@ -366,7 +342,7 @@ graph LR
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Creer que porque la reducción es la identidad estructural no requiere demostración:</strong> Aunque el mapeo sea $O(1)$, la cátedra exige escribir rigurosamente los 4 pasos, el certificado polinomial y la demostración de la ida y de la vuelta.</li>
+    <li><strong>Creer que porque la reducción es la identidad estructural no requiere demostración:</strong> Aunque el mapeo sea directo, la cátedra exige escribir los 4 pasos completos: el verificador en NP, la transformación y la ida y vuelta.</li>
     <li><strong>Reducir para $k=2$:</strong> 2-Coloring (bipartición) está en P (se resuelve con BFS en $O(V+E)$). Se debe especificar que la reducción es desde $k$-Coloring con $k \ge 3$, que es donde el problema es NP-Completo.</li>
   </ul>
 </div>

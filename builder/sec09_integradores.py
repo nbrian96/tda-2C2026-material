@@ -201,13 +201,10 @@ FUNCION VertexCoverAproximado2(G):
     RETORNAR C
 ```
 
-**Demostración de la Garantía de Aproximación 2:**  
-1. Sea $M$ el conjunto de aristas disjuntas seleccionadas por el algoritmo. Como ninguna arista en $M$ comparte extremos, **cualquier Vertex Cover óptimo debe contener al menos un vértice distinto por cada arista en $M$**.
-2. Por lo tanto: $OPT \ge |M|$.
-3. El algoritmo incorpora exactamente ambos extremos de cada arista en $M$, por lo que: $|C| = 2 \cdot |M|$.
-4. Combinando ambas relaciones:
-   $$|C| = 2 \cdot |M| \le 2 \cdot OPT$$
-5. El algoritmo garantiza una cobertura que nunca supera el doble del óptimo y corre en tiempo $O(|V| + |E|)$.
+**Demostración Directa de la Garantía de Aproximación 2:**  
+1. Las aristas que fue eligiendo el algoritmo no se tocan entre sí (ninguna comparte vértices con otra). Si el algoritmo eligió `|M|` aristas disjuntas, **cualquier solución óptima tiene que elegir sí o sí al menos 1 vértice distinto por cada una de esas aristas** para poder cubrirlas (`OPT >= |M|`).
+2. Como nuestro algoritmo agrega **los 2 extremos** de cada arista elegida, en total agarra `|C| = 2 * |M|` vértices.
+3. Por lo tanto, `|C| = 2 * |M| <= 2 * OPT`: nunca usa más del doble de vértices que el óptimo y tarda `O(V + E)`.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -308,16 +305,11 @@ FUNCION MochilaFraccionariaGreedy(pesos, valores, n, W):
     RETORNAR (valor_total, fraccion)
 ```
 
-**Demostración Formal de Optimalidad (Técnica de Intercambio):**
-1. Sea $G = (x_1, x_2, \dots, x_n)$ la solución voraz y $O = (y_1, y_2, \dots, y_n)$ una solución óptima distinta.
-2. Como $G \neq O$, existe un primer índice $k$ donde difieren ($x_k \neq y_k$). Por diseño del algoritmo voraz, debe ser $x_k > y_k$ (la voraz tomó el máximo posible del elemento de mayor densidad disponible).
-3. Como la mochila está llena en ambas soluciones (o todos los elementos entraron), para compensar el déficit en el ítem $k$, la solución óptima $O$ debe haber tomado una cantidad de elementos posteriores $j > k$ donde la densidad es menor o igual ($r_j \le r_k$).
-4. Modificamos la solución óptima $O$ incrementando $y_k$ en $\Delta w$ y reduciendo elementos posteriores $y_j$ en el mismo peso $\Delta w$.
-5. La variación del beneficio en la nueva solución $O'$ es:
-   $$\Delta \text{Valor} = \Delta w \cdot r_k - \Delta w \cdot r_j = \Delta w \cdot (r_k - r_j) \ge 0$$
-   dado que $r_k \ge r_j$.
-6. Por ende, el valor de $O'$ no disminuye ($\text{Valor}(O') \ge \text{Valor}(O)$). Repitiendo este proceso de intercambio para todos los elementos donde difieran, podemos transformar $O$ en $G$ sin reducir nunca el valor total.
-7. Conclusión: la solución voraz $G$ es óptima.
+**Demostración Directa de Optimalidad (Argumento de Intercambio):**
+1. Supongamos que una solución óptima dejó afuera parte de un objeto $k$ que nuestro Greedy sí metió, y en su lugar llenó ese peso $\Delta w$ con pedazos de otros objetos $j$ que estaban más atrás en la lista.
+2. Como la lista está ordenada por valor por kilo decreciente, el objeto $k$ rinde más (o igual) por cada kilo que cualquier objeto $j$ posterior ($r_k \ge r_j$).
+3. Si en la solución óptima sacamos $\Delta w$ kilos del objeto $j$ y los cambiamos por $\Delta w$ kilos del objeto $k$, el peso total no cambia y el valor total sube o se mantiene igual.
+4. Repitiendo este cambio, cualquier solución óptima se transforma en la solución de Greedy sin perder valor. Por lo tanto, **Greedy es óptimo**.
 * **Complejidad:** Tiempo $O(n \log n)$ por el ordenamiento inicial; Espacio $O(n)$.
 
 ---
@@ -339,17 +331,11 @@ En la mochila 0-1 los objetos son indivisibles ($x_i \in \{0, 1\}$).
   3. Retornar la mejor de las dos opciones:
      $$V_{\text{aprox}} = \max(V_{\text{greedy}}, \; v_{\max})$$
 
-**Demostración de la Garantía de Aproximación 1/2:**
-1. Sea $V_{\text{frac}}$ el valor de la solución óptima fraccionaria sobre los mismos datos. Claramente $OPT_{01} \le V_{\text{frac}}$ (relajación).
-2. La solución fraccionaria toma exactamente los ítems enteros de $V_{\text{greedy}}$ más una fracción del ítem de corte $k$:
-   $$OPT_{01} \le V_{\text{frac}} = V_{\text{greedy}} + f \cdot v_k < V_{\text{greedy}} + v_k$$
-3. Dado que el ítem $k$ cabe en una mochila vacía (si $w_k \le W$), tenemos $v_k \le v_{\max}$.
-4. Por lo tanto:
-   $$OPT_{01} < V_{\text{greedy}} + v_{\max}$$
-5. Como $V_{\text{aprox}} = \max(V_{\text{greedy}}, v_{\max})$, se cumple trivialmente que $V_{\text{greedy}} \le V_{\text{aprox}}$ y $v_{\max} \le V_{\text{aprox}}$.
-6. Sumando ambas cotas:
-   $$OPT_{01} < V_{\text{aprox}} + V_{\text{aprox}} = 2 \cdot V_{\text{aprox}} \implies V_{\text{aprox}} \ge \frac{1}{2} OPT_{01}$$
-* **Garantía:** El algoritmo garantiza al menos el **$50\%$ del valor óptimo** en tiempo $O(n \log n)$.
+**Demostración Directa de la Garantía 1/2:**
+1. La mochila fraccionaria siempre gana o empata contra la mochila 0-1 óptima (`OPT_01 <= V_frac`).
+2. La mochila fraccionaria mete todos los objetos enteros que metió Greedy (`V_greedy`) más una fracción del primer objeto `k` que ya no entró entero (cuyo valor `v_k` es a lo sumo `v_max`).
+3. Por lo tanto, el óptimo entero es menor que la suma de esas dos cosas: `OPT_01 < V_greedy + v_max`.
+4. Como nuestro algoritmo se queda con el mayor entre `V_greedy` y `v_max`, ese mayor vale **al menos la mitad de la suma de ambos**, garantizando al menos el **50% del óptimo** (`V_aprox >= OPT_01 / 2`) en tiempo `O(n log n)`.
 
 ---
 
@@ -786,18 +772,10 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
             DFS_Preorden(mst, v, visitado, tour)
 ```
 
-**Demostración Rigurosa de la Garantía de Aproximación 2:**
-1. Sea $T^*$ el tour óptimo de TSP y sea $OPT = \text{Costo}(T^*)$.
-2. Si removemos una arista cualquiera del tour óptimo $T^*$, obtenemos un camino simple que conecta todos los vértices del grafo. Todo camino que conecta todos los vértices es, por definición, un árbol generador.
-3. Como el MST es el árbol generador de **mínimo costo posible**, se cumple estrictamente:
-   $$\text{Costo}(MST) \le \text{Costo}(\text{camino simple}) \le \text{Costo}(T^*) = OPT$$
-4. El paseo euleriano que recorre cada arista del MST dos veces tiene un costo exacto de:
-   $$\text{Costo}(\text{Paseo}) = 2 \cdot \text{Costo}(MST) \le 2 \cdot OPT$$
-5. El algoritmo construye el tour final $T$ reemplazando secuencias de aristas del paseo por una arista directa (atajo) hacia la próxima ciudad no visitada.
-6. Gracias a la **desigualdad triangular** ($c_{uw} \le c_{uv} + c_{vw}$), cualquier atajo directo tiene un costo menor o igual al camino alternativo recorrido.
-7. Por ende:
-   $$\text{Costo}(T) \le \text{Costo}(\text{Paseo}) = 2 \cdot \text{Costo}(MST) \le 2 \cdot OPT$$
-8. **Conclusión:** El algoritmo corre en $O(n^2)$ y garantiza que $\text{Costo}(T) \le 2 \cdot OPT$.
+**Demostración Directa de la Garantía de Aproximación 2:**
+1. **El MST cuesta menos que el tour óptimo (`Costo(MST) <= OPT`):** Si al tour óptimo de TSP le borramos una arista cualquiera, nos queda un árbol que conecta todas las ciudades. Como el Árbol Generador Mínimo (MST) es el más barato de todos los árboles posibles, seguro cuesta menos o igual que el tour óptimo.
+2. **Ida y vuelta por el MST cuesta el doble (`2 * Costo(MST) <= 2 * OPT`):** Recorrer el árbol con DFS pasando dos veces por cada arista (una de ida y otra de vuelta) cuesta exactamente `2 * Costo(MST)`.
+3. **Los atajos no encarecen el recorrido:** Cuando el DFS está por repetir una ciudad ya visitada y toma el atajo directo a la siguiente ciudad nueva, por desigualdad triangular ir directo cuesta menos o igual que dar el rodeo. Por lo tanto, el tour final cuesta **`<= 2 * OPT`**.
 
 ---
 
@@ -818,9 +796,9 @@ Para formular TSP en PLI, no basta con exigir que cada nodo tenga grado de entra
 * **Restricciones de Eliminación de Subtours (MTZ):**
   Para cada par de ciudades $i, j \in \{2, \dots, n\}$ con $i \neq j$:
   $$u_i - u_j + n \cdot x_{ij} \le n - 1$$
-* **Demostración de por qué MTZ Elimina Subtours:**
-  * Si $x_{ij} = 1$ (la arista pertenece al tour), la restricción impone $u_j \ge u_i + 1$.
-  * Si existiera un subtour desconectado que no pasa por la ciudad 1 con $k$ ciudades ($2 \le k < n$), al sumar las restricciones a lo largo de las aristas del ciclo obtendríamos $n \cdot k \le (n - 1) \cdot k$, lo cual implica $n \le n - 1$ (una **contradicción matemática absoluta**). Por ende, ningún subtour desconectado es factible.
+* **Por qué MTZ elimina los subtours (Explicación directa):**
+  * Cada vez que viajamos de `i` a `j` (`x_{ij} = 1`), la restricción obliga a que el número de orden suba (`u_j >= u_i + 1`).
+  * Si hubiera un ciclo cerrado aparte que no pasa por la ciudad inicial `1`, los números de orden `u` tendrían que subir en cada paso alrededor del ciclo hasta que una ciudad tendría que tener un orden mayor a sí misma (imposible). Así solo puede existir un único tour conectado que sale y vuelve a la ciudad `1`.
 * **Recuento Riguroso para Examen:**
   * **Variables:** $n(n - 1)$ variables binarias $x_{ij} + (n - 1)$ variables continuas $u_i$. Total: $n^2 - 1$ variables.
   * **Restricciones:** $n$ de salida $+ n$ de entrada $+ (n - 1)(n - 2)$ restricciones MTZ. Total: $2n + n^2 - 3n + 2 = n^2 - n + 2$ restricciones (orden $O(n^2)$, frente a las $O(2^n)$ de la formulación DFJ).
@@ -831,21 +809,16 @@ Para formular TSP en PLI, no basta con exigir que cada nodo tenga grado de entra
 
 * **Problema de Decisión de TSP:**
   Dado un grafo ponderado $G = (V, E)$, matriz de costos $C = [c_{uv}]$ y un entero $K$, ¿existe un tour cerrado que visite cada ciudad exactamente una vez con costo total $\le K$?
-* **Paso 1: TSP $\in$ NP:**
-  * *Certificado:* Una permutación ordenada de vértices $(v_1, v_2, \dots, v_n)$. Tamaño $O(n)$ (polinomial).
-  * *Verificador:* Comprueba que todas las ciudades sean distintas, que existan las aristas $(v_i, v_{i+1})$ y $(v_n, v_1)$, y suma sus costos verificando que $\sum c \le K$. Corre en tiempo $O(n)$ (polinomial). Por lo tanto, **TSP $\in$ NP**.
-* **Paso 2: Problema Conocido NP-Completo:**
-  **Ciclo Hamiltoniano (HC)**: Dado un grafo no dirigido $G = (V, E)$, determinar si existe un ciclo simple que pase por todos los vértices.
-* **Paso 3: Transformación Polinomial ($\text{HC} \le_P \text{TSP}$):**
-  Dada una instancia de HC con grafo $G = (V, E)$:
-  1. Construimos un grafo completo $G' = (V, E')$ con el mismo conjunto de vértices.
-  2. Asignamos pesos a las aristas de $G'$:
-     $$c_{uv} = \begin{cases} 1 & \text{si } (u, v) \in E \\ 2 & \text{si } (u, v) \notin E \end{cases}$$
-  3. Fijamos la cota $K = |V|$.
-  4. La construcción se realiza en tiempo $O(|V|^2)$, estrictamente polinomial.
-* **Paso 4: Equivalencia Lógica Bidireccional:**
-  * ($\implies$) Si $G$ tiene un Ciclo Hamiltoniano, ese ciclo utiliza únicamente aristas que pertenecían a $E$, las cuales tienen peso 1 en $G'$. El costo total del ciclo en $G'$ es exactamente $1 \cdot |V| = |V| \le K$. Por lo tanto, existe un tour de TSP con costo $\le K$.
-  * ($\impliedby$) Si $G'$ tiene un tour de TSP con costo total $\le |V|$: como el tour recorre exactamente $|V|$ aristas y cada arista cuesta al menos 1, la **única forma** de que la suma sea $\le |V|$ es que **cada arista del tour cueste exactamente 1**. Como solo las aristas originales de $E$ tienen costo 1, todas las aristas del tour pertenecen a $E$, constituyendo un Ciclo Hamiltoniano válido en $G$.
+* **Paso 1: TSP está en NP:**
+  * Si nos dan una lista ordenada de ciudades como certificado, chequeamos en `O(n)` que estén todas las ciudades sin repetir y que la suma de los costos de las aristas sea `<= K`. Como verifica en tiempo polinomial, **TSP pertenece a NP**.
+* **Paso 2 y 3: Reducción desde Ciclo Hamiltoniano (`HC <=p TSP`):**
+  Dado un grafo `G = (V, E)` de Ciclo Hamiltoniano:
+  1. Creamos un grafo completo `G'` con las mismas ciudades.
+  2. Le ponemos **peso `1`** a las aristas que existían en `G` y **peso `2`** a las que no existían.
+  3. Fijamos el costo máximo en **`K = |V|`**. Construir `G'` tarda `O(V^2)` (polinomial).
+* **Paso 4: Equivalencia (Ida y Vuelta):**
+  * **($\implies$) Ida:** Si `G` tiene un Ciclo Hamiltoniano, usa `|V|` aristas originales (todas de peso `1`), por lo que en `G'` forma un tour de TSP de costo `|V| * 1 = |V| <= K`.
+  * **($\impliedby$) Vuelta:** Si `G'` tiene un tour de TSP de costo `<= |V|`, como el tour tiene `|V|` aristas y ninguna cuesta menos de `1`, no pudo haber usado ninguna arista de peso `2` (si usara una de peso `2`, costaría al menos `|V| + 1`). Por lo tanto, todas sus aristas son de peso `1`, existen en `G` y forman un Ciclo Hamiltoniano.
 * **Conclusión:** TSP es **NP-Completo**.
 
 ---

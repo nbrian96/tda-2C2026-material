@@ -223,17 +223,17 @@ Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas
    Dado que $\log_b a > c$, aplica estrictamente el **Caso 1 del Teorema Maestro** (el trabajo en las hojas del árbol domina el costo global):
    $$T(n) = \Theta(n^{\log_b a}) = \Theta(n^{\log_2 8}) = \Theta(n^3)$$
 
-#### 2. Demostración Formal de Correctitud por Inducción Matemática
+#### 2. Justificación Directa de Correctitud (Lista para Examen)
 
-* **Proposición $P(k)$:** El algoritmo calcula exactamente el producto $C = A \times B$ para cualquier par de matrices de orden $n = 2^k$.
-* **Caso Base ($k = 0 \implies n = 2^0 = 1$):**
-  Las matrices $A$ y $B$ tienen dimensión $1 \times 1$. El algoritmo ejecuta $C[0][0] = A[0][0] \cdot B[0][0]$, lo cual coincide exactamente con la definición del producto escalar $C_{11} = A_{11} \cdot B_{11}$. $P(0)$ es verdadero.
+* **Caso Base ($n = 1$):** Cuando las matrices son de $1 \times 1$, tienen un solo número cada una y el algoritmo multiplica directamente $A[0][0] \cdot B[0][0]$ en tiempo $O(1)$.
+* **Paso Recursivo ($n > 1$):**
+  Por propiedad de multiplicación de matrices por bloques, para obtener cada cuadrante de $C$ basta con multiplicar las mitades correspondientes de las filas de $A$ por las mitades de las columnas de $B$ y sumar ambos resultados parciales:
 
-* **Hipótesis Inductiva:** Supongamos que el algoritmo calcula correctamente el producto de matrices para toda dimensión $m = 2^j$ con $j \le k - 1$.
-* **Paso Inductivo ($k$ con $n = 2^k$):**
-  La matriz se divide en bloques de dimensión $m = 2^{k-1}$. Por hipótesis inductiva, cada uno de los 8 productos recursivos $M_1, \dots, M_8$ produce el resultado exacto de multiplicar los bloques correspondientes. Por las propiedades distributivas del álgebra lineal:
-  $$C_{ij} = \sum_{k=1}^n A_{ik} B_{kj} = \sum_{k=1}^{n/2} A_{ik} B_{kj} + \sum_{k=n/2 + 1}^n A_{ik} B_{kj}$$
-  La primera sumatoria corresponde al producto del primer bloque y la segunda sumatoria al segundo bloque. Al sumar matricialmente $M_1 + M_2$ se obtiene la suma exacta de ambas componentes para cada celda $(i, j)$ del cuadrante superior izquierdo, e idénticamente para los demás cuadrantes. Por lo tanto, $P(k)$ es verdadero $\forall k \ge 0$. $\blacksquare$
+    * Cuadrante superior izquierdo: $C_{11} = A_{11} B_{11} + A_{12} B_{21}$
+    * Cuadrante superior derecho: $C_{12} = A_{11} B_{12} + A_{12} B_{22}$
+    * Cuadrante inferior izquierdo: $C_{21} = A_{21} B_{11} + A_{22} B_{21}$
+    * Cuadrante inferior derecho: $C_{22} = A_{21} B_{12} + A_{22} B_{22}$
+  Como las 8 llamadas recursivas resuelven submatrices de la mitad de tamaño ($n/2$) hasta llegar al caso base de $1 \times 1$, la suma de los bloques reconstruye exactamente la matriz producto $C$.
 
 #### 3. Ejemplo Concreto y Traza Paso a Paso ($n = 2$)
 
@@ -376,11 +376,11 @@ Capacidad de descarte logarítmico aprovechando la dirección de la pendiente lo
    Aplica el **Caso 2 del Teorema Maestro** con $k = 0$:
    $$T(n) = \Theta(n^c \log n) = \Theta(n^0 \log n) = \Theta(\log n)$$
 
-#### 2. Demostración Formal de Existencia del Pico
+#### 2. Justificación Directa de Correctitud (Por qué siempre hay un pico en la mitad elegida)
 
-* **Lema de la Pendiente:** Si $A[m] < A[m + 1]$, entonces el subarreglo $A[m + 1 \dots fin]$ contiene al menos un elemento pico.
-* **Demostración por el Principio del Buen Orden / Contradicción:**
-  Consideremos el subarreglo $A[m + 1 \dots fin]$. Si el último elemento $A[fin]$ es mayor que $A[fin - 1]$, entonces $A[fin]$ es un pico (pues no tiene vecino derecho). Si no lo es, retrocedemos: como $A[m] < A[m + 1]$, no todos los elementos pueden ser decrecientes hacia la izquierda sin toparse con una cresta. Dado que no hay elementos adyacentes iguales, debe existir un primer índice $k \in \{m + 1, \dots, fin - 1\}$ tal que $A[k] > A[k + 1]$. Como $k$ es el primer punto de caída, necesariamente $A[k] > A[k - 1]$, lo que convierte a $A[k]$ en un pico. $\blacksquare$
+* **Idea de la pendiente:** En el centro miramos los vecinos $A[m]$ y $A[m + 1]$. Como no hay elementos consecutivos iguales, los valores sí o sí suben o bajan:
+    * **Si $A[m] < A[m + 1]$ (sube hacia la derecha):** Como a partir de $m + 1$ los números van subiendo, pasan dos cosas posibles: o bien siguen subiendo sin parar hasta el borde derecho `fin` (entonces $A[fin]$ es un pico porque es más grande que el anterior y no tiene a nadie a la derecha), o bien en algún momento dejan de subir y bajan (y el primer número donde empieza a bajar es un pico porque le gana al de su izquierda y al de su derecha). Por eso **seguro hay un pico en la mitad derecha $[m + 1, fin]$**.
+    * **Si $A[m] > A[m + 1]$ (sube hacia la izquierda):** Por el mismo razonamiento hacia la izquierda, **seguro hay un pico en la mitad izquierda $[ini, m]$** (incluso el propio $A[m]$ podría ser el pico).
 
 #### 3. Ejemplo Concreto y Traza Paso a Paso
 
@@ -477,17 +477,13 @@ Identificación de la propiedad de frontera de transición, manejo riguroso de c
    $$\log_2 1 = 0 = c \implies T(n) = \Theta(\log n)$$
    Espacio auxiliar: $O(1)$ en implementación iterativa, $O(\log n)$ en la pila de recursión.
 
-#### 2. Demostración Formal de Correctitud por Inducción Fuerte
+#### 2. Justificación Directa de Correctitud (Lista para Examen)
 
-* **Hipótesis:** Para cualquier subrango $A[ini \dots fin]$ de longitud $L = fin - ini + 1$:
-    * Si contiene al menos un cero, el algoritmo retorna el menor índice $k \in [ini, fin]$ tal que $A[k] = 0$.
-    * Si no contiene ceros, retorna $-1$.
-* **Base ($L = 0 \implies ini > fin$):** El subarreglo es vacío. Retorna $-1$. Correcto.
-* **Paso Inductivo ($L \ge 1$):**
-  Se inspecciona $A[m]$. 
-
-    * Si $A[m] = 1$: Como el arreglo tiene la estructura $1^* 0^*$, si la posición $m$ tiene un 1, todas las posiciones $j \le m$ tienen $A[j] = 1$. Por lo tanto, ningún índice $\le m$ puede ser cero. El primer cero, de existir, debe residir en $[m + 1, fin]$, un subrango de longitud $\le \lfloor L/2 \rfloor$. Por hipótesis inductiva, la llamada recursiva devolverá el resultado correcto.
-    * Si $A[m] = 0$: Si $m = 0$ o $A[m-1] = 1$, por definición $m$ es el primer cero y se retorna. Si $A[m-1] = 0$, el primer cero está estrictamente antes de $m$, residiendo en $[ini, m - 1]$. Por hipótesis inductiva, la recursión encuentra el resultado exacto. $\blacksquare$
+* Como el arreglo tiene todos los `1` al principio y todos los `0` al final, al mirar la posición del medio `m` solo pueden pasar tres cosas:
+    1. **Si `A[m] == 1`:** Como antes de un `1` solo puede haber otros `1`, es imposible que el primer `0` esté a la izquierda. Descartamos toda la mitad izquierda y buscamos a la derecha (`[m + 1, fin]`).
+    2. **Si `A[m] == 0` y su anterior es `1` (o `m == 0`):** Estamos parados justo en el cambio de `1` a `0`, así que `m` es el primer cero y lo devolvemos.
+    3. **Si `A[m] == 0` y su anterior también es `0`:** El primer cero está más atrás, así que descartamos la mitad derecha y buscamos a la izquierda (`[ini, m - 1]`).
+* Si el rango se queda sin elementos (`ini > fin`), significa que eran todos `1` y devolvemos `-1`.
 
 #### 3. Ejemplo Concreto y Traza Paso a Paso
 
@@ -633,30 +629,17 @@ Comprensión del arquetipo de *Interval Scheduling*, diseño del criterio voraz 
    * **Tiempo:** $O(n \log n)$ por el ordenamiento inicial y $O(n)$ en el barrido secuencial. Total: $\Theta(n \log n)$.
    * **Espacio:** $O(n)$ para la lista de permisos seleccionados.
 
-#### 2. Demostración Formal de Optimalidad (Greedy Stays Ahead)
+#### 2. Demostración Directa de Optimalidad ("El Voraz se Mantiene Adelante" / Greedy Stays Ahead)
 
-* **Definición de Soluciones:**
-  Sea $G = \{g_1, g_2, \dots, g_k\}$ el conjunto de intervalos elegidos por el algoritmo Greedy, ordenados cronológicamente por tiempo de fin.
-  Sea $OPT = \{o_1, o_2, \dots, o_m\}$ el conjunto de intervalos de una solución óptima arbitraria, también ordenados por tiempo de fin, con $m \ge k$.
-
-* **Lema Inductivo:** Para todo $r \le k$, el tiempo de fin del $r$-ésimo elemento voraz es menor o igual al del $r$-ésimo elemento óptimo:
-  $$f(g_r) \le f(o_r)$$
-
-* **Caso Base ($r = 1$):** El algoritmo voraz selecciona como primer elemento aquel con el menor tiempo de fin absoluto en todo el conjunto de entrada. Por ende, $f(g_1) \le f(o_1)$ por definición.
-* **Hipótesis Inductiva:** Asumimos que para un $r - 1 < k$ se cumple $f(g_{r-1}) \le f(o_{r-1})$.
-* **Paso Inductivo ($r$):**
-  Como $OPT$ es una solución factible, el intervalo $o_r$ no se solapa con $o_{r-1}$, lo que implica $s(o_r) \ge f(o_{r-1})$.
-  Aplicando la hipótesis inductiva:
-  $$s(o_r) \ge f(o_{r-1}) \ge f(g_{r-1})$$
-  Esto demuestra que cuando el algoritmo voraz buscaba su $r$-ésimo elemento tras haber seleccionado $g_{r-1}$, el intervalo $o_r$ era una alternativa perfectamente **factible y compatible**.
-  Dado que el algoritmo voraz selecciona el intervalo compatible con el menor tiempo de fin disponible, su elección $g_r$ debe satisfacer:
-  $$f(g_r) \le f(o_r)$$
-
-* **Conclusión de Optimalidad ($k = m$):**
-  Supongamos por contradicción que $m > k$, lo que significa que la solución óptima tiene al menos un intervalo adicional $o_{k+1}$.
-  Por el lema anterior aplicado a $r = k$:
-  $$s(o_{k+1}) \ge f(o_k) \ge f(g_k)$$
-  Esto significa que $o_{k+1}$ es compatible con el último elemento voraz $g_k$. Pero el algoritmo voraz terminó en $g_k$ precisamente porque no existía ningún intervalo compatible remanente en el conjunto. Contradicción. Por ende, $k = m$ y la solución voraz es **estrictamente óptima**. $\blacksquare$
+* **Idea central:** Comparemos paso a paso los permisos que elige nuestro algoritmo Greedy ($g_1, g_2, \dots, g_k$) contra los de cualquier solución óptima ($o_1, o_2, \dots, o_m$), ambos ordenados de izquierda a derecha en la ruta.
+* **1. En el primer permiso ($r = 1$):** Como Greedy elige el pedido que termina en el kilómetro más chico de todos, seguro termina antes o igual que el primero de la solución óptima (`fin(g_1) <= fin(o_1)`).
+* **2. En cualquier permiso siguiente ($r$):**
+    * Como el permiso anterior de Greedy terminó antes o igual que el del óptimo (`fin(g_{r-1}) <= fin(o_{r-1})`), a Greedy le queda libre la ruta desde antes.
+    * Por lo tanto, el $r$-ésimo pedido que eligió el óptimo ($o_r$) también está disponible y sin solaparse para Greedy.
+    * Como entre todos los disponibles Greedy siempre agarra el que termina primero, su elección $g_r$ también termina antes o igual que $o_r$ (`fin(g_r) <= fin(o_r)`).
+* **3. Por qué tienen la misma cantidad de permisos ($k = m$):**
+    * Si la solución óptima tuviera un permiso más ($o_{k+1}$), como empieza después de que termina $o_k$, también empezaría después de que termina $g_k$ (porque `fin(g_k) <= fin(o_k)`).
+    * Entonces ese permiso $o_{k+1}$ no se chocaba con $g_k$ y Greedy lo habría agregado antes de frenar. Como Greedy solo frena cuando ya no entra ningún pedido más, el óptimo no puede tener más permisos que Greedy. **Greedy es óptimo.**
 
 #### 3. Ejemplo Concreto y Tabla de Traza Paso a Paso
 
@@ -774,31 +757,14 @@ Capacidad de analizar por qué un algoritmo voraz falla en problemas NP-Hard, di
    * Barrido voraz en $O(n)$.
    * Complejidad total: $\Theta(n \log n)$ en tiempo y $O(n)$ en espacio auxiliar.
 
-#### 2. Demostración Formal de la Garantía de Aproximación 1/2
+#### 2. Demostración Directa de la Garantía 1/2 (Lista para Examen)
 
-* **Paso A (Cota Superior por Relajación Continua):**
-  Sea $OPT$ el valor de la solución óptima del problema entero 0-1, y sea $OPT_{\text{frac}}$ el valor de la solución óptima del problema de la mochila fraccionaria (donde se permiten fracciones de ítems).
-  Como toda solución entera es una solución fraccionaria factible, se cumple:
-  $$OPT \le OPT_{\text{frac}}$$
+1. **Comparación con la mochila fraccionaria:** Si pudiéramos partir los objetos (mochila fraccionaria), el valor obtenido $OPT_{\text{frac}}$ sería mayor o igual al mejor valor posible sin partir objetos ($OPT$), es decir: `OPT <= OPT_frac`.
+2. **Qué entra en la fraccionaria:** La mochila fraccionaria mete exactamente los mismos objetos enteros que metió nuestro Greedy ($V_{\text{greedy}}$) más un pedazo del primer objeto que ya no entró entero (el objeto crítico, de valor $v_k$).
+3. **Por lo tanto:** El óptimo entero nunca llega a superar la suma de esas dos partes:
+   `OPT < V_greedy + v_k`
 
-* **Paso B (Composición de la Solución Fraccionaria):**
-  La solución fraccionaria óptima coincide exactamente con los primeros $k-1$ elementos enteros tomados por el greedy ($V_{\text{greedy}}$) más una fracción estricta $\alpha \in [0, 1)$ del elemento crítico $k$:
-  $$OPT_{\text{frac}} = V_{\text{greedy}} + \alpha \cdot v_k < V_{\text{greedy}} + v_k$$
-
-* **Paso C (Desigualdad Fundamental):**
-  Por transitividad de las cotas anteriores:
-  $$OPT < V_{\text{greedy}} + v_k$$
-
-* **Paso D (Cota del Máximo):**
-  Dado que $V_{\text{aprox}} = \max(V_{\text{greedy}}, v_k)$, es inmediato que:
-  $$V_{\text{greedy}} \le V_{\text{aprox}} \quad \text{y} \quad v_k \le V_{\text{aprox}}$$
-  Sumando ambas desigualdades:
-  $$V_{\text{greedy}} + v_k \le 2 \cdot V_{\text{aprox}}$$
-
-* **Paso E (Conclusión de la Garantía 1/2):**
-  Sustituyendo en la cota de $OPT$:
-  $$OPT < 2 \cdot V_{\text{aprox}} \implies \frac{V_{\text{aprox}}}{OPT} > \frac{1}{2}$$
-  El algoritmo garantiza estrictamente más del $50\%$ del valor óptimo global en tiempo $O(n \log n)$. $\blacksquare$
+4. **Cierre en un renglón:** Como nuestro algoritmo elige el más grande entre `V_greedy` y `v_k`, ese más grande tiene que ser sí o sí **al menos la mitad de la suma de los dos** (porque si dos números suman más que `OPT`, el mayor de los dos vale al menos la mitad de `OPT`). Así queda probado que `V_aprox > OPT / 2`.
 
 #### 3. Ejemplo Concreto y Tabla de Traza Paso a Paso
 
@@ -907,30 +873,16 @@ Técnica de ordenamiento por fecha de vencimiento más temprana (*Earliest Deadl
    * **Tiempo:** $\Theta(n \log n)$ por el ordenamiento inicial.
    * **Espacio:** $O(n)$ para la lista del cronograma.
 
-#### 2. Demostración Formal de Optimalidad (Argumento de Intercambio)
+#### 2. Demostración Directa de Optimalidad (Argumento de Intercambio)
 
-* **Definición de Inversión:** Decimos que un cronograma $S$ tiene una inversión si existen dos tareas $i$ y $j$ tales que $i$ se ejecuta antes que $j$, pero $d_i > d_j$ (la tarea que vence más tarde se ejecuta antes).
-* **Propiedad de la Solución Voraz:** La solución voraz $S_{\text{greedy}}$ no tiene inversiones por definición (está ordenada por $d$ ascendente).
-* **Existencia de Inversión Adyacente:** Si un cronograma tiene inversiones, necesariamente contiene al menos un par de tareas **adyacentes y consecutivas** $i$ y $j$ con $d_i > d_j$.
-* **Efecto del Intercambio Adyacente:**
-  Sea $S$ un cronograma óptimo con la menor cantidad de inversiones. Si $S$ tiene inversiones, tomamos un par adyacente $i, j$ tal que $i$ precede inmediatamente a $j$ con $d_i > d_j$. Intercambiamos el orden de ejecución de $i$ y $j$, obteniendo un nuevo cronograma $S'$.
+* **¿Qué es una inversión?:** Decimos que un orden de tareas tiene una "inversión" si hay dos tareas pegadas $i$ y $j$ donde $i$ se hace antes que $j$, pero $j$ vencía antes ($d_i > d_j$). Nuestro algoritmo Greedy ordena por vencimiento, así que **no tiene ninguna inversión**.
+* **Qué pasa si intercambiamos un par invertido $(i, j)$ en una solución óptima:**
+  Supongamos que una solución óptima tiene a la tarea $i$ justo antes de $j$ con $d_i > d_j$, y las cambiamos de lugar (hacemos primero $j$ y después $i$):
 
-    * Las tareas programadas antes de $i$ y después de $j$ no modifican sus tiempos de inicio ni fin. Sus latencias permanecen idénticas.
-    * La tarea $j$ se ejecuta antes en $S'$ que en $S$: su tiempo de finalización se reduce de $f_j$ a $f'_j = f_j - t_i$. Por ende, su latencia $L'_j \le L_j$.
-    * La tarea $i$ finaliza en $S'$ exactamente en el instante en que antes finalizaba $j$: $f'_i = f_j$.
-    Calculamos su nueva latencia:
-    $$L'_i = \max(0, f'_i - d_i) = \max(0, f_j - d_i)$$
-    Como $d_i > d_j$, se cumple:
-    $$f_j - d_i < f_j - d_j \le L_j$$
-    Por lo tanto, $L'_i \le L_j$.
-
-    * La nueva latencia máxima del par es:
-    $$\max(L'_i, L'_j) \le \max(L_i, L_j)$$
-
-    * Por consiguiente, la latencia máxima global del cronograma $S'$ **no aumentó**:
-    $$L_{\max}(S') \le L_{\max}(S)$$
-
-* **Conclusión:** Mediante intercambios de pares adyacentes invertidos, se puede transformar cualquier solución óptima $OPT$ en la solución voraz $S_{\text{greedy}}$ sin incrementar jamás la latencia máxima. Esto prueba que $S_{\text{greedy}}$ es **estrictamente óptima**. $\blacksquare$
+    1. **El resto de las tareas no cambia:** Todas las tareas anteriores a $i$ y posteriores a $j$ terminan exactamente a la misma hora que antes.
+    2. **La tarea $j$ mejora:** Como ahora se hace antes, termina más temprano y su retraso baja (o sigue en 0).
+    3. **La tarea $i$ no supera el retraso que antes tenía $j$:** Al pasar atrás, la tarea $i$ termina exactamente a la hora en que antes terminaba $j$. Pero como el vencimiento de $i$ es más holgado que el de $j$ ($d_i > d_j$), el retraso que sufre ahora $i$ es menor que el retraso que sufría antes $j$.
+* **Conclusión:** Al desarmar cualquier inversión entre dos tareas vecinas, el retraso máximo nunca empeora. Repitiendo estos cambios hasta quitar todas las inversiones, llegamos al orden de nuestro algoritmo Greedy sin empeorar el resultado óptimo. **Por lo tanto, Greedy es óptimo.**
 
 #### 3. Ejemplo Concreto y Tabla de Traza Paso a Paso
 
@@ -1029,28 +981,23 @@ Modelado del problema canónico de *Weighted Set Cover* mediante una heurística
 
 #### 1. Deducción Metodológica Formal (Los 5 Pasos)
 
-1. **Paso 1: Formulación como Weighted Set Cover:**
-   Sea $U$ el universo de todos los vecindarios a cubrir ($|U| = V$). Cada celda candidata $c = (i, j)$ cubre un subconjunto $S_c \subseteq U$ de vecindarios y tiene costo $CTO_c$.
+1. **Paso 1: Formulación como Set Cover con Costos:**
+   Tenemos el conjunto de todos los vecindarios a cubrir ($V$ en total). Cada celda candidata $c = (i, j)$ cubre un grupo de vecindarios en su bloque de $3 \times 3$ y cuesta $CTO_c$.
 
-2. **Paso 2: Métrica de Selección Voraz (Costo Marginal por Elemento Nuevo):**
-   En cada paso, sea $U_{\text{restantes}}$ el conjunto de vecindarios aún no cubiertos. Para cada celda candidata $c$, calculamos la ganancia marginal:
-   $$\Delta(c) = |S_c \cap U_{\text{restantes}}|$$
-   Definimos el ratio voraz:
-   $$\text{Ratio}(c) = \frac{CTO_c}{\Delta(c)}$$
-   Se selecciona vorazmente la celda $c^*$ que **minimiza el costo por cada nuevo vecindario cubierto**:
-   $$c^* = \arg\min_{c: \Delta(c) > 0} \frac{CTO_c}{\Delta(c)}$$
+2. **Paso 2: Regla Voraz (Menor costo por cada vecindario nuevo):**
+   En cada paso miramos cuántos vecindarios **que todavía no tienen cobertura** ($\text{nuevos}(c)$) cubriría cada antena candidata $c$, y calculamos su costo por vecindario nuevo:
+   $$\text{Ratio}(c) = \frac{CTO_c}{\text{nuevos}(c)}$$
+   Elegimos la antena con el **menor ratio** (la más barata por cada nuevo vecindario que suma).
 
 3. **Paso 3: Actualización y Terminación:**
-   Se incorpora $c^*$ a la solución y se actualiza $U_{\text{restantes}} = U_{\text{restantes}} \setminus S_{c^*}$. Se repite hasta que $U_{\text{restantes}} = \emptyset$.
+   Agregamos la antena elegida, marcamos sus vecindarios como cubiertos y repetimos hasta que no queden vecindarios sin cubrir.
 
-4. **Paso 4: Factor de Garantía de Aproximación (Teorema de Chvátal):**
-   Como Set Cover es NP-Duro, ningún algoritmo polinomial garantiza el óptimo global a menos que $P = NP$. El algoritmo voraz garantiza una cota de aproximación armónica:
-   $$\text{Costo}(\text{Greedy}) \le H(d_{\max}) \cdot OPT \le (\ln |U| + 1) \cdot OPT$$
-   donde $H(k) = \sum_{i=1}^k \frac{1}{i}$ es el $k$-ésimo número armónico.
+4. **Paso 4: ¿Es óptimo? (Garantía de Aproximación):**
+   **No garantiza el óptimo** porque *Set Cover* es NP-Completo. Es una heurística que garantiza un costo de a lo sumo $(\ln V + 1) \cdot OPT$ (aproximación logarítmica).
 
 5. **Paso 5: Complejidad:**
-   * En cada iteración se evalúan a lo sumo $M$ celdas candidatas. La inspección de las 9 celdas vecinas toma $O(1)$.
-   * Se realizan a lo sumo $V$ iteraciones (en cada una se cubre al menos 1 vecindario nuevo).
+   * En cada paso evaluamos las $M$ celdas candidatas mirando sus 9 casillas vecinas en $O(1)$.
+   * Como en cada paso cubrimos al menos 1 vecindario nuevo, damos a lo sumo $V$ vueltas.
    * Complejidad temporal: $O(V \cdot M)$. Espacio: $O(V + M)$.
 
 #### 2. Ejemplo Concreto y Traza Paso a Paso
@@ -1316,13 +1263,11 @@ Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos
    * **Tiempo:** En el peor caso teórico sin podas el espacio sería $8^8 \approx 16.7$ millones de hojas. Al colocar una reina por fila y descartar columnas usadas, el árbol se reduce a $8! = 40.320$ permutaciones. Con las podas diagonales en tiempo real, el algoritmo explora apenas unos 876 nodos para hallar la primera solución. Complejidad asintótica: $O(N!)$ en el peor caso.
    * **Espacio Auxiliar:** $O(N)$ para la pila de recursión (profundidad 8) más $8 + 15 + 15 = 38$ booleanos de control.
 
-#### 2. Demostración Formal de Invariantes de Diagonales
+#### 2. Explicación Directa de por qué el Chequeo Diagonal es O(1)
 
-* **Teorema de la Diagonal Principal:** Dos casillas $(f_1, c_1)$ y $(f_2, c_2)$ pertenecen a la misma diagonal principal si y solo si $f_1 - c_1 = f_2 - c_2$.
-  *Demostración:* La pendiente de una diagonal principal es $m = \frac{f_2 - f_1}{c_2 - c_1} = 1$. Despejando: $f_2 - f_1 = c_2 - c_1 \iff f_2 - c_2 = f_1 - c_1$. Por lo tanto, la clave $f - c + 7$ identifica unívocamente a cada una de las 15 diagonales principales.
-
-* **Teorema de la Diagonal Secundaria:** Dos casillas $(f_1, c_1)$ y $(f_2, c_2)$ pertenecen a la misma diagonal secundaria si y solo si $f_1 + c_1 = f_2 + c_2$.
-  *Demostración:* La pendiente de una diagonal secundaria es $m = \frac{f_2 - f_1}{c_2 - c_1} = -1$. Despejando: $f_2 - f_1 = -(c_2 - c_1) \iff f_2 + c_2 = f_1 + c_1$. La clave $f + c$ identifica unívocamente a cada una de las 15 diagonales secundarias. $\blacksquare$
+* **Diagonal Principal ($\setminus$, baja de izquierda a derecha):** Cuando nos movemos un casillero abajo y uno a la derecha (`fila + 1`, `col + 1`), la resta `fila - col` no cambia. Por lo tanto, todas las casillas de una misma diagonal principal tienen el mismo resultado en `fila - col`. Le sumamos `+ 7` solo para que el índice quede entre `0` y `14` y no dé negativo.
+* **Diagonal Secundaria ($/$, sube de izquierda a derecha):** Cuando nos movemos un casillero arriba y uno a la derecha (`fila - 1`, `col + 1`), lo que se compensa y se mantiene siempre igual es la suma `fila + col` (entre `0` y `14`).
+* Gracias a esto, para saber si una casilla `(fila, col)` está amenazada no hace falta recorrer el tablero: alcanza con mirar 3 posiciones fijas en los arreglos booleanos (`col_ocupada[col]`, `diag_prin[fila - col + 7]` y `diag_sec[fila + col]`) en tiempo `O(1)`.
 
 #### 3. Ejemplo Concreto y Tabla de Traza Paso a Paso (Primeras Filas)
 
@@ -1853,35 +1798,13 @@ Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguro
 5. **Algoritmo de Reconstrucción de la Secuencia:**  
    Retrocedemos desde $K$ hasta $0$ consultando el arreglo de predecesores `padre[i]`. Si $\text{padre}[i] = i / 2$, la operación fue $\times 2$; en caso contrario, fue $+1$. Se invierte la lista resultante para presentar la secuencia en orden cronológico de $0$ a $K$.
 
-#### 2. Demostración Rigurosa de Correctitud
+#### 2. Justificación Directa de Correctitud (Lista para Examen)
 
-<div class="proof-card">
-  <div class="proof-card-header">🛡️ 1. Exhaustividad en el Espacio de Decisiones</div>
-  <p>Dado que las únicas operaciones permitidas en el universo del problema son $+1$ y $\times 2$:</p>
-  <ul>
-    <li>Si el último paso fue $+1$, el estado predecesor fue necesariamente $(i - 1)$. Opción válida para todo $i \ge 1$.</li>
-    <li>Si el último paso fue $\times 2$, el estado predecesor fue necesariamente $(i / 2)$. Esta opción <strong>solo existe si $i$ es par</strong>, ya que ningún número entero multiplicado por $2$ produce un entero impar.</li>
-  </ul>
-  <p>Por lo tanto, el conjunto de predecesores posibles es exhaustivo: $\{i - 1\}$ si $i$ es impar, o $\{i - 1, i/2\}$ si $i$ es par. No existe ningún otro camino admisible.</p>
-</div>
-
-<div class="proof-card">
-  <div class="proof-card-header">🛡️ 2. Subestructura Óptima (Demostración por Cut-and-Paste)</div>
-  <p>Supongamos que el camino óptimo global para llegar a $i$ termina con la operación $+1$, viniendo de $i - 1$, con costo $C = \text{costo}(0 \to i-1) + 1$.</p>
-  <p>Si el subcamino $(0 \to i - 1)$ no fuera óptimo, existiría un camino alternativo con menor costo $C' < \text{costo}(0 \to i - 1)$. Reemplazando dicho subcamino, obtendríamos un camino a $i$ con costo $C' + 1 < C$, lo cual contradice que $C$ era la cantidad mínima de operaciones para $i$.</p>
-  <p>El mismo razonamiento aplica si el último paso fue $\times 2$ desde $i / 2$. En consecuencia, $OPT(i)$ se construye necesariamente a partir de la solución óptima de uno de sus predecesores inmediatos.</p>
-</div>
-
-<div class="proof-card">
-  <div class="proof-card-header">🛡️ 3. Ausencia de Ciclos y Orden Topológico</div>
-  <p>Para todo $i \ge 1$, se cumple estrictamente que $i - 1 < i$ y $i / 2 < i$. El grafo de dependencias de subproblemas es un <strong>DAG (Grafo Acíclico Dirigido)</strong>, garantizando que el llenado secuencial $1, 2, \dots, K$ respeta el orden topológico sin generar llamadas recursivas circulares.</p>
-</div>
-
-<div class="proof-card">
-  <div class="proof-card-header">🛡️ 4. Inducción Fuerte sobre K</div>
-  <p><strong>Base ($K=0, K=1$):</strong> $OPT(0)=0$ y $OPT(1)=1$ son óptimos triviales comprobables de forma directa.</p>
-  <p><strong>Paso Inductivo:</strong> Asumiendo como hipótesis inductiva que $DP[j] = OPT(j)$ para todo $0 \le j < i$, el cálculo $DP[i] = \min_{p \in \text{Pred}(i)}(DP[p] + 1)$ evalúa exhaustivamente el óptimo sobre todos los predecesores válidos, garantizando por inducción matemática que $DP[i] = OPT(i)$ para todo $i \ge 0$.</p>
-</div>
+* **1. Solo hay dos formas de llegar a `i`:**
+    * Si la última operación fue `+1`, vinimos sí o sí de `i - 1`.
+    * Si la última operación fue `x2`, vinimos sí o sí de `i / 2` (y esto solo es posible cuando `i` es par).
+* **2. Subestructura óptima:** Para llegar a `i` en la menor cantidad de pasos, necesitamos haber llegado primero a `i - 1` (o a `i / 2`) en la menor cantidad de pasos posible y sumarle `1` paso más.
+* **3. Sin ciclos:** Como `i - 1` e `i / 2` son siempre más chicos que `i`, al llenar la tabla en orden desde `1` hasta `K` nos aseguramos de que ambos valores ya están calculados cuando los necesitamos.
 
 #### 3. Diagrama de Flujo y Grafo Acíclico (DAG) de Decisiones
 
@@ -2712,20 +2635,11 @@ Paolo Casanova dispone de 2 días para realizar salidas a diferentes lugares cer
 5. **Declaración Explícita de Dominios:**
    $$y_j \in \{0, 1\} \quad \forall j \in L, \qquad x_i \in \{0, 1\} \quad \forall i \in E$$
 
-#### 3. Demostración Rigurosa de Correctitud del Enlace
+#### 3. Explicación Directa de por qué Funciona la Restricción de Enlace
 
-**Lema de Validez del Enlace Lógico:**  
-Bajo la función objetivo de maximizar $\sum_{i \in E} x_i$:
-
-1. **Caso 0 (Ningún hábitat visitado):** Si Paolo no visita ningún sitio donde habite la especie $i$, entonces $y_j = 0$ para todo $j$ con $A_{ij} = 1$. En consecuencia:
-   $$\sum_{j \in L} A_{ij} \cdot y_j = 0 \implies x_i \le 0 \implies x_i = 0$$
-   Es imposible que el modelo contabilice una especie no observada.
-
-2. **Caso $\ge 1$ (Al menos un hábitat visitado):** Si visita $k \ge 1$ sitios donde habita la especie $i$, entonces $\sum_{j \in L} A_{ij} y_j = k \ge 1$. La restricción se convierte en:
-   $$x_i \le k$$
-   Dado que el dominio impone $x_i \in \{0, 1\}$ y la función objetivo maximiza $\sum x_i$ con coeficientes positivos ($+1$), el optimizador asignará el mayor valor factible: $x_i = 1$.
-
-3. **Inmunidad al Doble Cómputo:** Si visita 2 o más lugares con la misma especie, $x_i \le 2$ o $3$, pero al estar restringida por su dominio superior $x_i \le 1$, la especie aporta exactamente 1 a la función objetivo.
+1. **Si no visitamos ningún lugar donde viva la especie `i`:** La suma de los `y_j` de sus lugares da `0`. Como `x_i <= 0` y es binaria, la restricción obliga a que `x_i = 0` (no podemos contar un ave que no vimos).
+2. **Si visitamos al menos un lugar donde vive la especie `i`:** La suma de sus `y_j` da `1` o más. Como buscamos maximizar la suma de `x_i`, el modelo automáticamente le pone el mayor valor permitido a `x_i`, que es `1`.
+3. **No cuenta dos veces la misma especie:** Aunque visitemos 2 o 3 lugares donde está la misma ave (la suma da `2` o `3`), como `x_i` es binaria (`{0, 1}`), nunca puede pasar de `1`. Así cada especie distinta suma como máximo `1`.
 
 #### 4. Diagrama Visual del Grafo de Cobertura Bipartito
 
@@ -2860,13 +2774,11 @@ Una empresa de telefonía celular colocará antenas en una grilla bidimensional 
 5. **Dominios de las Variables:**
    $$y_c \in \{0, 1\} \quad \forall c \in C, \qquad x_v \in \{0, 1\} \quad \forall v \in V$$
 
-#### 3. Demostración de Validez del Modelo
+#### 3. Explicación Directa de por qué Funciona el Modelo
 
-**Teorema de Factibilidad y Presión de Costo:**  
-
-1. *Cota sobre cobertura:* Para cualquier vecindario $v$, si ninguna antena cubre su celda ($\sum_{c \in Cubren(v)} y_c = 0$), la restricción impone $x_v \le 0 \implies x_v = 0$.
-2. *Minimización del costo:* Dado que $CTE > 0$ y minimizamos $\sum y_c$, el solucionador nunca activará antenas superfluas. Si un vecindario $v$ no es necesario para alcanzar el umbral del $70\%$, el modelo preferirá mantener $x_v = 0$ con tal de ahorrar la activación de $y_c$.
-3. *Umbral estricto:* La restricción $\sum x_v \ge \lceil 0.70 |V| \rceil$ garantiza que el compromiso de servicio se satisfaga plenamente.
+1. **Si ninguna antena cubre al vecindario `v`:** La suma de las antenas en su bloque de $3 \times 3$ da `0`, lo que fuerza `x_v = 0`.
+2. **Meta del 70%:** La restricción `sum(x_v) >= 0.70 * |V|` obliga a que al menos el 70% de los vecindarios tengan `x_v = 1`, lo que a su vez obliga a encender las antenas `y_c` necesarias para cubrirlos.
+3. **No se instalan antenas de más:** Como la función objetivo minimiza el gasto total en antenas, el modelo solo activa las antenas estrictamente necesarias para llegar al 70%.
 
 #### 4. Diagrama Visual de Vecindad de Cobertura (3x3)
 
@@ -2996,13 +2908,11 @@ El sistema interconectado argentino está dividido en 9 regiones eléctricas ($R
 5. **No Negatividad de las Variables:**
    $$x_{ij} \ge 0 \quad \forall (i, j) \in L$$
 
-#### 3. Demostración Teórica de Conservación y Factibilidad
+#### 3. Explicación Directa del Balance de Energía
 
-Sumando la ecuación de balance sobre todas las regiones $i \in R$:
-$$\sum_{i \in R} G_i + \sum_{i \in R} \sum_{k \ne i} x_{ki} - \sum_{i \in R} \sum_{j \ne i} x_{ij} = \sum_{i \in R} D_i$$
-Dado que cada flujo $x_{ab}$ aparece una vez como entrada ($x_{ki}$ cuando $i=b, k=a$) y una vez como salida ($x_{ij}$ cuando $i=a, j=b$), las dobles sumatorias de flujos internos se cancelan mutuamente:
-$$\sum_{i \in R} G_i = \sum_{i \in R} D_i$$
-**Condición Necesaria de Factibilidad:** La generación global del país debe ser suficiente para satisfacer la demanda global. Si la generación total excede a la demanda, se escribe con desigualdad $\ge D_i$ para absorber el superávit.
+En cada región $i$, toda la energía que se genera localmente más la que entra desde otras regiones tiene que ser igual a la que se consume allí más la que se envía hacia afuera:
+$$\text{Generación}_i + \text{Entra}_i - \text{Sale}_i = \text{Demanda}_i$$
+*(Nota: Si el país puede generar más energía de la que consume en total, basta con poner `Sale - Entra <= Generación - Demanda` para que las centrales no estén obligadas a inyectar el sobrante).*
 
 #### 4. Diagrama Visual de Red de Flujo con Costos
 
@@ -3109,15 +3019,11 @@ Para el traslado de una carga crítica de alta seguridad de la empresa INVAP des
 5. **Cotas de las Variables:**
    $$x_{uv} \ge 0 \quad \forall (u, v) \in E$$
 
-#### 3. Demostración Teórica: Teorema de Unimodularidad Total (TUM)
+#### 3. ¿Por qué no hace falta declarar variables binarias? (Justificación Directa para Examen)
 
-**Teorema de Hoffman-Kruskal aplicado a Grafos:**  
-Sea $A \in \{-1, 0, 1\}^{|V| \times |E|}$ la matriz de incidencia nodo-arco del grafo $G$, donde cada columna correspondiente a la arista $(u, v)$ contiene exactamente dos elementos no nulos: $+1$ en la fila del nodo origen $u$ y $-1$ en la fila del nodo destino $v$.
-
-1. **Propiedad TUM:** Toda submatriz cuadrada de $A$ tiene determinante en $\{-1, 0, 1\}$.
-   - *Demostración inductiva:* Para submatrices de orden $k$, si una columna tiene solo ceros, $\det = 0$. Si tiene un único $\pm 1$, por expansión de Laplace $\det = \pm 1 \cdot \det(M_{k-1}) \in \{-1, 0, 1\}$. Si todas las columnas tienen un $+1$ y un $-1$, la suma de todas las filas es el vector nulo $\mathbf{0}$, por lo que las filas son linealmente dependientes y $\det = 0$.
-2. **Integralidad de Vértices:** Dado que $A$ es totalmente unimodular y el vector del lado derecho $b \in \{-1, 0, 1\}^{|V|}$ es entero, por la regla de Cramer **todo vértice extremo del poliedro $\{x \ge 0 : Ax = b\}$ tiene componentes estrictamente enteras**.
-3. Como la inyección total es 1, los únicos valores enteros factibles para las aristas en cualquier solución básica factible sin ciclos son $x_{uv} \in \{0, 1\}$, representando exactamente un camino simple de $s$ a $t$.
+1. **Propiedad de Unimodularidad Total (TUM):** En cualquier problema de flujo o camino mínimo sobre un grafo donde las restricciones son únicamente de conservación (`flujo que sale - flujo que entra = balance`), la matriz del sistema es **Totalmente Unimodular**.
+2. **Qué garantiza esta propiedad:** Siempre que los valores de entrada/salida sean enteros (`+1` en Ezeiza, `-1` en Bariloche y `0` en el resto), **todos los vértices del poliedro tienen coordenadas enteras**.
+3. **Conclusión:** Al resolver el modelo con **PL continua** (Simplex en tiempo polinomial), el óptimo dará automáticamente valores enteros `0` o `1` en cada arista sin necesidad de partir la carga ni usar programación entera (PLI).
 
 #### 4. Diagrama Visual del Grafo de Traslado
 
@@ -3219,19 +3125,11 @@ Formular el problema como un modelo de Programación Lineal Entera, linealizando
 5. **Función Objetivo Lineal:**
    $$\min Z$$
 
-#### 3. Demostración Matemática de Equivalencia
+#### 3. Explicación Directa de por qué Funciona la Linealización
 
-**Teorema de Equivalencia de la Linealización Minimax:**  
-Sea $(x^*, Z^*)$ una solución óptima del modelo linealizado.
-
-1. Por definición de las restricciones:
-   $$Z^* \ge L_1(x^*) \quad \text{y} \quad Z^* \ge L_2(x^*) \implies Z^* \ge \max(L_1(x^*), L_2(x^*))$$
-
-2. Supongamos por contradicción que $Z^* > \max(L_1(x^*), L_2(x^*))$. Entonces podríamos definir un valor $Z' = \max(L_1(x^*), L_2(x^*)) < Z^*$.
-3. La solución $(x^*, Z')$ satisface todas las restricciones del modelo y produce un valor objetivo $Z' < Z^*$, contradiciendo la optimalidad de $(x^*, Z^*)$.
-4. Por lo tanto, en toda solución óptima se cumple estrictamente que:
-   $$Z^* = \max(L_1(x^*), L_2(x^*))$$
-   lo que demuestra que el modelo lineal es exactamente equivalente al problema no lineal original.
+1. Como imponemos las dos restricciones `Z >= Carga_P1` y `Z >= Carga_P2`, la variable `Z` está obligada a ser **al menos tan grande como la máquina más cargada**.
+2. Como la función objetivo pide **minimizar `Z`**, el modelo "aprieta" a `Z` hacia abajo todo lo que puede hasta que choca contra la mayor de las dos cargas (`Z = max(Carga_P1, Carga_P2)`).
+3. De esa forma, achicar `Z` al mínimo es exactamente lo mismo que achicar la carga de la máquina más ocupada.
 
 #### 4. Diagrama Visual de Acotamiento de la Variable Z
 
@@ -3391,21 +3289,12 @@ Detallar la topología formal de la red, capacidades, algoritmo empleado, demost
 5. **Decodificación del Matching:**
    Toda arista $(p, (m, h))$ con flujo residual saturado $f(p, (m, h)) = 1$ representa una cita médica confirmada entre el paciente $p$, el médico $m$ y el horario $h$.
 
-#### 3. Demostración Teórica de Correctitud e Integralidad
+#### 3. Justificación Directa de Correctitud e Integralidad (Lista para Examen)
 
-**Teorema de Integralidad de Flujo (Dantzig-Fulkerson):**  
-Si todas las capacidades de la red son números enteros, entonces existe un flujo máximo en el cual el flujo en cada arista es un número entero.
-
-1. **Flujo Binario:** Dado que $c(e) = 1$ para todas las aristas de la red, en el flujo máximo calculado se cumple que $f(e) \in \{0, 1\}$ para toda arista $e \in E$.
-2. **Unicidad de Paciente:** Para cada paciente $p$, la arista de entrada tiene capacidad $c(s, p) = 1$. Por conservación:
-   $$\sum_{(m, h)} f(p, (m, h)) = f(s, p) \le 1$$
-   Por lo tanto, ningún paciente puede ser asignado a más de un turno simultáneo.
-
-3. **Unicidad de Médico en Horario:** Para cada turno $(m, h)$, la arista de salida hacia $t$ tiene $c((m, h), t) = 1$. Por conservación:
-   $$\sum_{p} f(p, (m, h)) = f((m, h), t) \le 1$$
-   Por lo tanto, ningún médico puede recibir más de un paciente en la franja $h$.
-
-4. **Biyección con el Matching Máximo:** Todo flujo entero factible de valor $k$ corresponde biyectivamente a un emparejamiento válido de cardinalidad $k$. Maximizar el flujo maximiza rigurosamente la cantidad de citas.
+1. **Por qué no da medios turnos (Teorema de Integralidad):** Como todas las capacidades de la red son números enteros (`1`), el algoritmo de flujo máximo garantiza que el flujo por cada arista será entero (`0` o `1`). Ningún paciente queda partido entre dos médicos.
+2. **A lo sumo 1 turno por paciente:** Como la arista que entra a cada paciente desde la fuente `s` tiene capacidad `1`, por conservación de flujo de ese paciente puede salir como máximo `1` unidad de flujo hacia un único turno `(m, h)`.
+3. **A lo sumo 1 paciente por médico y horario:** Como la arista que sale de cada nodo `(m, h)` hacia el sumidero `t` tiene capacidad `1`, a ese turno puede entrar como máximo `1` paciente.
+4. **Por qué maximiza las citas:** Cada unidad de flujo que llega a `t` equivale exactamente a 1 cita médica válida asignada, por lo que hallar el flujo máximo equivale a encontrar la mayor cantidad posible de citas.
 
 #### 4. Diagrama Visual de la Red en 4 Capas
 
@@ -3531,16 +3420,14 @@ El sistema interconectado energético nacional está constituido por 9 regiones 
 5. **Determinación del Transporte Interregional:**
    Para cada línea $(R_i, R_j)$, el valor $f(R_i, R_j)$ representa exactamente la energía a transmitir en MWh/día.
 
-#### 3. Demostración Teórica de Conservación y Despacho
+#### 3. Justificación Directa de Conservación y Factibilidad
 
-**Teorema de Conservación Nodal en Regiones:**  
-Para cualquier región $i \in \{R_1, \dots, R_9\}$, la ecuación de conservación de flujo impone:
-$$\sum_{\text{entradas}} f(u, R_i) = \sum_{\text{salidas}} f(R_i, v)$$
-Desglosando las conexiones con los super-nodos:
-$$f(S, R_i) + \sum_{k \ne i} f(R_k, R_i) = f(R_i, T) + \sum_{j \ne i} f(R_i, R_j)$$
-Dado que $f(S, R_i) \le G_i$ y si el sistema es factible $f(R_i, T) = D_i$:
-$$(\text{Generación utilizada}) + (\text{Importación}) = (\text{Demanda cubierta}) + (\text{Exportación})$$
-lo que coincide de manera idéntica con la primera ley de Kirchhoff y el balance termodinámico del sistema eléctrico.
+En cada región `i`, por ley de conservación de flujo en la red, todo lo que entra tiene que ser igual a todo lo que sale:
+
+- **Lo que entra a la región `i`:** La energía que genera localmente (que viene desde la super-fuente `S`, con tope `G_i`) más la energía que importa desde otras regiones.
+- **Lo que sale de la región `i`:** La energía que consume su propia demanda (que va hacia el super-sumidero `T`, con tope `D_i`) más la energía que exporta a otras regiones.
+
+Si el flujo máximo que llega al super-sumidero `T` alcanza la suma de todas las demandas `D_total`, significa que todas las aristas hacia `T` se llenaron al 100% y **toda la demanda del país quedó cubierta**. Si da menos que `D_total`, es imposible cubrir la demanda y las aristas que cruzan el corte mínimo `(A, B)` son los cuellos de botella.
 
 #### 4. Diagrama Visual de la Red con Super-Fuente y Super-Sumidero
 
@@ -3638,44 +3525,27 @@ Preguntas conceptuales de demostración formal o refutación mediante contraejem
 Indicar si la siguiente afirmación es verdadera o falsa. Si es verdadera, proveer una demostración formal rigurosa. Si es falsa, construir un contraejemplo explícito indicando nodos, aristas, capacidades originales, corte original, nuevas capacidades y el nuevo corte mínimo:  
 *“Sea $G = (V, E)$ una red de flujo arbitraria con fuente $s$, sumidero $t$ y capacidades enteras positivas $c(e)$ en cada arista $e \in E$. Sea $(A, B)$ un corte mínimo $s-t$ con respecto a las capacidades $c$. Si se suma $1$ a la capacidad de cada arista de la red ($c'(e) = c(e) + 1$), el corte $(A, B)$ sigue siendo obligatoriamente un corte mínimo respecto a las nuevas capacidades $c'$.”*
 
-#### 2. Demostración de Falsedad mediante Análisis Analítico
+#### 2. Explicación Directa de por qué es FALSA
 
 **La afirmación es FALSA.**
 
-**Análisis de Sensibilidad de la Capacidad de un Corte:**  
-Sea $(A, B)$ un corte $s-t$ cualquiera. Su capacidad bajo la función original $c$ es:
-$$C(A, B) = \sum_{e \in \delta^+(A)} c(e)$$
-donde $\delta^+(A) = \{(u, v) \in E : u \in A, v \in B\}$ es el conjunto de aristas que cruzan el corte.  
-Al aplicar la perturbación $c'(e) = c(e) + 1$, la nueva capacidad es:
-$$C'(A, B) = \sum_{e \in \delta^+(A)} (c(e) + 1) = \sum_{e \in \delta^+(A)} c(e) + \sum_{e \in \delta^+(A)} 1 = C(A, B) + |\delta^+(A)|$$
-**Conclusión Analítica:** La nueva capacidad del corte **depende linealmente de la cantidad de aristas que lo componen ($|\delta^+(A)|$)**.  
-Un corte con muchas aristas sufrirá un incremento mucho mayor que un corte compuesto por pocas aristas. Si dos cortes tenían capacidades originales cercanas, la perturbación penalizará al corte con más aristas, pudiendo invertir el orden de minimalidad.
+* **Por qué falla la intuición:** Cuando sumamos `+1` a la capacidad de **cada arista**, la capacidad de un corte **no aumenta en `+1`**, sino que aumenta en **`+1` por cada arista que tenga ese corte**.
+    * Es decir: `Capacidad_Nueva = Capacidad_Vieja + cantidad_de_aristas_del_corte`.
+* Por lo tanto, un corte que era mínimo pero tenía **muchas aristas chicas** va a subir mucho más de capacidad que otro corte que tenía **una sola arista grande**, perdiendo el primer puesto como corte mínimo.
 
-#### 3. Contraejemplo Formal Minimal (4 Nodos)
+#### 3. Contraejemplo Numérico Directo
 
-Construyamos la red más simple posible con $V = \{s, u_1, u_2, u_3, u_4, u_5, v, t\}$ donde compiten dos cortes:
+Armemos una red donde compiten dos cortes entre `s` y `t`:
 
-- **Corte 1 ($A_1 = \{s\}, B_1 = V \setminus \{s\}$):** Contiene **5 aristas** saliendo de $s$ hacia $u_1 \dots u_5$, cada una de capacidad $c = 2$:
-  $$C(A_1, B_1) = 2 + 2 + 2 + 2 + 2 = 10, \qquad |\delta^+(A_1)| = 5$$
-
-- **Corte 2 ($A_2 = V \setminus \{t\}, B_2 = \{t\}$):** Contiene **1 única arista** $(v, t)$ entrando a $t$, con capacidad $c = 11$:
-  $$C(A_2, B_2) = 11, \qquad |\delta^+(A_2)| = 1$$
-
-- **Evaluación Inicial:**
-    - $C(A_1, B_1) = 10 < 11 = C(A_2, B_2)$.
-    - El **corte mínimo original es $(A_1, B_1)$** con capacidad $10$.
-- **Evaluación tras la Perturbación ($c'(e) = c(e) + 1$):**
-    - Para el Corte 1 (5 aristas):
-    $$C'(A_1, B_1) = (2 + 1) \times 5 = 3 \times 5 = 15$$
-
-    - Para el Corte 2 (1 arista):
-    $$C'(A_2, B_2) = 11 + 1 = 12$$
-
-- **Comparación Final:**
-  $$C'(A_2, B_2) = 12 < 15 = C'(A_1, B_1)$$
-  Bajo las nuevas capacidades, el corte mínimo es ahora $(A_2, B_2)$ y **ha dejado de serlo $(A_1, B_1)$**.
-
-- **Queda formalmente refutada la afirmación.**
+- **Corte 1 (del lado de `s`):** Tiene **5 aristas** en paralelo saliendo de `s`, cada una de capacidad `2`:
+    - Capacidad original: `2 + 2 + 2 + 2 + 2 = 10`.
+- **Corte 2 (del lado de `t`):** Tiene **1 sola arista** entrando a `t`, de capacidad `11`:
+    - Capacidad original: `11`.
+- **Antes de sumar 1:** El corte mínimo es el **Corte 1** porque `10 < 11`.
+- **Después de sumar `+1` a cada arista:**
+    - **Corte 1 (5 aristas):** Cada una de las 5 aristas pasa de `2` a `3` $\to$ Nueva capacidad: `3 * 5 = 15`.
+    - **Corte 2 (1 arista):** Su única arista pasa de `11` a `12` $\to$ Nueva capacidad: `12`.
+- **Conclusión:** Ahora `12 < 15`, por lo que el Corte 1 **dejó de ser el corte mínimo** y el nuevo corte mínimo pasó a ser el Corte 2. Queda refutada la afirmación.
 
 #### 4. Diagrama Visual del Contraejemplo
 
@@ -3747,12 +3617,14 @@ Dada una red de flujo $G = (V, E)$ con capacidades enteras positivas, se ha calc
 5. **Cómputo en Tiempo Lineal:**
    Un único recorrido BFS/DFS sobre la red residual toma $O(|V| + |E|)$.
 
-#### 3. Demostración Rigurosa de Correctitud
+#### 3. Justificación Directa de Correctitud (Lista para Examen)
 
-1. **Caso 1 (Arista no saturada originalmente):** Si antes del cambio $f^*(u, v) < c(u, v)$, la arista no era un cuello de botella activo del corte mínimo. El flujo máximo previo ya era el óptimo y al no existir camino de aumento, el algoritmo termina inmediatamente en $O(V + E)$ con $|f_{nuevo}^*| = |f^*|$.
-2. **Caso 2 (Arista saturada que habilita aumento):** Si $f^*(u, v) = c(u, v)$, su capacidad residual previa era $0$ y ahora pasa a $1$. Si dicha arista permite conectar las componentes $s$ y $t$ en $G_f'$, existirá un camino simple $P$. Dado que todas las capacidades en $G_f$ son enteras y positivas a lo largo de $P$, la capacidad residual mínima es $\Delta \ge 1$.
-3. Al aumentar $1$ unidad de flujo, la capacidad residual de $(u, v)$ vuelve a $0$, restaurando el estado sin caminos de aumento a través de ella.
-4. Por el Teorema de Ford-Fulkerson, una red residual sin caminos de aumento certifica que el flujo resultante es estrictamente el flujo máximo.
+1. **El flujo máximo solo puede subir en `0` o en `1`:** Como las capacidades son enteras y solo subimos en `+1` la capacidad de una única arista `(u, v)`, cualquier corte de la red aumentó su capacidad a lo sumo en `1`.
+2. **Alcanza con un solo recorrido BFS/DFS:**
+   - Actualizamos la red residual sumando `+1` a la arista `(u, v)`.
+   - Hacemos **un único BFS** desde `s` hasta `t` en `O(V + E)`.
+   - Si encontramos un camino de `s` a `t`, mandamos `1` unidad de flujo más por ese camino y ya tenemos el nuevo flujo máximo (`|f*| + 1`).
+   - Si no hay camino de `s` a `t`, significa que hay otro cuello de botella que frena el flujo, así que el flujo máximo sigue siendo el mismo (`|f*|`).
 
 #### 4. Diagrama Visual del Proceso de Actualización
 
@@ -3839,24 +3711,22 @@ Algoritmo ActualizarFlujoAumentoUnitario(G_f, f, s, t, u, v):
    * **Clase NP-Completo (NPC):** Un problema $B$ es NP-Completo si y solo si:
      1. $B \in \text{NP}$.
      2. Para todo $A \in \text{NP}$, $A \le_P B$ (es decir, $B$ es **NP-Hard**).
-2. **El Esquema Canónico de 4 Pasos Obligatorios para Demostrar $B \in \text{NPC}$:**
-   En las correcciones de FIUBA, omitir cualquiera de estos 4 pasos implica la pérdida automática de más del $50\%$ del puntaje de la pregunta:
+2. **El Esquema Canónico de 4 Pasos Obligatorios para Demostrar que un Problema B es NP-Completo:**
+   En las correcciones de FIUBA, no hace falta usar notación matemática pesada, pero sí cumplir estos 4 pasos claros en lenguaje directo:
 
-   * **Paso 1: Demostrar que $B \in \text{NP}$.**  
-     Definir formalmente el certificado $C$, su tamaño polinomial en función de la entrada, escribir el algoritmo verificador $V(I_B, C)$ en pseudocódigo y justificar su complejidad temporal $O(P(n))$.
+   * **Paso 1: Demostrar que B está en NP (`Verificador`).**  
+     Explicar qué es el **certificado** (una solución candidata que nos dan armada) y cómo un algoritmo verificador chequea en **tiempo polinomial** si cumple las condiciones del problema.
 
-   * **Paso 2: Selección del problema conocido $A \in \text{NPC}$.**  
-     Elegir un problema cuya NP-Completitud ya fue demostrada en clase (3-SAT, Vertex Cover, Ciclo Hamiltoniano, Independent Set, Subset Sum).  
-     **DIRECCIÓN SAGRADA:** Reducir **DESDE** el problema conocido **HACIA** el nuevo problema:
-     $$A \le_P B$$
-     *(Reducir al revés, $B \le_P A$, es un error fatal que anula por completo la demostración).*
+   * **Paso 2: Elegir el problema conocido A que ya sabemos que es NP-Completo.**  
+     Elegir un problema visto en clase (3-SAT, Vertex Cover, Ciclo Hamiltoniano, Independent Set, Subset Sum, k-Coloring).  
+     **DIRECCIÓN SAGRADA:** Siempre reducir **DESDE** el problema conocido **HACIA** el problema nuevo (`Conocido <=p Nuevo`). Reducir al revés anula el ejercicio.
 
-   * **Paso 3: Definir la transformación de instancias $f: I_A \to I_B$.**  
-     Construir una función determinística que transforme cualquier instancia arbitraria $I_A$ en una instancia válida $I_B$. Demostrar analíticamente que la construcción toma tiempo polinomial $O(P(n))$.
+   * **Paso 3: Transformación Polinomial (`Transformar`).**  
+     Explicar paso a paso cómo convertir cualquier entrada del problema conocido A en una entrada del problema nuevo B en **tiempo polinomial** (sin resolver el problema).
 
-   * **Paso 4: Demostración Bidireccional de Equivalencia Lógica:**  
-     * ($\implies$) **Ida:** Si $I_A$ es una instancia positiva de $A$ ($I_A \in \text{YES}_A$), entonces $f(I_A)$ es una instancia positiva de $B$ ($f(I_A) \in \text{YES}_B$).
-     * ($\impliedby$) **Vuelta:** Si $f(I_A)$ es una instancia positiva de $B$ ($f(I_A) \in \text{YES}_B$), entonces $I_A$ es una instancia positiva de $A$ ($I_A \in \text{YES}_A$). *(O demostrar el contra-recíproco: si $I_A \in \text{NO}_A \implies f(I_A) \in \text{NO}_B$).*
+   * **Paso 4: Equivalencia ("Ida y Vuelta" con palabras):**  
+     * **Ida ($\implies$):** Explicar por qué si A tiene solución, entonces la instancia transformada de B también tiene solución.
+     * **Vuelta ($\impliedby$):** Explicar por qué si la instancia transformada de B tiene solución, de ahí podemos recuperar una solución válida para A.
 
 ---
 
@@ -3870,85 +3740,53 @@ Aparece de forma reiterada en los parciales de FIUBA (2024 y 2025). Requiere tra
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
 **Origen:** Parcial 2024-2-2 (Ej 5) y Parcial 2024-2-3 (Ej 5) / Guía 07 Ejercicio 2 y 14  
-**Qué evalúa la cátedra:** Protocolo estricto de 4 pasos, diseño de *gadgets* de subdivisión triangular de aristas, verificación polinomial, y demostración bidireccional exhaustiva.
+**Qué evalúa la cátedra:** Protocolo de 4 pasos completo, diseño del triángulo auxiliar por arista, verificación polinomial y justificación de ida y vuelta en lenguaje claro.
 
 #### 1. Enunciado Completo
 Un conjunto dominante (*Dominating Set*) en un grafo no dirigido $G = (V, E)$ es un subconjunto de vértices $D \subseteq V$ tal que todo vértice $v \in V$ pertenece a $D$ o es adyacente a al menos un vértice en $D$.  
 El problema de decisión de Dominating Set plantea: dado un grafo $G = (V, E)$ y un entero positivo $k \le |V|$, ¿existe un conjunto dominante $D$ tal que $|D| \le k$?  
 Demostrar formalmente que **Dominating Set es NP-Completo**, reduciendo desde **Vertex Cover**.
 
-#### 2. Los 5 Pasos Metodológicos de la Demostración
+#### 2. Demostración Directa (Lista para Hoja de Examen)
 
-##### Paso 1: Pertenencia a la Clase NP ($DominatingSet \in \text{NP}$)
+##### Paso 1: Dominating Set está en NP
+Si alguien nos entrega un subconjunto de vértices `certificado_D` como posible solución, podemos verificar si es válido en tiempo polinomial:
 
-- **Certificado Candidato ($C$):** Un subconjunto de vértices propuesto $D \subseteq V$.  
-    - *Tamaño del certificado:* $|D| \le |V|$ vértices. Dado que cada vértice se codifica en $O(\log |V|)$ bits, el tamaño total del certificado es $O(|V| \log |V|)$, estrictamente polinomial respecto a la entrada.
-- **Algoritmo Verificador Polinomial $V(G, k, D)$:**
-    1. Verificar que $|D| \le k$. Si no, retornar $\text{FALSO}$.
-    2. Inicializar un arreglo booleano `cubierto` de tamaño $|V|$ inicializado en $\text{FALSO}$.
-    3. Para cada vértice $u \in D$:
-     - Marcar `cubierto[u] = VERDADERO`.
-     - Para cada vecino $v$ adyacente a $u$ en $G$:
-       - Marcar `cubierto[v] = VERDADERO`.
-    4. Recorrer el arreglo: si existe algún vértice con `cubierto[x] == FALSO`, retornar $\text{FALSO}$; si todos están cubiertos, retornar $\text{VERDADERO}$.
-- **Complejidad del Verificador:** Marcar a cada $u \in D$ y a sus vecinos toma $\sum_{u \in D} (1 + \text{grado}(u)) \le |V| + 2|E| = O(|V| + |E|)$ operaciones elementales. Como el verificador corre en tiempo lineal-polinomial, **Dominating Set $\in$ NP**.
+1. Chequeamos que `certificado_D` tenga a lo sumo `k` vértices.
+2. Recorremos cada vértice de `certificado_D` y marcamos como "dominados" a él mismo y a todos sus vecinos directos.
+3. Al terminar, nos fijamos si la cantidad de vértices marcados es igual al total de vértices del grafo.
 
-##### Paso 2: Selección del Problema Conocido
-Seleccionamos el problema **Vertex Cover (VC)**, cuya versión de decisión es conocida como NP-Completa (Karp, 1972):  
-*Dado un grafo no dirigido $G = (V, E)$ y un entero $k$, ¿existe un subconjunto $S \subseteq V$ con $|S| \le k$ tal que toda arista $(u, v) \in E$ tenga al menos uno de sus extremos en $S$?*  
-Objetivo: Demostrar que:
-$$\text{Vertex Cover} \le_P \text{Dominating Set}$$
+Como solo recorremos los vértices y sus aristas una vez, el verificador tarda `O(V + E)` (polinomial). Por lo tanto, **Dominating Set pertenece a NP**.
 
-##### Paso 3: Transformación Polinomial $f(G, k) \to (G', k')$ (Diseño del Gadget)
-Sea $(G = (V, E), k)$ una instancia arbitraria de Vertex Cover.
+##### Paso 2 y 3: Reducción Polinomial desde Vertex Cover (`Vertex Cover <=p Dominating Set`)
+Sabemos que **Vertex Cover (VC)** es NP-Completo (¿existen a lo sumo `k` vértices que toquen todas las aristas de `G`?).  
+Dada una instancia `(G, k)` de Vertex Cover:
 
-1. Asumimos sin pérdida de generalidad que $G$ no posee vértices aislados (un vértice aislado no cubre aristas en VC y puede ser eliminado de la instancia de forma trivial en $O(|V|)$).
-2. Construimos el grafo transformado $G' = (V', E')$ mediante el siguiente gadget de aristas:
-   - **Vértices:** Conservamos todos los vértices originales de $V$ y agregamos un **nuevo vértice auxiliar $w_e$ por cada arista $e \in E$**:
-     $$V' = V \cup \{w_e : e \in E\}$$
-     Por lo tanto, $|V'| = |V| + |E|$.
+1. **Vértices aislados:** Asumimos sin pérdida de generalidad que `G` no tiene vértices aislados (sin aristas), ya que en Vertex Cover no sirven para cubrir ninguna arista y se pueden eliminar antes de empezar en `O(V)`.
+2. **Construcción del grafo `G'`:**
+   - Copiamos todos los vértices y aristas originales de `G`.
+   - **Por cada arista `(u, v)` de `G`, agregamos un vértice auxiliar nuevo `w_uv` y lo conectamos tanto a `u` como a `v`** (formando un triángulo entre `u`, `v` y `w_uv`).
+3. **Cota:** Mantenemos el mismo límite **`k' = k`**.
 
-   - **Aristas:** Para cada arista $e = (u, v) \in E$:
-     - Mantenemos la arista original $(u, v) \in E'$.
-     - Agregamos aristas entre el vértice auxiliar $w_e$ y ambos extremos originales $u$ y $v$: $(u, w_e)$ y $(v, w_e)$.
-     $$E' = E \cup \{(u, w_e), (v, w_e) : e = (u, v) \in E\}$$
-     Por lo tanto, $|E'| = |E| + 2|E| = 3|E|$. Cada arista original forma un triángulo $\{u, v, w_e\}$.
+*Complejidad de la transformación:* Solo agregamos un vértice y dos aristas por cada arista original, lo que toma tiempo `O(V + E)` (polinomial).
 
-3. Fijamos la cota del conjunto dominante:
-   $$k' = k$$
+#### 3. Demostración de Equivalencia (Ida y Vuelta)
 
-- **Complejidad Temporal de la Construcción:** Duplicar nodos y aristas toma tiempo $O(|V| + |E|)$, que es estrictamente polinomial.
+##### ($\implies$) Ida: Si `G` tiene un Vertex Cover de tamaño `<= k`, entonces `G'` tiene un Dominating Set de tamaño `<= k`
+Elegimos exactamente los mismos vértices del Vertex Cover como nuestro conjunto dominante `D` en `G'`.
 
-#### 3. Demostración Rigurosa de Equivalencia Bidireccional
+- **Los vértices nuevos `w_uv` quedan dominados:** Como el Vertex Cover cubría todas las aristas de `G`, para cada arista `(u, v)` al menos uno de sus extremos (`u` o `v`) está en `D`. Como `w_uv` es vecino de ambos, queda dominado.
+- **Los vértices originales de `G` quedan dominados:** Como no hay vértices aislados, todo vértice `u` tiene al menos una arista `(u, v)`. Si `u` fue elegido en `D`, se domina a sí mismo; si no fue elegido, obligatoriamente su vecino `v` está en `D` (para cubrir esa arista) y lo domina.
+Por lo tanto, `D` domina todo `G'` usando a lo sumo `k` vértices.
 
-##### ($\implies$) Si $G$ tiene un Vertex Cover $S$ con $|S| \le k$, entonces $G'$ tiene un Dominating Set $D$ con $|D| \le k$:
+##### ($\impliedby$) Vuelta: Si `G'` tiene un Dominating Set de tamaño `<= k`, entonces `G` tiene un Vertex Cover de tamaño `<= k`
+Tomamos el conjunto dominante de `G'`.
 
-- Proponemos el conjunto dominante $D = S$. Como $|S| \le k$, tenemos inmediatamente que $|D| \le k$.
-- Verifiquemos que $D$ domina a todos los vértices de $V'$:
-    1. **Vértices auxiliares $w_e \in V' \setminus V$:** Cada $w_e$ corresponde a una arista original $e = (u, v) \in E$. Dado que $S$ es un Vertex Cover de $G$, al menos uno de los extremos pertenece a $S$ (es decir, $u \in S$ o $v \in S$). Dado que en $G'$ existen las aristas $(u, w_e)$ y $(v, w_e)$, $w_e$ es adyacente a al menos un vértice en $D = S$. Por lo tanto, todo $w_e$ queda dominado.
-    2. **Vértices originales $u \in V$:** Como $G$ no tiene vértices aislados, $u$ pertenece a al menos una arista $e = (u, v) \in E$. Si $u \in S$, entonces $u \in D$ y se domina a sí mismo. Si $u \notin S$, por ser $S$ un Vertex Cover, necesariamente el otro extremo $v$ pertenece a $S = D$. Como $(u, v) \in E'$, $u$ es adyacente a $v \in D$. Por lo tanto, $u$ está dominado.
-- En conclusión, $D$ es un conjunto dominante válido de $G'$ de tamaño $\le k$.
+- **Reemplazo de vértices nuevos:** Si el conjunto dominante incluye algún vértice auxiliar `w_uv`, lo cambiamos por `u` (o por `v`). Hacer este cambio **no aumenta la cantidad de vértices** y no pierde cobertura, porque `w_uv` solo tenía como vecinos a `u` y `v` (y `u` también los cubre a ambos, además de cubrir a otros posibles vecinos).
+- Tras reemplazar todos los vértices auxiliares, nos queda un conjunto de a lo sumo `k` vértices formado **únicamente por vértices originales de `G`**.
+- **Por qué es un Vertex Cover:** Para cada arista `(u, v)` de `G`, su vértice auxiliar `w_uv` está dominado. Como ningún `w_uv` quedó dentro del conjunto elegido, sí o sí tiene que estar elegido al menos uno de sus únicos dos vecinos (`u` o `v`). Esto garantiza que toda arista `(u, v)` de `G` tiene al menos un extremo elegido.
 
-##### ($\impliedby$) Si $G'$ tiene un Dominating Set $D'$ con $|D'| \le k$, entonces $G$ tiene un Vertex Cover $S$ con $|S| \le k$:
-
-- Supongamos que $D'$ contiene vértices auxiliares $w_e$ correspondientes a aristas $e = (u, v)$.
-- En $G'$, el vértice $w_e$ solo tiene dos vecinos: $u$ y $v$.
-- Si reemplazamos en $D'$ al vértice auxiliar $w_e$ por el vértice original $u$ (o $v$):
-    - El propio $w_e$ sigue dominado porque es vecino de $u$.
-    - El vértice $u$ ahora se domina a sí mismo.
-    - Cualquier vecino original de $w_e$ (que solo podían ser $u$ y $v$) sigue dominado. Además, $u$ puede dominar a otros vecinos en $G$.
-    - El tamaño del conjunto no se incrementa: $|(D' \setminus \{w_e\}) \cup \{u\}| \le |D'| \le k$.
-- Aplicando esta sustitución a todo vértice auxiliar en $D'$, obtenemos un nuevo conjunto dominante $D'' \subseteq V$ compuesto **exclusivamente por vértices originales de $G$**, con $|D''| \le |D'| \le k$.
-- Demostremos que $D''$ es un Vertex Cover en $G$:
-    - Consideremos cualquier arista $e = (u, v) \in E$. En $G'$, el vértice auxiliar $w_e$ debe estar dominado por $D''$.
-    - Como $w_e \notin D''$ (porque $D'' \subseteq V$), $w_e$ debe ser adyacente a algún vértice en $D''$.
-    - Pero los únicos vecinos de $w_e$ en $G'$ son $u$ y $v$. Por lo tanto, necesariamente:
-    $$u \in D'' \quad \lor \quad v \in D''$$
-
-    - Esto significa que toda arista $(u, v) \in E$ tiene al menos un extremo en $D''$.
-- Por lo tanto, $S = D''$ es un Vertex Cover válido de $G$ con $|S| \le k$.
-
-**Conclusión Final:** Habiendo demostrado que Dominating Set $\in$ NP y que Vertex Cover $\le_P$ Dominating Set en ambas direcciones en tiempo polinomial, queda rigurosamente demostrado que **Dominating Set es NP-Completo**.
+**Conclusión Final:** Como Dominating Set está en NP y transformamos Vertex Cover en Dominating Set en tiempo polinomial probando la equivalencia de ida y vuelta, **Dominating Set es NP-Completo**.
 
 #### 4. Diagrama Visual del Gadget Triangular
 
@@ -4048,50 +3886,34 @@ Definiciones formales:
 - **TSP (Decisión):** Dado un grafo completo $G' = (V', E')$ con pesos enteros $w(e) \ge 0$ en las aristas y un entero $k$, determinar si existe un tour cerrado que visite cada vértice una única vez con costo total $\le k$.
 Determinar con fundamento formal si el vendedor tiene razón o si hay que despedir a Marco. Desarrollar la reducción polinomial completa con demostración de equivalencia.
 
-#### 2. Resolución y Demostración Formal
+#### 2. Demostración Directa (Lista para Hoja de Examen)
 
-**El vendedor tiene razón.** Demostraremos que:
-$$\text{Ciclo Hamiltoniano} \le_P \text{TSP (Decisión)}$$
-lo que significa que una subrutina que resuelve TSP permite resolver Ciclo Hamiltoniano de manera directa.
+**El vendedor tiene razón.** Demostraremos que podemos transformar cualquier problema de **Ciclo Hamiltoniano** en uno de **TSP (Decisión)** en tiempo polinomial (`Ciclo Hamiltoniano <=p TSP`), por lo que el software de TSP sirve para resolver Ciclo Hamiltoniano.
 
-##### 1. Transformación Polinomial $f(G) \to (G', w, k)$
-Dada una instancia arbitraria de Ciclo Hamiltoniano $G = (V, E)$ con $n = |V|$ vértices:
+##### 1. Transformación Polinomial (`O(V^2)`)
+Dado el grafo `G` de Ciclo Hamiltoniano con `n` vértices:
 
-1. Construimos un grafo completo $G' = (V, E')$ con el mismo conjunto de vértices $V$. Como es completo, para todo par de vértices distintos $u, v \in V$, existe la arista $(u, v) \in E'$.
-2. Definimos la función de ponderación $w: E' \to \mathbb{Z}^+$ según pertenezcan o no al grafo original:
-   $$w(u, v) = \begin{cases} 1 & \text{si } (u, v) \in E \text{ (la arista existía en el grafo original)} \\ 2 & \text{si } (u, v) \notin E \text{ (arista artificial de penalización)} \end{cases}$$
+1. Creamos un **grafo completo `G'`** con las mismas `n` ciudades (conectamos todos contra todos).
+2. Asignamos los pesos de las aristas en `G'` con esta regla simple:
+   - **Peso `1`** si la arista **existía** en el grafo original `G`.
+   - **Peso `2`** si la arista **no existía** en `G` (arista agregada con penalización).
+3. Fijamos el límite de costo máximo del tour en **`k = n`**.
 
-3. Fijamos el umbral de costo del tour TSP:
-   $$k = n = |V|$$
+*Complejidad:* Armar la matriz de `n x n` consultando si cada arista existía o no en `G` toma tiempo `O(n^2)` (polinomial).
 
-- **Complejidad de la Transformación:** El grafo $G'$ contiene $\binom{n}{2} = \frac{n(n-1)}{2} = O(n^2)$ aristas. Asignar los pesos 1 o 2 consultando la matriz de adyacencia de $G$ toma tiempo $O(n^2)$, estrictamente polinomial.
+##### 2. Demostración de Equivalencia (Ida y Vuelta)
 
-##### 2. Demostración de Equivalencia Bidireccional
+- **($\implies$) Ida: Si `G` tiene un Ciclo Hamiltoniano $\to$ `G'` tiene un tour TSP de costo `<= n`:**
+    - El Ciclo Hamiltoniano pasa por las `n` ciudades y vuelve al inicio usando exactamente `n` aristas que sí existen en `G`.
+    - En `G'`, todas esas aristas tienen peso `1`.
+    - Por lo tanto, ese mismo recorrido es un tour válido de TSP con costo total `n * 1 = n <= k`.
 
-- **($\implies$) Si $G$ tiene un Ciclo Hamiltoniano, entonces $G'$ tiene un tour TSP de costo $\le n$:**
-    - Sea $C = (v_1, v_2, \dots, v_n, v_1)$ un ciclo hamiltoniano en $G$.
-    - Como $C$ es un ciclo en $G$, todas sus $n$ aristas $(v_i, v_{i+1})$ y $(v_n, v_1)$ pertenecen a $E$.
-    - Por la regla de construcción, cada una de estas aristas tiene peso $w = 1$ en $G'$.
-    - El ciclo $C$ visita los $n$ vértices sin repetir y regresa al origen, constituyendo un tour válido de TSP en $G'$.
-    - El costo acumulado del tour es:
-    $$\text{Costo}(C) = \sum_{i=1}^n w(v_i, v_{i+1}) = \sum_{i=1}^n 1 = n \le k$$
+- **($\impliedby$) Vuelta: Si `G'` tiene un tour TSP de costo `<= n` $\to$ `G` tiene un Ciclo Hamiltoniano:**
+    - Todo tour de TSP que recorre las `n` ciudades y vuelve al origen usa exactamente `n` aristas.
+    - Como todas las aristas de `G'` cuestan `1` o `2`, **es imposible que el tour haya usado siquiera una arista de peso `2`**: si usara aunque sea una de peso `2`, como las otras `n - 1` cuestan al menos `1`, el costo total sería como mínimo `2 + (n - 1) = n + 1`, superando el límite `n`.
+    - Entonces, las `n` aristas usadas tienen sí o sí **peso `1`**, lo que significa que todas existían en el grafo original `G` y forman un Ciclo Hamiltoniano válido.
 
-    - Por lo tanto, $(G', w, k)$ es una instancia $\text{YES}$ de TSP.
-
-- **($\impliedby$) Si $G'$ tiene un tour TSP de costo $\le n$, entonces $G$ tiene un Ciclo Hamiltoniano:**
-    - Sea $T = (u_1, u_2, \dots, u_n, u_1)$ un tour cerrado en $G'$ que visita los $n$ vértices con costo total $\le n$.
-    - El tour consta de exactamente $n$ aristas.
-    - Por construcción de $G'$, todas las aristas tienen peso $w \in \{1, 2\}$.
-    - Supongamos por contradicción que al menos una arista del tour $T$, digamos $(u_j, u_{j+1})$, no pertenecía a $E$ ($w=2$).
-    - Dado que las restantes $n-1$ aristas tienen peso como mínimo $1$, el costo total del tour sería:
-    $$\text{Costo}(T) \ge 2 + \sum_{i \ne j} 1 = 2 + (n - 1) = n + 1 > n$$
-    lo cual contradice la hipótesis de que $\text{Costo}(T) \le n$.
-
-    - Por consiguiente, **ninguna arista del tour puede tener peso 2**. Todas las $n$ aristas de $T$ deben tener obligatoriamente peso $w = 1$.
-    - Que tengan peso 1 significa que todas las aristas de $T$ existen en $E$.
-    - Por lo tanto, $T$ es un ciclo simple en $G$ que visita los $n$ vértices sin repetir y retorna al origen: **$T$ es un Ciclo Hamiltoniano en $G$**.
-
-**Conclusión:** Marco puede cargar la matriz con pesos 1 y 2 en el software de TSP. Si el software responde que existe un tour de costo $\le n$, Marco sabe que existe un ciclo hamiltoniano. Si responde que no, no existe. **El vendedor tenía razón y Marco conserva su empleo.**
+**Conclusión:** Marco puede cargar la matriz con pesos `1` y `2` y tope `k = n` en el software de TSP. Si el software responde que sí existe tour, hay Ciclo Hamiltoniano; si responde que no, no existe. **El vendedor tenía razón y Marco conserva su empleo.**
 
 #### 3. Diagrama Visual del Gadget de Penalización
 
@@ -4137,7 +3959,7 @@ Algoritmo ReducirCicloHamiltonianoATSP(G = (V, E)):
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
     <li><strong>Asignar peso 0 a las aristas existentes y 1 a las inexistentes:</strong> Si se pone peso 0 a las aristas existentes y cota $k = 0$, matemáticamente es válido, pero muchos docentes exigen pesos estrictamente positivos ($w(e) > 0$). Con pesos $\{1, 2\}$ y cota $k = n$, se respeta la formulación clásica de TSP métrico.</li>
-    <li><strong>No demostrar la cota $n+1 > n$ en la vuelta:</strong> Omitir la desigualdad aritmética que prueba por qué una sola arista de peso 2 hace imposible alcanzar el costo $n$.</li>
+    <li><strong>No explicar por qué no puede haber aristas de peso 2 en la vuelta:</strong> Hay que mencionar explícitamente que si usara una sola arista de peso 2, el tour de $n$ aristas costaría al menos $n + 1 > n$.</li>
   </ul>
 </div>
 
@@ -4153,49 +3975,35 @@ Demostración de que la versión de decisión del problema de cambio de monedas 
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
 **Origen:** Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 5  
-**Qué evalúa la cátedra:** Concepto de orden de dificultad entre problemas en NP, manipulación de multiconjuntos con réplicas y comprensión del Teorema de Cook-Levin.
+**Qué evalúa la cátedra:** Concepto de orden de dificultad entre problemas en NP, transformación con copias de monedas y comprensión de que dos problemas NP-Completos se reducen mutuamente.
 
 #### 1. Enunciado Completo
 Demostrar formalmente que el problema del **Cambio de Monedas** (en su versión de decisión: dadas denominaciones enteras $D = \{d_1, \dots, d_m\}$, un entero objetivo $V$ y una cota $k$, ¿es posible dar cambio de valor exacto $V$ utilizando a lo sumo $k$ monedas?) **no es más difícil** que el problema de la **Suma de Subconjuntos (Subset Sum)**.  
 ¿Es posible demostrar la reducción en sentido inverso? Fundamentar en base a las clases de complejidad teóricas.
 
-#### 2. Demostración Formal
+#### 2. Demostración Directa (Lista para Hoja de Examen)
 
-**Interpretación de la Consigna:**  
-La afirmación "el problema $A$ no es más difícil que el problema $B$" equivale rigurosamente a la relación de reducción polinomial:
-$$\text{Cambio de Monedas} \le_P \text{Subset Sum}$$
+**¿Qué significa "no es más difícil"?**  
+Decir que *Cambio de Monedas* no es más difícil que *Subset Sum* significa que podemos reducir `Cambio de Monedas <=p Subset Sum` en tiempo polinomial.
 
-##### 1. Transformación Polinomial
-En Subset Sum clásico, cada elemento de un conjunto $S$ puede seleccionarse a lo sumo **una única vez** para sumar un objetivo $W$. En Cambio de Monedas, cada denominación $d_i \in D$ puede utilizarse múltiples veces, pero en total no pueden emplearse más de $k$ monedas.
+##### 1. Transformación Polinomial (`O(m * k)`)
+La diferencia entre ambos problemas es que en *Cambio de Monedas* podemos repetir una misma denominación y tenemos un tope de `k` monedas, mientras que en *Subset Sum* cada número de la lista se puede elegir una sola vez.
 
-1. Como a lo sumo se usarán $k$ monedas en total, ninguna moneda individual puede usarse más de $k$ veces.
-2. Construimos una lista de enteros $L$ creando $k$ copias independientes de cada denominación $d_i \in D$:
-   $$L = \{d_{i}^{(1)}, d_{i}^{(2)}, \dots, d_{i}^{(k)} : \forall d_i \in D\}$$
-   El conjunto $L$ contiene exactamente $m \cdot k$ enteros.
+1. **Expandir en copias:** Como en total se usan a lo sumo `k` monedas, ninguna denominación puede usarse más de `k` veces. Creamos una lista `L` repitiendo `k` veces cada denominación disponible (total: `m * k` números).
+2. **Controlar el límite de `k` monedas:** Para que Subset Sum controle al mismo tiempo que el valor sume `V` y que no se elijan más de `k` elementos, desplazamos los números multiplicando por `M = k + 1` y sumando `1`:
+   - Cada moneda de valor `d` pasa a valer **`d * (k + 1) + 1`** (el `+1` final actúa como contador de monedas).
+   - Buscamos si existe un subconjunto que sume **`W = V * (k + 1) + k'`** (para alguna cantidad `k'` de `1` a `k` monedas).
+- *Complejidad:* Generar los `m * k` números toma tiempo `O(m * k)` (polinomial respecto a `m` y `k`).
 
-3. Para controlar simultáneamente el valor monetario $V$ y que la cantidad de monedas no exceda $k$, empleamos la técnica de **desplazamiento de base (gadget decimal/binario)**:
-   - Sea $M = k + 1$ (un número estrictamente mayor que la cota de monedas).
-   - Para cada elemento $d_i^{(r)} \in L$, definimos un nuevo entero de dos campos:
-     $$e_i^{(r)} = d_i \cdot M + 1$$
+##### 2. Equivalencia (Ida y Vuelta)
 
-   - Fijamos el objetivo de Subset Sum:
-     $$W = V \cdot M + k' \quad \text{probando para cada } k' \in \{1, \dots, k\}$$
+- **($\implies$) Ida:** Si se puede formar el monto `V` usando `k'` monedas (`k' <= k`), eligiendo esas mismas `k'` copias en la lista `L` la parte alta suma `V * (k + 1)` y los `+1` suman `k'`, alcanzando exactamente `W`.
+- **($\impliedby$) Vuelta:** Si un subconjunto de la lista `L` suma `W`, como cada elemento elegido aporta `+1` y `k' < k + 1` no puede producir acarreo hacia el monto, obligatoriamente se eligieron `k' <= k` monedas cuyos valores suman exactamente `V`.
 
-   - *Alternativa directa estándar:* Dado que la versión de decisión de Cambio de Monedas con $k$ libre admite réplicas de elementos, se reduce directamente a Subset Sum con réplicas en tiempo $O(m \cdot k)$.
-- **Complejidad:** Generar los $m \cdot k$ elementos toma tiempo polinomial $O(m \cdot k)$.
+##### 3. ¿Se puede demostrar al revés (`Subset Sum <=p Cambio de Monedas`)?
+**SÍ, totalmente.**  
 
-##### 2. Equivalencia Lógica
-
-- ($\implies$) Si existe una combinación de $\le k$ monedas que suma $V$, esa combinación utiliza a lo sumo $k$ copias de las denominaciones, las cuales están presentes en $L$. Por lo tanto, existe un subconjunto de $L$ cuya suma es exactamente $V$.
-- ($\impliedby$) Todo subconjunto de $L$ que sume $V$ y contenga a lo sumo $k$ elementos corresponde a una combinación válida de monedas con las denominaciones disponibles.
-
-##### 3. ¿Es posible demostrarlo en sentido opuesto (Subset Sum $\le_P$ Cambio de Monedas)?
-**SÍ, es totalmente posible y válido.**  
-
-- **Fundamentación Teórica:** Dado que Subset Sum es un problema conocido de la clase **NP-Completo** y la versión de decisión general de Cambio de Monedas pertenece a la clase **NP**:
-    - Por la definición canónica de NP-Completitud (Cook-Levin / Karp), **todo problema en la clase NP se reduce polinomialmente a cualquier problema NP-Completo**.
-    - Si la versión de decisión del problema de monedas es NP-Completa (bajo representación binaria de denominaciones), ambos problemas son computacionalmente equivalentes bajo reducciones polinomiales de Karp:
-    $$\text{Cambio de Monedas} \equiv_P \text{Subset Sum}$$
+- *Justificación directa:* *Subset Sum* está en **NP** y la versión de decisión de *Cambio de Monedas* (con valores en binario) es **NP-Completa**. Por definición de NP-Completitud, **cualquier problema de la clase NP se puede reducir en tiempo polinomial a un problema NP-Completo**, por lo que ambos problemas tienen la misma dificultad teórica.
 
 #### 3. Diagrama Visual del Gadget de Réplicas y Base $M = k + 1$
 
@@ -4230,7 +4038,7 @@ Reducción estructural basada en el Teorema del Complemento de Gallai en grafos 
 
 **Clasificación:** 🟡 IMPORTANTE  
 **Origen:** Guía de Ejercicios 07, Ejercicio 3  
-**Qué evalúa la cátedra:** Comprensión de la dualidad estructural de grafos, demostración del Teorema de Gallai ($|IS| + |VC| = |V|$) y reducción formal de Karp en tiempo $O(1)$.
+**Qué evalúa la cátedra:** Comprensión de la dualidad entre Independent Set y Vertex Cover por complemento en tiempo `O(1)`.
 
 #### 1. Enunciado Completo
 Dados los problemas de decisión de **Independent Set** (¿existe un subconjunto de vértices $I \subseteq V$ de tamaño $|I| \ge k$ tal que no existan aristas entre vértices de $I$?) y **Vertex Cover** (¿existe un subconjunto $S \subseteq V$ de tamaño $|S| \le k'$ que cubra todas las aristas de $E$?):
@@ -4238,46 +4046,34 @@ Dados los problemas de decisión de **Independent Set** (¿existe un subconjunto
 1. Diseñar una reducción polinomial formal de **Independent Set a Vertex Cover**.
 2. Demostrar rigurosamente la equivalencia lógica fundamentando el teorema del complemento en teoría de grafos.
 
-#### 2. Demostración del Teorema del Complemento (Lema de Gallai)
+#### 2. Demostración Directa de la Propiedad del Complemento
 
-**Teorema Fundamental:**  
-En cualquier grafo no dirigido $G = (V, E)$, un subconjunto de vértices $S \subseteq V$ es un **Independent Set** si y solo si su complemento $V \setminus S$ es un **Vertex Cover**.
+**Propiedad Clave:**  
+En cualquier grafo `G`, un grupo de vértices `S` es un **Independent Set** (ninguna arista une dos vértices de `S`) si y solo si los vértices restantes **`V - S`** forman un **Vertex Cover** (toda arista toca al menos un vértice de `V - S`).
 
-**Demostración:**
+- **($\implies$) Si `S` es un Independent Set $\to$ el resto `V - S` es un Vertex Cover:**
+    - Tomemos cualquier arista `(u, v)` del grafo.
+    - Como en `S` no puede haber dos vértices conectados entre sí, es imposible que tanto `u` como `v` estén ambos dentro de `S`.
+    - Por lo tanto, al menos uno de los dos (`u` o `v`) quedó afuera de `S`, es decir, está en `V - S`.
+    - Como esto pasa para todas las aristas, `V - S` cubre todas las aristas del grafo.
 
-- **($\implies$) Si $S$ es un Independent Set, entonces $V \setminus S$ es un Vertex Cover:**
-    - Supongamos por contradicción que $V \setminus S$ no es un Vertex Cover.
-    - Esto significa que existe al menos una arista $e = (u, v) \in E$ que no está cubierta por $V \setminus S$.
-    - Para que $(u, v)$ no esté cubierta, ninguno de sus extremos puede pertenecer a $V \setminus S$.
-    - Por lo tanto, necesariamente $u \in S$ y $v \in S$.
-    - Pero si $u, v \in S$ y existe la arista $(u, v) \in E$, entonces $S$ contiene dos vértices adyacentes, lo cual contradice directamente la hipótesis de que $S$ es un conjunto independiente.
-    - La contradicción prueba que toda arista tiene al menos un extremo en $V \setminus S$, por lo que $V \setminus S$ es un Vertex Cover válido.
-- **($\impliedby$) Si $V \setminus S$ es un Vertex Cover, entonces $S$ es un Independent Set:**
-    - Supongamos por contradicción que $S$ no es un Independent Set.
-    - Esto implica que existen dos vértices $u, v \in S$ tales que $(u, v) \in E$.
-    - Pero si $(u, v) \in E$, por ser $V \setminus S$ un Vertex Cover, al menos uno de los extremos debe pertenecer a $V \setminus S$.
-    - Sin embargo, ambos extremos pertenecen a $S$, lo que significa que ninguno pertenece a $V \setminus S$.
-    - Esto contradice que $V \setminus S$ cubra la arista $(u, v)$.
-    - Por lo tanto, no pueden existir aristas entre vértices de $S$, concluyendo que $S$ es un Independent Set.
+- **($\impliedby$) Si `V - S` es un Vertex Cover $\to$ `S` es un Independent Set:**
+    - Como `V - S` cubre todas las aristas del grafo, toda arista tiene al menos un extremo en `V - S`.
+    - Eso significa que ninguna arista puede tener sus dos extremos dentro de `S`.
+    - Por lo tanto, no hay aristas entre vértices de `S`, así que `S` es un conjunto independiente válido.
 
-#### 3. Construcción de la Reducción Polinomial
+#### 3. Transformación Polinomial (`O(1)`)
 
-Dada una instancia $(G = (V, E), k)$ de Independent Set:
+Dada una instancia `(G, k)` de Independent Set:
 
-1. El grafo transformado es idéntico: $G' = G$.
-2. Fijamos la cota de Vertex Cover:
-   $$k' = |V| - k$$
+1. Dejamos exactamente el mismo grafo: **`G' = G`**.
+2. Fijamos el límite de tamaño para Vertex Cover como **`k' = |V| - k`**.
+- *Complejidad:* Solo hacemos una resta en tiempo `O(1)` (polinomial).
 
-- **Complejidad:** La transformación simplemente lee la cantidad de vértices y efectúa una resta entera en tiempo $O(1)$.
+#### 4. Equivalencia (Ida y Vuelta)
 
-#### 4. Equivalencia Lógica
-$$G \text{ tiene un Independent Set de tamaño } \ge k \iff G \text{ tiene un Vertex Cover de tamaño } \le |V| - k$$
-
-- Si existe $S$ independiente con $|S| \ge k$, su complemento $V \setminus S$ es un Vertex Cover con tamaño:
-  $$|V \setminus S| = |V| - |S| \le |V| - k = k'$$
-
-- Si existe un Vertex Cover $C$ con $|C| \le k'$, su complemento $V \setminus C$ es un Independent Set con tamaño:
-  $$|V \setminus C| = |V| - |C| \ge |V| - k' = |V| - (|V| - k) = k$$
+- **Ida:** Si `G` tiene un Independent Set `S` de tamaño **al menos `k`**, entonces los vértices restantes `V - S` son un Vertex Cover de tamaño **a lo sumo `|V| - k = k'`**.
+- **Vuelta:** Si `G` tiene un Vertex Cover `C` de tamaño **a lo sumo `k' = |V| - k`**, entonces los vértices restantes `V - C` son un Independent Set de tamaño **al menos `|V| - (|V| - k) = k`**.
 
 #### 5. Diagrama Visual de la Dualidad
 
@@ -4520,15 +4316,11 @@ FUNCION VertexCoverAproximado2(G):
     RETORNAR C
 ```
 
-**Demostración de la Garantía de Aproximación 2:**  
+**Demostración Directa de la Garantía de Aproximación 2:**  
 
-1. Sea $M$ el conjunto de aristas disjuntas seleccionadas por el algoritmo. Como ninguna arista en $M$ comparte extremos, **cualquier Vertex Cover óptimo debe contener al menos un vértice distinto por cada arista en $M$**.
-2. Por lo tanto: $OPT \ge |M|$.
-3. El algoritmo incorpora exactamente ambos extremos de cada arista en $M$, por lo que: $|C| = 2 \cdot |M|$.
-4. Combinando ambas relaciones:
-   $$|C| = 2 \cdot |M| \le 2 \cdot OPT$$
-
-5. El algoritmo garantiza una cobertura que nunca supera el doble del óptimo y corre en tiempo $O(|V| + |E|)$.
+1. Las aristas que fue eligiendo el algoritmo no se tocan entre sí (ninguna comparte vértices con otra). Si el algoritmo eligió `|M|` aristas disjuntas, **cualquier solución óptima tiene que elegir sí o sí al menos 1 vértice distinto por cada una de esas aristas** para poder cubrirlas (`OPT >= |M|`).
+2. Como nuestro algoritmo agrega **los 2 extremos** de cada arista elegida, en total agarra `|C| = 2 * |M|` vértices.
+3. Por lo tanto, `|C| = 2 * |M| <= 2 * OPT`: nunca usa más del doble de vértices que el óptimo y tarda `O(V + E)`.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -4631,18 +4423,12 @@ FUNCION MochilaFraccionariaGreedy(pesos, valores, n, W):
     RETORNAR (valor_total, fraccion)
 ```
 
-**Demostración Formal de Optimalidad (Técnica de Intercambio):**
+**Demostración Directa de Optimalidad (Argumento de Intercambio):**
 
-1. Sea $G = (x_1, x_2, \dots, x_n)$ la solución voraz y $O = (y_1, y_2, \dots, y_n)$ una solución óptima distinta.
-2. Como $G \neq O$, existe un primer índice $k$ donde difieren ($x_k \neq y_k$). Por diseño del algoritmo voraz, debe ser $x_k > y_k$ (la voraz tomó el máximo posible del elemento de mayor densidad disponible).
-3. Como la mochila está llena en ambas soluciones (o todos los elementos entraron), para compensar el déficit en el ítem $k$, la solución óptima $O$ debe haber tomado una cantidad de elementos posteriores $j > k$ donde la densidad es menor o igual ($r_j \le r_k$).
-4. Modificamos la solución óptima $O$ incrementando $y_k$ en $\Delta w$ y reduciendo elementos posteriores $y_j$ en el mismo peso $\Delta w$.
-5. La variación del beneficio en la nueva solución $O'$ es:
-   $$\Delta \text{Valor} = \Delta w \cdot r_k - \Delta w \cdot r_j = \Delta w \cdot (r_k - r_j) \ge 0$$
-   dado que $r_k \ge r_j$.
-
-6. Por ende, el valor de $O'$ no disminuye ($\text{Valor}(O') \ge \text{Valor}(O)$). Repitiendo este proceso de intercambio para todos los elementos donde difieran, podemos transformar $O$ en $G$ sin reducir nunca el valor total.
-7. Conclusión: la solución voraz $G$ es óptima.
+1. Supongamos que una solución óptima dejó afuera parte de un objeto $k$ que nuestro Greedy sí metió, y en su lugar llenó ese peso $\Delta w$ con pedazos de otros objetos $j$ que estaban más atrás en la lista.
+2. Como la lista está ordenada por valor por kilo decreciente, el objeto $k$ rinde más (o igual) por cada kilo que cualquier objeto $j$ posterior ($r_k \ge r_j$).
+3. Si en la solución óptima sacamos $\Delta w$ kilos del objeto $j$ y los cambiamos por $\Delta w$ kilos del objeto $k$, el peso total no cambia y el valor total sube o se mantiene igual.
+4. Repitiendo este cambio, cualquier solución óptima se transforma en la solución de Greedy sin perder valor. Por lo tanto, **Greedy es óptimo**.
 * **Complejidad:** Tiempo $O(n \log n)$ por el ordenamiento inicial; Espacio $O(n)$.
 
 ---
@@ -4664,21 +4450,12 @@ En la mochila 0-1 los objetos son indivisibles ($x_i \in \{0, 1\}$).
     3. Retornar la mejor de las dos opciones:
      $$V_{\text{aprox}} = \max(V_{\text{greedy}}, \; v_{\max})$$
 
-**Demostración de la Garantía de Aproximación 1/2:**
+**Demostración Directa de la Garantía 1/2:**
 
-1. Sea $V_{\text{frac}}$ el valor de la solución óptima fraccionaria sobre los mismos datos. Claramente $OPT_{01} \le V_{\text{frac}}$ (relajación).
-2. La solución fraccionaria toma exactamente los ítems enteros de $V_{\text{greedy}}$ más una fracción del ítem de corte $k$:
-   $$OPT_{01} \le V_{\text{frac}} = V_{\text{greedy}} + f \cdot v_k < V_{\text{greedy}} + v_k$$
-
-3. Dado que el ítem $k$ cabe en una mochila vacía (si $w_k \le W$), tenemos $v_k \le v_{\max}$.
-4. Por lo tanto:
-   $$OPT_{01} < V_{\text{greedy}} + v_{\max}$$
-
-5. Como $V_{\text{aprox}} = \max(V_{\text{greedy}}, v_{\max})$, se cumple trivialmente que $V_{\text{greedy}} \le V_{\text{aprox}}$ y $v_{\max} \le V_{\text{aprox}}$.
-6. Sumando ambas cotas:
-   $$OPT_{01} < V_{\text{aprox}} + V_{\text{aprox}} = 2 \cdot V_{\text{aprox}} \implies V_{\text{aprox}} \ge \frac{1}{2} OPT_{01}$$
-
-* **Garantía:** El algoritmo garantiza al menos el **$50\%$ del valor óptimo** en tiempo $O(n \log n)$.
+1. La mochila fraccionaria siempre gana o empata contra la mochila 0-1 óptima (`OPT_01 <= V_frac`).
+2. La mochila fraccionaria mete todos los objetos enteros que metió Greedy (`V_greedy`) más una fracción del primer objeto `k` que ya no entró entero (cuyo valor `v_k` es a lo sumo `v_max`).
+3. Por lo tanto, el óptimo entero es menor que la suma de esas dos cosas: `OPT_01 < V_greedy + v_max`.
+4. Como nuestro algoritmo se queda con el mayor entre `V_greedy` y `v_max`, ese mayor vale **al menos la mitad de la suma de ambos**, garantizando al menos el **50% del óptimo** (`V_aprox >= OPT_01 / 2`) en tiempo `O(n log n)`.
 
 ---
 
@@ -5136,22 +4913,11 @@ PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
             DFS_Preorden(mst, v, visitado, tour)
 ```
 
-**Demostración Rigurosa de la Garantía de Aproximación 2:**
+**Demostración Directa de la Garantía de Aproximación 2:**
 
-1. Sea $T^*$ el tour óptimo de TSP y sea $OPT = \text{Costo}(T^*)$.
-2. Si removemos una arista cualquiera del tour óptimo $T^*$, obtenemos un camino simple que conecta todos los vértices del grafo. Todo camino que conecta todos los vértices es, por definición, un árbol generador.
-3. Como el MST es el árbol generador de **mínimo costo posible**, se cumple estrictamente:
-   $$\text{Costo}(MST) \le \text{Costo}(\text{camino simple}) \le \text{Costo}(T^*) = OPT$$
-
-4. El paseo euleriano que recorre cada arista del MST dos veces tiene un costo exacto de:
-   $$\text{Costo}(\text{Paseo}) = 2 \cdot \text{Costo}(MST) \le 2 \cdot OPT$$
-
-5. El algoritmo construye el tour final $T$ reemplazando secuencias de aristas del paseo por una arista directa (atajo) hacia la próxima ciudad no visitada.
-6. Gracias a la **desigualdad triangular** ($c_{uw} \le c_{uv} + c_{vw}$), cualquier atajo directo tiene un costo menor o igual al camino alternativo recorrido.
-7. Por ende:
-   $$\text{Costo}(T) \le \text{Costo}(\text{Paseo}) = 2 \cdot \text{Costo}(MST) \le 2 \cdot OPT$$
-
-8. **Conclusión:** El algoritmo corre en $O(n^2)$ y garantiza que $\text{Costo}(T) \le 2 \cdot OPT$.
+1. **El MST cuesta menos que el tour óptimo (`Costo(MST) <= OPT`):** Si al tour óptimo de TSP le borramos una arista cualquiera, nos queda un árbol que conecta todas las ciudades. Como el Árbol Generador Mínimo (MST) es el más barato de todos los árboles posibles, seguro cuesta menos o igual que el tour óptimo.
+2. **Ida y vuelta por el MST cuesta el doble (`2 * Costo(MST) <= 2 * OPT`):** Recorrer el árbol con DFS pasando dos veces por cada arista (una de ida y otra de vuelta) cuesta exactamente `2 * Costo(MST)`.
+3. **Los atajos no encarecen el recorrido:** Cuando el DFS está por repetir una ciudad ya visitada y toma el atajo directo a la siguiente ciudad nueva, por desigualdad triangular ir directo cuesta menos o igual que dar el rodeo. Por lo tanto, el tour final cuesta **`<= 2 * OPT`**.
 
 ---
 
@@ -5176,9 +4942,9 @@ Para formular TSP en PLI, no basta con exigir que cada nodo tenga grado de entra
   Para cada par de ciudades $i, j \in \{2, \dots, n\}$ con $i \neq j$:
   $$u_i - u_j + n \cdot x_{ij} \le n - 1$$
 
-* **Demostración de por qué MTZ Elimina Subtours:**
-    * Si $x_{ij} = 1$ (la arista pertenece al tour), la restricción impone $u_j \ge u_i + 1$.
-    * Si existiera un subtour desconectado que no pasa por la ciudad 1 con $k$ ciudades ($2 \le k < n$), al sumar las restricciones a lo largo de las aristas del ciclo obtendríamos $n \cdot k \le (n - 1) \cdot k$, lo cual implica $n \le n - 1$ (una **contradicción matemática absoluta**). Por ende, ningún subtour desconectado es factible.
+* **Por qué MTZ elimina los subtours (Explicación directa):**
+    * Cada vez que viajamos de `i` a `j` (`x_{ij} = 1`), la restricción obliga a que el número de orden suba (`u_j >= u_i + 1`).
+    * Si hubiera un ciclo cerrado aparte que no pasa por la ciudad inicial `1`, los números de orden `u` tendrían que subir en cada paso alrededor del ciclo hasta que una ciudad tendría que tener un orden mayor a sí misma (imposible). Así solo puede existir un único tour conectado que sale y vuelve a la ciudad `1`.
 * **Recuento Riguroso para Examen:**
     * **Variables:** $n(n - 1)$ variables binarias $x_{ij} + (n - 1)$ variables continuas $u_i$. Total: $n^2 - 1$ variables.
     * **Restricciones:** $n$ de salida $+ n$ de entrada $+ (n - 1)(n - 2)$ restricciones MTZ. Total: $2n + n^2 - 3n + 2 = n^2 - n + 2$ restricciones (orden $O(n^2)$, frente a las $O(2^n)$ de la formulación DFJ).
@@ -5190,24 +4956,17 @@ Para formular TSP en PLI, no basta con exigir que cada nodo tenga grado de entra
 * **Problema de Decisión de TSP:**
   Dado un grafo ponderado $G = (V, E)$, matriz de costos $C = [c_{uv}]$ y un entero $K$, ¿existe un tour cerrado que visite cada ciudad exactamente una vez con costo total $\le K$?
 
-* **Paso 1: TSP $\in$ NP:**
-    * *Certificado:* Una permutación ordenada de vértices $(v_1, v_2, \dots, v_n)$. Tamaño $O(n)$ (polinomial).
-    * *Verificador:* Comprueba que todas las ciudades sean distintas, que existan las aristas $(v_i, v_{i+1})$ y $(v_n, v_1)$, y suma sus costos verificando que $\sum c \le K$. Corre en tiempo $O(n)$ (polinomial). Por lo tanto, **TSP $\in$ NP**.
-* **Paso 2: Problema Conocido NP-Completo:**
-  **Ciclo Hamiltoniano (HC)**: Dado un grafo no dirigido $G = (V, E)$, determinar si existe un ciclo simple que pase por todos los vértices.
+* **Paso 1: TSP está en NP:**
+    * Si nos dan una lista ordenada de ciudades como certificado, chequeamos en `O(n)` que estén todas las ciudades sin repetir y que la suma de los costos de las aristas sea `<= K`. Como verifica en tiempo polinomial, **TSP pertenece a NP**.
+* **Paso 2 y 3: Reducción desde Ciclo Hamiltoniano (`HC <=p TSP`):**
+  Dado un grafo `G = (V, E)` de Ciclo Hamiltoniano:
 
-* **Paso 3: Transformación Polinomial ($\text{HC} \le_P \text{TSP}$):**
-  Dada una instancia de HC con grafo $G = (V, E)$:
-
-    1. Construimos un grafo completo $G' = (V, E')$ con el mismo conjunto de vértices.
-    2. Asignamos pesos a las aristas de $G'$:
-     $$c_{uv} = \begin{cases} 1 & \text{si } (u, v) \in E \\ 2 & \text{si } (u, v) \notin E \end{cases}$$
-
-    3. Fijamos la cota $K = |V|$.
-    4. La construcción se realiza en tiempo $O(|V|^2)$, estrictamente polinomial.
-* **Paso 4: Equivalencia Lógica Bidireccional:**
-    * ($\implies$) Si $G$ tiene un Ciclo Hamiltoniano, ese ciclo utiliza únicamente aristas que pertenecían a $E$, las cuales tienen peso 1 en $G'$. El costo total del ciclo en $G'$ es exactamente $1 \cdot |V| = |V| \le K$. Por lo tanto, existe un tour de TSP con costo $\le K$.
-    * ($\impliedby$) Si $G'$ tiene un tour de TSP con costo total $\le |V|$: como el tour recorre exactamente $|V|$ aristas y cada arista cuesta al menos 1, la **única forma** de que la suma sea $\le |V|$ es que **cada arista del tour cueste exactamente 1**. Como solo las aristas originales de $E$ tienen costo 1, todas las aristas del tour pertenecen a $E$, constituyendo un Ciclo Hamiltoniano válido en $G$.
+    1. Creamos un grafo completo `G'` con las mismas ciudades.
+    2. Le ponemos **peso `1`** a las aristas que existían en `G` y **peso `2`** a las que no existían.
+    3. Fijamos el costo máximo en **`K = |V|`**. Construir `G'` tarda `O(V^2)` (polinomial).
+* **Paso 4: Equivalencia (Ida y Vuelta):**
+    * **($\implies$) Ida:** Si `G` tiene un Ciclo Hamiltoniano, usa `|V|` aristas originales (todas de peso `1`), por lo que en `G'` forma un tour de TSP de costo `|V| * 1 = |V| <= K`.
+    * **($\impliedby$) Vuelta:** Si `G'` tiene un tour de TSP de costo `<= |V|`, como el tour tiene `|V|` aristas y ninguna cuesta menos de `1`, no pudo haber usado ninguna arista de peso `2` (si usara una de peso `2`, costaría al menos `|V| + 1`). Por lo tanto, todas sus aristas son de peso `1`, existen en `G` y forman un Ciclo Hamiltoniano.
 * **Conclusión:** TSP es **NP-Completo**.
 
 ---
@@ -5249,9 +5008,7 @@ El sistema de emergencias médicas de una provincia dispone de una flota de $D$ 
 #### 2. Los 5 Pasos Metodológicos de Modelado
 
 1. **Preprocesamiento de Compatibilidad:**
-   Un dron $i$ es compatible con un puesto $j$ si y solo si:
-   $$\text{Distancia}(i, j) \le \text{AlcanceMax}_i \quad \land \quad t_i^{ini} \le h_j^{min} \quad \land \quad h_j^{max} \le t_i^{fin}$$
-   Sea $Comp(i, j) \in \{0, 1\}$ el indicador de dicha compatibilidad calculable en tiempo $O(D \cdot P)$.
+   Un dron $i$ es compatible con un puesto $j$ si y solo si está dentro de su alcance de vuelo y la ventana horaria del puesto entra dentro del horario de batería del dron (`Distancia(i, j) <= Alcance_i` y `t_ini_i <= h_min_j` y `h_max_j <= t_fin_i`). Esto se precalcula para todos los pares en `O(D * P)`.
 
 2. **Topología en Capas Nodal:**
    - Super-fuente $s$.
@@ -5260,7 +5017,7 @@ El sistema de emergencias médicas de una provincia dispone de una flota de $D$ 
    - Super-sumidero $t$.
 3. **Asignación de Aristas y Capacidades:**
    - **Aristas de Fuente a Drones:** $(s, d_i)$ con capacidad $c(s, d_i) = 2$ para todo $i$. *Justificación:* Modela directamente que cada dron puede efectuar a lo sumo 2 entregas.
-   - **Aristas de Compatibilidad Dron-Puesto:** $(d_i, p_j)$ con capacidad $c(d_i, p_j) = 1$ para cada par compatible ($Comp(i, j) = 1$). *Justificación:* Un mismo dron realiza como máximo 1 viaje hacia un puesto determinado.
+   - **Aristas de Compatibilidad Dron-Puesto:** $(d_i, p_j)$ con capacidad $c(d_i, p_j) = 1$ para cada par compatible. *Justificación:* Un mismo dron realiza como máximo 1 viaje hacia un puesto determinado.
    - **Aristas de Puestos a Sumidero:** $(p_j, t)$ con capacidad $c(p_j, t) = 1$ para todo puesto $j$. *Justificación:* Cada puesto solo requiere y absorbe 1 entrega médica.
 4. **Algoritmo de Resolución:**
    Ejecutar el algoritmo de **Edmonds-Karp** desde $s$ hasta $t$.
@@ -5268,20 +5025,12 @@ El sistema de emergencias médicas de una provincia dispone de una flota de $D$ 
 5. **Decodificación de la Solución:**
    Toda arista $(d_i, p_j)$ con flujo $f(d_i, p_j) = 1$ representa el despacho efectivo del dron $i$ hacia el puesto sanitario $j$.
 
-#### 3. Demostración Teórica de Correctitud e Integralidad
+#### 3. Justificación Directa de Correctitud e Integralidad (Lista para Examen)
 
-**Lema de Flujo Entero y Validez:**
-
-1. Como todas las capacidades de la red son números enteros ($c \in \{1, 2\}$), por el **Teorema de Integralidad de Flujo**, el flujo óptimo calculado por Edmonds-Karp asignará valores enteros a todas las aristas: $f(e) \in \{0, 1, 2\}$.
-2. Para cada dron $i$, por conservación en el nodo $d_i$:
-   $$\sum_{j} f(d_i, p_j) = f(s, d_i) \le c(s, d_i) = 2$$
-   Ningún dron realizará más de dos entregas.
-
-3. Para cada puesto $j$, por conservación en el nodo $p_j$:
-   $$\sum_{i} f(d_i, p_j) = f(p_j, t) \le c(p_j, t) = 1$$
-   Ningún puesto recibirá más de una entrega, y cada entrega provendrá de un único dron compatible con flujo $1$.
-
-4. Al maximizar el flujo saliente de $s$, se maximiza la suma de puestos que reciben servicio $\sum_j f(p_j, t)$, garantizando la cobertura óptima del sistema.
+1. **Entregas enteras (Teorema de Integralidad):** Como todas las capacidades de la red son enteras (`1` y `2`), Edmonds-Karp garantiza que el flujo por cada arista entre un dron y un puesto será `0` o `1` (nunca medio viaje).
+2. **A lo sumo 2 viajes por dron:** Como la arista desde la fuente `s` hacia cada dron tiene capacidad `2`, por conservación de flujo ese dron solo puede enviar flujo hacia como máximo `2` puestos distintos.
+3. **A lo sumo 1 entrega por puesto:** Como la arista desde cada puesto hacia el sumidero `t` tiene capacidad `1`, cada puesto recibe a lo sumo `1` dron.
+4. **Maximización:** Cada unidad de flujo que llega a `t` representa un puesto sanitario abastecido, por lo que el flujo máximo encuentra la mayor cantidad posible de puestos cubiertos.
 
 #### 4. Diagrama Visual de la Red de Flujo
 
@@ -5374,14 +5123,14 @@ Una empresa de marketing digital planifica su campaña durante los próximos $n$
 5. **Reconstrucción del Plan Óptimo:**
    Comenzando desde $(n, P)$, si $OPT(i, p) = OPT(\max(0, i-3), p - C[i]) + B[i]$, se incluye el día $i$ y se transiciona a $(\max(0, i-3), p - C[i])$; si no, se transiciona a $(i-1, p)$.
 
-#### 3. Demostración de Optimalidad por Inducción Matemática
+#### 3. Justificación Directa de Optimalidad (Lista para Examen)
 
-- **Base:** Para $i = 0$, $OPT(0, p) = 0$ es trivialmente óptimo pues no hay días.
-- **Hipótesis Inductiva:** Supongamos que $OPT(k, p)$ calcula la conversión óptima para todo $k < i$ y todo $p \le P$.
-- **Paso Inductivo:** En el día $i$, cualquier plan óptimo o bien pauta el día $i$ o no pauta el día $i$:
-    - Si no pauta el día $i$, la solución óptima restringida a los primeros $i-1$ días con presupuesto $p$ es, por hipótesis inductiva, $OPT(i-1, p)$.
-    - Si pauta el día $i$, consume $C[i]$ de presupuesto, quedando $p - C[i]$. Por la regla de enfriamiento de 2 días, no se pudo pautar ni en $i-1$ ni en $i-2$. Por ende, la subsolución previa óptima corresponde a los primeros $i-3$ días con presupuesto $p - C[i]$, que por hipótesis es $OPT(i-3, p - C[i])$.
-    - Tomar el máximo entre ambas opciones cubre todo el espacio de decisiones factibles, garantizando que $OPT(i, p)$ es estrictamente óptimo.
+En cada día `i` con presupuesto `p`, solo hay dos opciones posibles:
+
+1. **No pautar en el día `i`:** Nos queda intacto el presupuesto `p` para usar en los primeros `i - 1` días (`OPT(i - 1, p)`).
+2. **Pautar en el día `i` (si `p >= C[i]`):** Ganamos `B[i]`, gastamos `C[i]` (nos queda `p - C[i]`) y, como hay 2 días obligatorios de enfriamiento, los días `i - 1` e `i - 2` quedan prohibidos, por lo que sumamos la mejor campaña posible hasta el día `i - 3` (`OPT(i - 3, p - C[i]) + B[i]`).
+
+Como la tabla se llena desde el día `1` hasta `n` y desde presupuesto `0` hasta `P`, cuando calculamos `OPT(i, p)` tanto la fila `i - 1` como la `i - 3` ya fueron resueltas de forma óptima.
 
 #### 4. Diagrama Visual de la Decisión con Cooldown
 
@@ -5494,15 +5243,15 @@ Plantear un modelo formal de Programación Lineal Entera indicando variables, do
 #### 3. Conteo Formal de Variables y Restricciones
 
 - **Variables de Decisión:**
-    - $|S|$ variables de apertura de servidor $y_i$.
-    - $|U|$ variables de cliente atendido $u_j$.
-    - $\sum_{j \in U} |S_j|$ variables de asignación cliente-servidor $x_{ji}$.
-    - **Total:** $|S| + |U| + \sum_{j \in U} |S_j|$ variables binarias.
+   - $|S|$ variables de apertura de servidor $y_i$.
+   - $|U|$ variables de cliente atendido $u_j$.
+   - $\sum_{j \in U} |S_j|$ variables de asignación cliente-servidor $x_{ji}$.
+   - **Total:** $|S| + |U| + \sum_{j \in U} |S_j|$ variables binarias.
 - **Restricciones Lineales:**
-    - 1 restricción de umbral mínimo del 80%.
-    - $|U|$ restricciones de asignación exclusiva.
-    - $|S|$ restricciones de capacidad de tráfico con enlace de activación.
-    - **Total:** $1 + |U| + |S|$ restricciones funcionales.
+   - 1 restricción de umbral mínimo del 80%.
+   - $|U|$ restricciones de asignación exclusiva.
+   - $|S|$ restricciones de capacidad de tráfico con enlace de activación.
+   - **Total:** $1 + |U| + |S|$ restricciones funcionales.
 
 #### 4. Diagrama Visual de Enlace Lógico Cliente-Servidor
 
@@ -5548,47 +5297,33 @@ Se define formalmente el problema de **Asignación de Frecuencias (AF)** de la s
 Dado un conjunto de $A$ antenas de transmisión y un conjunto $I$ de pares no ordenados de antenas que generan interferencia destructiva si operan en la misma frecuencia, junto con un número entero $k$ de canales de radiofrecuencia disponibles, determinar si es posible asignar un canal a cada antena de modo que ningún par de antenas con interferencia comparta canal.  
 Demostrar formalmente que **Asignación de Frecuencias es NP-Completo** mediante una reducción polinomial desde **k-Coloring de Grafos**.
 
-#### 2. Demostración en el Esquema Sagrado de 4 Pasos
+#### 2. Demostración Directa en 4 Pasos (Lista para Hoja de Examen)
 
-##### Paso 1: Pertenencia a NP ($AF \in \text{NP}$)
+##### Paso 1: Asignación de Frecuencias (AF) está en NP
+Si nos dan una asignación candidata `C` que indica qué canal (de `1` a `k`) usa cada antena:
 
-- **Certificado Candidato ($C$):** Un vector de enteros $C \in \{1, \dots, k\}^A$ donde $C[a]$ representa el canal asignado a la antena $a$. Tamaño del certificado: $|A|$ enteros de tamaño $O(\log k)$ bits $\implies O(|A| \log k)$ bits (tamaño polinomial).
-- **Algoritmo Verificador Polinomial $V(A, I, k, C)$:**
-    1. Verificar que para cada antena $a \in A$, $1 \le C[a] \le k$.
-    2. Para cada par de interferencia $(u, v) \in I$:
-     - Si $C[u] == C[v]$, retornar $\text{FALSO}$ (colisión destructiva detectada).
-    3. Retornar $\text{VERDADERO}$.
-- **Complejidad del Verificador:** Recorrer las aristas de interferencia toma tiempo $O(|A| + |I|)$, estrictamente lineal-polinomial. Por lo tanto, **$AF \in \text{NP}$**.
+1. Chequeamos que todas las antenas tengan asignado un número de canal entre `1` y `k`.
+2. Recorremos cada par de antenas con interferencia `(u, v)` y verificamos que sus canales sean distintos (`C[u] != C[v]`).
+Como solo recorremos las antenas y los pares de interferencia una vez, el verificador tarda `O(A + I)` (polinomial). Luego, **AF pertenece a NP**.
 
-##### Paso 2: Selección del Problema Conocido
-Elegimos el problema **k-Coloring de Grafos** ($k \ge 3$), conocido NP-Completo (Karp, 1972):  
-*Dado un grafo $G = (V, E)$ y un entero $k$, ¿es posible asignar un color de $\{1, \dots, k\}$ a cada vértice de modo que dos vértices adyacentes tengan colores distintos?*  
-Objetivo: Demostrar que:
-$$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$
+##### Paso 2 y 3: Reducción Polinomial desde k-Coloring (`k-Coloring <=p AF`)
+Sabemos que **k-Coloring** (para `k >= 3`) es NP-Completo: dado un grafo `G = (V, E)` y `k` colores, ¿se puede pintar cada vértice de modo que ningún par unido por una arista tenga el mismo color?  
+Transformamos cualquier entrada `(G, k)` de k-Coloring en una entrada de Asignación de Frecuencias así:
 
-##### Paso 3: Transformación Polinomial $f(G, k) \to (A, I, k)$
-Dada una instancia de k-Coloring con grafo $G = (V, E)$ y entero $k$:
+1. **Antenas:** Por cada vértice de `V`, creamos una antena en `A`.
+2. **Interferencias:** Por cada arista `(u, v)` de `E`, agregamos un par de interferencia `(u, v)` en `I`.
+3. **Canales:** Usamos la misma cantidad `k` de canales que de colores.
+- *Complejidad:* Copiar vértices y aristas toma tiempo `O(V + E)` (polinomial).
 
-1. Por cada vértice $v \in V$, creamos una antena de transmisión $v \in A$.
-2. Por cada arista $(u, v) \in E$, declaramos un par de interferencia $(u, v) \in I$.
-3. El número de canales disponibles es exactamente $k$.
-- **Complejidad:** La transformación es la función identidad estructural $f(G, k) = (G, k)$ y se construye en tiempo $O(|V| + |E|)$, que es estrictamente polinomial.
+##### Paso 4: Equivalencia (Ida y Vuelta)
 
-##### Paso 4: Demostración Bidireccional de Equivalencia
+- **($\implies$) Ida: Si `G` se puede pintar con `k` colores $\to$ hay asignación válida de `k` frecuencias:**
+  Le asignamos a cada antena el número del color que recibió su vértice. Como ningún par de vértices unidos por arista tiene el mismo color, ningún par de antenas con interferencia comparte el mismo canal.
 
-- **($\implies$) Si $G$ es $k$-coloreable, entonces existe una asignación de frecuencias válida sin interferencias:**
-    - Si $G$ admite un coloreo válido con $k$ colores, existe una función $col: V \to \{1, \dots, k\}$ tal que $(u, v) \in E \implies col(u) \ne col(v)$.
-    - Asignamos al canal de la antena $v$ el color de su vértice: $\text{Canal}(v) = col(v)$.
-    - Para todo par de interferencia $(u, v) \in I$, como $(u, v) \in E$, se tiene que $\text{Canal}(u) = col(u) \ne col(v) = \text{Canal}(v)$.
-    - Por lo tanto, ninguna antena en interferencia comparte canal: es una asignación válida para AF.
+- **($\impliedby$) Vuelta: Si hay una asignación válida de `k` frecuencias $\to$ `G` se puede pintar con `k` colores:**
+  Pintamos cada vértice con el número de canal que recibió su antena. Como ningún par de antenas con interferencia tiene el mismo canal, ningún par de vértices vecinos queda con el mismo color.
 
-- **($\impliedby$) Si existe una asignación válida de $k$ frecuencias, entonces $G$ es $k$-coloreable:**
-    - Supongamos que existe una asignación de canales válida $F: A \to \{1, \dots, k\}$.
-    - Definimos el coloreo de vértices asignando $col(v) = F(v)$ para cada $v \in V$.
-    - Para toda arista $(u, v) \in E$, por la construcción existe el par de interferencia $(u, v) \in I$. Como la asignación es válida, necesariamente $F(u) \ne F(v)$, lo que implica que $col(u) \ne col(v)$.
-    - Por lo tanto, ningún par de vértices vecinos tiene el mismo color, constituyendo un $k$-coloreo válido de $G$.
-
-**Conclusión:** Habiendo demostrado que $AF \in \text{NP}$ y que $\text{k-Coloring} \le_P AF$ con equivalencia en ambos sentidos en tiempo polinomial, queda formalmente demostrado que **Asignación de Frecuencias es NP-Completo**.
+**Conclusión:** Como AF está en NP y redujimos k-Coloring a AF en tiempo polinomial probando la equivalencia de ida y vuelta, **Asignación de Frecuencias es NP-Completo**.
 
 #### 3. Diagrama Visual de la Reducción Identidad
 
@@ -5608,7 +5343,7 @@ graph LR
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Creer que porque la reducción es la identidad estructural no requiere demostración:</strong> Aunque el mapeo sea $O(1)$, la cátedra exige escribir rigurosamente los 4 pasos, el certificado polinomial y la demostración de la ida y de la vuelta.</li>
+    <li><strong>Creer que porque la reducción es la identidad estructural no requiere demostración:</strong> Aunque el mapeo sea directo, la cátedra exige escribir los 4 pasos completos: el verificador en NP, la transformación y la ida y vuelta.</li>
     <li><strong>Reducir para $k=2$:</strong> 2-Coloring (bipartición) está en P (se resuelve con BFS en $O(V+E)$). Se debe especificar que la reducción es desde $k$-Coloring con $k \ge 3$, que es donde el problema es NP-Completo.</li>
   </ul>
 </div>

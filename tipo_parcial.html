@@ -1872,9 +1872,7 @@ body.dark-mode .warning-box {
 <ol>
 <li>
 <p><strong>Preprocesamiento de Compatibilidad:</strong>
-   Un dron $i$ es compatible con un puesto $j$ si y solo si:
-   $$\text{Distancia}(i, j) \le \text{AlcanceMax}_i \quad \land \quad t_i^{ini} \le h_j^{min} \quad \land \quad h_j^{max} \le t_i^{fin}$$
-   Sea $Comp(i, j) \in \{0, 1\}$ el indicador de dicha compatibilidad calculable en tiempo $O(D \cdot P)$.</p>
+   Un dron $i$ es compatible con un puesto $j$ si y solo si está dentro de su alcance de vuelo y la ventana horaria del puesto entra dentro del horario de batería del dron (<code>Distancia(i, j) &lt;= Alcance_i</code> y <code>t_ini_i &lt;= h_min_j</code> y <code>h_max_j &lt;= t_fin_i</code>). Esto se precalcula para todos los pares en <code>O(D * P)</code>.</p>
 </li>
 <li>
 <p><strong>Topología en Capas Nodal:</strong></p>
@@ -1885,7 +1883,7 @@ body.dark-mode .warning-box {
 <li>Super-sumidero $t$.</li>
 <li><strong>Asignación de Aristas y Capacidades:</strong></li>
 <li><strong>Aristas de Fuente a Drones:</strong> $(s, d_i)$ con capacidad $c(s, d_i) = 2$ para todo $i$. <em>Justificación:</em> Modela directamente que cada dron puede efectuar a lo sumo 2 entregas.</li>
-<li><strong>Aristas de Compatibilidad Dron-Puesto:</strong> $(d_i, p_j)$ con capacidad $c(d_i, p_j) = 1$ para cada par compatible ($Comp(i, j) = 1$). <em>Justificación:</em> Un mismo dron realiza como máximo 1 viaje hacia un puesto determinado.</li>
+<li><strong>Aristas de Compatibilidad Dron-Puesto:</strong> $(d_i, p_j)$ con capacidad $c(d_i, p_j) = 1$ para cada par compatible. <em>Justificación:</em> Un mismo dron realiza como máximo 1 viaje hacia un puesto determinado.</li>
 <li><strong>Aristas de Puestos a Sumidero:</strong> $(p_j, t)$ con capacidad $c(p_j, t) = 1$ para todo puesto $j$. <em>Justificación:</em> Cada puesto solo requiere y absorbe 1 entrega médica.</li>
 <li>
 <p><strong>Algoritmo de Resolución:</strong>
@@ -1896,23 +1894,12 @@ body.dark-mode .warning-box {
    Toda arista $(d_i, p_j)$ con flujo $f(d_i, p_j) = 1$ representa el despacho efectivo del dron $i$ hacia el puesto sanitario $j$.</p>
 </li>
 </ol>
-<h4>3. Demostración Teórica de Correctitud e Integralidad</h4>
-<p><strong>Lema de Flujo Entero y Validez:</strong></p>
+<h4>3. Justificación Directa de Correctitud e Integralidad (Lista para Examen)</h4>
 <ol>
-<li>Como todas las capacidades de la red son números enteros ($c \in \{1, 2\}$), por el <strong>Teorema de Integralidad de Flujo</strong>, el flujo óptimo calculado por Edmonds-Karp asignará valores enteros a todas las aristas: $f(e) \in \{0, 1, 2\}$.</li>
-<li>
-<p>Para cada dron $i$, por conservación en el nodo $d_i$:
-   $$\sum_{j} f(d_i, p_j) = f(s, d_i) \le c(s, d_i) = 2$$
-   Ningún dron realizará más de dos entregas.</p>
-</li>
-<li>
-<p>Para cada puesto $j$, por conservación en el nodo $p_j$:
-   $$\sum_{i} f(d_i, p_j) = f(p_j, t) \le c(p_j, t) = 1$$
-   Ningún puesto recibirá más de una entrega, y cada entrega provendrá de un único dron compatible con flujo $1$.</p>
-</li>
-<li>
-<p>Al maximizar el flujo saliente de $s$, se maximiza la suma de puestos que reciben servicio $\sum_j f(p_j, t)$, garantizando la cobertura óptima del sistema.</p>
-</li>
+<li><strong>Entregas enteras (Teorema de Integralidad):</strong> Como todas las capacidades de la red son enteras (<code>1</code> y <code>2</code>), Edmonds-Karp garantiza que el flujo por cada arista entre un dron y un puesto será <code>0</code> o <code>1</code> (nunca medio viaje).</li>
+<li><strong>A lo sumo 2 viajes por dron:</strong> Como la arista desde la fuente <code>s</code> hacia cada dron tiene capacidad <code>2</code>, por conservación de flujo ese dron solo puede enviar flujo hacia como máximo <code>2</code> puestos distintos.</li>
+<li><strong>A lo sumo 1 entrega por puesto:</strong> Como la arista desde cada puesto hacia el sumidero <code>t</code> tiene capacidad <code>1</code>, cada puesto recibe a lo sumo <code>1</code> dron.</li>
+<li><strong>Maximización:</strong> Cada unidad de flujo que llega a <code>t</code> representa un puesto sanitario abastecido, por lo que el flujo máximo encuentra la mayor cantidad posible de puestos cubiertos.</li>
 </ol>
 <h4>4. Diagrama Visual de la Red de Flujo</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">graph LR
@@ -2040,17 +2027,13 @@ body.dark-mode .warning-box {
    Comenzando desde $(n, P)$, si $OPT(i, p) = OPT(\max(0, i-3), p - C[i]) + B[i]$, se incluye el día $i$ y se transiciona a $(\max(0, i-3), p - C[i])$; si no, se transiciona a $(i-1, p)$.</p>
 </li>
 </ol>
-<h4>3. Demostración de Optimalidad por Inducción Matemática</h4>
-<ul>
-<li><strong>Base:</strong> Para $i = 0$, $OPT(0, p) = 0$ es trivialmente óptimo pues no hay días.</li>
-<li><strong>Hipótesis Inductiva:</strong> Supongamos que $OPT(k, p)$ calcula la conversión óptima para todo $k &lt; i$ y todo $p \le P$.</li>
-<li><strong>Paso Inductivo:</strong> En el día $i$, cualquier plan óptimo o bien pauta el día $i$ o no pauta el día $i$:<ul>
-<li>Si no pauta el día $i$, la solución óptima restringida a los primeros $i-1$ días con presupuesto $p$ es, por hipótesis inductiva, $OPT(i-1, p)$.</li>
-<li>Si pauta el día $i$, consume $C[i]$ de presupuesto, quedando $p - C[i]$. Por la regla de enfriamiento de 2 días, no se pudo pautar ni en $i-1$ ni en $i-2$. Por ende, la subsolución previa óptima corresponde a los primeros $i-3$ días con presupuesto $p - C[i]$, que por hipótesis es $OPT(i-3, p - C[i])$.</li>
-<li>Tomar el máximo entre ambas opciones cubre todo el espacio de decisiones factibles, garantizando que $OPT(i, p)$ es estrictamente óptimo.</li>
-</ul>
-</li>
-</ul>
+<h4>3. Justificación Directa de Optimalidad (Lista para Examen)</h4>
+<p>En cada día <code>i</code> con presupuesto <code>p</code>, solo hay dos opciones posibles:</p>
+<ol>
+<li><strong>No pautar en el día <code>i</code>:</strong> Nos queda intacto el presupuesto <code>p</code> para usar en los primeros <code>i - 1</code> días (<code>OPT(i - 1, p)</code>).</li>
+<li><strong>Pautar en el día <code>i</code> (si <code>p &gt;= C[i]</code>):</strong> Ganamos <code>B[i]</code>, gastamos <code>C[i]</code> (nos queda <code>p - C[i]</code>) y, como hay 2 días obligatorios de enfriamiento, los días <code>i - 1</code> e <code>i - 2</code> quedan prohibidos, por lo que sumamos la mejor campaña posible hasta el día <code>i - 3</code> (<code>OPT(i - 3, p - C[i]) + B[i]</code>).</li>
+</ol>
+<p>Como la tabla se llena desde el día <code>1</code> hasta <code>n</code> y desde presupuesto <code>0</code> hasta <code>P</code>, cuando calculamos <code>OPT(i, p)</code> tanto la fila <code>i - 1</code> como la <code>i - 3</code> ya fueron resueltas de forma óptima.</p>
 <h4>4. Diagrama Visual de la Decisión con Cooldown</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">graph TD
     D_i["Decisión en Día i con Presupuesto p"] -->|NO Pautar| DP_prev["OPT(i-1, p)"]
@@ -2193,20 +2176,16 @@ Plantear un modelo formal de Programación Lineal Entera indicando variables, do
 </ol>
 <h4>3. Conteo Formal de Variables y Restricciones</h4>
 <ul>
-<li><strong>Variables de Decisión:</strong><ul>
+<li><strong>Variables de Decisión:</strong></li>
 <li>$|S|$ variables de apertura de servidor $y_i$.</li>
 <li>$|U|$ variables de cliente atendido $u_j$.</li>
 <li>$\sum_{j \in U} |S_j|$ variables de asignación cliente-servidor $x_{ji}$.</li>
 <li><strong>Total:</strong> $|S| + |U| + \sum_{j \in U} |S_j|$ variables binarias.</li>
-</ul>
-</li>
-<li><strong>Restricciones Lineales:</strong><ul>
+<li><strong>Restricciones Lineales:</strong></li>
 <li>1 restricción de umbral mínimo del 80%.</li>
 <li>$|U|$ restricciones de asignación exclusiva.</li>
 <li>$|S|$ restricciones de capacidad de tráfico con enlace de activación.</li>
 <li><strong>Total:</strong> $1 + |U| + |S|$ restricciones funcionales.</li>
-</ul>
-</li>
 </ul>
 <h4>4. Diagrama Visual de Enlace Lógico Cliente-Servidor</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">graph TD
@@ -2280,54 +2259,35 @@ Demostrar formalmente que <strong>Asignación de Frecuencias es NP-Completo</str
         <span class="summary-badge">Active Recall</span>
       </summary>
       <div class="solution-inner-content">
-        <h4>2. Demostración en el Esquema Sagrado de 4 Pasos</h4>
-<h5>Paso 1: Pertenencia a NP ($AF \in \text{NP}$)</h5>
-<ul>
-<li><strong>Certificado Candidato ($C$):</strong> Un vector de enteros $C \in \{1, \dots, k\}^A$ donde $C[a]$ representa el canal asignado a la antena $a$. Tamaño del certificado: $|A|$ enteros de tamaño $O(\log k)$ bits $\implies O(|A| \log k)$ bits (tamaño polinomial).</li>
-<li><strong>Algoritmo Verificador Polinomial $V(A, I, k, C)$:</strong><ol>
-<li>Verificar que para cada antena $a \in A$, $1 \le C[a] \le k$.</li>
-<li>Para cada par de interferencia $(u, v) \in I$:</li>
-<li>Si $C[u] == C[v]$, retornar $\text{FALSO}$ (colisión destructiva detectada).</li>
-<li>Retornar $\text{VERDADERO}$.</li>
-</ol>
-</li>
-<li><strong>Complejidad del Verificador:</strong> Recorrer las aristas de interferencia toma tiempo $O(|A| + |I|)$, estrictamente lineal-polinomial. Por lo tanto, <strong>$AF \in \text{NP}$</strong>.</li>
-</ul>
-<h5>Paso 2: Selección del Problema Conocido</h5>
-<p>Elegimos el problema <strong>k-Coloring de Grafos</strong> ($k \ge 3$), conocido NP-Completo (Karp, 1972):<br />
-<em>Dado un grafo $G = (V, E)$ y un entero $k$, ¿es posible asignar un color de $\{1, \dots, k\}$ a cada vértice de modo que dos vértices adyacentes tengan colores distintos?</em><br />
-Objetivo: Demostrar que:
-$$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
-<h5>Paso 3: Transformación Polinomial $f(G, k) \to (A, I, k)$</h5>
-<p>Dada una instancia de k-Coloring con grafo $G = (V, E)$ y entero $k$:</p>
+        <h4>2. Demostración Directa en 4 Pasos (Lista para Hoja de Examen)</h4>
+<h5>Paso 1: Asignación de Frecuencias (AF) está en NP</h5>
+<p>Si nos dan una asignación candidata <code>C</code> que indica qué canal (de <code>1</code> a <code>k</code>) usa cada antena:</p>
 <ol>
-<li>Por cada vértice $v \in V$, creamos una antena de transmisión $v \in A$.</li>
-<li>Por cada arista $(u, v) \in E$, declaramos un par de interferencia $(u, v) \in I$.</li>
-<li>El número de canales disponibles es exactamente $k$.</li>
-<li><strong>Complejidad:</strong> La transformación es la función identidad estructural $f(G, k) = (G, k)$ y se construye en tiempo $O(|V| + |E|)$, que es estrictamente polinomial.</li>
+<li>Chequeamos que todas las antenas tengan asignado un número de canal entre <code>1</code> y <code>k</code>.</li>
+<li>Recorremos cada par de antenas con interferencia <code>(u, v)</code> y verificamos que sus canales sean distintos (<code>C[u] != C[v]</code>).
+Como solo recorremos las antenas y los pares de interferencia una vez, el verificador tarda <code>O(A + I)</code> (polinomial). Luego, <strong>AF pertenece a NP</strong>.</li>
 </ol>
-<h5>Paso 4: Demostración Bidireccional de Equivalencia</h5>
+<h5>Paso 2 y 3: Reducción Polinomial desde k-Coloring (<code>k-Coloring &lt;=p AF</code>)</h5>
+<p>Sabemos que <strong>k-Coloring</strong> (para <code>k &gt;= 3</code>) es NP-Completo: dado un grafo <code>G = (V, E)</code> y <code>k</code> colores, ¿se puede pintar cada vértice de modo que ningún par unido por una arista tenga el mismo color?<br />
+Transformamos cualquier entrada <code>(G, k)</code> de k-Coloring en una entrada de Asignación de Frecuencias así:</p>
+<ol>
+<li><strong>Antenas:</strong> Por cada vértice de <code>V</code>, creamos una antena en <code>A</code>.</li>
+<li><strong>Interferencias:</strong> Por cada arista <code>(u, v)</code> de <code>E</code>, agregamos un par de interferencia <code>(u, v)</code> en <code>I</code>.</li>
+<li><strong>Canales:</strong> Usamos la misma cantidad <code>k</code> de canales que de colores.</li>
+<li><em>Complejidad:</em> Copiar vértices y aristas toma tiempo <code>O(V + E)</code> (polinomial).</li>
+</ol>
+<h5>Paso 4: Equivalencia (Ida y Vuelta)</h5>
 <ul>
 <li>
-<p><strong>($\implies$) Si $G$ es $k$-coloreable, entonces existe una asignación de frecuencias válida sin interferencias:</strong></p>
-<ul>
-<li>Si $G$ admite un coloreo válido con $k$ colores, existe una función $col: V \to \{1, \dots, k\}$ tal que $(u, v) \in E \implies col(u) \ne col(v)$.</li>
-<li>Asignamos al canal de la antena $v$ el color de su vértice: $\text{Canal}(v) = col(v)$.</li>
-<li>Para todo par de interferencia $(u, v) \in I$, como $(u, v) \in E$, se tiene que $\text{Canal}(u) = col(u) \ne col(v) = \text{Canal}(v)$.</li>
-<li>Por lo tanto, ninguna antena en interferencia comparte canal: es una asignación válida para AF.</li>
-</ul>
+<p><strong>($\implies$) Ida: Si <code>G</code> se puede pintar con <code>k</code> colores $\to$ hay asignación válida de <code>k</code> frecuencias:</strong>
+  Le asignamos a cada antena el número del color que recibió su vértice. Como ningún par de vértices unidos por arista tiene el mismo color, ningún par de antenas con interferencia comparte el mismo canal.</p>
 </li>
 <li>
-<p><strong>($\impliedby$) Si existe una asignación válida de $k$ frecuencias, entonces $G$ es $k$-coloreable:</strong></p>
-<ul>
-<li>Supongamos que existe una asignación de canales válida $F: A \to \{1, \dots, k\}$.</li>
-<li>Definimos el coloreo de vértices asignando $col(v) = F(v)$ para cada $v \in V$.</li>
-<li>Para toda arista $(u, v) \in E$, por la construcción existe el par de interferencia $(u, v) \in I$. Como la asignación es válida, necesariamente $F(u) \ne F(v)$, lo que implica que $col(u) \ne col(v)$.</li>
-<li>Por lo tanto, ningún par de vértices vecinos tiene el mismo color, constituyendo un $k$-coloreo válido de $G$.</li>
-</ul>
+<p><strong>($\impliedby$) Vuelta: Si hay una asignación válida de <code>k</code> frecuencias $\to$ <code>G</code> se puede pintar con <code>k</code> colores:</strong>
+  Pintamos cada vértice con el número de canal que recibió su antena. Como ningún par de antenas con interferencia tiene el mismo canal, ningún par de vértices vecinos queda con el mismo color.</p>
 </li>
 </ul>
-<p><strong>Conclusión:</strong> Habiendo demostrado que $AF \in \text{NP}$ y que $\text{k-Coloring} \le_P AF$ con equivalencia en ambos sentidos en tiempo polinomial, queda formalmente demostrado que <strong>Asignación de Frecuencias es NP-Completo</strong>.</p>
+<p><strong>Conclusión:</strong> Como AF está en NP y redujimos k-Coloring a AF en tiempo polinomial probando la equivalencia de ida y vuelta, <strong>Asignación de Frecuencias es NP-Completo</strong>.</p>
 <h4>3. Diagrama Visual de la Reducción Identidad</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">graph LR
     subgraph KColoringG [Instancia k-Coloring G]
@@ -2343,7 +2303,7 @@ $$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Creer que porque la reducción es la identidad estructural no requiere demostración:</strong> Aunque el mapeo sea $O(1)$, la cátedra exige escribir rigurosamente los 4 pasos, el certificado polinomial y la demostración de la ida y de la vuelta.</li>
+    <li><strong>Creer que porque la reducción es la identidad estructural no requiere demostración:</strong> Aunque el mapeo sea directo, la cátedra exige escribir los 4 pasos completos: el verificador en NP, la transformación y la ida y vuelta.</li>
     <li><strong>Reducir para $k=2$:</strong> 2-Coloring (bipartición) está en P (se resuelve con BFS en $O(V+E)$). Se debe especificar que la reducción es desde $k$-Coloring con $k \ge 3$, que es donde el problema es NP-Completo.</li>
   </ul>
 </div>
@@ -2397,20 +2357,20 @@ $$\text{k-Coloring} \le_P \text{Asignación de Frecuencias}$$</p>
 <p>Utilizá esta lista de verificación durante tu última hora de repaso antes de ingresar al aula:</p>
 <h3>A. Dominio de Paradigmas</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_59964" onchange="toggleChecklistItem('chk_59964', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro ($T(n) = a \cdot T(n/b) + \Theta(n^c)$) y sé identificar $a, b$ y $c$.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_46027" onchange="toggleChecklistItem('chk_46027', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_81764" onchange="toggleChecklistItem('chk_81764', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en $O(1)$ y deshaciendo el estado al retornar.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_42590" onchange="toggleChecklistItem('chk_42590', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_19200" onchange="toggleChecklistItem('chk_19200', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de $\min \max$ y conteo de variables/restricciones.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_64416" onchange="toggleChecklistItem('chk_64416', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_9683" onchange="toggleChecklistItem('chk_9683', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida ($\implies$) y vuelta ($\impliedby$).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_57382" onchange="toggleChecklistItem('chk_57382', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>División y Conquista:</strong> Me sé de memoria los 3 casos del Teorema Maestro ($T(n) = a \cdot T(n/b) + \Theta(n^c)$) y sé identificar $a, b$ y $c$.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_38822" onchange="toggleChecklistItem('chk_38822', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Greedy:</strong> Sé aplicar la demostración por inducción <em>Greedy Stays Ahead</em> y sé diseñar un contraejemplo numérico si el algoritmo voraz no es óptimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_14755" onchange="toggleChecklistItem('chk_14755', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Backtracking:</strong> Sé implementar podas de factibilidad y cotas de Branch &amp; Bound, usando tablas booleanas de control en $O(1)$ y deshaciendo el estado al retornar.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_45293" onchange="toggleChecklistItem('chk_45293', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Dinámica:</strong> Cumplo siempre los 5 pasos: 1) Definición formal del estado, 2) Casos base, 3) Ecuación de recurrencia, 4) Orden de llenado bottom-up, 5) Reconstrucción.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_30210" onchange="toggleChecklistItem('chk_30210', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Programación Lineal:</strong> Sé definir variables con sus dominios, función objetivo lineal, restricciones lineales, linealización de $\min \max$ y conteo de variables/restricciones.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_94383" onchange="toggleChecklistItem('chk_94383', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Redes de Flujo:</strong> Sé construir la super-fuente y el super-sumidero, formular la red residual con aristas hacia atrás y calcular la capacidad del corte mínimo.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_40894" onchange="toggleChecklistItem('chk_40894', this.checked)"><span class="chk-custom"></span><span class="chk-text"><strong>Reducciones NP-Completitud:</strong> Sigo estrictamente los 4 pasos: 1) Certificado y Verificador en NP, 2) Problema conocido en NPC, 3) Transformación polinomial en tiempo polinomial, 4) Demostración de ida ($\implies$) y vuelta ($\impliedby$).</span></label></li>
 </ul>
 <h3>B. Ejecución en la Hoja de Examen</h3>
 <ul>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_52899" onchange="toggleChecklistItem('chk_52899', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_76701" onchange="toggleChecklistItem('chk_76701', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_86417" onchange="toggleChecklistItem('chk_86417', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
-<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_53919" onchange="toggleChecklistItem('chk_53919', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término ($O(n \log n)$, $O(V \cdot E)$, etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_57495" onchange="toggleChecklistItem('chk_57495', this.checked)"><span class="chk-custom"></span><span class="chk-text">Cada ejercicio está escrito en una <strong>hoja separada</strong> con nombre y padrón.</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_7179" onchange="toggleChecklistItem('chk_7179', this.checked)"><span class="chk-custom"></span><span class="chk-text">El pseudocódigo usa palabras clave claras (<code>PROCEDIMIENTO</code>, <code>FUNCION</code>, <code>SI</code>, <code>SINO</code>, <code>MIENTRAS</code>, <code>PARA</code>, <code>RETORNAR</code>).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_4326" onchange="toggleChecklistItem('chk_4326', this.checked)"><span class="chk-custom"></span><span class="chk-text">Contemplé los <strong>casos borde</strong> relevantes (estructuras vacías, un elemento, capacidades nulas, grafos sin aristas).</span></label></li>
+<li class="checklist-interactive-item"><label class="chk-label"><input type="checkbox" class="exam-checklist-input" data-chk-id="chk_72916" onchange="toggleChecklistItem('chk_72916', this.checked)"><span class="chk-custom"></span><span class="chk-text">Justifiqué la <strong>complejidad temporal y espacial</strong> explicando de dónde sale cada término ($O(n \log n)$, $O(V \cdot E)$, etc.), sin limitarme a tirar una fórmula suelta.</span></label></li>
 </ul>
 <div class="search-empty-state" id="searchEmptyState" style="display: none;">
   <div class="empty-state-icon">🔍</div>

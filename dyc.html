@@ -2215,20 +2215,20 @@ Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas
    $$\log_b a = 3 &gt; 2 = c$$
    Dado que $\log_b a &gt; c$, aplica estrictamente el <strong>Caso 1 del Teorema Maestro</strong> (el trabajo en las hojas del árbol domina el costo global):
    $$T(n) = \Theta(n^{\log_b a}) = \Theta(n^{\log_2 8}) = \Theta(n^3)$$</p>
-<h4>2. Demostración Formal de Correctitud por Inducción Matemática</h4>
+<h4>2. Justificación Directa de Correctitud (Lista para Examen)</h4>
 <ul>
-<li><strong>Proposición $P(k)$:</strong> El algoritmo calcula exactamente el producto $C = A \times B$ para cualquier par de matrices de orden $n = 2^k$.</li>
+<li><strong>Caso Base ($n = 1$):</strong> Cuando las matrices son de $1 \times 1$, tienen un solo número cada una y el algoritmo multiplica directamente $A[0][0] \cdot B[0][0]$ en tiempo $O(1)$.</li>
 <li>
-<p><strong>Caso Base ($k = 0 \implies n = 2^0 = 1$):</strong>
-  Las matrices $A$ y $B$ tienen dimensión $1 \times 1$. El algoritmo ejecuta $C[0][0] = A[0][0] \cdot B[0][0]$, lo cual coincide exactamente con la definición del producto escalar $C_{11} = A_{11} \cdot B_{11}$. $P(0)$ es verdadero.</p>
+<p><strong>Paso Recursivo ($n &gt; 1$):</strong>
+  Por propiedad de multiplicación de matrices por bloques, para obtener cada cuadrante de $C$ basta con multiplicar las mitades correspondientes de las filas de $A$ por las mitades de las columnas de $B$ y sumar ambos resultados parciales:</p>
+<ul>
+<li>Cuadrante superior izquierdo: $C_{11} = A_{11} B_{11} + A_{12} B_{21}$</li>
+<li>Cuadrante superior derecho: $C_{12} = A_{11} B_{12} + A_{12} B_{22}$</li>
+<li>Cuadrante inferior izquierdo: $C_{21} = A_{21} B_{11} + A_{22} B_{21}$</li>
+<li>Cuadrante inferior derecho: $C_{22} = A_{21} B_{12} + A_{22} B_{22}$
+  Como las 8 llamadas recursivas resuelven submatrices de la mitad de tamaño ($n/2$) hasta llegar al caso base de $1 \times 1$, la suma de los bloques reconstruye exactamente la matriz producto $C$.</li>
+</ul>
 </li>
-<li>
-<p><strong>Hipótesis Inductiva:</strong> Supongamos que el algoritmo calcula correctamente el producto de matrices para toda dimensión $m = 2^j$ con $j \le k - 1$.</p>
-</li>
-<li><strong>Paso Inductivo ($k$ con $n = 2^k$):</strong>
-  La matriz se divide en bloques de dimensión $m = 2^{k-1}$. Por hipótesis inductiva, cada uno de los 8 productos recursivos $M_1, \dots, M_8$ produce el resultado exacto de multiplicar los bloques correspondientes. Por las propiedades distributivas del álgebra lineal:
-  $$C_{ij} = \sum_{k=1}^n A_{ik} B_{kj} = \sum_{k=1}^{n/2} A_{ik} B_{kj} + \sum_{k=n/2 + 1}^n A_{ik} B_{kj}$$
-  La primera sumatoria corresponde al producto del primer bloque y la segunda sumatoria al segundo bloque. Al sumar matricialmente $M_1 + M_2$ se obtiene la suma exacta de ambas componentes para cada celda $(i, j)$ del cuadrante superior izquierdo, e idénticamente para los demás cuadrantes. Por lo tanto, $P(k)$ es verdadero $\forall k \ge 0$. $\blacksquare$</li>
 </ul>
 <h4>3. Ejemplo Concreto y Traza Paso a Paso ($n = 2$)</h4>
 <p>Sean las matrices $2 \times 2$:
@@ -2472,11 +2472,13 @@ Capacidad de descarte logarítmico aprovechando la dirección de la pendiente lo
    Aplica el <strong>Caso 2 del Teorema Maestro</strong> con $k = 0$:
    $$T(n) = \Theta(n^c \log n) = \Theta(n^0 \log n) = \Theta(\log n)$$</li>
 </ol>
-<h4>2. Demostración Formal de Existencia del Pico</h4>
+<h4>2. Justificación Directa de Correctitud (Por qué siempre hay un pico en la mitad elegida)</h4>
 <ul>
-<li><strong>Lema de la Pendiente:</strong> Si $A[m] &lt; A[m + 1]$, entonces el subarreglo $A[m + 1 \dots fin]$ contiene al menos un elemento pico.</li>
-<li><strong>Demostración por el Principio del Buen Orden / Contradicción:</strong>
-  Consideremos el subarreglo $A[m + 1 \dots fin]$. Si el último elemento $A[fin]$ es mayor que $A[fin - 1]$, entonces $A[fin]$ es un pico (pues no tiene vecino derecho). Si no lo es, retrocedemos: como $A[m] &lt; A[m + 1]$, no todos los elementos pueden ser decrecientes hacia la izquierda sin toparse con una cresta. Dado que no hay elementos adyacentes iguales, debe existir un primer índice $k \in \{m + 1, \dots, fin - 1\}$ tal que $A[k] &gt; A[k + 1]$. Como $k$ es el primer punto de caída, necesariamente $A[k] &gt; A[k - 1]$, lo que convierte a $A[k]$ en un pico. $\blacksquare$</li>
+<li><strong>Idea de la pendiente:</strong> En el centro miramos los vecinos $A[m]$ y $A[m + 1]$. Como no hay elementos consecutivos iguales, los valores sí o sí suben o bajan:<ul>
+<li><strong>Si $A[m] &lt; A[m + 1]$ (sube hacia la derecha):</strong> Como a partir de $m + 1$ los números van subiendo, pasan dos cosas posibles: o bien siguen subiendo sin parar hasta el borde derecho <code>fin</code> (entonces $A[fin]$ es un pico porque es más grande que el anterior y no tiene a nadie a la derecha), o bien en algún momento dejan de subir y bajan (y el primer número donde empieza a bajar es un pico porque le gana al de su izquierda y al de su derecha). Por eso <strong>seguro hay un pico en la mitad derecha $[m + 1, fin]$</strong>.</li>
+<li><strong>Si $A[m] &gt; A[m + 1]$ (sube hacia la izquierda):</strong> Por el mismo razonamiento hacia la izquierda, <strong>seguro hay un pico en la mitad izquierda $[ini, m]$</strong> (incluso el propio $A[m]$ podría ser el pico).</li>
+</ul>
+</li>
 </ul>
 <h4>3. Ejemplo Concreto y Traza Paso a Paso</h4>
 <p>Sea el arreglo de $n = 7$ elementos:
@@ -2641,22 +2643,15 @@ Identificación de la propiedad de frontera de transición, manejo riguroso de c
    $$\log_2 1 = 0 = c \implies T(n) = \Theta(\log n)$$
    Espacio auxiliar: $O(1)$ en implementación iterativa, $O(\log n)$ en la pila de recursión.</li>
 </ol>
-<h4>2. Demostración Formal de Correctitud por Inducción Fuerte</h4>
+<h4>2. Justificación Directa de Correctitud (Lista para Examen)</h4>
 <ul>
-<li><strong>Hipótesis:</strong> Para cualquier subrango $A[ini \dots fin]$ de longitud $L = fin - ini + 1$:<ul>
-<li>Si contiene al menos un cero, el algoritmo retorna el menor índice $k \in [ini, fin]$ tal que $A[k] = 0$.</li>
-<li>Si no contiene ceros, retorna $-1$.</li>
-</ul>
+<li>Como el arreglo tiene todos los <code>1</code> al principio y todos los <code>0</code> al final, al mirar la posición del medio <code>m</code> solo pueden pasar tres cosas:<ol>
+<li><strong>Si <code>A[m] == 1</code>:</strong> Como antes de un <code>1</code> solo puede haber otros <code>1</code>, es imposible que el primer <code>0</code> esté a la izquierda. Descartamos toda la mitad izquierda y buscamos a la derecha (<code>[m + 1, fin]</code>).</li>
+<li><strong>Si <code>A[m] == 0</code> y su anterior es <code>1</code> (o <code>m == 0</code>):</strong> Estamos parados justo en el cambio de <code>1</code> a <code>0</code>, así que <code>m</code> es el primer cero y lo devolvemos.</li>
+<li><strong>Si <code>A[m] == 0</code> y su anterior también es <code>0</code>:</strong> El primer cero está más atrás, así que descartamos la mitad derecha y buscamos a la izquierda (<code>[ini, m - 1]</code>).</li>
+</ol>
 </li>
-<li><strong>Base ($L = 0 \implies ini &gt; fin$):</strong> El subarreglo es vacío. Retorna $-1$. Correcto.</li>
-<li>
-<p><strong>Paso Inductivo ($L \ge 1$):</strong>
-  Se inspecciona $A[m]$. </p>
-<ul>
-<li>Si $A[m] = 1$: Como el arreglo tiene la estructura $1^* 0^*$, si la posición $m$ tiene un 1, todas las posiciones $j \le m$ tienen $A[j] = 1$. Por lo tanto, ningún índice $\le m$ puede ser cero. El primer cero, de existir, debe residir en $[m + 1, fin]$, un subrango de longitud $\le \lfloor L/2 \rfloor$. Por hipótesis inductiva, la llamada recursiva devolverá el resultado correcto.</li>
-<li>Si $A[m] = 0$: Si $m = 0$ o $A[m-1] = 1$, por definición $m$ es el primer cero y se retorna. Si $A[m-1] = 0$, el primer cero está estrictamente antes de $m$, residiendo en $[ini, m - 1]$. Por hipótesis inductiva, la recursión encuentra el resultado exacto. $\blacksquare$</li>
-</ul>
-</li>
+<li>Si el rango se queda sin elementos (<code>ini &gt; fin</code>), significa que eran todos <code>1</code> y devolvemos <code>-1</code>.</li>
 </ul>
 <h4>3. Ejemplo Concreto y Traza Paso a Paso</h4>
 <p>Sea el arreglo de $n = 8$ elementos:

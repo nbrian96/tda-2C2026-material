@@ -64,35 +64,13 @@ Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguro
 5. **Algoritmo de Reconstrucción de la Secuencia:**  
    Retrocedemos desde $K$ hasta $0$ consultando el arreglo de predecesores `padre[i]`. Si $\text{padre}[i] = i / 2$, la operación fue $\times 2$; en caso contrario, fue $+1$. Se invierte la lista resultante para presentar la secuencia en orden cronológico de $0$ a $K$.
 
-#### 2. Demostración Rigurosa de Correctitud
+#### 2. Justificación Directa de Correctitud (Lista para Examen)
 
-<div class="proof-card">
-  <div class="proof-card-header">🛡️ 1. Exhaustividad en el Espacio de Decisiones</div>
-  <p>Dado que las únicas operaciones permitidas en el universo del problema son $+1$ y $\times 2$:</p>
-  <ul>
-    <li>Si el último paso fue $+1$, el estado predecesor fue necesariamente $(i - 1)$. Opción válida para todo $i \ge 1$.</li>
-    <li>Si el último paso fue $\times 2$, el estado predecesor fue necesariamente $(i / 2)$. Esta opción <strong>solo existe si $i$ es par</strong>, ya que ningún número entero multiplicado por $2$ produce un entero impar.</li>
-  </ul>
-  <p>Por lo tanto, el conjunto de predecesores posibles es exhaustivo: $\{i - 1\}$ si $i$ es impar, o $\{i - 1, i/2\}$ si $i$ es par. No existe ningún otro camino admisible.</p>
-</div>
-
-<div class="proof-card">
-  <div class="proof-card-header">🛡️ 2. Subestructura Óptima (Demostración por Cut-and-Paste)</div>
-  <p>Supongamos que el camino óptimo global para llegar a $i$ termina con la operación $+1$, viniendo de $i - 1$, con costo $C = \text{costo}(0 \to i-1) + 1$.</p>
-  <p>Si el subcamino $(0 \to i - 1)$ no fuera óptimo, existiría un camino alternativo con menor costo $C' < \text{costo}(0 \to i - 1)$. Reemplazando dicho subcamino, obtendríamos un camino a $i$ con costo $C' + 1 < C$, lo cual contradice que $C$ era la cantidad mínima de operaciones para $i$.</p>
-  <p>El mismo razonamiento aplica si el último paso fue $\times 2$ desde $i / 2$. En consecuencia, $OPT(i)$ se construye necesariamente a partir de la solución óptima de uno de sus predecesores inmediatos.</p>
-</div>
-
-<div class="proof-card">
-  <div class="proof-card-header">🛡️ 3. Ausencia de Ciclos y Orden Topológico</div>
-  <p>Para todo $i \ge 1$, se cumple estrictamente que $i - 1 < i$ y $i / 2 < i$. El grafo de dependencias de subproblemas es un <strong>DAG (Grafo Acíclico Dirigido)</strong>, garantizando que el llenado secuencial $1, 2, \dots, K$ respeta el orden topológico sin generar llamadas recursivas circulares.</p>
-</div>
-
-<div class="proof-card">
-  <div class="proof-card-header">🛡️ 4. Inducción Fuerte sobre K</div>
-  <p><strong>Base ($K=0, K=1$):</strong> $OPT(0)=0$ y $OPT(1)=1$ son óptimos triviales comprobables de forma directa.</p>
-  <p><strong>Paso Inductivo:</strong> Asumiendo como hipótesis inductiva que $DP[j] = OPT(j)$ para todo $0 \le j < i$, el cálculo $DP[i] = \min_{p \in \text{Pred}(i)}(DP[p] + 1)$ evalúa exhaustivamente el óptimo sobre todos los predecesores válidos, garantizando por inducción matemática que $DP[i] = OPT(i)$ para todo $i \ge 0$.</p>
-</div>
+* **1. Solo hay dos formas de llegar a `i`:**
+  * Si la última operación fue `+1`, vinimos sí o sí de `i - 1`.
+  * Si la última operación fue `x2`, vinimos sí o sí de `i / 2` (y esto solo es posible cuando `i` es par).
+* **2. Subestructura óptima:** Para llegar a `i` en la menor cantidad de pasos, necesitamos haber llegado primero a `i - 1` (o a `i / 2`) en la menor cantidad de pasos posible y sumarle `1` paso más.
+* **3. Sin ciclos:** Como `i - 1` e `i / 2` son siempre más chicos que `i`, al llenar la tabla en orden desde `1` hasta `K` nos aseguramos de que ambos valores ya están calculados cuando los necesitamos.
 
 #### 3. Diagrama de Flujo y Grafo Acíclico (DAG) de Decisiones
 

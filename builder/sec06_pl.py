@@ -65,17 +65,11 @@ Paolo Casanova dispone de 2 días para realizar salidas a diferentes lugares cer
 5. **Declaración Explícita de Dominios:**
    $$y_j \in \{0, 1\} \quad \forall j \in L, \qquad x_i \in \{0, 1\} \quad \forall i \in E$$
 
-#### 3. Demostración Rigurosa de Correctitud del Enlace
+#### 3. Explicación Directa de por qué Funciona la Restricción de Enlace
 
-**Lema de Validez del Enlace Lógico:**  
-Bajo la función objetivo de maximizar $\sum_{i \in E} x_i$:
-1. **Caso 0 (Ningún hábitat visitado):** Si Paolo no visita ningún sitio donde habite la especie $i$, entonces $y_j = 0$ para todo $j$ con $A_{ij} = 1$. En consecuencia:
-   $$\sum_{j \in L} A_{ij} \cdot y_j = 0 \implies x_i \le 0 \implies x_i = 0$$
-   Es imposible que el modelo contabilice una especie no observada.
-2. **Caso $\ge 1$ (Al menos un hábitat visitado):** Si visita $k \ge 1$ sitios donde habita la especie $i$, entonces $\sum_{j \in L} A_{ij} y_j = k \ge 1$. La restricción se convierte en:
-   $$x_i \le k$$
-   Dado que el dominio impone $x_i \in \{0, 1\}$ y la función objetivo maximiza $\sum x_i$ con coeficientes positivos ($+1$), el optimizador asignará el mayor valor factible: $x_i = 1$.
-3. **Inmunidad al Doble Cómputo:** Si visita 2 o más lugares con la misma especie, $x_i \le 2$ o $3$, pero al estar restringida por su dominio superior $x_i \le 1$, la especie aporta exactamente 1 a la función objetivo.
+1. **Si no visitamos ningún lugar donde viva la especie `i`:** La suma de los `y_j` de sus lugares da `0`. Como `x_i <= 0` y es binaria, la restricción obliga a que `x_i = 0` (no podemos contar un ave que no vimos).
+2. **Si visitamos al menos un lugar donde vive la especie `i`:** La suma de sus `y_j` da `1` o más. Como buscamos maximizar la suma de `x_i`, el modelo automáticamente le pone el mayor valor permitido a `x_i`, que es `1`.
+3. **No cuenta dos veces la misma especie:** Aunque visitemos 2 o 3 lugares donde está la misma ave (la suma da `2` o `3`), como `x_i` es binaria (`{0, 1}`), nunca puede pasar de `1`. Así cada especie distinta suma como máximo `1`.
 
 #### 4. Diagrama Visual del Grafo de Cobertura Bipartito
 
@@ -207,12 +201,11 @@ Una empresa de telefonía celular colocará antenas en una grilla bidimensional 
 5. **Dominios de las Variables:**
    $$y_c \in \{0, 1\} \quad \forall c \in C, \qquad x_v \in \{0, 1\} \quad \forall v \in V$$
 
-#### 3. Demostración de Validez del Modelo
+#### 3. Explicación Directa de por qué Funciona el Modelo
 
-**Teorema de Factibilidad y Presión de Costo:**  
-1. *Cota sobre cobertura:* Para cualquier vecindario $v$, si ninguna antena cubre su celda ($\sum_{c \in Cubren(v)} y_c = 0$), la restricción impone $x_v \le 0 \implies x_v = 0$.
-2. *Minimización del costo:* Dado que $CTE > 0$ y minimizamos $\sum y_c$, el solucionador nunca activará antenas superfluas. Si un vecindario $v$ no es necesario para alcanzar el umbral del $70\%$, el modelo preferirá mantener $x_v = 0$ con tal de ahorrar la activación de $y_c$.
-3. *Umbral estricto:* La restricción $\sum x_v \ge \lceil 0.70 |V| \rceil$ garantiza que el compromiso de servicio se satisfaga plenamente.
+1. **Si ninguna antena cubre al vecindario `v`:** La suma de las antenas en su bloque de $3 \times 3$ da `0`, lo que fuerza `x_v = 0`.
+2. **Meta del 70%:** La restricción `sum(x_v) >= 0.70 * |V|` obliga a que al menos el 70% de los vecindarios tengan `x_v = 1`, lo que a su vez obliga a encender las antenas `y_c` necesarias para cubrirlos.
+3. **No se instalan antenas de más:** Como la función objetivo minimiza el gasto total en antenas, el modelo solo activa las antenas estrictamente necesarias para llegar al 70%.
 
 #### 4. Diagrama Visual de Vecindad de Cobertura (3x3)
 
@@ -337,13 +330,11 @@ El sistema interconectado argentino está dividido en 9 regiones eléctricas ($R
 5. **No Negatividad de las Variables:**
    $$x_{ij} \ge 0 \quad \forall (i, j) \in L$$
 
-#### 3. Demostración Teórica de Conservación y Factibilidad
+#### 3. Explicación Directa del Balance de Energía
 
-Sumando la ecuación de balance sobre todas las regiones $i \in R$:
-$$\sum_{i \in R} G_i + \sum_{i \in R} \sum_{k \ne i} x_{ki} - \sum_{i \in R} \sum_{j \ne i} x_{ij} = \sum_{i \in R} D_i$$
-Dado que cada flujo $x_{ab}$ aparece una vez como entrada ($x_{ki}$ cuando $i=b, k=a$) y una vez como salida ($x_{ij}$ cuando $i=a, j=b$), las dobles sumatorias de flujos internos se cancelan mutuamente:
-$$\sum_{i \in R} G_i = \sum_{i \in R} D_i$$
-**Condición Necesaria de Factibilidad:** La generación global del país debe ser suficiente para satisfacer la demanda global. Si la generación total excede a la demanda, se escribe con desigualdad $\ge D_i$ para absorber el superávit.
+En cada región $i$, toda la energía que se genera localmente más la que entra desde otras regiones tiene que ser igual a la que se consume allí más la que se envía hacia afuera:
+$$\text{Generación}_i + \text{Entra}_i - \text{Sale}_i = \text{Demanda}_i$$
+*(Nota: Si el país puede generar más energía de la que consume en total, basta con poner `Sale - Entra <= Generación - Demanda` para que las centrales no estén obligadas a inyectar el sobrante).*
 
 #### 4. Diagrama Visual de Red de Flujo con Costos
 
@@ -445,14 +436,11 @@ Para el traslado de una carga crítica de alta seguridad de la empresa INVAP des
 5. **Cotas de las Variables:**
    $$x_{uv} \ge 0 \quad \forall (u, v) \in E$$
 
-#### 3. Demostración Teórica: Teorema de Unimodularidad Total (TUM)
+#### 3. ¿Por qué no hace falta declarar variables binarias? (Justificación Directa para Examen)
 
-**Teorema de Hoffman-Kruskal aplicado a Grafos:**  
-Sea $A \in \{-1, 0, 1\}^{|V| \times |E|}$ la matriz de incidencia nodo-arco del grafo $G$, donde cada columna correspondiente a la arista $(u, v)$ contiene exactamente dos elementos no nulos: $+1$ en la fila del nodo origen $u$ y $-1$ en la fila del nodo destino $v$.
-1. **Propiedad TUM:** Toda submatriz cuadrada de $A$ tiene determinante en $\{-1, 0, 1\}$.
-   - *Demostración inductiva:* Para submatrices de orden $k$, si una columna tiene solo ceros, $\det = 0$. Si tiene un único $\pm 1$, por expansión de Laplace $\det = \pm 1 \cdot \det(M_{k-1}) \in \{-1, 0, 1\}$. Si todas las columnas tienen un $+1$ y un $-1$, la suma de todas las filas es el vector nulo $\mathbf{0}$, por lo que las filas son linealmente dependientes y $\det = 0$.
-2. **Integralidad de Vértices:** Dado que $A$ es totalmente unimodular y el vector del lado derecho $b \in \{-1, 0, 1\}^{|V|}$ es entero, por la regla de Cramer **todo vértice extremo del poliedro $\{x \ge 0 : Ax = b\}$ tiene componentes estrictamente enteras**.
-3. Como la inyección total es 1, los únicos valores enteros factibles para las aristas en cualquier solución básica factible sin ciclos son $x_{uv} \in \{0, 1\}$, representando exactamente un camino simple de $s$ a $t$.
+1. **Propiedad de Unimodularidad Total (TUM):** En cualquier problema de flujo o camino mínimo sobre un grafo donde las restricciones son únicamente de conservación (`flujo que sale - flujo que entra = balance`), la matriz del sistema es **Totalmente Unimodular**.
+2. **Qué garantiza esta propiedad:** Siempre que los valores de entrada/salida sean enteros (`+1` en Ezeiza, `-1` en Bariloche y `0` en el resto), **todos los vértices del poliedro tienen coordenadas enteras**.
+3. **Conclusión:** Al resolver el modelo con **PL continua** (Simplex en tiempo polinomial), el óptimo dará automáticamente valores enteros `0` o `1` en cada arista sin necesidad de partir la carga ni usar programación entera (PLI).
 
 #### 4. Diagrama Visual del Grafo de Traslado
 
@@ -550,17 +538,11 @@ Formular el problema como un modelo de Programación Lineal Entera, linealizando
 5. **Función Objetivo Lineal:**
    $$\min Z$$
 
-#### 3. Demostración Matemática de Equivalencia
+#### 3. Explicación Directa de por qué Funciona la Linealización
 
-**Teorema de Equivalencia de la Linealización Minimax:**  
-Sea $(x^*, Z^*)$ una solución óptima del modelo linealizado.
-1. Por definición de las restricciones:
-   $$Z^* \ge L_1(x^*) \quad \text{y} \quad Z^* \ge L_2(x^*) \implies Z^* \ge \max(L_1(x^*), L_2(x^*))$$
-2. Supongamos por contradicción que $Z^* > \max(L_1(x^*), L_2(x^*))$. Entonces podríamos definir un valor $Z' = \max(L_1(x^*), L_2(x^*)) < Z^*$.
-3. La solución $(x^*, Z')$ satisface todas las restricciones del modelo y produce un valor objetivo $Z' < Z^*$, contradiciendo la optimalidad de $(x^*, Z^*)$.
-4. Por lo tanto, en toda solución óptima se cumple estrictamente que:
-   $$Z^* = \max(L_1(x^*), L_2(x^*))$$
-   lo que demuestra que el modelo lineal es exactamente equivalente al problema no lineal original.
+1. Como imponemos las dos restricciones `Z >= Carga_P1` y `Z >= Carga_P2`, la variable `Z` está obligada a ser **al menos tan grande como la máquina más cargada**.
+2. Como la función objetivo pide **minimizar `Z`**, el modelo "aprieta" a `Z` hacia abajo todo lo que puede hasta que choca contra la mayor de las dos cargas (`Z = max(Carga_P1, Carga_P2)`).
+3. De esa forma, achicar `Z` al mínimo es exactamente lo mismo que achicar la carga de la máquina más ocupada.
 
 #### 4. Diagrama Visual de Acotamiento de la Variable Z
 

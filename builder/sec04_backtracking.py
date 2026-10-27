@@ -64,12 +64,11 @@ Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos
    * **Tiempo:** En el peor caso teórico sin podas el espacio sería $8^8 \approx 16.7$ millones de hojas. Al colocar una reina por fila y descartar columnas usadas, el árbol se reduce a $8! = 40.320$ permutaciones. Con las podas diagonales en tiempo real, el algoritmo explora apenas unos 876 nodos para hallar la primera solución. Complejidad asintótica: $O(N!)$ en el peor caso.
    * **Espacio Auxiliar:** $O(N)$ para la pila de recursión (profundidad 8) más $8 + 15 + 15 = 38$ booleanos de control.
 
-#### 2. Demostración Formal de Invariantes de Diagonales
+#### 2. Explicación Directa de por qué el Chequeo Diagonal es O(1)
 
-* **Teorema de la Diagonal Principal:** Dos casillas $(f_1, c_1)$ y $(f_2, c_2)$ pertenecen a la misma diagonal principal si y solo si $f_1 - c_1 = f_2 - c_2$.
-  *Demostración:* La pendiente de una diagonal principal es $m = \frac{f_2 - f_1}{c_2 - c_1} = 1$. Despejando: $f_2 - f_1 = c_2 - c_1 \iff f_2 - c_2 = f_1 - c_1$. Por lo tanto, la clave $f - c + 7$ identifica unívocamente a cada una de las 15 diagonales principales.
-* **Teorema de la Diagonal Secundaria:** Dos casillas $(f_1, c_1)$ y $(f_2, c_2)$ pertenecen a la misma diagonal secundaria si y solo si $f_1 + c_1 = f_2 + c_2$.
-  *Demostración:* La pendiente de una diagonal secundaria es $m = \frac{f_2 - f_1}{c_2 - c_1} = -1$. Despejando: $f_2 - f_1 = -(c_2 - c_1) \iff f_2 + c_2 = f_1 + c_1$. La clave $f + c$ identifica unívocamente a cada una de las 15 diagonales secundarias. $\blacksquare$
+* **Diagonal Principal ($\setminus$, baja de izquierda a derecha):** Cuando nos movemos un casillero abajo y uno a la derecha (`fila + 1`, `col + 1`), la resta `fila - col` no cambia. Por lo tanto, todas las casillas de una misma diagonal principal tienen el mismo resultado en `fila - col`. Le sumamos `+ 7` solo para que el índice quede entre `0` y `14` y no dé negativo.
+* **Diagonal Secundaria ($/$, sube de izquierda a derecha):** Cuando nos movemos un casillero arriba y uno a la derecha (`fila - 1`, `col + 1`), lo que se compensa y se mantiene siempre igual es la suma `fila + col` (entre `0` y `14`).
+* Gracias a esto, para saber si una casilla `(fila, col)` está amenazada no hace falta recorrer el tablero: alcanza con mirar 3 posiciones fijas en los arreglos booleanos (`col_ocupada[col]`, `diag_prin[fila - col + 7]` y `diag_sec[fila + col]`) en tiempo `O(1)`.
 
 #### 3. Ejemplo Concreto y Tabla de Traza Paso a Paso (Primeras Filas)
 
