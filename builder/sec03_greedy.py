@@ -113,13 +113,12 @@ Sean los siguientes 5 pedidos de mafias sobre la ruta costera:
 #### 4. Diagrama Visual de Intervalos
 
 ```mermaid
-graph LR
-    subgraph Ruta [Ocupación en Ruta Costera]
-        A["[1, 4] Mafia A (ACEPTADO)"]:::opt
-        B["[3, 5] Mafia B (RECHAZADO)"]:::bad
-        C["[0, 6] Mafia C (RECHAZADO)"]:::bad
-        D["[4, 7] Mafia D (ACEPTADO)"]:::opt
-        E["[6, 9] Mafia E (RECHAZADO)"]:::bad
+flowchart LR
+    subgraph Ruta [Secuencia de Evaluación Voraz por Fin más Temprano]
+        A["1º: Mafia A [1, 4]<br/>ACEPTADO (f_ult = 4)"]:::opt -->|s_B = 3 &lt; 4| B["2º: Mafia B [3, 5]<br/>RECHAZADO (Solapa)"]:::bad
+        B -->|s_C = 0 &lt; 4| C["3º: Mafia C [0, 6]<br/>RECHAZADO (Solapa)"]:::bad
+        C -->|s_D = 4 &ge; 4| D["4º: Mafia D [4, 7]<br/>ACEPTADO (f_ult = 7)"]:::opt
+        D -->|s_E = 6 &lt; 7| E["5º: Mafia E [6, 9]<br/>RECHAZADO (Solapa)"]:::bad
     end
     classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
     classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:1px,color:#fff

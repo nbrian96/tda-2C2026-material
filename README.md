@@ -24,18 +24,18 @@ Para preparar el examen parcial en poco tiempo, el repositorio incluye una **apl
 
 #### 1. Plan de Emergencia (48 a 72 horas antes del examen)
 1. Abrí [index.html](index.html) (o la <a href="https://nbrian96.github.io/tda-2C2026-material/" target="_blank" rel="noopener noreferrer">versión online</a>) y activá el botón **⚡ Modo Emergencia**.
-2. Esto filtrará automáticamente los **30 ejercicios clave 🔴 IMPRESCINDIBLE** que salieron literalmente en los parciales recientes (2024-2 y 2025-1).
+2. Esto filtrará automáticamente los **32 ejercicios clave 🔴 IMPRESCINDIBLE** que salieron literalmente en los parciales recientes (2024-2 y 2025-1) junto con los problemas canónicos integradores.
 3. Hacé el **Entrenador de Reconocimiento en 30 Segundos** (en la Sección 3) para no dudar entre Greedy, Programación Dinámica, Backtracking, Programación Lineal o Redes de Flujo.
 4. Repasá el drawer de **📐 Fórmulas y Recetas Rápidas** (Teorema Maestro, los 4 pasos de NP-C y los 5 pasos de PD).
 5. En cada ejercicio, lee el enunciado e intenta resolverlo en papel **antes de desplegar la solución** (*Active Recall*). Al dominarlo, márcalo como `Dominado` para registrar tu avance.
 
 #### 2. Plan Táctico (1 semana antes)
-1. Completá el Plan de Emergencia y cambiá a **🎯 Modo Táctico** para sumar los 8 ejercicios 🟡 **IMPORTANTES** de la guía práctica.
+1. Completá el Plan de Emergencia y cambiá a **🎯 Modo Táctico** para enfocarte en los **8 ejercicios 🟡 IMPORTANTES** de la guía práctica y en los ejercicios que aún tengas pendientes de dominar.
 2. Escribí en papel el pseudocódigo completo de los ejercicios de Programación Dinámica multidimensional, Flujo y Branch & Bound.
 3. Repasá los **Ejercicios Integradores Multi-Paradigma** (Sección 11) para comparar cómo resolver un mismo problema por Greedy vs PD vs PL.
 
 #### 3. Plan Integral (2 semanas o más)
-1. Recorré los 38 ejercicios en **📚 Modo Completo**.
+1. Recorré los **40 ejercicios** en **📚 Modo Completo**.
 2. Probá las implementaciones en Python de la carpeta `Practicas/`.
 3. Verificá la **Checklist de Entrada al Aula** antes de rendir.
 

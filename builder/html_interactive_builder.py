@@ -64,6 +64,27 @@ SOLUTION_MARKERS = [
     r"<p><strong>Demostración de Optimalidad"
 ]
 
+CODE_BLOCK_PATTERN = r"(<pre><code(?:\s+class=\"([^\"]*)\")?>)(.*?)(</code></pre>)"
+
+def replace_code_block_match(match):
+    code_tag_start = match.group(1)
+    code_class = match.group(2) or ""
+    code_content = match.group(3)
+    code_tag_end = match.group(4)
+    if "mermaid" in code_class:
+        clean_content = html.unescape(code_content)
+        return (
+            f'<div class="mermaid-wrapper">'
+            f'<pre class="mermaid">{clean_content}</pre>'
+            f'</div>'
+        )
+    return (
+        f'<div class="code-container">'
+        f'<button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button>'
+        f'{code_tag_start}{code_content}{code_tag_end}'
+        f'</div>'
+    )
+
 def format_exercise_card(num, title, body_html):
     paradigm_key, paradigm_name, paradigm_class = PARADIGMS.get(num, ("otro", "General", "badge-otro"))
     
@@ -91,33 +112,13 @@ def format_exercise_card(num, title, body_html):
         statement_html = clean_body
         solution_html = ""
         
-    code_pattern = r"(<pre><code(?:\s+class=\"([^\"]*)\")?>)(.*?)(</code></pre>)"
-    def replace_code_block(match):
-        code_tag_start = match.group(1)
-        code_class = match.group(2) or ""
-        code_content = match.group(3)
-        code_tag_end = match.group(4)
-        if "mermaid" in code_class:
-            clean_content = html.unescape(code_content)
-            return (
-                f'<div class="mermaid-wrapper">'
-                f'<pre class="mermaid">{clean_content}</pre>'
-                f'</div>'
-            )
-        return (
-            f'<div class="code-container">'
-            f'<button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button>'
-            f'{code_tag_start}{code_content}{code_tag_end}'
-            f'</div>'
-        )
-    
     if statement_html:
-        statement_html = re.sub(code_pattern, replace_code_block, statement_html, flags=re.DOTALL)
+        statement_html = re.sub(CODE_BLOCK_PATTERN, replace_code_block_match, statement_html, flags=re.DOTALL)
 
     if solution_html:
-        solution_html = re.sub(code_pattern, replace_code_block, solution_html, flags=re.DOTALL)
+        solution_html = re.sub(CODE_BLOCK_PATTERN, replace_code_block_match, solution_html, flags=re.DOTALL)
         
-        trap_pattern = r"(<p><strong>(?:Trampas habituales de corrección|Puntos donde puedo equivocarme).*?</strong>.*?</p>(?:<ul>.*?</ul>)?)"
+        trap_pattern = r"(<p><strong>(?:Trampas habituales de corrección|Puntos donde puedo equivocarme).*?</strong>.*?</p>(?:\s*<ul>.*?</ul>)?)"
         def replace_trap(m):
             return f'<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>{m.group(1)}</div>'
         solution_html = re.sub(trap_pattern, replace_trap, solution_html, flags=re.DOTALL)
@@ -196,6 +197,9 @@ def process_html_exercises(html_body):
     return "".join(new_parts)
 
 def inject_interactive_widgets(html_body):
+    # Transformar cualquier bloque Mermaid o de código fuera de las tarjetas de ejercicios (ej. Árbol de Decisión en Sección 3)
+    html_body = re.sub(CODE_BLOCK_PATTERN, replace_code_block_match, html_body, flags=re.DOTALL)
+
     trainer_html = """
 <div class="trainer-box" id="entrenador-30s">
   <div class="trainer-header">
@@ -213,7 +217,7 @@ def inject_interactive_widgets(html_body):
 
   <div class="trainer-card">
     <div class="trainer-card-header">
-      <span class="trainer-counter">Caso <span id="trainerCurrentIndex">1</span> de 14</span>
+      <span class="trainer-counter">Caso <span id="trainerCurrentIndex">1</span> de <span id="trainerTotalQuestions">16</span></span>
       <span class="trainer-timer-tag">⏱️ Meta: &lt; 30 segundos</span>
     </div>
     <div class="trainer-prompt" id="trainerPrompt">Cargando enunciado de examen...</div>
@@ -270,6 +274,16 @@ def inject_interactive_widgets(html_body):
         )
     html_body = re.sub(r"<li>\[ \]\s*(.*?)</li>", make_checkbox, html_body)
 
+    empty_state_html = """
+<div class="search-empty-state" id="searchEmptyState" style="display: none;">
+  <div class="empty-state-icon">🔍</div>
+  <h3 class="empty-state-title">No se encontraron ejercicios con los filtros actuales</h3>
+  <p class="empty-state-desc">Probá con otro término de búsqueda o cambiá al modo <strong>Todos</strong> para visualizar el catálogo completo.</p>
+  <button class="btn btn-primary" type="button" onclick="resetAllFilters()">Restablecer filtros y mostrar todos</button>
+</div>
+"""
+    html_body = html_body + empty_state_html
+
     return html_body
 
 def get_hud_and_drawer_html(active_paradigm="all"):
@@ -292,7 +306,7 @@ def get_hud_and_drawer_html(active_paradigm="all"):
         pills_html.append(f'<a href="{href}" class="pill-btn{active_cls}" data-paradigm="{key}">{label}</a>')
     rendered_pills = "\n        ".join(pills_html)
 
-    html_template = """
+    html_template = r"""
 <!-- Top Sticky HUD -->
 <header class="hud-top-bar" id="hudTopBar">
   <div class="hud-container">
@@ -308,20 +322,20 @@ def get_hud_and_drawer_html(active_paradigm="all"):
       </div>
 
       <div class="hud-mode-selector" role="group" aria-label="Modo de Estudio">
-        <button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')">
+        <button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')" title="Mostrar solo los ejercicios 🔴 IMPRESCINDIBLES de examen">
           <span class="mode-icon">⚡</span>
           <span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span>
           <span class="mode-badge" id="badgeEmergencyCount">32</span>
         </button>
-        <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')">
+        <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')" title="Mostrar ejercicios pendientes de dominar y casos 🟡 IMPORTANTES">
           <span class="mode-icon">🎯</span>
-          <span class="mode-label"><span class="mode-label-long">Modo Táctico (1 sem)</span><span class="mode-label-short">1 sem</span></span>
-          <span class="mode-badge">40</span>
+          <span class="mode-label"><span class="mode-label-long">Modo Táctico (Pendientes)</span><span class="mode-label-short">Táctico</span></span>
+          <span class="mode-badge" id="badgeTacticalCount">40</span>
         </button>
-        <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')">
+        <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')" title="Mostrar todos los ejercicios de esta vista">
           <span class="mode-icon">📚</span>
           <span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span>
-          <span class="mode-badge">40</span>
+          <span class="mode-badge" id="badgeAllCount">40</span>
         </button>
       </div>
 
@@ -338,11 +352,11 @@ def get_hud_and_drawer_html(active_paradigm="all"):
         <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro">
           <span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span>
         </button>
-        <button class="tool-btn" onclick="scrollToTrainer()" title="Ir al simulador de 30 segundos">
+        <button class="tool-btn" onclick="scrollToTrainer()" title="Ir al simulador de reconocimiento en 30 segundos">
           <span class="tool-icon">⚡</span> <span class="tool-text">Simulador 30s</span>
         </button>
-        <button class="tool-btn" onclick="toggleDarkMode()" id="btnDarkMode" title="Cambiar tema">
-          <span class="tool-icon">🌓</span>
+        <button class="tool-btn" onclick="toggleDarkMode()" id="btnDarkMode" title="Cambiar modo claro / oscuro">
+          <span class="tool-icon" id="darkModeIcon">🌙</span>
         </button>
       </div>
     </div>
@@ -350,7 +364,7 @@ def get_hud_and_drawer_html(active_paradigm="all"):
     <div class="hud-row-secondary">
       <div class="hud-progress-wrap">
         <div class="progress-info">
-          <span class="progress-title">Progreso en modo activo:</span>
+          <span class="progress-title">Progreso en vista activa:</span>
           <span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">32</span> dominados (<span id="progPercent">0%</span>)</span>
         </div>
         <div class="progress-track">
@@ -360,8 +374,8 @@ def get_hud_and_drawer_html(active_paradigm="all"):
 
       <div class="hud-search-box">
         <span class="search-icon">🔍</span>
-        <input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (ej. mochila, viajante, tsp, knapsack, held-karp, arnook, invap)..." oninput="handleSearch(this.value)">
-        <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display: none;">✕</button>
+        <input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (tecla /): mochila, tsp, held-karp, arnook, invap..." oninput="handleSearch(this.value)">
+        <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display: none;" title="Limpiar búsqueda">✕</button>
       </div>
     </div>
 
@@ -377,8 +391,8 @@ def get_hud_and_drawer_html(active_paradigm="all"):
   <div class="emergency-banner" id="emergencyBanner">
     <div class="banner-inner">
       <span class="banner-icon">⚡</span>
-      <span><strong>Modo Emergencia (48–72h):</strong> Mostrando los 32 ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de los exámenes reales y problemas canónicos.</span>
-      <button class="banner-dismiss" onclick="dismissBanner()">✕</button>
+      <span><strong>Modo Emergencia (48–72h):</strong> Mostrando los <strong id="emergencyBannerCount">32</strong> ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de exámenes reales en esta vista.</span>
+      <button class="banner-dismiss" onclick="dismissBanner()" title="Ocultar aviso">✕</button>
     </div>
   </div>
 </header>
@@ -398,11 +412,11 @@ def get_hud_and_drawer_html(active_paradigm="all"):
     <section class="drawer-section">
       <h3>1. Teorema Maestro (División y Conquista)</h3>
       <div class="formula-card">
-        <code>T(n) = a · T(n/b) + O(nᶜ)</code> (con a ≥ 1, b &gt; 1, c ≥ 0)
+        $$T(n) = a \cdot T(n/b) + \Theta(n^c) \quad (a \ge 1, \; b > 1, \; c \ge 0)$$
         <ul>
-          <li><strong>Caso 1 (Hojas dominan):</strong> Si <code>log_b(a) &gt; c</code> ⟹ <strong>O(n^(log_b a))</strong></li>
-          <li><strong>Caso 2 (Balance):</strong> Si <code>log_b(a) = c</code> ⟹ <strong>O(nᶜ · log n)</strong></li>
-          <li><strong>Caso 3 (Raíz domina):</strong> Si <code>log_b(a) &lt; c</code> ⟹ <strong>O(nᶜ)</strong> <em>(si a·f(n/b) ≤ k·f(n))</em></li>
+          <li><strong>Caso 1 (Hojas dominan):</strong> Si $\log_b a > c \implies T(n) = \Theta(n^{\log_b a})$</li>
+          <li><strong>Caso 2 (Balance):</strong> Si $\log_b a = c \implies T(n) = \Theta(n^c \log n)$</li>
+          <li><strong>Caso 3 (Raíz domina):</strong> Si $\log_b a < c \implies T(n) = \Theta(n^c)$ <em>(con $a \cdot f(n/b) \le k \cdot f(n)$)</em></li>
         </ul>
       </div>
     </section>
@@ -410,13 +424,13 @@ def get_hud_and_drawer_html(active_paradigm="all"):
     <section class="drawer-section">
       <h3>2. Esquema de 4 Pasos Obligatorios para NP-C</h3>
       <ol class="steps-list">
-        <li><strong>Certificado y Verificador en NP:</strong> Definir certificado polinomial C y algoritmo verificador en tiempo O(nᵏ).</li>
-        <li><strong>Problema conocido en NPC:</strong> Seleccionar problema base A ∈ NPC (Vertex Cover, 3-SAT, Ciclo Ham, Subset Sum).</li>
-        <li><strong>Transformación polinomial:</strong> Definir f(I_A) → I_B computable en tiempo polinomial.</li>
+        <li><strong>Certificado y Verificador en NP:</strong> Definir certificado polinomial $C$ y verificador $V(I_B, C)$ en tiempo $O(n^k)$.</li>
+        <li><strong>Problema conocido en NPC:</strong> Seleccionar problema base $A \in \text{NPC}$ (Vertex Cover, 3-SAT, Ciclo Ham, Subset Sum) y reducir $A \le_P B$.</li>
+        <li><strong>Transformación polinomial:</strong> Definir $f(I_A) \to I_B$ computable en tiempo polinomial.</li>
         <li><strong>Demostración Bidireccional:</strong>
           <ul>
-            <li><strong>Ida (⟹):</strong> Si I_A es instancia SI de A ⟹ f(I_A) es instancia SI de B.</li>
-            <li><strong>Vuelta (⟸):</strong> Si f(I_A) es instancia SI de B ⟹ I_A es instancia SI de A.</li>
+            <li><strong>Ida ($\implies$):</strong> Si $I_A \in \text{YES}_A \implies f(I_A) \in \text{YES}_B$.</li>
+            <li><strong>Vuelta ($\impliedby$):</strong> Si $f(I_A) \in \text{YES}_B \implies I_A \in \text{YES}_A$.</li>
           </ul>
         </li>
       </ol>
@@ -425,41 +439,41 @@ def get_hud_and_drawer_html(active_paradigm="all"):
     <section class="drawer-section">
       <h3>3. Los 5 Pasos de Programación Dinámica</h3>
       <ol class="steps-list">
-        <li><strong>Definición semántica del Estado:</strong> Explicar con palabras qué significa OPT(i, w).</li>
-        <li><strong>Casos Base:</strong> Inicializar explícitamente celdas triviales y estados infactibles (-∞ o +∞).</li>
-        <li><strong>Ecuación de Recurrencia:</strong> Decisión local (ej. max(OPT(i-1, w), OPT(i-1, w - w_i) + v_i)).</li>
+        <li><strong>Definición semántica del Estado:</strong> Explicar con palabras qué significa $OPT(i, w)$.</li>
+        <li><strong>Casos Base:</strong> Inicializar explícitamente celdas triviales y estados infactibles ($-\infty$ o $+\infty$).</li>
+        <li><strong>Ecuación de Recurrencia:</strong> Decisión local, ej. $OPT(i, w) = \max\big(OPT(i-1, w), \; OPT(i-1, w - w_i) + v_i\big)$.</li>
         <li><strong>Orden de Llenado:</strong> Especificar dirección bottom-up (filas crecientes, columnas crecientes).</li>
-        <li><strong>Algoritmo de Reconstrucción:</strong> Rastrear las decisiones para devolver los elementos elegidos.</li>
+        <li><strong>Algoritmo de Reconstrucción:</strong> Rastrear las decisiones hacia atrás en la tabla para devolver los ítems.</li>
       </ol>
     </section>
 
     <section class="drawer-section">
       <h3>4. Reglas de Oro de Programación Lineal (PLI)</h3>
       <ul>
-        <li>Definir variables de decisión con su dominio explícito (x_i ∈ {0, 1} o y_j ≥ 0).</li>
-        <li><strong>¡PROHIBIDO!</strong> Multiplicar variables de decisión (x_i · y_j anula el ejercicio).</li>
-        <li><strong>Linealizar Min/Max:</strong> min z sujeto a z ≥ f_i(x).</li>
-        <li>Contar explícitamente cantidad de variables y restricciones si el enunciado lo pide.</li>
+        <li>Definir variables de decisión con su dominio explícito ($x_i \in \{0, 1\}$ o $y_j \ge 0$).</li>
+        <li><strong>¡PROHIBIDO!</strong> Multiplicar variables de decisión ($x_i \cdot y_j$ anula el ejercicio; usar acotación con Big-$M$).</li>
+        <li><strong>Linealizar Min-Max / Max-Min:</strong> $\min Z$ sujeto a $Z \ge f_i(x)$ para todo $i$.</li>
+        <li>Contar explícitamente cantidad de variables y restricciones en función de la entrada.</li>
       </ul>
     </section>
 
     <section class="drawer-section">
-      <h3>5. Redes de Flujo (Ford-Fulkerson)</h3>
+      <h3>5. Redes de Flujo (Ford-Fulkerson / Edmonds-Karp)</h3>
       <ul>
-        <li>Construir super-fuente s y super-sumidero t para entradas/salidas múltiples.</li>
-        <li>Capacidades en aristas dirigidas. Red residual G_f con aristas hacia atrás con capacidad f(u, v).</li>
-        <li><strong>Teorema Max-Flow Min-Cut:</strong> Flujo máximo = Capacidad del corte mínimo (S, T).</li>
-        <li><strong>Teorema de Integralidad:</strong> Capacidades enteras garantizan flujo entero (clave en emparejamientos).</li>
+        <li>Construir super-fuente $s$ y super-sumidero $t$ para entradas/salidas múltiples.</li>
+        <li>Capacidades en aristas dirigidas. Red residual $G_f$ con aristas backward de capacidad $c_f(v, u) = f(u, v)$.</li>
+        <li><strong>Teorema Max-Flow Min-Cut:</strong> $|f^*| = C(A, B) = \sum_{u \in A, v \in B} c(u, v)$.</li>
+        <li><strong>Teorema de Integralidad:</strong> Capacidades enteras garantizan flujo entero $f(e) \in \mathbb{Z}_{\ge 0}$.</li>
       </ul>
     </section>
 
     <section class="drawer-section warning-box">
       <h3>⚠️ Errores Prohibidos que Anulan el Ejercicio</h3>
       <ul>
-        <li>❌ <strong>Reducir al revés en NP-C:</strong> Jamás hagas B ≤_P A. Siempre A_conocido ≤_P B_nuevo.</li>
-        <li>❌ <strong>Afirmar optimalidad en Greedy sin prueba:</strong> Requiere inducción por Greedy Stays Ahead.</li>
-        <li>❌ <strong>Olvidar casos base en DP:</strong> Asumir 0 en estados infactibles corrompe la solución.</li>
-        <li>❌ <strong>Omitir aristas residuales hacia atrás en Flujo:</strong> No es Ford-Fulkerson sin ellas.</li>
+        <li>❌ <strong>Reducir al revés en NP-C:</strong> Jamás hagas $B \le_P A$. Siempre $A_{\text{conocido}} \le_P B_{\text{nuevo}}$.</li>
+        <li>❌ <strong>Afirmar optimalidad en Greedy sin prueba:</strong> Requiere inducción por <em>Greedy Stays Ahead</em> o <em>Intercambio</em>.</li>
+        <li>❌ <strong>Olvidar casos base en DP:</strong> Asumir $0$ en estados infactibles corrompe la solución.</li>
+        <li>❌ <strong>Omitir aristas residuales backward en Flujo:</strong> No es Ford-Fulkerson sin ellas.</li>
       </ul>
     </section>
   </div>
@@ -474,7 +488,7 @@ def get_hud_and_drawer_html(active_paradigm="all"):
     return html_template.replace("<!-- REND_PILLS -->", rendered_pills)
 
 def get_complete_css():
-    return """
+    return r"""
 :root {
   --primary-color: #1a365d;
   --primary-light: #2b6cb0;
@@ -828,6 +842,9 @@ body.dark-mode .mermaid-wrapper {
 .mermaid {
   display: flex;
   justify-content: center;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
 }
 .mermaid svg {
   max-width: 100%;
@@ -1090,6 +1107,7 @@ body.dark-mode .tool-btn.highlight-tool {
   color: var(--text-muted);
   cursor: pointer;
   transition: all 0.15s ease;
+  text-decoration: none;
 }
 
 .pill-btn:hover {
@@ -1172,6 +1190,35 @@ body.dark-mode .emergency-banner {
 
 .exercise-card.is-hidden {
   display: none !important;
+}
+
+/* Search Empty State */
+.search-empty-state {
+  background: var(--bg-card);
+  border: 1px dashed var(--border-color);
+  border-radius: var(--radius-md);
+  padding: 36px 24px;
+  margin: 28px 0;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.empty-state-icon {
+  font-size: 28pt;
+  margin-bottom: 10px;
+}
+
+.empty-state-title {
+  margin: 0 0 8px 0;
+  font-size: 13pt;
+  color: var(--primary-color);
+}
+
+.empty-state-desc {
+  color: var(--text-muted);
+  font-size: 9.5pt;
+  max-width: 480px;
+  margin: 0 auto 16px auto;
 }
 
 .card-header {
@@ -1432,6 +1479,7 @@ body.dark-mode .trap-header {
   padding: 20px;
   margin: 28px 0;
   box-shadow: var(--shadow-md);
+  scroll-margin-top: 175px;
 }
 
 .trainer-header {
@@ -2028,7 +2076,8 @@ body.dark-mode .warning-box {
   .card-header-actions,
   .copy-code-btn,
   .trainer-box,
-  .solution-summary {
+  .solution-summary,
+  .search-empty-state {
     display: none !important;
   }
 
@@ -2060,7 +2109,7 @@ body.dark-mode .warning-box {
 """
 
 def get_complete_js():
-    return """
+    return r"""
 // Global state
 let currentMode = 'emergency';
 let currentParadigm = 'all';
@@ -2069,7 +2118,7 @@ let solutionsExpanded = false;
 let masteredExercises = new Set();
 let checklistState = {};
 
-// 14 real exam scenario questions for the 30-second trainer
+// 16 real exam scenario questions for the 30-second trainer
 const TRAINER_QUESTIONS = [
   {
     prompt: "Dado un número entero positivo K, determinar la mínima cantidad de operaciones necesarias para llegar desde 0 hasta K, sabiendo que las únicas operaciones permitidas son sumar 1 o duplicar el valor actual.",
@@ -2096,10 +2145,10 @@ const TRAINER_QUESTIONS = [
     trigger: "Consigna explícita: 'Demostrar que X es NP-Completo'. Requiere el esquema de 4 pasos: Verificador en NP + Problema conocido VC <=_P DS + Transformación de grafo + Demostración ida y vuelta (Parcial 2024-2-2 y 2024-2-3)."
   },
   {
-    prompt: "Un hospital dispone de M médicos y P pacientes. Cada médico tiene turnos disponibles y atiende hasta 4 pacientes al día. Cada paciente tiene turnos compatibles. Determinar si se puede asignar turno a todos.",
+    prompt: "Un hospital dispone de M médicos y P pacientes. Cada médico tiene turnos disponibles y cada paciente tiene turnos compatibles. Determinar la asignación que maximice las citas sin superposición.",
     answer: "flujo",
     paradigmName: "Redes de Flujo",
-    trigger: "Matching bipartito con capacidades por nodo: modelar red s -> Médicos -> Turnos -> t y resolver con Ford-Fulkerson en tiempo polinomial por Teorema de Integralidad (Parcial 2024-2-2)."
+    trigger: "Matching bipartito con capacidades unitarias: modelar red en 4 capas s -> Pacientes -> Turnos (m, h) -> t y resolver con Edmonds-Karp por Teorema de Integralidad (Parcial 2024-2-2)."
   },
   {
     prompt: "Dada una grilla de comunidades, se desea decidir en qué celdas instalar antenas para cubrir al menos el 70% de comunidades con costo mínimo, indicando cantidad de variables y restricciones.",
@@ -2111,7 +2160,7 @@ const TRAINER_QUESTIONS = [
     prompt: "Dadas dos matrices cuadradas de n x n, multiplicarlas particionando en 4 bloques de n/2 x n/2 y deduciendo la complejidad formal con el Teorema Maestro.",
     answer: "dyc",
     paradigmName: "División y Conquista",
-    trigger: "Partición recursiva en subproblemas disjuntos de tamaño n/b y aplicación del Teorema Maestro T(n) = 8·T(n/2) + O(n²) (Parcial 2025-1-2)."
+    trigger: "Partición recursiva en subproblemas disjuntos de tamaño n/b y aplicación del Teorema Maestro T(n) = 8·T(n/2) + Θ(n²) = Θ(n³) (Parcial 2025-1-2)."
   },
   {
     prompt: "Juan el Vago recibe ofertas de changas diarias v_i. Si trabaja el día i, debe descansar obligatoriamente el día i+1. Maximizar su beneficio total.",
@@ -2120,16 +2169,16 @@ const TRAINER_QUESTIONS = [
     trigger: "Subproblemas dependientes con exclusión de días adyacentes: OPT(i) = max(OPT(i-1), OPT(i-2) + v_i). (Guía 04, Ej 4)."
   },
   {
-    prompt: "Dada una red energética con generadores (oferta), ciudades (demanda) y líneas de transmisión con capacidades máximas, determinar el balance óptimo.",
+    prompt: "Dada una red energética con generadores (oferta), ciudades (demanda) y líneas de transmisión con capacidades máximas, determinar el balance óptimo y los cuellos de botella.",
     answer: "flujo",
     paradigmName: "Redes de Flujo",
-    trigger: "Ford-Fulkerson con super-fuente y super-sumidero para balancear múltiples fuentes y sumideros con capacidades (Parcial 2025-1-1)."
+    trigger: "Ford-Fulkerson / Edmonds-Karp con super-fuente y super-sumidero para balancear múltiples fuentes y sumideros con capacidades y análisis de Corte Mínimo (Parcial 2025-1-1)."
   },
   {
     prompt: "Un cadete debe repartir encomiendas recorriendo n ciudades y regresar al punto de partida. Demostrar que este problema no es más fácil que Ciclo Hamiltoniano.",
     answer: "reducciones",
     paradigmName: "Reducciones NP-C",
-    trigger: "Reducción polinomial de Ciclo Hamiltoniano a TSP (Problema del Viajante) con grafo completo y pesos 1 y 2 (Parcial 2025-1-1, Marco el cadete)."
+    trigger: "Reducción polinomial de Ciclo Hamiltoniano a TSP (Problema del Viajante) con grafo completo y pesos {1, 2} con cota k = n (Parcial 2025-1-1, Marco el cadete)."
   },
   {
     prompt: "Ubicar 8 reinas en un tablero de ajedrez sin que se ataquen, verificando conflictos de columna y diagonales en O(1) con arreglos booleanos.",
@@ -2138,22 +2187,22 @@ const TRAINER_QUESTIONS = [
     trigger: "Exploración exhaustiva de tablero con control de factibilidad O(1) mediante arreglos auxiliares y vuelta atrás del estado (Parcial 2025-1-2)."
   },
   {
-    prompt: "Formatear un párrafo de palabras minimizando la suma de cuadrados de espacios sobrantes al final de cada línea (Word Wrap / Knuth-Plass).",
+    prompt: "Formatear un párrafo de palabras minimizando la suma de cubos/cuadrados de espacios sobrantes al final de cada línea (Word Wrap / Knuth-Plass).",
     answer: "dp",
     paradigmName: "Programación Dinámica",
-    trigger: "La elección del corte de palabras en la línea actual define la longitud de los renglones restantes: OPT(j) = min_{i < j} (OPT(i) + costo(i+1, j)) (Parcial 2024-2-3)."
+    trigger: "La elección del corte de palabras en la línea actual define la longitud de los renglones restantes: OPT(i) = min_{j >= i} (costo(i, j) + OPT(j+1)) (Parcial 2024-2-3)."
   },
   {
-    prompt: "Dado un arreglo unimodal donde los valores suben y luego bajan, encontrar el elemento pico en tiempo O(log n).",
+    prompt: "Dado un arreglo donde no hay adyacentes iguales, encontrar un elemento pico (mayor a sus vecinos) en tiempo O(log n).",
     answer: "dyc",
     paradigmName: "División y Conquista",
-    trigger: "Búsqueda binaria adaptada sobre arreglo unimodal: comparar A[mid] con A[mid+1] descartando la mitad del arreglo en cada paso (Guía 01, Ej 4)."
+    trigger: "Búsqueda binaria sobre la pendiente local: comparar A[m] con A[m+1] descartando la mitad del arreglo en cada paso en O(log n) (Guía 01, Ej 4)."
   },
   {
-    prompt: "Dadas n tareas con tiempos de procesamiento y fechas límite d_i, ordenar la secuencia para minimizar la latencia máxima L = max(0, C_i - d_i).",
+    prompt: "Dadas n tareas con tiempos de procesamiento y fechas límite d_i, ordenar la secuencia para minimizar la latencia máxima L = max(0, f_i - d_i).",
     answer: "greedy",
     paradigmName: "Greedy (Voraz)",
-    trigger: "Earliest Deadline First (EDF): ordenar por fecha de entrega más temprana d_i. Se demuestra óptimo por argumento de intercambio (Guía 02, Ej 9)."
+    trigger: "Earliest Deadline First (EDF): ordenar por fecha de entrega más temprana d_i. Se demuestra óptimo por argumento de intercambio de inversiones adyacentes (Guía 02, Ej 9)."
   },
   {
     prompt: "Se tienen n objetos indivisibles con pesos w_i y valores v_i, y una mochila de capacidad máxima W. Encontrar la combinación de máximo valor respetando la capacidad entera.",
@@ -2173,10 +2222,28 @@ let trainerIndex = 0;
 let trainerScore = 0;
 let trainerAnswered = false;
 
+function getPageForExercise(num) {
+  if (num >= 1 && num <= 3) return "dyc.html";
+  if (num >= 4 && num <= 8) return "greedy.html";
+  if (num >= 9 && num <= 12) return "backtracking.html";
+  if (num >= 13 && num <= 18) return "dp.html";
+  if (num >= 19 && num <= 23) return "pl.html";
+  if (num >= 24 && num <= 27) return "flujo.html";
+  if (num >= 28 && num <= 31) return "reducciones.html";
+  if (num >= 32 && num <= 36) return "integradores.html";
+  if (num >= 37 && num <= 40) return "tipo_parcial.html";
+  return "index.html";
+}
+
 // Initialization on DOM ready
 document.addEventListener("DOMContentLoaded", async () => {
   loadSavedState();
   updateModeUI();
+  updateDarkModeButtonIcon();
+
+  if (document.getElementById("entrenador-30s")) {
+    initTrainer();
+  }
 
   // Abrir temporalmente todos los drawers para que Mermaid calcule la geometría real
   const drawers = document.querySelectorAll(".exercise-solution-drawer");
@@ -2196,7 +2263,22 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   // Aplicar filtros después del renderizado para evitar que tarjetas en display:none rompan los SVGs
   applyFilters();
+
+  // Navegación automática por hash (#ej-XX o #entrenador-30s)
+  handleInitialHashNavigation();
 });
+
+function handleInitialHashNavigation() {
+  const hash = window.location.hash;
+  if (!hash) return;
+  const ejMatch = hash.match(/^#ej-(\d+)$/);
+  if (ejMatch) {
+    const ejNum = parseInt(ejMatch[1], 10);
+    setTimeout(() => scrollToExercise(ejNum), 120);
+  } else if (hash === "#entrenador-30s") {
+    setTimeout(() => scrollToTrainer(), 120);
+  }
+}
 
 function initMathRendering() {
   if (typeof renderMathInElement === "function") {
@@ -2215,6 +2297,17 @@ function initMathRendering() {
 async function initMermaidDiagrams() {
   if (typeof mermaid === "undefined") return;
   const isDark = document.body.classList.contains("dark-mode");
+
+  // Preservar el código fuente original de cada diagrama Mermaid para poder re-renderizar al cambiar tema
+  document.querySelectorAll(".mermaid").forEach(el => {
+    if (!el.getAttribute("data-mermaid-src")) {
+      el.setAttribute("data-mermaid-src", el.textContent.trim());
+    } else {
+      el.removeAttribute("data-processed");
+      el.textContent = el.getAttribute("data-mermaid-src");
+    }
+  });
+
   mermaid.initialize({
     startOnLoad: false,
     theme: isDark ? "dark" : "neutral",
@@ -2259,6 +2352,10 @@ function loadSavedState() {
     if (savedTheme === "dark") {
       document.body.classList.add("dark-mode");
     }
+    const savedMode = localStorage.getItem("tda_study_mode");
+    if (savedMode && ["emergency", "tactical", "all"].includes(savedMode)) {
+      currentMode = savedMode;
+    }
   } catch (e) {
     console.error("Error reading localStorage", e);
   }
@@ -2286,6 +2383,7 @@ function saveState() {
   try {
     localStorage.setItem("tda_mastered_exercises", JSON.stringify(Array.from(masteredExercises)));
     localStorage.setItem("tda_exam_checklist", JSON.stringify(checklistState));
+    localStorage.setItem("tda_study_mode", currentMode);
   } catch (e) {
     console.error("Error saving state", e);
   }
@@ -2304,7 +2402,7 @@ function toggleMastered(num, isMastered) {
     else card.classList.remove("is-mastered");
   }
   saveState();
-  updateProgressHUD();
+  applyFilters();
 }
 
 // Checklist item toggle
@@ -2316,14 +2414,18 @@ function toggleChecklistItem(id, isChecked) {
 // Filter and View Logic
 function setStudyMode(mode) {
   currentMode = mode;
+  saveState();
   updateModeUI();
   applyFilters();
 }
 
 function updateModeUI() {
-  document.getElementById("btnModeEmergency").classList.toggle("active", currentMode === "emergency");
-  document.getElementById("btnModeTactical").classList.toggle("active", currentMode === "tactical");
-  document.getElementById("btnModeAll").classList.toggle("active", currentMode === "all");
+  const btnEmergency = document.getElementById("btnModeEmergency");
+  const btnTactical = document.getElementById("btnModeTactical");
+  const btnAll = document.getElementById("btnModeAll");
+  if (btnEmergency) btnEmergency.classList.toggle("active", currentMode === "emergency");
+  if (btnTactical) btnTactical.classList.toggle("active", currentMode === "tactical");
+  if (btnAll) btnAll.classList.toggle("active", currentMode === "all");
   
   const banner = document.getElementById("emergencyBanner");
   if (banner) {
@@ -2341,26 +2443,45 @@ function filterByParadigm(paradigm) {
 
 function handleSearch(val) {
   searchQuery = val.trim().toLowerCase();
-  document.getElementById("clearSearchBtn").style.display = searchQuery ? "block" : "none";
+  const clearBtn = document.getElementById("clearSearchBtn");
+  if (clearBtn) clearBtn.style.display = searchQuery ? "block" : "none";
   applyFilters();
 }
 
 function clearSearch() {
   const searchInput = document.getElementById("exerciseSearch");
-  searchInput.value = "";
+  if (searchInput) searchInput.value = "";
   searchQuery = "";
-  document.getElementById("clearSearchBtn").style.display = "none";
+  const clearBtn = document.getElementById("clearSearchBtn");
+  if (clearBtn) clearBtn.style.display = "none";
+  applyFilters();
+}
+
+function resetAllFilters() {
+  currentMode = "all";
+  currentParadigm = "all";
+  searchQuery = "";
+  const searchInput = document.getElementById("exerciseSearch");
+  if (searchInput) searchInput.value = "";
+  const clearBtn = document.getElementById("clearSearchBtn");
+  if (clearBtn) clearBtn.style.display = "none";
+  saveState();
+  updateModeUI();
   applyFilters();
 }
 
 function dismissBanner() {
-  document.getElementById("emergencyBanner").style.display = "none";
+  const banner = document.getElementById("emergencyBanner");
+  if (banner) banner.style.display = "none";
 }
 
 function applyFilters() {
   const cards = document.querySelectorAll(".exercise-card");
   let visibleCount = 0;
   let masteredCount = 0;
+  let totalEmergencyOnPage = 0;
+  let totalTacticalOnPage = 0;
+  const totalCardsOnPage = cards.length;
 
   cards.forEach(card => {
     const num = parseInt(card.getAttribute("data-num"));
@@ -2369,13 +2490,24 @@ function applyFilters() {
     const title = card.getAttribute("data-title") || "";
     const origin = card.getAttribute("data-origin") || "";
     const cardText = card.textContent.toLowerCase();
+    const isMastered = masteredExercises.has(num);
 
-    // Mode filter
+    if (priority === "imprescindible") {
+      totalEmergencyOnPage++;
+    }
+    if (!isMastered || priority === "importante") {
+      totalTacticalOnPage++;
+    }
+
+    // Mode filter:
+    // - emergency: solo ejercicios 🔴 IMPRESCINDIBLE
+    // - tactical: ejercicios pendientes de dominar (!isMastered) o 🟡 IMPORTANTE
+    // - all: todos los ejercicios de la vista actual
     let matchesMode = true;
     if (currentMode === "emergency") {
       matchesMode = (priority === "imprescindible");
     } else if (currentMode === "tactical") {
-      matchesMode = (priority === "imprescindible" || priority === "importante");
+      matchesMode = (!isMastered || priority === "importante");
     }
 
     // Paradigm filter
@@ -2387,7 +2519,7 @@ function applyFilters() {
     // Search query filter
     let matchesSearch = true;
     if (searchQuery) {
-      matchesSearch = title.includes(searchQuery) || origin.includes(searchQuery) || cardText.includes(searchQuery);
+      matchesSearch = title.includes(searchQuery) || origin.includes(searchQuery) || cardText.includes(searchQuery) || ("ej " + num) === searchQuery || ("ejercicio " + num) === searchQuery;
     }
 
     const isVisible = matchesMode && matchesParadigm && matchesSearch;
@@ -2395,11 +2527,27 @@ function applyFilters() {
 
     if (isVisible) {
       visibleCount++;
-      if (masteredExercises.has(num)) {
+      if (isMastered) {
         masteredCount++;
       }
     }
   });
+
+  // Actualizar contadores dinámicos de las píldoras de modo según la página actual
+  const badgeEmergency = document.getElementById("badgeEmergencyCount");
+  const badgeTactical = document.getElementById("badgeTacticalCount");
+  const badgeAll = document.getElementById("badgeAllCount");
+  const bannerCount = document.getElementById("emergencyBannerCount");
+
+  if (badgeEmergency) badgeEmergency.textContent = totalEmergencyOnPage;
+  if (badgeTactical) badgeTactical.textContent = totalTacticalOnPage;
+  if (badgeAll) badgeAll.textContent = totalCardsOnPage;
+  if (bannerCount) bannerCount.textContent = totalEmergencyOnPage;
+
+  const emptyState = document.getElementById("searchEmptyState");
+  if (emptyState) {
+    emptyState.style.display = (totalCardsOnPage > 0 && visibleCount === 0) ? "block" : "none";
+  }
 
   updateProgressHUD(visibleCount, masteredCount);
 }
@@ -2438,6 +2586,14 @@ function toggleCardSolution(num) {
 }
 
 function scrollToExercise(num) {
+  const card = document.getElementById("ej-" + num);
+  if (!card) {
+    // Si estamos en una subpágina modular donde no existe el ejercicio, redirigir a la página correspondiente
+    const targetPage = getPageForExercise(num);
+    window.location.href = targetPage + "#ej-" + num;
+    return;
+  }
+
   // Asegurar que se muestre el ejercicio independientemente del filtro activo
   currentMode = 'all';
   currentParadigm = 'all';
@@ -2447,37 +2603,28 @@ function scrollToExercise(num) {
   const clearBtn = document.getElementById("clearSearchBtn");
   if (clearBtn) clearBtn.style.display = "none";
 
-  document.querySelectorAll(".mode-btn").forEach(btn => btn.classList.remove("active"));
-  const btnAll = document.getElementById("btnModeAll");
-  if (btnAll) btnAll.classList.add("active");
-
-  document.querySelectorAll(".pill-btn").forEach(btn => {
-    btn.classList.toggle("active", btn.getAttribute("data-paradigm") === "all");
-  });
-
+  saveState();
+  updateModeUI();
   applyFilters();
 
-  const card = document.getElementById("ej-" + num);
-  if (card) {
-    const drawer = document.getElementById("solution-drawer-" + num);
-    if (drawer) drawer.open = true;
+  const drawer = document.getElementById("solution-drawer-" + num);
+  if (drawer) drawer.open = true;
 
-    // Desplazamiento suave con compensación por el HUD fijo
-    const rect = card.getBoundingClientRect();
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const hudHeight = document.getElementById("hudTopBar") ? document.getElementById("hudTopBar").offsetHeight : 140;
-    const targetY = rect.top + scrollTop - hudHeight - 16;
+  // Desplazamiento suave con compensación por el HUD fijo
+  const rect = card.getBoundingClientRect();
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const hudHeight = document.getElementById("hudTopBar") ? document.getElementById("hudTopBar").offsetHeight : 140;
+  const targetY = rect.top + scrollTop - hudHeight - 16;
 
-    window.scrollTo({ top: targetY, behavior: 'smooth' });
+  window.scrollTo({ top: targetY, behavior: 'smooth' });
 
-    card.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
-    card.style.borderColor = 'var(--accent-color)';
-    card.style.boxShadow = '0 0 0 4px rgba(49, 130, 206, 0.4)';
-    setTimeout(() => {
-      card.style.borderColor = '';
-      card.style.boxShadow = '';
-    }, 2800);
-  }
+  card.style.transition = 'box-shadow 0.4s ease, border-color 0.4s ease';
+  card.style.borderColor = 'var(--accent-color)';
+  card.style.boxShadow = '0 0 0 4px rgba(49, 130, 206, 0.4)';
+  setTimeout(() => {
+    card.style.borderColor = '';
+    card.style.boxShadow = '';
+  }, 2800);
 }
 
 function toggleGlobalSolutions() {
@@ -2487,27 +2634,49 @@ function toggleGlobalSolutions() {
   });
   const lbl = document.getElementById("lblGlobalSolutions");
   if (lbl) {
-    lbl.textContent = solutionsExpanded ? "Ocultar Soluciones" : "Mostrar Soluciones";
+    lbl.textContent = solutionsExpanded ? "Ocultar Soluciones" : "Soluciones";
   }
 }
 
 // Cheatsheet drawer
 function openCheatsheet() {
-  document.getElementById("cheatsheetDrawer").classList.add("is-open");
-  document.getElementById("drawerBackdrop").classList.add("is-open");
+  const drawer = document.getElementById("cheatsheetDrawer");
+  const backdrop = document.getElementById("drawerBackdrop");
+  if (drawer) {
+    drawer.classList.add("is-open");
+    drawer.setAttribute("aria-hidden", "false");
+  }
+  if (backdrop) backdrop.classList.add("is-open");
 }
 
 function closeCheatsheet() {
-  document.getElementById("cheatsheetDrawer").classList.remove("is-open");
-  document.getElementById("drawerBackdrop").classList.remove("is-open");
+  const drawer = document.getElementById("cheatsheetDrawer");
+  const backdrop = document.getElementById("drawerBackdrop");
+  if (drawer) {
+    drawer.classList.remove("is-open");
+    drawer.setAttribute("aria-hidden", "true");
+  }
+  if (backdrop) backdrop.classList.remove("is-open");
+}
+
+function updateDarkModeButtonIcon() {
+  const iconEl = document.getElementById("darkModeIcon");
+  if (iconEl) {
+    const isDark = document.body.classList.contains("dark-mode");
+    iconEl.textContent = isDark ? "☀️" : "🌙";
+  }
 }
 
 // Theme
-function toggleDarkMode() {
+async function toggleDarkMode() {
   const isDark = document.body.classList.toggle("dark-mode");
+  updateDarkModeButtonIcon();
   try {
     localStorage.setItem("tda_theme", isDark ? "dark" : "light");
   } catch (e) {}
+  if (typeof initMermaidDiagrams === "function") {
+    await initMermaidDiagrams();
+  }
 }
 
 // Copy Code Block
@@ -2533,18 +2702,29 @@ function initTrainer() {
   trainerIndex = 0;
   trainerScore = 0;
   trainerAnswered = false;
+  const totalEl = document.getElementById("trainerTotalQuestions");
+  if (totalEl) totalEl.textContent = TRAINER_QUESTIONS.length;
+  const scoreEl = document.getElementById("trainerScore");
+  if (scoreEl) scoreEl.textContent = "0";
+  const answeredEl = document.getElementById("trainerTotal");
+  if (answeredEl) answeredEl.textContent = "0";
   loadTrainerQuestion();
 }
 
 function loadTrainerQuestion() {
+  const promptEl = document.getElementById("trainerPrompt");
+  if (!promptEl) return;
   trainerAnswered = false;
   const q = TRAINER_QUESTIONS[trainerIndex];
   
-  document.getElementById("trainerCurrentIndex").textContent = trainerIndex + 1;
-  document.getElementById("trainerPrompt").textContent = q.prompt;
+  const idxEl = document.getElementById("trainerCurrentIndex");
+  if (idxEl) idxEl.textContent = trainerIndex + 1;
+  promptEl.textContent = q.prompt;
   
-  document.getElementById("trainerFeedback").style.display = "none";
-  document.getElementById("trainerNextBtn").style.display = "none";
+  const fbEl = document.getElementById("trainerFeedback");
+  if (fbEl) fbEl.style.display = "none";
+  const nextBtn = document.getElementById("trainerNextBtn");
+  if (nextBtn) nextBtn.style.display = "none";
 
   const buttons = document.querySelectorAll("#trainerOptions .trainer-btn");
   buttons.forEach(btn => {
@@ -2597,7 +2777,7 @@ function checkTrainerAnswer(selected) {
     nextBtn.textContent = "Siguiente Enunciado (" + (trainerIndex + 2) + "/" + TRAINER_QUESTIONS.length + ") ➔";
   } else {
     nextBtn.style.display = "inline-block";
-    nextBtn.textContent = "Ver Resultado Final 🏁";
+    nextBtn.textContent = "Ver Diagnóstico Final 🏁";
   }
 }
 
@@ -2606,8 +2786,23 @@ function nextTrainerQuestion() {
     trainerIndex++;
     loadTrainerQuestion();
   } else {
-    alert("¡Simulación completada! Puntaje final: " + trainerScore + " / " + TRAINER_QUESTIONS.length + " aciertos.");
-    initTrainer();
+    const pct = Math.round((trainerScore / TRAINER_QUESTIONS.length) * 100);
+    const feedback = document.getElementById("trainerFeedback");
+    const result = document.getElementById("feedbackResult");
+    const trigger = document.getElementById("feedbackTrigger");
+    const nextBtn = document.getElementById("trainerNextBtn");
+
+    if (feedback && result && trigger) {
+      feedback.style.display = "block";
+      feedback.className = "trainer-feedback " + (pct >= 75 ? "feedback-success" : "feedback-error");
+      result.textContent = "🏁 Simulación completada: " + trainerScore + " de " + TRAINER_QUESTIONS.length + " aciertos (" + pct + "%)";
+      trigger.innerHTML = pct >= 75
+        ? "<strong>Diagnóstico:</strong> ¡Excelente velocidad de reconocimiento! Estás listo para identificar los paradigmas del parcial sin dudar."
+        : "<strong>Diagnóstico:</strong> Repasá el Árbol de Decisión Rápido y la Tabla de Disparadores Léxicos y volvé a intentar el simulador.";
+    }
+    if (nextBtn) {
+      nextBtn.style.display = "none";
+    }
   }
 }
 
@@ -2618,7 +2813,12 @@ function resetTrainer() {
 function scrollToTrainer() {
   const trainer = document.getElementById("entrenador-30s");
   if (trainer) {
-    trainer.scrollIntoView({ behavior: "smooth", block: "start" });
+    const rect = trainer.getBoundingClientRect();
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const hudHeight = document.getElementById("hudTopBar") ? document.getElementById("hudTopBar").offsetHeight : 140;
+    window.scrollTo({ top: rect.top + scrollTop - hudHeight - 16, behavior: "smooth" });
+  } else {
+    window.location.href = "index.html#entrenador-30s";
   }
 }
 
@@ -2626,10 +2826,17 @@ function scrollToTop() {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-// Close drawer on Escape key
+// Keyboard shortcuts: Escape closes drawer, '/' or Ctrl+K focuses search
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     closeCheatsheet();
+  } else if ((e.key === "/" || (e.ctrlKey && e.key.toLowerCase() === "k")) && !["INPUT", "TEXTAREA"].includes(document.activeElement.tagName)) {
+    const searchInput = document.getElementById("exerciseSearch");
+    if (searchInput) {
+      e.preventDefault();
+      searchInput.focus();
+      searchInput.select();
+    }
   }
 });
 """

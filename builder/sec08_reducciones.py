@@ -347,6 +347,18 @@ En Subset Sum clásico, cada elemento de un conjunto $S$ puede seleccionarse a l
   - Si la versión de decisión del problema de monedas es NP-Completa (bajo representación binaria de denominaciones), ambos problemas son computacionalmente equivalentes bajo reducciones polinomiales de Karp:
     $$\text{Cambio de Monedas} \equiv_P \text{Subset Sum}$$
 
+#### 3. Diagrama Visual del Gadget de Réplicas y Base $M = k + 1$
+
+```mermaid
+flowchart LR
+    I["Instancia Cambio de Monedas:<br/>D = {d₁..dₘ}, monto V, cota k"]:::src --> R["Expansión en k copias:<br/>L tiene m · k elementos"]:::step
+    R --> G["Gadget Base M = k + 1:<br/>eᵢ⁽ʳ⁾ = dᵢ · M + 1<br/>Objetivo W = V · M + k'"]:::step
+    G --> SS(["Oráculo Subset Sum:<br/>¿Existe subconjunto que sume W?"]):::opt
+    classDef src fill:#1e40af,stroke:#1e3a8a,stroke-width:2px,color:#fff
+    classDef step fill:#334155,stroke:#1e293b,stroke-width:1px,color:#fff
+    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
+```
+
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>

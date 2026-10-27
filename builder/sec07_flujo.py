@@ -126,35 +126,34 @@ Consideremos 3 pacientes y 3 turnos:
 #### 7. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
 
 ```text
-Algoritmo AsignarTurnosMedicos(Medicos, Pacientes, Turnos, Compatibilidades):
-    Construir Red de Flujo G = (V, E) con fuente s y sumidero t:
+Algoritmo AsignarTurnosMedicos(Medicos, Pacientes, HorariosPorMedico, Compatibilidades):
+    Construir Red de Flujo G = (V, E) con super-fuente s y super-sumidero t:
 
-    // 1. Arcos desde s a cada médico m (capacidad = cupo máximo diario)
-    para cada m in Medicos:
-        agregar_arco(G, s, m, capacidad = m.capacidad_diaria)
-
-    // 2. Arcos desde médico m a sus bloques de turno (m, k) de capacidad 1
-    para cada m in Medicos:
-        para cada turno k ofrecido por m:
-            agregar_arco(G, m, (m, k), capacidad = 1)
-
-    // 3. Arcos de compatibilidad hacia pacientes (capacidad 1)
+    // 1. Nivel 0 -> Nivel 1: Arcos desde la fuente s a cada paciente p (capacidad 1)
     para cada p in Pacientes:
-        para cada turno (m, k) compatible con p:
-            agregar_arco(G, (m, k), p, capacidad = 1)
+        agregar_arco(G, s, p, capacidad = 1)
 
-    // 4. Arcos desde cada paciente p al sumidero t (capacidad 1)
+    // 2. Nivel 1 -> Nivel 2: Arcos desde el paciente p a sus turnos compatibles (m, h)
     para cada p in Pacientes:
-        agregar_arco(G, p, t, capacidad = 1)
+        para cada tupla (m, h) in Compatibilidades[p]:
+            agregar_arco(G, p, (m, h), capacidad = 1)
 
-    // Ejecución de flujo máximo mediante algoritmo polinomial estándar:
+    // 3. Nivel 2 -> Nivel 3: Arcos desde cada turno (m, h) al sumidero t (capacidad 1)
+    // (Nota: si el enunciado agregara un tope diario C_m por médico, se intercala un nodo m
+    //  con arcos (m, h) -> m de cap 1 y m -> t de cap C_m)
+    para cada m in Medicos:
+        para cada h in HorariosPorMedico[m]:
+            agregar_arco(G, (m, h), t, capacidad = 1)
+
+    // 4. Ejecución de flujo máximo mediante algoritmo polinomial estándar:
     flujo_maximo = EdmondsKarp(G, s, t)
 
-    si flujo_maximo == cantidad(Pacientes):
-        asignaciones = ExtraerArcosConFlujo1(G)
-        devolver (Verdadero, asignaciones)
-    sino:
-        devolver (Falso, "Infactible: no es posible atender a todos los pacientes")
+    // 5. Decodificar asignaciones (aristas intermedias p -> (m, h) con flujo f == 1)
+    citas_confirmadas = []
+    para cada arco (p, (m, h)) con flujo(p, (m, h)) == 1:
+        agregar (p, m, h) a citas_confirmadas
+
+    devolver (flujo_maximo, citas_confirmadas)
 ```
 
 <div class="trap-callout">
@@ -324,19 +323,11 @@ Un corte con muchas aristas sufrirá un incremento mucho mayor que un corte comp
 
 #### 3. Contraejemplo Formal Minimal (4 Nodos)
 
-Construyamos la red más simple posible con $V = \{s, a, b, t\}$:
-- Aristas y capacidades originales:
-  - $(s, a)$ con $c(s, a) = 10$.
-  - $(a, t)$ con $c(a, t) = 10$.
-  - $(s, b)$ con $c(s, b) = 3$.
-  - $(b, t)$ con $c(b, t) = 3$.
-  - O de forma aún más directa y canónica:
-    - Grafo con 3 caminos paralelos entre $s$ y $t$:
-      - Camino 1: arista directa $(s, t_1)$ no; consideremos dos cortes competidores:
-      - **Corte 1 ($A_1 = \{s\}, B_1 = V \setminus \{s\}$):** Contiene **5 aristas** saliendo de $s$, cada una de capacidad $c=2$.
-        $$C(A_1, B_1) = 2 + 2 + 2 + 2 + 2 = 10, \qquad |\delta^+(A_1)| = 5$$
-      - **Corte 2 ($A_2 = V \setminus \{t\}, B_2 = \{t\}$):** Contiene **1 única arista** entrando a $t$, con capacidad $c=11$.
-        $$C(A_2, B_2) = 11, \qquad |\delta^+(A_2)| = 1$$
+Construyamos la red más simple posible con $V = \{s, u_1, u_2, u_3, u_4, u_5, v, t\}$ donde compiten dos cortes:
+- **Corte 1 ($A_1 = \{s\}, B_1 = V \setminus \{s\}$):** Contiene **5 aristas** saliendo de $s$ hacia $u_1 \dots u_5$, cada una de capacidad $c = 2$:
+  $$C(A_1, B_1) = 2 + 2 + 2 + 2 + 2 = 10, \qquad |\delta^+(A_1)| = 5$$
+- **Corte 2 ($A_2 = V \setminus \{t\}, B_2 = \{t\}$):** Contiene **1 única arista** $(v, t)$ entrando a $t$, con capacidad $c = 11$:
+  $$C(A_2, B_2) = 11, \qquad |\delta^+(A_2)| = 1$$
 - **Evaluación Inicial:**
   - $C(A_1, B_1) = 10 < 11 = C(A_2, B_2)$.
   - El **corte mínimo original es $(A_1, B_1)$** con capacidad $10$.
@@ -354,17 +345,17 @@ Construyamos la red más simple posible con $V = \{s, a, b, t\}$:
 
 ```mermaid
 flowchart LR
-    S_SRC["Fuente s"] -->|c=2 mas 1| u1["u1"]
-    S_SRC -->|c=2 mas 1| u2["u2"]
-    S_SRC -->|c=2 mas 1| u3["u3"]
-    S_SRC -->|c=2 mas 1| u4["u4"]
-    S_SRC -->|c=2 mas 1| u5["u5"]
+    S_SRC["Fuente s"] -->|c=2 → c'=3| u1["u1"]
+    S_SRC -->|c=2 → c'=3| u2["u2"]
+    S_SRC -->|c=2 → c'=3| u3["u3"]
+    S_SRC -->|c=2 → c'=3| u4["u4"]
+    S_SRC -->|c=2 → c'=3| u5["u5"]
     u1 -->|c=10| v["Hub v"]
     u2 -->|c=10| v
     u3 -->|c=10| v
     u4 -->|c=10| v
     u5 -->|c=10| v
-    v -->|c=11 mas 1| T_SNK["Sumidero t"]
+    v -->|c=11 → c'=12| T_SNK["Sumidero t"]
 ```
 
 #### 5. Tabla Comparativa de Capacidades de Corte
@@ -428,11 +419,13 @@ Dada una red de flujo $G = (V, E)$ con capacidades enteras positivas, se ha calc
 
 ```mermaid
 flowchart LR
-    A["Capacidad c de u a v mas 1"] --> B["Red residual mas 1"]
-    B --> C["BFS busca camino"]
-    C -->|Si| D["Aumentar flujo en 1"]
-    D --> E["Flujo previo mas 1"]
-    C -->|No| F["Flujo no cambia"]
+    A["c'(u,v) = c(u,v) + 1"] --> B["c'_f(u,v) = c_f(u,v) + 1"]
+    B --> C{"¿BFS en G'_f halla<br/>camino s → t?"}
+    C -->|Sí| D["Empujar Δ = 1 por P"]:::opt
+    D --> E(["Nuevo Flujo = |f*| + 1"]):::opt
+    C -->|No| F(["Flujo se mantiene en |f*|"]):::same
+    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
+    classDef same fill:#1e40af,stroke:#1e3a8a,stroke-width:2px,color:#fff
 ```
 
 #### 5. Ejemplo Numérico y Traza

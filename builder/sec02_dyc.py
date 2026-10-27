@@ -127,16 +127,18 @@ $$C = \begin{pmatrix} 19 & 22 \\ 43 & 50 \end{pmatrix}$$
 
 ```mermaid
 flowchart TD
-    R["Raiz: T(n)"] --> L1["Submatriz M1"]
-    R --> L2["Submatriz M2"]
-    R --> L3["Submatriz M3"]
-    R --> L4["Submatriz M4"]
-    R --> L5["Submatriz M5"]
-    R --> L6["Submatriz M6"]
-    R --> L7["Submatriz M7"]
-    R --> L8["Submatriz M8"]
-    L1 --> H1["Hojas caso base"]
-    L8 --> H8["Hojas caso base"]
+    R["Raíz: T(n) — Costo combinación Θ(n²)"]:::root --> L1["M1 = A11·B11<br/>T(n/2)"]:::mid
+    R --> L2["M2 = A12·B21<br/>T(n/2)"]:::mid
+    R --> L3["M3 = A11·B12<br/>T(n/2)"]:::mid
+    R --> L4["M4 = A12·B22<br/>T(n/2)"]:::mid
+    R --> L5["M5 = A21·B11<br/>T(n/2)"]:::mid
+    R --> L6["M6 = A22·B21<br/>T(n/2)"]:::mid
+    R --> L7["M7 = A21·B12<br/>T(n/2)"]:::mid
+    R --> L8["M8 = A22·B22<br/>T(n/2)"]:::mid
+    L1 & L2 & L3 & L4 & L5 & L6 & L7 & L8 --> H["Nivel h = log₂(n): 8^(log₂ n) = n³ hojas de costo Θ(1) ⇒ Total Θ(n³)"]:::leaf
+    classDef root fill:#1e40af,stroke:#1e3a8a,stroke-width:2px,color:#fff
+    classDef mid fill:#334155,stroke:#1e293b,stroke-width:1px,color:#fff
+    classDef leaf fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
 #### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
@@ -251,10 +253,12 @@ $$A = [1, 2, 1, 3, 5, 6, 4]$$
 
 ```mermaid
 flowchart LR
-    A["Rango 0 a 6: A3 sube a A4"] -->|Descartar izq| B["Rango 4 a 6: A5 baja a A6"]
-    B -->|Conservar m 5| C["Rango 4 a 5: A4 sube a A5"]
-    C -->|Descartar m 4| D["Rango 5 a 5: Caso Base"]
-    D --> E["Elemento Pico: Indice 5"]
+    A["Rango [0..6]: m=3<br/>A[3]=3 &lt; A[4]=5"]:::step -->|Descarta izq [0..3]| B["Rango [4..6]: m=5<br/>A[5]=6 &gt; A[6]=4"]:::step
+    B -->|Conserva m=5| C["Rango [4..5]: m=4<br/>A[4]=5 &lt; A[5]=6"]:::step
+    C -->|Descarta m=4| D["Rango [5..5]: ini=fin"]:::step
+    D --> E(["Pico Hallado: Índice 5 (A[5] = 6)"]):::opt
+    classDef step fill:#1e40af,stroke:#1e3a8a,stroke-width:2px,color:#fff
+    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
 #### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)

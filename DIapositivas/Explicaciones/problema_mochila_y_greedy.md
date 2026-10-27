@@ -3,9 +3,9 @@
 **Materia:** Teoría de Algoritmos (TB024 / 75.29 / 95.06) – FIUBA  
 **Cátedra:** Echevarría  
 **Referencias:** 
-- [03a - Greedy I.pdf](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/DIapositivas/03a%20-%20Greedy%20I.pdf)
-- [04 - Greedy II.pdf](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/DIapositivas/04%20-%20Greedy%20II.pdf)
-- [TP1 - Enunciado](file:///home/rtadmin/Documentos/Facultad/teoria_de_algoritmos/tda-2c2026-tp01/README.md)
+- [03a - Greedy I.pdf](../03a%20-%20Greedy%20I.pdf)
+- [04 - Greedy II.pdf](../04%20-%20Greedy%20II.pdf)
+- [Guía de Ejercicios 02 - Greedy](../../Guia-Ejercicios/02_greedy.pdf)
 
 ---
 
