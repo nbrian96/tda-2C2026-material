@@ -152,30 +152,6 @@ function getPageForExercise(num) {
   return "index.html";
 }
 
-function sortCardsByDifficulty() {
-  const cards = Array.from(document.querySelectorAll(".exercise-card"));
-  if (cards.length <= 1) return;
-  const parentMap = new Map();
-  cards.forEach(card => {
-    const parent = card.parentNode;
-    if (!parentMap.has(parent)) parentMap.set(parent, []);
-    parentMap.get(parent).push(card);
-  });
-  parentMap.forEach((cardList, parent) => {
-    if (cardList.length > 1) {
-      cardList.sort((a, b) => {
-        const diffA = parseInt(a.getAttribute("data-difficulty") || "3", 10);
-        const diffB = parseInt(b.getAttribute("data-difficulty") || "3", 10);
-        if (diffA !== diffB) return diffA - diffB;
-        const numA = parseInt(a.getAttribute("data-num") || "0", 10);
-        const numB = parseInt(b.getAttribute("data-num") || "0", 10);
-        return numA - numB;
-      });
-      cardList.forEach(card => parent.appendChild(card));
-    }
-  });
-}
-
 // Initialization on DOM ready
 document.addEventListener("DOMContentLoaded", async () => {
   loadSavedState();
@@ -187,8 +163,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     initTrainer();
   }
 
-  // Ordenar tarjetas por dificultad ascendente (1★ a 5★) por defecto
-  sortCardsByDifficulty();
+  // Interceptar clics en los botones de paradigma si estamos en una página con catálogo completo (index.html)
+  const isCatalogPage = !!document.getElementById("tdaCatalogMount");
+  document.querySelectorAll("#paradigmPills .pill-btn").forEach(btn => {
+    btn.addEventListener("click", (e) => {
+      const paradigm = btn.getAttribute("data-paradigm") || "all";
+      if (isCatalogPage) {
+        e.preventDefault();
+        filterByParadigm(paradigm);
+        if (paradigm === "all") {
+          history.replaceState(null, "", window.location.pathname);
+        } else {
+          history.replaceState(null, "", `#paradigma-${paradigm}`);
+        }
+      }
+    });
+  });
 
   // Abrir temporalmente todos los drawers para que Mermaid calcule la geometría real
   const drawers = document.querySelectorAll(".exercise-solution-drawer");
@@ -209,7 +199,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Aplicar filtros después del renderizado para evitar que tarjetas en display:none rompan los SVGs
   applyFilters();
 
-  // Navegación automática por hash (#ej-XX o #entrenador-30s)
+  // Navegación automática por hash (#ej-XX, #paradigma-XX o #entrenador-30s)
   handleInitialHashNavigation();
 });
 
@@ -217,9 +207,13 @@ function handleInitialHashNavigation() {
   const hash = window.location.hash;
   if (!hash) return;
   const ejMatch = hash.match(/^#ej-(\d+)$/);
+  const paradigmMatch = hash.match(/^#paradigma-(.+)$/);
   if (ejMatch) {
     const ejNum = parseInt(ejMatch[1], 10);
     setTimeout(() => scrollToExercise(ejNum), 120);
+  } else if (paradigmMatch) {
+    const paradigm = paradigmMatch[1];
+    setTimeout(() => filterByParadigm(paradigm), 100);
   } else if (hash === "#entrenador-30s") {
     setTimeout(() => scrollToTrainer(), 120);
   }
@@ -440,6 +434,12 @@ function resetAllFilters() {
   saveState();
   updateModeUI();
   updateDifficultyUI();
+  document.querySelectorAll("#paradigmPills .pill-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.getAttribute("data-paradigm") === "all");
+  });
+  if (window.location.hash && window.location.hash.startsWith("#paradigma-")) {
+    history.replaceState(null, "", window.location.pathname);
+  }
   applyFilters();
 }
 
@@ -559,32 +559,21 @@ function updateSectionHeadingsVisibility() {
     return;
   }
 
-  // Evaluar cada bloque H2 que contenga tarjetas de ejercicio
+  // 1. Evaluar secciones principales H2
   const h2Elements = Array.from(mainEl.querySelectorAll("h2"));
   h2Elements.forEach(h2 => {
+    if (h2.closest(".exercise-card") || h2.closest(".cheatsheet-drawer") || h2.closest(".trainer-box")) {
+      return;
+    }
+
     let sibling = h2.nextElementSibling;
+    const sectionElements = [];
     const sectionCards = [];
-    const synthesisElements = [];
-    let inSynthesisBlock = false;
 
     while (sibling && sibling.tagName !== "H2") {
+      sectionElements.push(sibling);
       if (sibling.classList && sibling.classList.contains("exercise-card")) {
         sectionCards.push(sibling);
-        inSynthesisBlock = false;
-      } else if (sibling.tagName === "H3") {
-        const h3Text = sibling.textContent.trim();
-        if (
-          h3Text.startsWith("Patrón") ||
-          h3Text.startsWith("Errores Frecuentes") ||
-          h3Text.startsWith("Errores Fatales")
-        ) {
-          inSynthesisBlock = true;
-          synthesisElements.push(sibling);
-        } else {
-          inSynthesisBlock = false;
-        }
-      } else if (inSynthesisBlock && sibling.id !== "searchEmptyState" && sibling.id !== "entrenador-30s") {
-        synthesisElements.push(sibling);
       }
       sibling = sibling.nextElementSibling;
     }
@@ -592,39 +581,67 @@ function updateSectionHeadingsVisibility() {
     if (sectionCards.length > 0) {
       const hasVisibleCards = sectionCards.some(c => !c.classList.contains("is-hidden"));
       h2.classList.toggle("is-hidden-section", !hasVisibleCards);
-      synthesisElements.forEach(el => {
-        el.classList.toggle("is-hidden-section", !hasVisibleCards);
-      });
+      if (!hasVisibleCards) {
+        sectionElements.forEach(el => {
+          if (el.id !== "searchEmptyState" && el.id !== "entrenador-30s") {
+            el.classList.add("is-hidden-section");
+          }
+        });
+      } else {
+        sectionElements.forEach(el => {
+          if (!el.classList.contains("exercise-card")) {
+            el.classList.remove("is-hidden-section");
+          }
+        });
+      }
+    } else if (currentParadigm !== "all") {
+      const h2Text = h2.textContent.trim();
+      if (h2Text.includes("Catálogo de Errores") || h2Text.includes("Checklist")) {
+        h2.classList.add("is-hidden-section");
+        sectionElements.forEach(el => {
+          if (el.id !== "searchEmptyState" && el.id !== "entrenador-30s") {
+            el.classList.add("is-hidden-section");
+          }
+        });
+      }
     }
   });
 
-  // Evaluar sub-encabezados H3 que agrupan tarjetas de ejercicio (ej. 5.1, 5.2...)
+  // 2. Evaluar bloques de patrones (H3 que comienzan con "Patrón")
   const h3Elements = Array.from(mainEl.querySelectorAll("h3"));
   h3Elements.forEach(h3 => {
-    if (h3.closest(".exercise-card") || h3.closest(".trainer-box") || h3.closest(".search-empty-state")) {
-      return;
-    }
-    const h3Text = h3.textContent.trim();
     if (
-      h3Text.startsWith("Patrón") ||
-      h3Text.startsWith("Errores Frecuentes") ||
-      h3Text.startsWith("Errores Fatales")
+      h3.closest(".exercise-card") ||
+      h3.closest(".cheatsheet-drawer") ||
+      h3.closest(".trainer-box") ||
+      h3.closest(".search-empty-state") ||
+      h3.classList.contains("is-hidden-section")
     ) {
       return;
     }
 
+    const h3Text = h3.textContent.trim();
+    if (!h3Text.startsWith("Patrón")) return;
+
     let sibling = h3.nextElementSibling;
-    const subCards = [];
+    const patternElements = [h3];
+    const patternCards = [];
+
     while (sibling && sibling.tagName !== "H2" && sibling.tagName !== "H3") {
+      patternElements.push(sibling);
       if (sibling.classList && sibling.classList.contains("exercise-card")) {
-        subCards.push(sibling);
+        patternCards.push(sibling);
       }
       sibling = sibling.nextElementSibling;
     }
 
-    if (subCards.length > 0) {
-      const hasVisibleSub = subCards.some(c => !c.classList.contains("is-hidden"));
-      h3.classList.toggle("is-hidden-section", !hasVisibleSub);
+    if (patternCards.length > 0) {
+      const hasVisibleInPattern = patternCards.some(c => !c.classList.contains("is-hidden"));
+      patternElements.forEach(el => {
+        if (!el.classList.contains("exercise-card")) {
+          el.classList.toggle("is-hidden-section", !hasVisibleInPattern);
+        }
+      });
     }
   });
 }
@@ -690,9 +707,11 @@ function scrollToExercise(num) {
   if (drawer) drawer.open = true;
 
   // Desplazamiento suave con compensación por el HUD fijo
+  const hud = document.getElementById("hudTopBar");
+  if (hud) hud.classList.remove("hud-hidden");
   const rect = card.getBoundingClientRect();
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  const hudHeight = document.getElementById("hudTopBar") ? document.getElementById("hudTopBar").offsetHeight : 140;
+  const hudHeight = hud ? hud.offsetHeight : 140;
   const targetY = rect.top + scrollTop - hudHeight - 16;
 
   window.scrollTo({ top: targetY, behavior: 'smooth' });
@@ -892,9 +911,11 @@ function resetTrainer() {
 function scrollToTrainer() {
   const trainer = document.getElementById("entrenador-30s");
   if (trainer) {
+    const hud = document.getElementById("hudTopBar");
+    if (hud) hud.classList.remove("hud-hidden");
     const rect = trainer.getBoundingClientRect();
     const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const hudHeight = document.getElementById("hudTopBar") ? document.getElementById("hudTopBar").offsetHeight : 140;
+    const hudHeight = hud ? hud.offsetHeight : 140;
     window.scrollTo({ top: rect.top + scrollTop - hudHeight - 16, behavior: "smooth" });
   } else {
     window.location.href = "index.html#entrenador-30s";
@@ -902,8 +923,47 @@ function scrollToTrainer() {
 }
 
 function scrollToTop() {
+  const hud = document.getElementById("hudTopBar");
+  if (hud) hud.classList.remove("hud-hidden");
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
+
+// Auto-ocultar el HUD al hacer scroll hacia abajo en pantallas de altura reducida o móviles
+(function initHudScrollAutoHide() {
+  let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+  let ticking = false;
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      window.requestAnimationFrame(() => {
+        const hud = document.getElementById('hudTopBar');
+        if (!hud) {
+          ticking = false;
+          return;
+        }
+
+        const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
+        const isMobileOrLandscape = window.matchMedia('(max-height: 550px), (max-width: 768px)').matches;
+
+        if (isMobileOrLandscape) {
+          if (currentScrollY <= 25) {
+            hud.classList.remove('hud-hidden');
+          } else if (currentScrollY > lastScrollY && currentScrollY > 50) {
+            hud.classList.add('hud-hidden');
+          } else if (currentScrollY < lastScrollY) {
+            hud.classList.remove('hud-hidden');
+          }
+        } else {
+          hud.classList.remove('hud-hidden');
+        }
+
+        lastScrollY = Math.max(0, currentScrollY);
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+})();
 
 // Keyboard shortcuts: Escape closes drawer, '/' or Ctrl+K focuses search
 document.addEventListener("keydown", (e) => {

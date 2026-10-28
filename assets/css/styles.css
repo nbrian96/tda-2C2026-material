@@ -445,6 +445,11 @@ body.dark-mode .mermaid-wrapper {
   box-shadow: var(--shadow-md);
   z-index: 1030;
   backdrop-filter: blur(8px);
+  transition: transform 0.25s ease-in-out;
+}
+
+.hud-top-bar.hud-hidden {
+  transform: translateY(-100%);
 }
 
 .hud-container {
@@ -1695,7 +1700,7 @@ body.dark-mode .warning-box {
 /* ==========================================================================
    RESPONSIVE DESIGN: TABLETS (<= 768px) & MOBILE (<= 480px)
    ========================================================================== */
-@media (min-width: 769px) {
+@media (min-width: 769px) and (min-height: 521px) {
   .mode-label-short {
     display: none;
   }
@@ -1994,6 +1999,215 @@ body.dark-mode .warning-box {
 
   .trainer-prompt {
     font-size: 10pt;
+  }
+}
+
+/* ==========================================================================
+   MOBILE LANDSCAPE / PANTALLAS DE ALTURA REDUCIDA (<= 520px)
+   Optimizaciones críticas para iPhone/Android en posición horizontal (ej. 852x393)
+   ========================================================================== */
+@media (max-height: 520px), (orientation: landscape) and (max-height: 550px) {
+  /* Espaciado general del contenido */
+  .main-content-wrapper {
+    padding: 6px 12px 60px 12px;
+  }
+
+  /* HUD Top Bar ultra compacto para no tapar la pantalla */
+  .hud-container {
+    padding: 3px 8px;
+  }
+
+  /* Fila 1: Marca + Selector de Modo + Herramientas Rápidas */
+  .hud-row-primary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    flex-wrap: nowrap;
+  }
+
+  .hud-brand {
+    gap: 5px;
+    flex-shrink: 0;
+  }
+
+  .hud-brand a {
+    gap: 5px;
+  }
+
+  .hud-logo-icon {
+    font-size: 13pt;
+  }
+
+  .hud-title {
+    font-size: 8.5pt;
+    line-height: 1.1;
+    max-width: 130px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .hud-subtitle {
+    display: none !important;
+  }
+
+  .hud-mode-selector {
+    padding: 2px;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+
+  .mode-label-long {
+    display: none !important;
+  }
+
+  .mode-label-short {
+    display: inline !important;
+  }
+
+  .mode-btn {
+    padding: 2px 6px;
+    font-size: 7.4pt;
+    gap: 3px;
+    min-height: 24px;
+  }
+
+  .mode-badge {
+    font-size: 6.8pt;
+    padding: 0 4px;
+  }
+
+  .hud-quick-tools {
+    gap: 3px;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+  }
+
+  .hud-quick-tools .tool-text {
+    display: none !important;
+  }
+
+  .tool-btn {
+    padding: 2px 6px;
+    font-size: 8pt;
+    min-height: 24px;
+    line-height: 1;
+    border-radius: 4px;
+  }
+
+  /* Fila 2: Dificultad y Búsqueda (Se oculta la barra de progreso completa para ganar altura) */
+  .hud-row-secondary {
+    display: flex;
+    flex-direction: row !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+    margin-top: 3px;
+    flex-wrap: nowrap;
+  }
+
+  .hud-progress-wrap {
+    display: none !important;
+  }
+
+  .difficulty-filter-group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2px;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .difficulty-filter-label {
+    display: none;
+  }
+
+  .diff-btn {
+    padding: 2px 6px;
+    font-size: 7.2pt;
+    line-height: 1.2;
+    min-height: 22px;
+  }
+
+  .hud-search-box {
+    width: 170px;
+    max-width: 220px;
+    margin: 0;
+    flex-shrink: 1;
+  }
+
+  .hud-search-box input {
+    padding: 2px 20px 2px 22px;
+    font-size: 7.8pt;
+    height: 24px;
+  }
+
+  .search-icon {
+    font-size: 7.5pt;
+    left: 6px;
+  }
+
+  .clear-search-btn {
+    font-size: 8pt;
+    right: 5px;
+  }
+
+  /* Fila 3: Píldoras de paradigma con scroll horizontal suave */
+  .hud-row-pills {
+    margin-top: 3px;
+    gap: 4px;
+  }
+
+  .filter-pills-scroll {
+    gap: 4px;
+    padding-bottom: 1px;
+  }
+
+  .pill-btn {
+    padding: 2px 6px;
+    font-size: 7.2pt;
+    line-height: 1.2;
+    min-height: 22px;
+  }
+
+  /* Ocultar banner de emergencia en landscape móvil para liberar espacio vertical */
+  .emergency-banner {
+    display: none !important;
+  }
+
+  /* Ajuste de scroll-margin-top compensando el HUD ultra compacto (~80px) */
+  .exercise-card,
+  .trainer-box,
+  h2,
+  h3 {
+    scroll-margin-top: 85px !important;
+  }
+
+  /* Botones flotantes compactos en la esquina inferior */
+  .floating-quick-btn {
+    bottom: 8px;
+    right: 8px;
+    gap: 4px;
+  }
+
+  .fab-btn {
+    padding: 4px 8px;
+    font-size: 7.5pt;
+    min-height: 28px;
+    border-radius: 14px;
+  }
+
+  /* Drawer de recetas ajustado para pantallas anchas y bajas */
+  .cheatsheet-drawer {
+    width: 80vw;
+    max-width: 480px;
+  }
+
+  .drawer-content {
+    padding: 10px 12px;
   }
 }
 
