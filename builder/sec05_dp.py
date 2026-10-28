@@ -8,13 +8,11 @@ def get_content():
 1. **Cuándo Usar Programación Dinámica:**
    * El problema exhibe **Subestructura Óptima**: la solución óptima global se compone de soluciones óptimas a sus subproblemas.
    * El problema tiene **Subproblemas Superpuestos**: los mismos subproblemas se resuelven una y otra vez (a diferencia de División y Conquista, donde los subproblemas son disjuntos).
-2. **Los Cinco Pasos Obligatorios en el Examen de TDA:**
-   Para obtener el puntaje completo en un ejercicio de Programación Dinámica, tu respuesta debe contener explícitamente:
-   1. **Definición Formal del Estado:** ¿Qué significa exactamente $OPT(i, w)$ en el contexto del enunciado? (Ej: *"Valor máximo obtenible considerando un subconjunto de los primeros $i$ elementos con una capacidad restante de $w$ kilos"*).
-   2. **Casos Base:** Valores donde la solución es trivial o inmediata (ej: $OPT(0, w) = 0$, $OPT(i, 0) = 0$).
-   3. **Ecuación de Recurrencia:** La fórmula matemática cerrada que computa $OPT$ a partir de subproblemas más chicos, detallando las opciones consideradas y la función objetivo ($\min$ o $\max$).
-   4. **Orden de Llenado de la Tabla:** Justificación de la dirección en que se itera la matriz (ej: *"De menor a mayor índice $i$, y para cada $i$ de menor a mayor capacidad $w$, asegurando que los valores requeridos ya hayan sido calculados"*).
-   5. **Algoritmo de Reconstrucción de la Solución:** Procedimiento que recorre la tabla hacia atrás desde el resultado final para identificar qué elementos concretos componen la solución óptima.
+2. **Qué Escribir en la Hoja del Parcial (Estructura Directa de 3 Bloques):**
+   Para obtener el puntaje completo en un ejercicio de Programación Dinámica de TDA, tu respuesta en papel debe incluir siempre:
+   1. **Idea, Estado y Ecuación de Bellman:** Explicar en palabras qué representa $OPT(\dots)$, cuáles son los casos base, qué decisiones se toman en el paso $i$ y escribir la ecuación de recurrencia.
+   2. **Semi-Pseudocódigo Simplificado:** Mostrar cómo se inicializa y llena la tabla `DP` en orden *Bottom-Up* (y cómo se reconstruye la solución si el enunciado pide devolver los elementos/operaciones).
+   3. **Justificación de Complejidad:** Indicar el tiempo y espacio según la cantidad de celdas de la tabla y el costo de calcular cada celda (aclarando si es *pseudo-polinomial* cuando depende de magnitudes como peso o presupuesto).
 
 ---
 
@@ -36,63 +34,20 @@ Dado un número natural $K$, se desea obtener la mínima cantidad de operaciones
 (ii) Duplicar el valor del operando ($x \leftarrow 2x$).  
 Implementar un algoritmo que, por programación dinámica, obtenga la menor cantidad de operaciones a realizar y detalle la secuencia exacta de dichas operaciones. Desarrollar la ecuación de recurrencia. Indicar y justificar la complejidad temporal y espacial.
 
-**Qué está evaluando**  
-Modelado del estado en 1D, razonamiento hacia atrás ($K \to 0$), planteo riguroso de la recurrencia con análisis de paridad, demostración formal de optimalidad y reconstrucción exacta de la secuencia de operaciones.
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-**Idea de resolución y Perspectiva Inversa**  
-* *Perspectiva hacia atrás ($i \to 0$):* Pensar cómo llegar a un número $i$:
-  * Siempre podemos llegar desde $i - 1$ aplicando la operación $+1$.
-  * Si $i$ es par, también podemos llegar desde $i / 2$ aplicando la operación $\times 2$. Si $i$ es impar, es imposible haber llegado duplicando un entero.
-* *Casos trampa iniciales:* Desde $0$, la operación $\times 2$ no genera avance ($0 \times 2 = 0$). El primer paso hacia adelante siempre debe ser $+1$ (hacia 1).
-
-#### 1. Deducción Metodológica Formal (Los 5 Pasos de Programación Dinámica)
-
-1. **Definición Formal del Estado:**  
-   $$OPT(i) = \text{Mínima cantidad de operaciones necesarias para alcanzar el valor } i \text{ partiendo desde } 0.$$
-
-2. **Casos Base:**  
-   * $OPT(0) = 0$: Ya estamos en el origen, se requieren $0$ operaciones.  
-   * $OPT(1) = 1$: Única transición válida es $0 + 1 = 1$, pues $0 \times 2 = 0$ no avanza.
-
-3. **Ecuación de Recurrencia:**  
-   Para todo $i \ge 1$:
-   $$OPT(i) = \begin{cases} OPT(i - 1) + 1 & \text{si } i \text{ es impar} \\ \min\Big(OPT(i - 1) + 1, \; OPT\left(\frac{i}{2}\right) + 1\Big) & \text{si } i \text{ es par} \end{cases}$$
-
-4. **Orden de Llenado de la Tabla:**  
-   Iteración unidireccional creciente (*Bottom-Up*) desde $i = 1$ hasta $K$.  
-   *Justificación:* Cada estado $i$ solo depende de $i - 1$ y $i / 2$. Como ambos predecesores son estrictamente menores que $i$, todos los subproblemas necesarios ya habrán sido resueltos y almacenados previamente en el DAG de dependencias.
-
-5. **Algoritmo de Reconstrucción de la Secuencia:**  
-   Retrocedemos desde $K$ hasta $0$ consultando el arreglo de predecesores `padre[i]`. Si $\text{padre}[i] = i / 2$, la operación fue $\times 2$; en caso contrario, fue $+1$. Se invierte la lista resultante para presentar la secuencia en orden cronológico de $0$ a $K$.
-
-#### 2. Justificación Directa de Correctitud (Lista para Examen)
-
-* **1. Solo hay dos formas de llegar a `i`:**
-  * Si la última operación fue `+1`, vinimos sí o sí de `i - 1`.
-  * Si la última operación fue `x2`, vinimos sí o sí de `i / 2` (y esto solo es posible cuando `i` es par).
-* **2. Subestructura óptima:** Para llegar a `i` en la menor cantidad de pasos, necesitamos haber llegado primero a `i - 1` (o a `i / 2`) en la menor cantidad de pasos posible y sumarle `1` paso más.
-* **3. Sin ciclos:** Como `i - 1` e `i / 2` son siempre más chicos que `i`, al llenar la tabla en orden desde `1` hasta `K` nos aseguramos de que ambos valores ya están calculados cuando los necesitamos.
-
-#### 3. Diagrama de Flujo y Grafo Acíclico (DAG) de Decisiones
-
-A continuación se representa el flujo de decisión iterativo y el grafo de transiciones óptimas para $K = 10$:
-
-```mermaid
-flowchart TD
-    A(["Inicio: K = 10"]) --> B["DP[0] = 0"]
-    B --> C["Bucle i de 1 hasta K"]
-    C --> D["Candidato 1: DP[i-1] + 1 (Sumar 1)"]
-    D --> E{"¿i es par?"}
-    E -- No --> F["DP[i] = DP[i-1] + 1<br/>padre[i] = i - 1<br/>op[i] = '+1'"]
-    E -- Sí --> G{"¿DP[i/2] + 1 es menor que DP[i]?"}
-    G -- Sí --> H["DP[i] = DP[i/2] + 1<br/>padre[i] = i / 2<br/>op[i] = '*2'"]
-    G -- No --> F
-    F --> I{"¿i == K?"}
-    H --> I
-    I -- No --> C
-    I -- Sí --> J["Backtracking desde K = 10 hasta 0"]
-    J --> K(["Retornar DP[10] = 5 y secuencia"])
-```
+* **Definición del Estado:** Llamamos $OPT(i)$ a la **mínima cantidad de operaciones necesarias para llegar desde $0$ hasta el número $i$**.
+* **Casos Base:**
+  * $OPT(0) = 0$: Ya estamos en el valor inicial $0$, por lo que necesitamos $0$ operaciones.
+  * $OPT(1) = 1$: Desde $0$ la única operación que avanza es sumar $1$ ($0 + 1 = 1$), ya que duplicar el cero da $0 \times 2 = 0$.
+* **Decisiones en el paso $i$ (pensando hacia atrás desde $i$):**
+  Para llegar al número $i$ en el último paso, solo existen dos posibilidades:
+  1. **La última operación fue sumar $1$ ($+1$):** Entonces en el paso anterior estábamos sí o sí en $i - 1$. El costo total por este camino es $OPT(i - 1) + 1$.
+  2. **La última operación fue duplicar ($\times 2$):** Esto **solo es posible si $i$ es par**. En ese caso, en el paso anterior estábamos sí o sí en $i / 2$, y el costo total por este camino es $OPT(i / 2) + 1$.
+* **Ecuación de Bellman (Recurrencia):**
+  Para todo $i \ge 1$:
+  $$OPT(i) = \begin{cases} OPT(i - 1) + 1 & \text{si } i \text{ es impar} \\ \min\Big(OPT(i - 1) + 1, \; OPT(i / 2) + 1\Big) & \text{si } i \text{ es par} \end{cases}$$
+* **Orden de llenado:** Llenamos el arreglo `DP` desde $i = 1$ hasta $K$. Como $i - 1$ e $i / 2$ son siempre estrictamente menores que $i$, al avanzar de menor a mayor nos aseguramos de que ambos valores ya están calculados cuando los necesitamos (no hay ciclos).
 
 ```mermaid
 graph LR
@@ -109,110 +64,50 @@ graph LR
     N4 -->|x2| N8["8"]:::normal
     N5 -->|+1| N6
     N5 -->|x2| N10["10"]:::opt
-    N6 -->|+1| N7["7"]:::normal
-    N8 -->|+1| N9["9"]:::normal
-    N9 -->|+1| N10
 ```
 
-<div class="visual-trace-container">
-  <span class="trace-node start-node">0</span>
-  <span class="trace-arrow"><span class="arrow-op">+1</span>➜</span>
-  <span class="trace-node">1</span>
-  <span class="trace-arrow"><span class="arrow-op">×2</span>➜</span>
-  <span class="trace-node">2</span>
-  <span class="trace-arrow"><span class="arrow-op">×2</span>➜</span>
-  <span class="trace-node">4</span>
-  <span class="trace-arrow"><span class="arrow-op">+1</span>➜</span>
-  <span class="trace-node">5</span>
-  <span class="trace-arrow"><span class="arrow-op">×2</span>➜</span>
-  <span class="trace-node end-node">10</span>
-</div>
-
-#### 4. Tabla de Seguimiento Paso a Paso (Trace Table para $K = 10$)
-
-| $i$ | Paridad | Opción $+1$ ($DP[i-1]+1$) | Opción $\times 2$ ($DP[i/2]+1$) | $DP[i]$ Óptimo | Decisión Tomada | `padre[i]` |
-|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
-| **0** | Par | — | — | **0** | Estado Inicial | — |
-| **1** | Impar | $DP[0] + 1 = 0 + 1 = \mathbf{1}$ | No aplica ($1$ es impar) | **1** | $+1$ desde $0$ | 0 |
-| **2** | Par | $DP[1] + 1 = 1 + 1 = 2$ | $DP[1] + 1 = 1 + 1 = \mathbf{2}$ | **2** | $\times 2$ desde $1$ | 1 |
-| **3** | Impar | $DP[2] + 1 = 2 + 1 = \mathbf{3}$ | No aplica ($3$ es impar) | **3** | $+1$ desde $2$ | 2 |
-| **4** | Par | $DP[3] + 1 = 3 + 1 = 4$ | $DP[2] + 1 = 2 + 1 = \mathbf{3}$ | **3** | $\times 2$ desde $2$ | 2 |
-| **5** | Impar | $DP[4] + 1 = 3 + 1 = \mathbf{4}$ | No aplica ($5$ es impar) | **4** | $+1$ desde $4$ | 4 |
-| **6** | Par | $DP[5] + 1 = 4 + 1 = 5$ | $DP[3] + 1 = 3 + 1 = \mathbf{4}$ | **4** | $\times 2$ desde $3$ | 3 |
-| **7** | Impar | $DP[6] + 1 = 4 + 1 = \mathbf{5}$ | No aplica ($7$ es impar) | **5** | $+1$ desde $6$ | 6 |
-| **8** | Par | $DP[7] + 1 = 5 + 1 = 6$ | $DP[4] + 1 = 3 + 1 = \mathbf{4}$ | **4** | $\times 2$ desde $4$ | 4 |
-| **9** | Impar | $DP[8] + 1 = 4 + 1 = \mathbf{5}$ | No aplica ($9$ es impar) | **5** | $+1$ desde $8$ | 8 |
-| **10** | Par | $DP[9] + 1 = 5 + 1 = 6$ | $DP[5] + 1 = 4 + 1 = \mathbf{5}$ | **5** | $\times 2$ desde $5$ | 5 |
-
-**Detalle de Reconstrucción (Backtracking desde $K = 10$):**
-1. En $10$: `padre[10] = 5`, operación = $\times 2$.
-2. En $5$: `padre[5] = 4`, operación = $+1$.
-3. En $4$: `padre[4] = 2`, operación = $\times 2$.
-4. En $2$: `padre[2] = 1`, operación = $\times 2$.
-5. En $1$: `padre[1] = 0`, operación = $+1$.
-6. En $0$: Fin del recorrido.
-* **Resultado exacto:** $5$ operaciones mínimas: `[+1, ×2, ×2, +1, ×2]`.
-
-#### 5. Pseudocódigo Formal para Examen
+#### 2. Semi-Pseudocódigo Simplificado
 
 ```text
-FUNCION MinimasOperacionesAK(K):
-    SI K = 0:
-        RETORNAR (0, lista vacía)
-
-    // 1. Inicialización de la tabla DP y estructuras de reconstrucción
-    INICIALIZAR DP como arreglo de tamaño (K + 1) en 0
-    INICIALIZAR padre como arreglo de tamaño (K + 1) en 0
-    INICIALIZAR op como arreglo de tamaño (K + 1) en cadenas vacías
-
+FUNCION MinimasOperaciones(K):
+    DP <- arreglo de tamaño (K + 1) inicializado en 0
     DP[0] <- 0
 
-    // 2. Llenado Bottom-Up
+    // 1. Llenado de la tabla Bottom-Up
     PARA i <- 1 HASTA K:
-        // Opción por defecto: Sumar 1 desde (i - 1)
-        DP[i] <- DP[i - 1] + 1
-        padre[i] <- i - 1
-        op[i] <- "SUMAR_1"
+        SI i es impar:
+            DP[i] <- DP[i - 1] + 1
+        SINO:
+            DP[i] <- min(DP[i - 1] + 1, DP[i / 2] + 1)
 
-        // Opción alternativa: Duplicar desde (i / 2) si i es par
-        SI (i MOD 2) = 0:
-            SI DP[i / 2] + 1 < DP[i]:
-                DP[i] <- DP[i / 2] + 1
-                padre[i] <- i / 2
-                op[i] <- "DUPLICAR"
-
-    // 3. Reconstrucción en reversa del camino óptimo
-    INICIALIZAR secuencia como lista vacía
+    // 2. Reconstrucción de las operaciones ( de K hacia 0 )
+    operaciones <- lista vacía
     actual <- K
     MIENTRAS actual > 0:
-        INSERTAR op[actual] AL INICIO DE secuencia
-        actual <- padre[actual]
+        SI (actual es par) Y (DP[actual] == DP[actual / 2] + 1):
+            AGREGAR "x2" AL INICIO DE operaciones
+            actual <- actual / 2
+        SINO:
+            AGREGAR "+1" AL INICIO DE operaciones
+            actual <- actual - 1
 
-    RETORNAR (DP[K], secuencia)
+    RETORNAR (DP[K], operaciones)
 ```
 
-**Complejidad**  
-* **Temporal:** $\mathcal{O}(K)$. La tabla tiene $K + 1$ posiciones y cada una se calcula en tiempo constante $\mathcal{O}(1)$ comparando a lo sumo dos candidatos aritméticos. La reconstrucción realiza a lo sumo $K$ saltos (en la práctica $\le 2 \log_2 K$ saltos), lo que toma $\mathcal{O}(\log K) \subseteq \mathcal{O}(K)$.
-* **Espacial:** $\mathcal{O}(K)$. Arreglos contiguos de tamaño $K + 1$ para almacenar los costos óptimos y punteros de retroceso.
+#### 3. Justificación de Complejidad
+
+* **Complejidad Temporal:** $\mathcal{O}(K)$. La tabla `DP` tiene $K + 1$ posiciones y cada celda se calcula en tiempo constante $\mathcal{O}(1)$ comparando a lo sumo $2$ valores previos. La reconstrucción retrocede desde $K$ hasta $0$ dando a lo sumo $K$ pasos. *(Nota: respecto al tamaño en bits de la entrada $b = \log_2 K$, esta complejidad es **pseudo-polinomial**).*
+* **Complejidad Espacial:** $\mathcal{O}(K)$ para almacenar el arreglo `DP[0..K]` y la lista de operaciones reconstruida.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Intentar duplicar desde 0:</strong> $0 \times 2 = 0$. Duplicar solo genera avance a partir de $x \ge 1$.</li>
-    <li><strong>No incluir la reconstrucción de operaciones:</strong> Si el enunciado pide explícitamente <em>"y cómo son dichas operaciones"</em>, no devolver la secuencia descuenta la mitad del puntaje del ejercicio.</li>
-    <li><strong>No justificar la paridad:</strong> Es indispensable explicitar en la recurrencia que la opción $\times 2$ solo se evalúa cuando $(i \pmod 2) = 0$.</li>
+    <li><strong>Intentar duplicar desde 0:</strong> $0 \times 2 = 0$ no avanza. El primer paso desde $0$ hacia $1$ es siempre $+1$.</li>
+    <li><strong>Olvidar reconstruir la secuencia:</strong> El enunciado pide la menor cantidad de operaciones <em>y detallar cuáles son</em>. No incluir el bucle de reconstrucción descuenta hasta la mitad del puntaje.</li>
+    <li><strong>Usar Greedy cuando piden Programación Dinámica:</strong> Aunque dividir por $2$ cuando es par funciona en $\mathcal{O}(\log K)$ para $\{+1, \times 2\}$, si el examen pide explícitamente PD (o agrega operaciones como $+3$ donde Greedy falla), responder con Greedy anula el punto.</li>
   </ul>
 </div>
-
-**Variación típica de parcial (Pregunta Clave: DP vs Greedy)**  
-* *¿Se puede resolver con Greedy en tiempo $\mathcal{O}(\log K)$?*  
-  **Sí:** Pensando de $K$ hacia $0$, si $K$ es par siempre conviene dividir por $2$; si es impar, restar $1$. Esto toma $\mathcal{O}(\log K)$ pasos.
-* *¿Por qué entonces la cátedra exige Programación Dinámica?*  
-  1. **Consigna estricta:** Si el enunciado impone DP, usar Greedy anula el ejercicio.  
-  2. **Generalización ante variantes:** La formulación de DP es genérica y se adapta de inmediato si se introducen reglas más complejas donde Greedy fracasa (por ejemplo, si existieran transiciones como $+3$, $\times 3$, o costos no unitarios para cada operación). Con DP, simplemente se agrega un nuevo término a la función $\min()$:
-     $$OPT(i) = \min\big(OPT(i-1) + c_{+1}, \; OPT(i/2) + c_{\times 2}, \; OPT(i-3) + c_{+3}\big)$$
-     En cambio, un enfoque voraz requeriría una demostración formal de elección voraz (*Greedy Choice Property*) que con múltiples operaciones adicionales suele ser falsa.
 
 ---
 
@@ -231,142 +126,82 @@ Aparece cuando la mochila tiene múltiples recursos acoplados (peso y volumen) y
 **Enunciado**  
 Paolo Casanova llevará una mochila para el fin de semana con capacidad de peso $C$ kilos y volumen $L$ litros. Tiene una lista de $n$ elementos posibles, donde cada elemento $i$ tiene un peso $w_i$, un volumen $v_i$ y un beneficio $b_i$. Los ítems $1$ y $2$ son dos guías de observación de aves distintas. Por utilidad, **no tiene sentido llevar ambas guías, pero Paolo debe llevar obligatoriamente una de las dos** (es decir, debe elegir exactamente la guía $1$ o la guía $2$, nunca ninguna ni las dos). Desarrollar un algoritmo de Programación Dinámica que encuentre la combinación óptima de elementos que maximice el beneficio total respetando las capacidades.
 
-**Qué está evaluando la cátedra**  
-Mochila 2D (estado tridimensional $\text{elemento} \times \text{peso} \times \text{volumen}$) y manejo riguroso de restricciones lógicas XOR mediante bifurcación en dos subinstancias independientes o fijación de estado inicial.
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-#### 1. Deducción Metodológica Formal (Los 5 Pasos de Programación Dinámica)
-
-1. **Reducción de la Restricción XOR y Definición del Estado:**
-   Como los ítems $1$ y $2$ tienen una restricción XOR estricta ($\text{Guía } 1 \oplus \text{Guía } 2$), descomponemos el problema en dos casos mutuamente excluyentes sobre el subconjunto de ítems restantes $R = \{3, 4, \dots, n\}$ (de tamaño $m = n - 2$):
-   * **Caso A (Fijar Guía 1):** Si $w_1 \le C \land v_1 \le L$, reservamos la Guía 1 y resolvemos una Mochila 2D estándar sobre los $m$ ítems restantes con capacidades remanentes $C_A = C - w_1$ y $L_A = L - v_1$, sumando $b_1$ al resultado.
-   * **Caso B (Fijar Guía 2):** Si $w_2 \le C \land v_2 \le L$, reservamos la Guía 2 y resolvemos sobre los $m$ ítems restantes con capacidades remanentes $C_B = C - w_2$ y $L_B = L - v_2$, sumando $b_2$ al resultado.
-   
-   Para la Mochila 2D auxiliar sobre los $m$ elementos restantes, definimos el estado:
-   $$OPT(i, p, v) = \text{Máximo beneficio obtenible usando un subconjunto de los primeros } i \text{ elementos de } R \text{ con peso disponible } p \text{ y volumen disponible } v.$$
-
-2. **Casos Base:**
-   $$OPT(0, p, v) = 0 \quad \forall p \in [0, C], \; \forall v \in [0, L]$$
-   $$OPT(i, 0, v) = 0, \quad OPT(i, p, 0) = 0 \quad \text{(asumiendo } w_i, v_i > 0\text{)}$$
-
-3. **Ecuación de Recurrencia:**
-   Para cada elemento $i \in \{1, \dots, m\}$ con peso $w_i$, volumen $v_i$ y beneficio $b_i$:
-   $$OPT(i, p, v) = \begin{cases} OPT(i - 1, p, v) & \text{si } w_i > p \lor v_i > v \\ \max\Big(OPT(i - 1, p, v), \; OPT(i - 1, p - w_i, v - v_i) + b_i\Big) & \text{si } w_i \le p \land v_i \le v \end{cases}$$
-   El valor óptimo global del problema original es:
-   $$OPT_{\text{total}} = \max\Big( b_1 + OPT(m, C - w_1, L - v_1), \;\; b_2 + OPT(m, C - w_2, L - v_2) \Big)$$
-
-4. **Orden de Llenado de la Tabla:**
-   Tres bucles anidados crecientes: índice de elemento $i$ desde $1$ hasta $m$, peso $p$ desde $0$ hasta $C_{\text{rem}}$ y volumen $v$ desde $0$ hasta $L_{\text{rem}}$.
-
-5. **Reconstrucción de la Solución:**
-   Se determina cuál de los dos casos ($A$ o $B$) alcanzó el máximo global, se agrega la guía correspondiente, y se retrocede desde $(m, C_{\text{rem}}, L_{\text{rem}})$ hasta $i = 1$ comparando si $DP[i][p][v] \neq DP[i-1][p][v]$.
-
-#### 2. Diagrama Visual de Descomposición XOR + Mochila 2D
+* **Cómo manejar la restricción obligatoria y excluyente (XOR) de las guías:**
+  Separamos los ítems $1$ y $2$ (las dos guías de aves) del resto de los elementos libres $R = \{3, 4, \dots, n\}$ (que son $m = n - 2$ elementos). Como Paolo está obligado a llevar **exactamente una** de las dos guías, resolvemos una única tabla de **Mochila 2D** (con peso y volumen) sobre los $m$ elementos libres, y al final comparamos los dos casos posibles:
+  * **Caso A (Elegir la Guía 1):** Si entra en la mochila ($w_1 \le C$ y $v_1 \le L$), nos aporta $b_1$ y nos deja capacidad restante $(C - w_1, \; L - v_1)$ para llenar con los elementos libres: beneficio total $b_1 + OPT(m, C - w_1, L - v_1)$.
+  * **Caso B (Elegir la Guía 2):** Si entra en la mochila ($w_2 \le C$ y $v_2 \le L$), nos aporta $b_2$ y nos deja capacidad restante $(C - w_2, \; L - v_2)$: beneficio total $b_2 + OPT(m, C - w_2, L - v_2)$.
+* **Definición del Estado:** Llamamos $OPT(i, p, v)$ al **máximo beneficio obtenible considerando los primeros $i$ elementos libres (del conjunto $R = \{3 \dots n\}$) con un límite de peso $p$ y un límite de volumen $v$**.
+* **Casos Base:** $OPT(0, p, v) = 0$ para todo $p, v$ (con $0$ elementos libres el beneficio es $0$), y $OPT(i, 0, v) = OPT(i, p, 0) = 0$.
+* **Decisiones en el paso $i$ y Ecuación de Bellman (Recurrencia):**
+  Para el $i$-ésimo elemento libre (con peso $w_i$, volumen $v_i$ y beneficio $b_i$):
+  1. Si supera el peso $p$ o el volumen $v$ disponible ($w_i > p \lor v_i > v$), **no podemos llevarlo** y mantenemos $OPT(i - 1, p, v)$.
+  2. Si entra en ambos recursos ($w_i \le p \land v_i \le v$), elegimos el máximo entre **no llevarlo** o **llevarlo** (sumando $b_i$ y restando su peso y volumen):
+  $$OPT(i, p, v) = \begin{cases} OPT(i - 1, p, v) & \text{si } w_i > p \lor v_i > v \\ \max\Big(OPT(i - 1, p, v), \; OPT(i - 1, p - w_i, v - v_i) + b_i\Big) & \text{si } w_i \le p \land v_i \le v \end{cases}$$
+* **Óptimo Global del Problema:**
+  $$OPT_{\text{total}} = \max\Big( b_1 + OPT(m, C - w_1, L - v_1), \;\; b_2 + OPT(m, C - w_2, L - v_2) \Big)$$
 
 ```mermaid
 flowchart TD
-    P(["Instancia Original: Capacidades (C, L) e Ítems {1..n}"]) --> CA["Caso A: Incluir Guía 1 (si w₁ ≤ C y v₁ ≤ L)<br/>Capacidad remanente: (C - w₁, L - v₁)"]:::branch
-    P --> CB["Caso B: Incluir Guía 2 (si w₂ ≤ C y v₂ ≤ L)<br/>Capacidad remanente: (C - w₂, L - v₂)"]:::branch
-    CA --> DPA["Mochila 2D sobre Ítems {3..n}<br/>Total A = b₁ + OPT(n-2, C-w₁, L-v₁)"]:::dp
-    CB --> DPB["Mochila 2D sobre Ítems {3..n}<br/>Total B = b₂ + OPT(n-2, C-w₂, L-v₂)"]:::dp
-    DPA --> MAX{"Comparar: max(Total A, Total B)"}
-    DPB --> MAX
-    MAX --> SOL(["Solución Óptima Global + Reconstrucción"]):::done
+    P(["Instancia Original: Capacidades (C, L) e Ítems {1..n}"]) --> DP["Llenar Tabla DP 3D sobre Ítems Libres {3..n}<br/>OPT(i, p, v) para p ∈ [0..C], v ∈ [0..L]"]:::dp
+    DP --> CA["Caso A: Incluir Guía 1 (si w₁ ≤ C y v₁ ≤ L)<br/>Total A = b₁ + DP[n-2][C - w₁][L - v₁]"]:::branch
+    DP --> CB["Caso B: Incluir Guía 2 (si w₂ ≤ C y v₂ ≤ L)<br/>Total B = b₂ + DP[n-2][C - w₂][L - v₂]"]:::branch
+    CA --> MAX{"Elegir max(Total A, Total B)"}
+    CB --> MAX
+    MAX --> SOL(["Reconstruir desde la capacidad remanente de la Guía ganadora"]):::done
     classDef branch fill:#1d4ed8,stroke:#1e40af,stroke-width:2px,color:#fff
     classDef dp fill:#0284c7,stroke:#0369a1,stroke-width:2px,color:#fff
     classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 3. Ejemplo Concreto y Traza Paso a Paso
-
-Sea una mochila con capacidad de peso $C = 5\text{ kg}$ y volumen $L = 5\text{ litros}$, y $n = 4$ ítems:
-
-| Ítem | Descripción | Peso ($w_i$) | Volumen ($v_i$) | Beneficio ($b_i$) | Rol |
-| :---: | :--- | :---: | :---: | :---: | :--- |
-| **1** | Guía de Aves Patagónicas | $2$ | $2$ | $10$ | Guía 1 (XOR) |
-| **2** | Guía de Aves Pampeanas | $4$ | $3$ | $18$ | Guía 2 (XOR) |
-| **3** | Binoculares Profesionales | $3$ | $2$ | $15$ | Ítem libre ($R_1$) |
-| **4** | Cámara Teleobjetivo | $2$ | $3$ | $12$ | Ítem libre ($R_2$) |
-
-* **Evaluación Caso A (Llevar Guía 1):**
-  * Consume $w_1 = 2, v_1 = 2$, aporta $b_1 = 10$. Capacidad remanente: $C_A = 3, L_A = 3$.
-  * Entre los ítems libres $\{3, 4\}$:
-    * Ítem 3 ($w=3, v=2 \le (3,3)$): entra y aporta $15$.
-    * Ítem 4 ($w=2, v=3 \le (3,3)$): entra por sí solo ($12$), pero no junto con el 3 ($3+2 = 5 > 3$).
-  * Óptimo remanente: $OPT(2, 3, 3) = 15$ (Binoculares).
-  * **Total Caso A:** $10 + 15 = \mathbf{25}$ (Guía 1 + Binoculares, peso total $5$, volumen $4$).
-* **Evaluación Caso B (Llevar Guía 2):**
-  * Consume $w_2 = 4, v_2 = 3$, aporta $b_2 = 18$. Capacidad remanente: $C_B = 1, L_B = 2$.
-  * Ninguno de los ítems $\{3, 4\}$ cabe en peso remanente $1$. $OPT(2, 1, 2) = 0$.
-  * **Total Caso B:** $18 + 0 = \mathbf{18}$ (solo Guía 2).
-* **Decisión Óptima:** $\max(25, 18) = \mathbf{25}$ llevando $\{\text{Guía 1}, \text{Binoculares}\}$.
-
-#### 4. Pseudocódigo Formal (Estilo Examen Presencial)
+#### 2. Semi-Pseudocódigo Simplificado
 
 ```text
-FUNCION MochilaPaoloCasanova(items, C, L):
-    // items[0] es Guia 1, items[1] es Guia 2, items[2..n-1] son el resto
-    beneficio_mejor <- -INFINITO
-    INICIALIZAR mejor_solucion como lista vacía
-    resto_items <- items[2 .. longitud(items) - 1]
+FUNCION MochilaPaolo(guia1, guia2, libres, C, L):
+    m <- longitud(libres)   // libres contiene los ítems 3..n (m = n - 2)
+    DP <- matriz 3D de (m + 1) x (C + 1) x (L + 1) inicializada en 0
 
-    // --- CASO A: Llevar Guia 1 (items[0]) ---
-    SI items[0].peso <= C Y items[0].volumen <= L:
-        (ben_A, sol_A) <- Mochila2DEstandar(resto_items, C - items[0].peso, L - items[0].volumen)
-        total_ben_A <- items[0].beneficio + ben_A
-        SI total_ben_A > beneficio_mejor:
-            beneficio_mejor <- total_ben_A
-            INSERTAR items[0] AL INICIO DE sol_A
-            mejor_solucion <- sol_A
-
-    // --- CASO B: Llevar Guia 2 (items[1]) ---
-    SI items[1].peso <= C Y items[1].volumen <= L:
-        (ben_B, sol_B) <- Mochila2DEstandar(resto_items, C - items[1].peso, L - items[1].volumen)
-        total_ben_B <- items[1].beneficio + ben_B
-        SI total_ben_B > beneficio_mejor:
-            beneficio_mejor <- total_ben_B
-            INSERTAR items[1] AL INICIO DE sol_B
-            mejor_solucion <- sol_B
-
-    RETORNAR (beneficio_mejor, mejor_solucion)
-
-FUNCION Mochila2DEstandar(elementos, MaxPeso, MaxVol):
-    m <- longitud(elementos)
-    INICIALIZAR DP como matriz 3D de (m + 1) x (MaxPeso + 1) x (MaxVol + 1) en 0
-
+    // 1. Llenar la tabla DP una sola vez con los m elementos libres
     PARA i <- 1 HASTA m:
-        elem <- elementos[i - 1]
-        PARA p <- 0 HASTA MaxPeso:
-            PARA v <- 0 HASTA MaxVol:
-                DP[i][p][v] <- DP[i - 1][p][v]
-                SI elem.peso <= p Y elem.volumen <= v:
-                    val_con_elem <- DP[i - 1][p - elem.peso][v - elem.volumen] + elem.beneficio
-                    SI val_con_elem > DP[i][p][v]:
-                        DP[i][p][v] <- val_con_elem
+        item <- libres[i]
+        PARA p <- 0 HASTA C:
+            PARA v <- 0 HASTA L:
+                SI item.w > p O item.v > v:
+                    DP[i][p][v] <- DP[i - 1][p][v]
+                SINO:
+                    DP[i][p][v] <- max(DP[i - 1][p][v], DP[i - 1][p - item.w][v - item.v] + item.b)
 
-    // Reconstrucción
-    INICIALIZAR seleccion como lista vacía
-    rem_p <- MaxPeso
-    rem_v <- MaxVol
+    // 2. Comparar Caso A (Guía 1) vs Caso B (Guía 2)
+    total_A <- (guia1.b + DP[m][C - guia1.w][L - guia1.v]) SI (guia1.w <= C Y guia1.v <= L) SINO -INFINITO
+    total_B <- (guia2.b + DP[m][C - guia2.w][L - guia2.v]) SI (guia2.w <= C Y guia2.v <= L) SINO -INFINITO
+
+    SI total_A >= total_B:
+        elegidos <- [guia1];  p_rem <- C - guia1.w;  v_rem <- L - guia1.v
+    SINO:
+        elegidos <- [guia2];  p_rem <- C - guia2.w;  v_rem <- L - guia2.v
+
+    // 3. Reconstruir qué ítems libres se llevaron
     PARA i <- m BAJANDO HASTA 1:
-        SI DP[i][rem_p][rem_v] != DP[i - 1][rem_p][rem_v]:
-            elem <- elementos[i - 1]
-            INSERTAR elem EN seleccion
-            rem_p <- rem_p - elem.peso
-            rem_v <- rem_v - elem.volumen
+        SI DP[i][p_rem][v_rem] != DP[i - 1][p_rem][v_rem]:
+            AGREGAR libres[i] A elegidos
+            p_rem <- p_rem - libres[i].w
+            v_rem <- v_rem - libres[i].v
 
-    RETORNAR (DP[m][MaxPeso][MaxVol], seleccion)
+    RETORNAR (max(total_A, total_B), elegidos)
 ```
 
-**Complejidad**  
-* **Tiempo:** Resolvemos la tabla 3D a lo sumo dos veces (una por cada guía obligatoria). Cada llenado tiene dimensiones $(n-2) \times C \times L$ y operaciones $O(1)$ por celda: **$\Theta(n \cdot C \cdot L)$** (pseudo-polinomial).
-* **Espacio:** Tabla 3D de tamaño **$\Theta(n \cdot C \cdot L)$**.
+#### 3. Justificación de Complejidad
+
+* **Complejidad Temporal:** $\mathcal{O}(n \cdot C \cdot L)$. La matriz tridimensional `DP` tiene dimensiones $(n - 1) \times (C + 1) \times (L + 1)$ y cada celda se calcula en $\mathcal{O}(1)$ comparando dos opciones. Evaluar ambas guías toma $\mathcal{O}(1)$ y reconstruir la solución toma $\mathcal{O}(n)$ pasos. Es una complejidad **pseudo-polinomial** porque depende de las magnitudes numéricas $C$ y $L$.
+* **Complejidad Espacial:** $\mathcal{O}(n \cdot C \cdot L)$ para almacenar la tabla 3D necesaria para reconstruir los elementos elegidos.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Permitir que la mochila quede sin guías o con ambas:</strong> Si se mete la Guía 1 y la Guía 2 en el bucle general de la mochila sin separar los casos, la recurrencia podría elegir ambas o ninguna.</li>
-    <li><strong>No validar si la guía cabe individualmente:</strong> Antes de restar $C - w_1$ y $L - v_1$, es obligatorio verificar que $w_1 \le C \land v_1 \le L$ para no indexar capacidades negativas.</li>
+    <li><strong>Meter las guías 1 y 2 dentro de la bolsa general de la mochila:</strong> Si no se separan las dos guías en los Casos A y B, el algoritmo podría elegir ambas guías o ninguna de las dos, incumpliendo el enunciado.</li>
+    <li><strong>No verificar que la guía quepa por sí sola:</strong> Antes de consultar <code>DP[m][C - w_1][L - v_1]</code> hay que chequear que $w_1 \le C$ y $v_1 \le L$ para no acceder a índices negativos.</li>
   </ul>
 </div>
 
@@ -391,101 +226,75 @@ donde $(i - j)$ representa el espacio en blanco simple obligatorio entre palabra
 $$\text{Sobrante}(j, i) = L - \text{Longitud}(j, i)$$
 Diseñar un algoritmo por Programación Dinámica que realice una partición del texto en líneas minimizando la suma de los cuadrados de los sobrantes de todas las líneas. Desarrollar la recurrencia, complejidad y reconstrucción.
 
-**Qué está evaluando la cátedra**  
-DP sobre prefijos de secuencias ($1 \dots i$), prueba exhaustiva del punto de inicio $j$ de la última línea y minimización de funciones de costo cuadrático.
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-#### 1. Deducción Metodológica Formal (Los 5 Pasos de Programación Dinámica)
-
-1. **Definición Formal del Estado:**  
-   $$OPT(i) = \text{Mínimo costo total (suma de cuadrados de sobrantes) de formatear el prefijo de palabras } W_1, \dots, W_i.$$
-2. **Caso Base:**  
-   $$OPT(0) = 0 \quad (\text{el texto vacío sin palabras tiene costo } 0)$$
-3. **Ecuación de Recurrencia:**  
-   Para formatear hasta la palabra $i$ ($1 \le i \le n$), la última línea debe contener algún sufijo válido de palabras $W_j, \dots, W_i$ con $1 \le j \le i$ tal que $\text{Longitud}(j, i) \le L$:
-   $$OPT(i) = \min_{\substack{1 \le j \le i \\ \text{Longitud}(j, i) \le L}} \Big\{ OPT(j - 1) + \big(L - \text{Longitud}(j, i)\big)^2 \Big\}$$
-4. **Orden de Llenado de la Tabla:**  
-   De izquierda a derecha para $i = 1, 2, \dots, n$. Para cada $i$, iteramos $j$ hacia atrás ($j = i, i-1, \dots, 1$) acumulando $\text{Longitud}(j, i)$ en $O(1)$ y cortando el bucle interno apenas $\text{Longitud}(j, i) > L$.
-5. **Reconstrucción de la Partición:**  
-   Almacenamos en `corte[i]` el índice $j^*$ que minimizó $OPT(i)$. Luego retrocedemos desde $idx = n$: la línea actual abarca $[corte[idx], \; idx]$, y saltamos a $idx = corte[idx] - 1$ hasta llegar a $0$.
-
-#### 2. Diagrama Visual de Transición de Prefijos (Word Wrap)
+* **Definición del Estado:** Llamamos $OPT(i)$ al **mínimo costo total (suma de los cuadrados de los espacios sobrantes) para formatear en líneas las primeras $i$ palabras ($W_1, \dots, W_i$)**.
+* **Caso Base:** $OPT(0) = 0$ (si hay $0$ palabras para acomodar, el costo es $0$).
+* **Decisiones en el paso $i$:**
+  Para acomodar el prefijo de palabras $W_1 \dots W_i$, nos preguntamos: **¿en qué palabra $j$ ($1 \le j \le i$) empieza la última línea?**
+  * Si decidimos que la última línea contenga las palabras desde $W_j$ hasta $W_i$ (lo cual solo es válido si $\text{Longitud}(j, i) \le L$), esa línea tendrá un costo de $\text{Sobrante}(j, i)^2 = (L - \text{Longitud}(j, i))^2$.
+  * Las palabras anteriores ($W_1 \dots W_{j-1}$) deben haberse acomodado de la mejor forma posible, lo cual cuesta $OPT(j - 1)$.
+  * Probamos todos los inicios $j$ posibles que no superen el ancho $L$ y nos quedamos con el que dé el mínimo costo total.
+* **Ecuación de Bellman (Recurrencia):**
+  Para todo $i \in \{1, \dots, n\}$:
+  $$OPT(i) = \min_{\substack{1 \le j \le i \\ \text{Longitud}(j, i) \le L}} \Big\{ OPT(j - 1) + \big(L - \text{Longitud}(j, i)\big)^2 \Big\}$$
 
 ```mermaid
 flowchart LR
-    P0["OPT(0) = 0"] --> Pj["OPT(j - 1)<br/>Prefijo W₁..W_{j-1} óptimo"]:::prev
-    Pj -->|"+ Costo última línea: Sobrante(j, i)²"| Pi["OPT(i)<br/>Mínimo sobre todo j válido"]:::curr
+    P0["OPT(0) = 0"] --> Pj["OPT(j - 1)<br/>Palabras 1..j-1 óptimas"]:::prev
+    Pj -->|"+ (L - Longitud(j, i))²<br/>Última línea con palabras j..i"| Pi["OPT(i)<br/>Mínimo probando todo j válido"]:::curr
     classDef prev fill:#0284c7,stroke:#0369a1,stroke-width:2px,color:#fff
     classDef curr fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 3. Ejemplo Concreto y Tabla de Traza Paso a Paso
-
-Sea un ancho máximo de línea $L = 6$ y $n = 4$ palabras con longitudes $C = [3, 2, 2, 3]$ (ej: `"SOL"`, `"DE"`, `"LA"`, `"PAZ"`):
-
-| Prefijo $i$ | Palabra $W_i$ | Candidatos de última línea $[j..i]$ con $\text{Long}(j,i) \le 6$ | Cálculo $OPT(j-1) + \text{Sobrante}(j,i)^2$ | $OPT(i)$ Mínimo | `corte[i]` |
-| :---: | :---: | :--- | :--- | :---: | :---: |
-| **0** | — | — | Caso base | **$0$** | — |
-| **1** | `"SOL"` ($3$) | $[1..1]$: $\text{Long}=3$, $\text{Sob}=3$ | $OPT(0) + 3^2 = 0 + 9 = 9$ | **$9$** | $1$ |
-| **2** | `"DE"` ($2$) | $[2..2]$: $\text{Long}=2$, $\text{Sob}=4$<br/>$[1..2]$: $\text{Long}=3+1+2=6$, $\text{Sob}=0$ | $j=2: OPT(1) + 4^2 = 9 + 16 = 25$<br/>$j=1: OPT(0) + 0^2 = 0 + 0 = \mathbf{0}$ | **$0$** | $1$ |
-| **3** | `"LA"` ($2$) | $[3..3]$: $\text{Long}=2$, $\text{Sob}=4$<br/>$[2..3]$: $\text{Long}=2+1+2=5$, $\text{Sob}=1$<br/>$[1..3]$: $\text{Long}=8 > 6$ (Poda) | $j=3: OPT(2) + 4^2 = 0 + 16 = 16$<br/>$j=2: OPT(1) + 1^2 = 9 + 1 = \mathbf{10}$ | **$10$** | $2$ |
-| **4** | `"PAZ"` ($3$) | $[4..4]$: $\text{Long}=3$, $\text{Sob}=3$<br/>$[3..4]$: $\text{Long}=2+1+3=6$, $\text{Sob}=0$<br/>$[2..4]$: $\text{Long}=9 > 6$ (Poda) | $j=4: OPT(3) + 3^2 = 10 + 9 = 19$<br/>$j=3: OPT(2) + 0^2 = 0 + 0 = \mathbf{0}$ | **$0$** | $3$ |
-
-*Reconstrucción:* `corte[4] = 3` $\implies$ Línea 2: $[W_3, W_4]$ (`"LA PAZ"`, largo 6, sobrante 0); luego `idx = 2`, `corte[2] = 1` $\implies$ Línea 1: $[W_1, W_2]$ (`"SOL DE"`, largo 6, sobrante 0). Costo total óptimo: $0$. (Observe que un Greedy voraz habría metido `"SOL DE"` en la línea 1, pero si $W_1=3, W_2=2, W_3=4$ con $L=6$, Greedy deja $W_3$ sola con costo $0^2 + 2^2 = 4$, mientras que DP equilibra).
-
-#### 4. Pseudocódigo Formal (Estilo Examen Presencial)
+#### 2. Semi-Pseudocódigo Simplificado
 
 ```text
-FUNCION JustificarTextoWordWrap(longitudes_palabras, L):
-    n <- longitud(longitudes_palabras)
-
-    // DP[i]: costo mínimo para las primeras i palabras
-    INICIALIZAR DP como arreglo de tamaño (n + 1) con INFINITO
-    INICIALIZAR corte como arreglo de tamaño (n + 1) con 0
+FUNCION WordWrap(C, n, L):
+    DP <- arreglo de tamaño (n + 1) inicializado en +INFINITO
+    inicio_linea <- arreglo de tamaño (n + 1) inicializado en 0
     DP[0] <- 0
 
-    // Llenado de DP para prefijos crecientes
+    // 1. Llenado Bottom-Up para cada prefijo de i palabras
     PARA i <- 1 HASTA n:
-        longitud_acumulada <- 0
-
-        // Probamos que la última línea comience en la palabra j
+        largo_actual <- 0
+        // Probamos que la última línea empiece en j (yendo hacia atrás desde i hasta 1)
         PARA j <- i BAJANDO HASTA 1:
-            SI j = i:
-                longitud_acumulada <- longitudes_palabras[i - 1]
+            SI j == i:
+                largo_actual <- C[i]
             SINO:
-                longitud_acumulada <- longitud_acumulada + 1 + longitudes_palabras[j - 1]
+                largo_actual <- largo_actual + 1 + C[j]   // +1 por el espacio entre palabras
 
-            // Si excede el ancho de línea L, no caben más palabras hacia atrás
-            SI longitud_acumulada > L:
-                ROMPER
+            SI largo_actual > L:
+                ROMPER   // Ya no entran más palabras en esta línea
 
-            sobrante <- L - longitud_acumulada
-            costo_linea <- sobrante * sobrante
+            costo <- DP[j - 1] + (L - largo_actual)^2
+            SI costo < DP[i]:
+                DP[i] <- costo
+                inicio_linea[i] <- j
 
-            SI DP[j - 1] + costo_linea < DP[i]:
-                DP[i] <- DP[j - 1] + costo_linea
-                corte[i] <- j
-
-    // Reconstrucción de la partición en líneas
-    INICIALIZAR lineas como lista vacía
-    idx <- n
-    MIENTRAS idx > 0:
-        inicio_linea <- corte[idx]
-        INSERTAR (inicio_linea, idx) AL INICIO DE lineas
-        idx <- inicio_linea - 1
+    // 2. Reconstrucción de las líneas (de atrás hacia adelante)
+    lineas <- lista vacía
+    actual <- n
+    MIENTRAS actual > 0:
+        j <- inicio_linea[actual]
+        AGREGAR rango (j .. actual) AL INICIO DE lineas
+        actual <- j - 1
 
     RETORNAR (DP[n], lineas)
 ```
 
-**Complejidad**  
-* **Tiempo:** Hay $n$ estados. Para cada estado $i$, el bucle interno evalúa a lo sumo $i$ palabras (y como máximo $L / 2$ palabras antes de superar el ancho $L$). En el peor caso la complejidad es **$O(n^2)$** (o bien **$O(n \cdot L)$**).
-* **Espacio:** Arreglos 1D de tamaño $n + 1$ para `DP` y `corte`: **$\Theta(n)$**.
+#### 3. Justificación de Complejidad
+
+* **Complejidad Temporal:** $\mathcal{O}(n^2)$ (o más ajustadamente $\mathcal{O}(n \cdot L)$). La tabla `DP` tiene $n + 1$ celdas. Para calcular cada celda $i$, el bucle interno retrocede con el índice $j$ a lo sumo $i$ posiciones (y a lo sumo $L$ pasos antes de que `largo_actual` supere $L$), haciendo cuentas en $\mathcal{O}(1)$ en cada paso gracias a que acumulamos `largo_actual`.
+* **Complejidad Espacial:** $\mathcal{O}(n)$ para guardar los arreglos `DP[0..n]` e `inicio_linea[1..n]`.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Olvidar sumar 1 por cada espacio en blanco intermedio:</strong> Entre $W_j$ y $W_i$ hay exactamente $(i - j)$ espacios obligatorios. Omitirlos calcula mal la capacidad de la línea.</li>
-    <li><strong>Permitir sobrantes negativos cuando $\text{Longitud}(j, i) > L$:</strong> Como el costo está elevado al cuadrado ($\text{sobrante}^2$), si no se corta el bucle cuando $\text{Longitud}(j, i) > L$, un sobrante negativo como $(-2)^2 = 4$ parecería válido y barato. Es obligatorio cortar o asignar $+\infty$.</li>
+    <li><strong>Olvidar el espacio en blanco entre palabras:</strong> Entre $W_j$ y $W_i$ hay $(i - j)$ espacios. Al agregar una palabra más a la línea siempre hay que sumar <code>1 + C[j]</code>.</li>
+    <li><strong>No cortar cuando $\text{Longitud}(j, i) > L$:</strong> Como el sobrante se eleva al cuadrado, si no cortás el bucle cuando la línea se pasa de $L$, un sobrante negativo como $(-3)^2 = 9$ daría positivo y el algoritmo armaría líneas ilegales.</li>
   </ul>
 </div>
 
@@ -506,86 +315,68 @@ Aparece cuando el problema presenta 3 dimensiones de recursos simultáneas (peso
 **Enunciado**  
 Se tiene el problema del delivery. Para cada paquete $i$ de una lista de $n$ paquetes se conoce su peso $W_i$, su volumen $V_i$, su costo de seguro $C_i$ y su beneficio comercial $B_i$. El repartidor dispone de un vehículo con capacidad máxima de peso $C$ kilos y volumen máximo de $T$ litros. Además, por una cláusula estricta del seguro de transporte, la suma total de los costos de los productos transportados no puede superar los $M$ pesos. Desarrollar un algoritmo de Programación Dinámica que resuelva el problema maximizando el beneficio.
 
-**Qué está evaluando la cátedra**  
-Generalización formal de la mochila 0-1 a tres dimensiones de capacidad acumuladas simultáneamente (tabla 4D).
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-#### 1. Deducción Metodológica Formal (Los 5 Pasos de Programación Dinámica)
-
-1. **Definición Formal del Estado:**  
-   $$OPT(i, w, v, m) = \text{Máximo beneficio comercial seleccionando un subconjunto de los primeros } i \text{ paquetes con peso máximo } w, \text{ volumen máximo } v \text{ y seguro máximo } m.$$
-   donde $0 \le i \le n$, $0 \le w \le C$, $0 \le v \le T$, $0 \le m \le M$.
-2. **Casos Base:**  
-   $$OPT(0, w, v, m) = 0 \quad \forall w \in [0, C], \; \forall v \in [0, T], \; \forall m \in [0, M]$$
-3. **Ecuación de Recurrencia:**  
-   Para el paquete $i$ con parámetros $(W_i, V_i, C_i, B_i)$:
-   $$OPT(i, w, v, m) = \begin{cases} OPT(i - 1, w, v, m) & \text{si } W_i > w \lor V_i > v \lor C_i > m \\ \max\Big(OPT(i - 1, w, v, m), \; OPT(i - 1, w - W_i, v - V_i, m - C_i) + B_i\Big) & \text{si } W_i \le w \land V_i \le v \land C_i \le m \end{cases}$$
-4. **Orden de Llenado de la Tabla:**  
-   Cuatro bucles anidados crecientes: paquete $i$ de $1$ a $n$, peso $w$ de $0$ a $C$, volumen $v$ de $0$ a $T$ y seguro $m$ de $0$ a $M$.
-5. **Reconstrucción de la Solución:**  
-   Partiendo de $(n, C, T, M)$ y retrocediendo $i$ desde $n$ hasta $1$: si $DP[i][w][v][m] \neq DP[i-1][w][v][m]$, el paquete $i$ fue incluido y se actualizan $(w, v, m) \leftarrow (w - W_i, v - V_i, m - C_i)$.
-
-#### 2. Diagrama Visual de Transición 4D del Estado
+* **Definición del Estado:** Es una Mochila 0-1 con **tres capacidades simultáneas** (peso, volumen y monto de seguro). Definimos $OPT(i, w, v, m)$ como el **máximo beneficio comercial obtenible considerando un subconjunto de los primeros $i$ paquetes disponiendo de un peso máximo $w$, un volumen máximo $v$ y un monto de seguro máximo $m$**.
+* **Casos Base:** $OPT(0, w, v, m) = 0$ para todo $w \in [0, C]$, $v \in [0, T]$ y $m \in [0, M]$ (sin paquetes para elegir, la ganancia es $0$).
+* **Decisiones en el paso $i$:**
+  Al evaluar el paquete $i$ (con peso $W_i$, volumen $V_i$, seguro $C_i$ y beneficio $B_i$):
+  1. Si supera cualquiera de las tres capacidades disponibles ($W_i > w \lor V_i > v \lor C_i > m$), **no entra** en el vehículo y nos quedamos con $OPT(i - 1, w, v, m)$.
+  2. Si entra en los tres recursos a la vez ($W_i \le w \land V_i \le v \land C_i \le m$), elegimos el máximo entre **no llevarlo** o **llevarlo** (sumando $B_i$ y descontando $W_i$, $V_i$ y $C_i$):
+* **Ecuación de Bellman (Recurrencia):**
+  $$OPT(i, w, v, m) = \begin{cases} OPT(i - 1, w, v, m) & \text{si } W_i > w \lor V_i > v \lor C_i > m \\ \max\Big(OPT(i - 1, w, v, m), \; OPT(i - 1, w - W_i, v - V_i, m - C_i) + B_i\Big) & \text{si } W_i \le w \land V_i \le v \land C_i \le m \end{cases}$$
 
 ```mermaid
 flowchart TD
     S["Estado Actual: OPT(i, w, v, m)"] --> COND{"¿Cabe en los 3 recursos?<br/>W_i ≤ w ∧ V_i ≤ v ∧ C_i ≤ m"}
-    COND -- No --> EXCL["Excluir paquete i:<br/>OPT(i-1, w, v, m)"]:::no
-    COND -- Sí --> MAX["max(<br/>  Excluir: OPT(i-1, w, v, m),<br/>  Incluir: OPT(i-1, w-W_i, v-V_i, m-C_i) + B_i<br/>)"]:::yes
+    COND -- No --> EXCL["No llevar paquete i:<br/>OPT(i-1, w, v, m)"]:::no
+    COND -- Sí --> MAX["max(<br/>  No llevar: OPT(i-1, w, v, m),<br/>  Llevar: OPT(i-1, w-W_i, v-V_i, m-C_i) + B_i<br/>)"]:::yes
     classDef no fill:#991b1b,stroke:#7f1d1d,stroke-width:1.5px,color:#fff
     classDef yes fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 3. Pseudocódigo Formal (Estilo Examen Presencial)
+#### 2. Semi-Pseudocódigo Simplificado
 
 ```text
-FUNCION ResolverDeliveryMochila3D(paquetes, C, T, M):
-    n <- longitud(paquetes)
+FUNCION DeliveryMochila3D(paquetes, n, C, T, M):
+    DP <- matriz 4D de (n + 1) x (C + 1) x (T + 1) x (M + 1) inicializada en 0
 
-    // Tabla 4D de dimensiones: (n + 1) x (C + 1) x (T + 1) x (M + 1)
-    INICIALIZAR DP como arreglo 4D inicializado en 0
-
-    // Llenado bottom-up
+    // 1. Llenado Bottom-Up de los 4 índices
     PARA i <- 1 HASTA n:
-        p <- paquetes[i - 1]
+        p <- paquetes[i]
         PARA w <- 0 HASTA C:
             PARA v <- 0 HASTA T:
                 PARA m <- 0 HASTA M:
-                    // Opción 1: Excluir paquete i
-                    DP[i][w][v][m] <- DP[i - 1][w][v][m]
+                    SI p.W > w O p.V > v O p.C > m:
+                        DP[i][w][v][m] <- DP[i - 1][w][v][m]
+                    SINO:
+                        DP[i][w][v][m] <- max(DP[i - 1][w][v][m],
+                                              DP[i - 1][w - p.W][v - p.V][m - p.C] + p.B)
 
-                    // Opción 2: Incluir paquete i si no satura ningún recurso
-                    SI p.peso <= w Y p.volumen <= v Y p.costo <= m:
-                        val_con_p <- DP[i - 1][w - p.peso][v - p.volumen][m - p.costo] + p.beneficio
-                        SI val_con_p > DP[i][w][v][m]:
-                            DP[i][w][v][m] <- val_con_p
-
-    // Reconstrucción de los paquetes seleccionados
-    INICIALIZAR seleccionados como lista vacía
-    curr_w <- C
-    curr_v <- T
-    curr_m <- M
-
+    // 2. Reconstrucción de los paquetes seleccionados
+    elegidos <- lista vacía
+    w <- C;  v <- T;  m <- M
     PARA i <- n BAJANDO HASTA 1:
-        SI DP[i][curr_w][curr_v][curr_m] != DP[i - 1][curr_w][curr_v][curr_m]:
-            p <- paquetes[i - 1]
-            INSERTAR p EN seleccionados
-            curr_w <- curr_w - p.peso
-            curr_v <- curr_v - p.volumen
-            curr_m <- curr_m - p.costo
+        SI DP[i][w][v][m] != DP[i - 1][w][v][m]:
+            AGREGAR paquetes[i] A elegidos
+            w <- w - paquetes[i].W
+            v <- v - paquetes[i].V
+            m <- m - paquetes[i].C
 
-    RETORNAR (DP[n][C][T][M], seleccionados)
+    RETORNAR (DP[n][C][T][M], elegidos)
 ```
 
-**Complejidad**  
-* **Tiempo:** Se llenan $(n + 1) \cdot (C + 1) \cdot (T + 1) \cdot (M + 1)$ celdas con $O(1)$ operaciones por celda: **$\Theta(n \cdot C \cdot T \cdot M)$** (Complejidad pseudo-polinomial).
-* **Espacio:** **$\Theta(n \cdot C \cdot T \cdot M)$** para la matriz completa (u $O(C \cdot T \cdot M)$ si solo se pide el valor máximo iterando en reversa sobre una única tabla 3D).
+#### 3. Justificación de Complejidad
+
+* **Complejidad Temporal:** $\mathcal{O}(n \cdot C \cdot T \cdot M)$. Tenemos una tabla 4D con $(n + 1)(C + 1)(T + 1)(M + 1)$ celdas, y cada celda se resuelve en tiempo constante $\mathcal{O}(1)$ comparando dos opciones. La reconstrucción recorre $n$ pasos en $\mathcal{O}(n)$. Es una complejidad **pseudo-polinomial** porque depende de las magnitudes numéricas de las capacidades $C, T, M$.
+* **Complejidad Espacial:** $\mathcal{O}(n \cdot C \cdot T \cdot M)$ para almacenar la tabla 4D.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Olvidar una de las tres dimensiones en la guarda:</strong> Se debe verificar simultáneamente <code>p.peso &lt;= w Y p.volumen &lt;= v Y p.costo &lt;= m</code>.</li>
-    <li><strong>No aclarar que la complejidad es pseudo-polinomial:</strong> Depende directamente de las magnitudes numéricas $C, T, M$ y es exponencial respecto a la cantidad de bits $\log_2(C \cdot T \cdot M)$.</li>
+    <li><strong>Olvidar una dimensión en el estado:</strong> Tratar el seguro $M$ por fuera de la tabla o usar solo peso y volumen no garantiza optimalidad; cada restricción acumulativa exige su propio eje en la tabla `DP`.</li>
+    <li><strong>No aclarar que es pseudo-polinomial:</strong> En todo problema de tipo Mochila siempre hay que mencionar que la complejidad es pseudo-polinomial respecto al tamaño de los números $C, T, M$.</li>
   </ul>
 </div>
 
@@ -606,82 +397,65 @@ Decisión sobre elementos consecutivos donde elegir un elemento prohíbe elegir 
 **Enunciado**  
 Juan dispone de ofertas de trabajo para los próximos $n$ días. Cada día $i$ le ofrece una ganancia $G[i] > 0$. Sin embargo, Juan es vago y no está dispuesto a trabajar dos días seguidos. Diseñar un algoritmo por Programación Dinámica que determine la ganancia máxima que Juan puede obtener y qué días debe trabajar.
 
-#### 1. Deducción Metodológica Formal (Los 5 Pasos de Programación Dinámica)
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-1. **Definición Formal del Estado:**  
-   $$OPT(i) = \text{Ganancia máxima obtenible considerando los primeros } i \text{ días } (1 \le i \le n) \text{ sin trabajar dos días consecutivos.}$$
-2. **Casos Base:**  
-   $$OPT(0) = 0 \quad (\text{sin días}), \qquad OPT(1) = G[1] \quad (\text{conviene trabajar el único día disponible})$$
-3. **Ecuación de Recurrencia:**  
-   Para el día $i \ge 2$:
-   * **Descansar el día $i$:** Mantiene la ganancia óptima hasta el día anterior: $OPT(i - 1)$.
-   * **Trabajar el día $i$:** Suma $G[i]$, pero exige obligatoriamente haber descansado el día $i - 1$, por lo que suma el óptimo hasta $i - 2$: $OPT(i - 2) + G[i]$.
-   $$OPT(i) = \max\Big(OPT(i - 1), \; OPT(i - 2) + G[i]\Big)$$
-4. **Orden de Llenado de la Tabla:**  
-   Secuencial creciente desde $i = 2$ hasta $n$ en tiempo $O(n)$.
-5. **Reconstrucción de los Días Trabajados:**  
-   Retrocediendo desde $i = n$: si $DP[i] == DP[i - 2] + G[i]$, Juan trabajó el día $i$ y saltamos a $i - 2$; en caso contrario descansó el día $i$ y pasamos a $i - 1$.
-
-#### 2. Diagrama Visual de Decisión con Exclusión Adyacente
+* **Definición del Estado:** Llamamos $OPT(i)$ a la **ganancia máxima que Juan puede obtener considerando los primeros $i$ días ($1 \le i \le n$) sin trabajar dos días consecutivos**.
+* **Casos Base:**
+  * $OPT(0) = 0$: Si hay $0$ días disponibles, la ganancia es $0$.
+  * $OPT(1) = G[1]$: Si solo hay $1$ día disponible, como $G[1] > 0$, siempre le conviene trabajarlo.
+* **Decisiones en el paso $i$:**
+  Para el día $i$ ($i \ge 2$), Juan tiene solo dos opciones excluyentes:
+  1. **Descansar el día $i$:** No suma ganancia hoy y conserva la mejor ganancia obtenida hasta el día anterior: $OPT(i - 1)$.
+  2. **Trabajar el día $i$:** Cobra $G[i]$, pero por la restricción de no trabajar dos días seguidos **está obligado a haber descansado el día $i - 1$**, por lo que le suma la mejor ganancia acumulada hasta el día $i - 2$: $OPT(i - 2) + G[i]$.
+* **Ecuación de Bellman (Recurrencia):**
+  Para todo $i \ge 2$:
+  $$OPT(i) = \max\Big(OPT(i - 1), \;\; OPT(i - 2) + G[i]\Big)$$
 
 ```mermaid
 flowchart LR
-    D2["OPT(i - 2)"] -->|"+ G[i] (Trabaja día i, descansa i-1)"| Di["OPT(i) = max(...)"]:::opt
+    D2["OPT(i - 2)"] -->|"+ G[i] (Trabaja día i y descansa i-1)"| Di["OPT(i) = max(...)"]:::opt
     D1["OPT(i - 1)"] -->|"+ 0 (Descansa día i)"| Di
     classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 3. Ejemplo Concreto y Tabla de Traza Paso a Paso
-
-Sean $n = 5$ días con ganancias $G = [10, 20, 15, 30, 10]$:
-
-| Día $i$ | Ganancia $G[i]$ | Descansar: $OPT(i-1)$ | Trabajar: $OPT(i-2) + G[i]$ | $OPT(i)$ | Decisión en $i$ |
-| :---: | :---: | :---: | :---: | :---: | :--- |
-| **0** | — | — | — | **$0$** | Caso base |
-| **1** | $10$ | $0$ | $0 + 10 = 10$ | **$10$** | Trabaja día 1 |
-| **2** | $20$ | $10$ | $0 + 20 = 20$ | **$20$** | Trabaja día 2 |
-| **3** | $15$ | $20$ | $10 + 15 = 25$ | **$25$** | Trabaja días $\{1, 3\}$ |
-| **4** | $30$ | $25$ | $20 + 30 = 50$ | **$50$** | Trabaja días $\{2, 4\}$ |
-| **5** | $10$ | $50$ | $25 + 10 = 35$ | **$50$** | Descansa día 5 (mantiene $\{2, 4\}$) |
-
-*Resultado óptimo:* Ganancia máxima **$50$** trabajando los días $2$ y $4$ ($20 + 30 = 50$).
-
-#### 4. Pseudocódigo Formal (Estilo Examen Presencial)
+#### 2. Semi-Pseudocódigo Simplificado
 
 ```text
-FUNCION JuanElVago(G):
-    n <- longitud(G)
-    SI n = 0:
-        RETORNAR (0, lista vacía)
-    SI n = 1:
-        RETORNAR (G[0], [0])
-
-    INICIALIZAR DP como arreglo de tamaño (n + 1) en 0
+FUNCION JuanElVago(G, n):
+    DP <- arreglo de tamaño (n + 1) inicializado en 0
     DP[0] <- 0
-    DP[1] <- G[0]
+    DP[1] <- G[1]
 
+    // 1. Llenado Bottom-Up de la tabla
     PARA i <- 2 HASTA n:
-        DP[i] <- maximo(DP[i - 1], DP[i - 2] + G[i - 1])
+        DP[i] <- max(DP[i - 1], DP[i - 2] + G[i])
 
-    // Reconstrucción
-    INICIALIZAR dias como lista vacía
-    idx <- n
-    MIENTRAS idx > 0:
-        SI idx = 1:
-            INSERTAR 0 AL INICIO DE dias
-            ROMPER
-        SI DP[idx] = DP[idx - 2] + G[idx - 1]:
-            INSERTAR (idx - 1) AL INICIO DE dias
-            idx <- idx - 2
+    // 2. Reconstrucción de qué días trabajó
+    dias_trabajados <- lista vacía
+    i <- n
+    MIENTRAS i >= 1:
+        SI i == 1 O DP[i] == DP[i - 2] + G[i]:
+            AGREGAR i AL INICIO DE dias_trabajados
+            i <- i - 2   // Como trabajó el día i, salteamos el día i - 1
         SINO:
-            idx <- idx - 1
+            i <- i - 1   // Descansó el día i, pasamos a revisar i - 1
 
-    RETORNAR (DP[n], dias)
+    RETORNAR (DP[n], dias_trabajados)
 ```
 
-**Complejidad**  
-* **Tiempo:** $\Theta(n)$ pues llena una tabla lineal de $n + 1$ posiciones con operaciones $O(1)$.
-* **Espacio:** $\Theta(n)$ para reconstruir los días (u $O(1)$ usando solo dos variables escalares si únicamente se pide el monto máximo).
+#### 3. Justificación de Complejidad
+
+* **Complejidad Temporal:** $\mathcal{O}(n)$. El arreglo `DP` tiene $n + 1$ posiciones y cada celda se calcula en $\mathcal{O}(1)$ haciendo una única comparación entre dos sumas. La reconstrucción recorre el arreglo hacia atrás en a lo sumo $n$ pasos ($\mathcal{O}(n)$).
+* **Complejidad Espacial:** $\mathcal{O}(n)$ para almacenar el arreglo `DP[0..n]` y la lista de días trabajados.
+
+<div class="trap-callout">
+  <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
+  <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
+  <ul>
+    <li><strong>En la reconstrucción, restar 1 en vez de 2 cuando trabaja:</strong> Si se detecta que Juan trabajó el día $i$ (porque <code>DP[i] == DP[i-2] + G[i]</code>), el índice debe saltar a <code>i - 2</code>. Si pasás a <code>i - 1</code> podrías elegir dos días consecutivos.</li>
+    <li><strong>Suponer que conviene elegir solo días pares o solo días impares:</strong> En casos como $G = [100, 1, 1, 100]$, el óptimo elige el día 1 y el día 4 ($200$), combinando un impar y un par.</li>
+  </ul>
+</div>
 
 ---
 
@@ -700,21 +474,20 @@ Selección de intervalos con pesos o beneficios arbitrarios donde Greedy falla y
 **Enunciado**  
 Se tiene un conjunto de $n$ intervalos $[s_i, f_i]$, cada uno con un beneficio o peso $v_i > 0$. No se pueden seleccionar intervalos que se solapen. Diseñar un algoritmo que maximice la suma de los beneficios de los intervalos elegidos en tiempo $O(n \log n)$.
 
-#### 1. Deducción Metodológica Formal (Los 5 Pasos de Programación Dinámica)
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-1. **Ordenamiento Previo y Función de Predecesor Compatible $p(i)$:**  
-   Ordenamos los intervalos por tiempo de finalización creciente: $f_1 \le f_2 \le \dots \le f_n$ en $O(n \log n)$.  
-   Para cada intervalo $i \in \{1, \dots, n\}$, definimos $p(i)$ como el mayor índice $j < i$ tal que el intervalo $j$ no se solapa con $i$ ($f_j \le s_i$). Si no existe tal intervalo, $p(i) = 0$. Como las fechas de fin están ordenadas, $p(i)$ se halla mediante **Búsqueda Binaria** en $O(\log n)$.
-2. **Definición Formal del Estado:**  
-   $$OPT(i) = \text{Beneficio máximo obtenible seleccionando un subconjunto de intervalos mutuamente compatibles dentro de } \{1, \dots, i\}.$$
-3. **Caso Base:**  
-   $$OPT(0) = 0$$
-4. **Ecuación de Recurrencia:**  
-   $$OPT(i) = \max\Big(OPT(i - 1), \;\; OPT(p(i)) + v_i\Big)$$
-5. **Orden de Llenado y Reconstrucción:**  
-   Se llena para $i = 1 \dots n$ en $O(n)$. Para reconstruir, desde $i = n$: si $DP[p(i)] + v_i \ge DP[i-1]$, se incluye el intervalo $i$ y se salta directamente a $i \leftarrow p(i)$; si no, se avanza a $i \leftarrow i - 1$.
-
-#### 2. Diagrama Visual del Salto al Predecesor Compatible $p(i)$
+* **Ordenamiento Previo y Predecesor Compatible $p(i)$:**
+  Primero ordenamos los $n$ intervalos por **tiempo de finalización creciente** ($f_1 \le f_2 \le \dots \le f_n$) en $\mathcal{O}(n \log n)$.
+  Para cada intervalo $i$, definimos $p(i)$ como el **mayor índice $j < i$ que no se solapa con $i$** (es decir, el último intervalo que termina antes o justo cuando empieza $i$: $f_j \le s_i$; si no hay ninguno, $p(i) = 0$). Como los intervalos están ordenados por fin, hallamos $p(i)$ mediante **Búsqueda Binaria** en $\mathcal{O}(\log n)$.
+* **Definición del Estado:** Llamamos $OPT(i)$ al **máximo beneficio obtenible seleccionando intervalos compatibles dentro del prefijo $\{1, \dots, i\}$**.
+* **Caso Base:** $OPT(0) = 0$ (con $0$ intervalos el beneficio es $0$).
+* **Decisiones en el paso $i$:**
+  Para el intervalo $i$, tenemos dos opciones:
+  1. **No elegir el intervalo $i$:** Nos quedamos con el mejor beneficio de los primeros $i - 1$ intervalos, que es $OPT(i - 1)$.
+  2. **Elegir el intervalo $i$:** Ganamos $v_i$ y, para no solaparnos, debemos combinarlo con la mejor solución de los intervalos que terminan a más tardar en $s_i$, que es exactamente $OPT(p(i))$.
+* **Ecuación de Bellman (Recurrencia):**
+  Para todo $i \in \{1, \dots, n\}$:
+  $$OPT(i) = \max\Big(OPT(i - 1), \;\; OPT(p(i)) + v_i\Big)$$
 
 ```mermaid
 flowchart LR
@@ -723,78 +496,51 @@ flowchart LR
     classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 3. Ejemplo Concreto y Tabla de Traza Paso a Paso
-
-Consideremos $n = 4$ intervalos ya ordenados por $f_i$:
-
-| Índice $i$ | Intervalo $[s_i, f_i]$ | Valor $v_i$ | Predecesor $p(i)$ ($f_j \le s_i$) | Excluir: $OPT(i-1)$ | Incluir: $OPT(p(i)) + v_i$ | $OPT(i)$ |
-| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **1** | $[1, 3]$ | $50$ | $0$ | $0$ | $0 + 50 = 50$ | **$50$** |
-| **2** | $[2, 5]$ | $20$ | $0$ ($f_1=3 > 2$) | $50$ | $0 + 20 = 20$ | **$50$** |
-| **3** | $[4, 6]$ | $100$ | $1$ ($f_1=3 \le 4$) | $50$ | $OPT(1) + 100 = 150$ | **$150$** |
-| **4** | $[5, 8]$ | $70$ | $2$ ($f_2=5 \le 5$) | $150$ | $OPT(2) + 70 = 50 + 70 = 120$ | **$150$** |
-
-*Solución óptima:* Intervalos $\{1, 3\}$ con ganancia total $50 + 100 = \mathbf{150}$.
-
-#### 4. Pseudocódigo Formal (Estilo Examen Presencial)
+#### 2. Semi-Pseudocódigo Simplificado
 
 ```text
-FUNCION IntervalSchedulingPonderado(intervalos):
-    n <- longitud(intervalos)
-    ORDENAR intervalos POR fin ASCENDENTE
+FUNCION IntervalSchedulingPonderado(intervalos, n):
+    ORDENAR intervalos[1..n] POR tiempo de fin f_i ASCENDENTE
 
-    // Precalcular p(i) para cada i mediante búsqueda binaria en O(n log n)
-    INICIALIZAR P como arreglo de tamaño (n + 1) en 0
+    // 1. Precalcular p[i] con Búsqueda Binaria sobre los tiempos de fin
+    p <- arreglo de tamaño (n + 1) en 0
     PARA i <- 1 HASTA n:
-        P[i] <- BuscarUltimoCompatible(intervalos, i)
+        p[i] <- BusquedaBinariaUltimoFinMenorIgual(intervalos[1 .. i-1], intervalos[i].s)
 
-    INICIALIZAR DP como arreglo de tamaño (n + 1) en 0
+    // 2. Llenado Bottom-Up de la tabla DP
+    DP <- arreglo de tamaño (n + 1) en 0
     DP[0] <- 0
-
     PARA i <- 1 HASTA n:
-        val_excluir <- DP[i - 1]
-        val_incluir <- DP[P[i]] + intervalos[i - 1].valor
-        DP[i] <- maximo(val_excluir, val_incluir)
+        DP[i] <- max(DP[i - 1], DP[p[i]] + intervalos[i].v)
 
-    // Reconstrucción
-    INICIALIZAR seleccion como lista vacía
-    idx <- n
-    MIENTRAS idx > 0:
-        SI DP[P[idx]] + intervalos[idx - 1].valor >= DP[idx - 1]:
-            INSERTAR intervalos[idx - 1] AL INICIO DE seleccion
-            idx <- P[idx]
+    // 3. Reconstrucción de los intervalos elegidos
+    elegidos <- lista vacía
+    i <- n
+    MIENTRAS i > 0:
+        SI DP[p[i]] + intervalos[i].v >= DP[i - 1]:
+            AGREGAR intervalos[i] A elegidos
+            i <- p[i]    // Saltamos al último compatible
         SINO:
-            idx <- idx - 1
+            i <- i - 1   // No se usó el intervalo i
 
-    RETORNAR (DP[n], seleccion)
-
-FUNCION BuscarUltimoCompatible(intervalos, i):
-    ini <- 0
-    fin <- i - 2
-    res <- 0
-    s_i <- intervalos[i - 1].inicio
-
-    MIENTRAS ini <= fin:
-        med <- (ini + fin) / 2
-        SI intervalos[med].fin <= s_i:
-            res <- med + 1 // Convertido a índice 1-based
-            ini <- med + 1
-        SINO:
-            fin <- med - 1
-
-    RETORNAR res
+    RETORNAR (DP[n], elegidos)
 ```
 
-**Complejidad**  
-* **Tiempo:** Ordenamiento en $O(n \log n) + n$ búsquedas binarias de $O(\log n)$ para calcular $p(i) +$ llenado lineal de DP en $O(n)$. Total: **$\Theta(n \log n)$**.
-* **Espacio:** **$\Theta(n)$** para los arreglos `DP`, `P` y la reconstrucción.
+#### 3. Justificación de Complejidad
+
+* **Complejidad Temporal:** $\mathcal{O}(n \log n)$.
+  1. Ordenar los $n$ intervalos por tiempo de fin cuesta $\mathcal{O}(n \log n)$.
+  2. Calcular $p(i)$ para los $n$ intervalos mediante búsqueda binaria cuesta $n \times \mathcal{O}(\log n) = \mathcal{O}(n \log n)$.
+  3. Llenar la tabla `DP` de tamaño $n + 1$ cuesta $\mathcal{O}(1)$ por celda, sumando $\mathcal{O}(n)$, y la reconstrucción toma a lo sumo $n$ pasos ($\mathcal{O}(n)$).
+  En total: $\mathcal{O}(n \log n) + \mathcal{O}(n \log n) + \mathcal{O}(n) = \mathcal{O}(n \log n)$.
+* **Complejidad Espacial:** $\mathcal{O}(n)$ para almacenar los arreglos `DP[0..n]` y `p[1..n]`.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Buscar $p(i)$ de forma lineal con un bucle hacia atrás:</strong> Si buscas el último intervalo compatible recorriendo desde $i-1$ hasta $1$, el preprocesamiento toma $O(n^2)$ en el peor caso, incumpliendo la cota exigida de $O(n \log n)$. Debe usarse Búsqueda Binaria sobre los tiempos de fin ordenados.</li>
-    <li><strong>Ordenar por tiempo de inicio $s_i$ en vez de fin $f_i$:</strong> Para que el prefijo $1 \dots p(i)$ contenga exactamente todos los intervalos que terminan antes de $s_i$, el arreglo debe estar ordenado por $f_i$.</li>
+    <li><strong>Buscar $p(i)$ recorriendo linealmente hacia atrás:</strong> Hacer un bucle desde $i-1$ hasta $1$ lleva el algoritmo a $\mathcal{O}(n^2)$, desaprobando la cota pedida de $\mathcal{O}(n \log n)$. Es obligatorio mencionar la <strong>Búsqueda Binaria</strong>.</li>
+    <li><strong>Ordenar por tiempo de inicio $s_i$ en vez de fin $f_i$:</strong> Si ordenás por inicio, los intervalos compatibles con $i$ no forman un prefijo contiguo $1 \dots p(i)$ y la recurrencia falla.</li>
   </ul>
 </div>
 
@@ -815,19 +561,23 @@ Problemas de recorrido unidireccional de $0$ a $N+1$ donde en cada paso se permi
 **Enunciado**  
 Un transporte debe recorrer una ruta hasta su objetivo final. Para hacerlo tiene $N$ estaciones intermedias donde puede detenerse a descansar y cargar combustible. Cada estación le cobrará una tarifa fija $T[i]$ por detenerse, conocida y posiblemente diferente para cada estación. Desde cada estación puede ir a la siguiente, o saltear una o dos estaciones para evitar pagar la tarifa correspondiente. Por su autonomía, no se pueden saltear más de dos estaciones consecutivas. Diseñar un algoritmo de PD que permita hallar el viaje con menor costo de paradas. Indicar la complejidad de dicho algoritmo.
 
-#### 1. Idea y Justificación en Lenguaje Natural
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-* Modelamos el punto de partida (origen) como la posición $0$ con costo $OPT(0) = 0$, las $N$ estaciones intermedias como las posiciones $1, 2, \dots, N$ con tarifas $T[1 \dots N]$, y el objetivo final (destino) como la posición $N + 1$ con tarifa $T[N + 1] = 0$ (llegar al destino no cobra peaje de parada intermedia, pero estamos obligados a alcanzarlo).
-* **Subestructura óptima y decisión hacia atrás:** Para llegar a cualquier estación $i$ (o al destino final $N + 1$), como por autonomía **a lo sumo podemos saltear 2 estaciones seguidas**, el último lugar donde el transporte se detuvo inmediatamente antes de $i$ tiene que haber sido obligatoriamente:
-  1. La estación $i - 1$ (avanzó directo sin saltear ninguna estación),
-  2. La estación $i - 2$ (salteó exactamente $1$ estación: la $i - 1$), o
-  3. La estación $i - 3$ (salteó exactamente $2$ estaciones seguidas: la $i - 2$ y la $i - 1$).
-* Como buscamos minimizar el gasto acumulado hasta $i$, debemos haber llegado de forma óptima a alguno de esos tres predecesores válidos y sumarle la tarifa $T[i]$ de la parada actual:
-  $$OPT(i) = T[i] + \min\Big(OPT(i - 1), \; OPT(i - 2), \; OPT(i - 3)\Big)$$
+* **Definición del Estado:** Representamos el punto de partida (origen) como la posición $0$, las $N$ estaciones intermedias como $1, 2, \dots, N$ con tarifas $T[1 \dots N]$, y el destino final como la posición $N + 1$ con tarifa $T[N + 1] = 0$.
+  Llamamos $OPT(i)$ al **mínimo costo acumulado de paradas para llegar desde el origen $0$ hasta la posición $i$ (deteniéndose en $i$)**.
 * **Casos Base:**
-  * $OPT(0) = 0$ (estamos en el origen sin costo).
-  * $OPT(1) = T[1] + OPT(0) = T[1]$ (solo se puede llegar desde $0$).
-  * $OPT(2) = T[2] + \min(OPT(1), \; OPT(0)) = T[2]$ (suponiendo tarifas no negativas $T[k] \ge 0$, saltar directo de $0$ a $2$ cuesta $T[2]$).
+  * $OPT(0) = 0$: Estamos en el origen sin costo.
+  * $OPT(1) = T[1]$: Solo se puede llegar desde el origen $0$.
+  * $OPT(2) = T[2] + \min(OPT(1), \; OPT(0)) = T[2]$ (salteando la estación $1$ directo desde $0$).
+* **Decisiones en el paso $i$ (pensando hacia atrás desde $i$):**
+  Para llegar a la posición $i$, como por autonomía **no podemos saltear más de 2 estaciones seguidas**, la última parada inmediata anterior a $i$ tuvo que ser obligatoriamente una de estas tres opciones:
+  1. La estación $i - 1$ (avanzó directo sin saltear ninguna),
+  2. La estación $i - 2$ (salteó $1$ estación: la $i - 1$), o
+  3. La estación $i - 3$ (salteó $2$ estaciones seguidas: la $i - 2$ y la $i - 1$).
+  Elegimos el mínimo entre esos tres predecesores y le sumamos la tarifa $T[i]$ de la posición actual.
+* **Ecuación de Bellman (Recurrencia):**
+  Para todo $i \in \{3, \dots, N + 1\}$ (con $T[N + 1] = 0$):
+  $$OPT(i) = T[i] + \min\Big(OPT(i - 1), \; OPT(i - 2), \; OPT(i - 3)\Big)$$
 
 ```mermaid
 flowchart LR
@@ -841,44 +591,27 @@ flowchart LR
 
 ```text
 FUNCION RutaMenorCostoParadas(T, N):
-    // T[1..N] contiene las tarifas de las N estaciones intermedias
-    // Posición 0 = Origen (costo 0), Posición N+1 = Destino Final (tarifa 0)
-    INICIALIZAR DP como arreglo de tamaño (N + 2) en 0
-    INICIALIZAR padre como arreglo de tamaño (N + 2) en 0
+    // Posición 0 = Origen, 1..N = Estaciones, N+1 = Destino Final (con T[N+1] = 0)
+    T[N + 1] <- 0
+    DP <- arreglo de tamaño (N + 2) inicializado en 0
+    padre <- arreglo de tamaño (N + 2) inicializado en 0
 
     // 1. Casos Base
     DP[0] <- 0
-    SI N >= 1:
-        DP[1] <- T[1]
-        padre[1] <- 0
-    SI N >= 2:
-        // Puede venir de 0 (salteando la 1) o de 1
-        SI DP[0] <= DP[1]:
-            DP[2] <- T[2] + DP[0]
-            padre[2] <- 0
-        SINO:
-            DP[2] <- T[2] + DP[1]
-            padre[2] <- 1
+    DP[1] <- T[1];  padre[1] <- 0
+    DP[2] <- T[2];  padre[2] <- 0   // Conviene saltar de 0 a 2 (DP[0] = 0 <= DP[1])
 
-    // 2. Llenado Bottom-Up desde i = 3 hasta N + 1
+    // 2. Llenado Bottom-Up desde i = 3 hasta el destino N + 1
     PARA i <- 3 HASTA N + 1:
-        tarifa_actual <- (T[i] SI i <= N SINO 0)
-
-        // Buscamos el mejor predecesor entre i-1, i-2 e i-3
-        mejor_prev <- i - 1
-        SI DP[i - 2] < DP[mejor_prev]:
-            mejor_prev <- i - 2
-        SI DP[i - 3] < DP[mejor_prev]:
-            mejor_prev <- i - 3
-
-        DP[i] <- tarifa_actual + DP[mejor_prev]
+        mejor_prev <- argmin entre {i - 1, i - 2, i - 3} según DP[...]
+        DP[i] <- T[i] + DP[mejor_prev]
         padre[i] <- mejor_prev
 
-    // 3. Reconstrucción de las estaciones donde conviene detenerse
-    INICIALIZAR paradas como lista vacía
+    // 3. Reconstrucción de las estaciones donde se detuvo
+    paradas <- lista vacía
     actual <- padre[N + 1]
     MIENTRAS actual > 0:
-        INSERTAR actual AL INICIO DE paradas
+        AGREGAR actual AL INICIO DE paradas
         actual <- padre[actual]
 
     RETORNAR (DP[N + 1], paradas)
@@ -886,15 +619,15 @@ FUNCION RutaMenorCostoParadas(T, N):
 
 #### 3. Justificación de Complejidad
 
-* **Complejidad Temporal:** **$\mathcal{O}(N)$**. La tabla `DP` tiene exactamente $N + 2$ estados (desde $0$ hasta $N + 1$). Para cada estado $i$, se calcula el mínimo entre a lo sumo $3$ posiciones anteriores (`i-1`, `i-2`, `i-3`), lo cual requiere únicamente $2$ comparaciones en tiempo constante $\mathcal{O}(1)$. La reconstrucción del camino recorre hacia atrás a lo sumo $N$ estaciones en $\mathcal{O}(N)$. Por lo tanto, el tiempo total es lineal $\mathcal{O}(N)$.
-* **Complejidad Espacial:** **$\mathcal{O}(N)$** para almacenar los arreglos `DP` y `padre` de longitud $N + 2$ que permiten reconstruir las paradas elegidas (si solo se pidiera el valor numérico del costo mínimo sin reconstruir las estaciones, bastaría con mantener las últimas $3$ variables en espacio $\mathcal{O}(1)$).
+* **Complejidad Temporal:** $\mathcal{O}(N)$. La tabla `DP` tiene $N + 2$ celdas (desde $0$ hasta $N + 1$). Cada celda $i$ se calcula en tiempo constante $\mathcal{O}(1)$ comparando únicamente $3$ valores anteriores (`i-1`, `i-2`, `i-3`). La reconstrucción recorre hacia atrás a lo sumo $N$ estaciones en $\mathcal{O}(N)$.
+* **Complejidad Espacial:** $\mathcal{O}(N)$ para almacenar los arreglos `DP` y `padre` de tamaño $N + 2$.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Devolver $DP[N]$ en lugar de $DP[N+1]$:</strong> El transporte no está obligado a detenerse en la estación $N$; si paró en $N-1$ o en $N-2$, puede saltear la estación $N$ y llegar directamente al destino final $N+1$. Olvidar el nodo destino $N+1$ (con $T[N+1]=0$) obliga erróneamente a pagar siempre la última estación.</li>
-    <li><strong>Confundir "saltear 2 estaciones" con restar $2$ al índice:</strong> Si estás en la estación $i$ y salteaste las 2 estaciones anteriores ($i-1$ e $i-2$), tu parada previa fue $i-3$, no $i-2$.</li>
+    <li><strong>Devolver $DP[N]$ en lugar de $DP[N+1]$:</strong> El transporte no está obligado a parar en la estación $N$; si paró en $N-1$ o en $N-2$, puede saltear la estación $N$ y llegar directo a la meta $N+1$.</li>
+    <li><strong>Confundir "saltear 2 estaciones" con restar $2$ al índice:</strong> Si estás en $i$ y salteás las 2 estaciones anteriores ($i-1$ e $i-2$), venís de la estación $i-3$.</li>
   </ul>
 </div>
 
@@ -902,8 +635,8 @@ FUNCION RutaMenorCostoParadas(T, N):
 
 ### Errores Frecuentes en Exámenes sobre Programación Dinámica
 
-1. **No definir formalmente qué significa $OPT(\dots)$:** Escribir directamente una matriz sin explicar qué representan las filas y columnas anula la justificación.
-2. **Olvidar los casos base:** No definir $OPT(0, w)$ o inicializar en $0$ cuando un valor inaccesible debería ser $-\infty$.
-3. **No justificar el orden de llenado:** Asumir que se llena mágicamente sin decir que las filas se procesan de $0$ a $n$ y las capacidades de $0$ a $W$.
-4. **Omitir la reconstrucción:** Quedarse con el número final $DP[n][W]$ cuando el problema pide "cuáles son los elementos".
+1. **No definir en palabras qué significa $OPT(\dots)$:** Escribir directamente una fórmula o código sin explicar qué representa el estado anula la justificación.
+2. **Olvidar los casos base:** No definir $OPT(0)$ o inicializar mal los bordes de la tabla.
+3. **No justificar el orden de llenado:** Aclarar siempre que la tabla se llena de menor a mayor subproblema (*Bottom-Up*) para que los estados previos ya estén calculados.
+4. **Omitir la reconstrucción:** Quedarse solo con el valor numérico $DP[n]$ cuando la consigna pide indicar cuáles son los elementos u operaciones elegidas.
 """

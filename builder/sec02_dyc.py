@@ -38,93 +38,51 @@ En los parciales aparece el requerimiento de formular algoritmos multiplicativos
 **Enunciado**  
 Realizar un algoritmo que resuelva la multiplicación de dos matrices cuadradas de orden $n$ ($A$ y $B$) mediante división y conquista. Recordemos la definición: $C = A \times B$ donde $C_{ij} = \sum_{k=1}^n A_{ik} \cdot B_{kj}$ para todo $i, j \in \{1, \dots, n\}$. Para simplificar el algoritmo se puede suponer que $n$ es una potencia de 2. Indicar y justificar el orden de complejidad temporal y espacial del algoritmo.
 
-**Qué está evaluando la cátedra**  
-Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas recursivas de multiplicación, suma de matrices en la etapa de combinación, y aplicación rigurosa del Teorema Maestro sin saltarse el análisis de casos.
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-#### 1. Deducción Metodológica Formal (Los 5 Pasos de DyC)
-
-1. **Paso 1: División:**
-   Se dividen las matrices cuadradas $A$ y $B$ de orden $n \times n$ en 4 submatrices (cuadrantes) de tamaño $(n/2) \times (n/2)$:
-   $$A = \begin{pmatrix} A_{11} & A_{12} \\ A_{21} & A_{22} \end{pmatrix}, \quad B = \begin{pmatrix} B_{11} & B_{12} \\ B_{21} & B_{22} \end{pmatrix}$$
-
-2. **Paso 2: Casos Base:**
-   Cuando $n = 1$, las matrices se reducen a un único escalar cada una:
-   $$C_{11} = A_{11} \cdot B_{11}$$
-   Esta multiplicación escalar elemental se ejecuta en tiempo $O(1)$.
-
-3. **Paso 3: Conquista (Llamadas Recursivas):**
-   De acuerdo al producto matricial por bloques, la matriz resultante $C$ satisface:
-   $$C = \begin{pmatrix} C_{11} & C_{12} \\ C_{21} & C_{22} \end{pmatrix} = \begin{pmatrix} A_{11} B_{11} + A_{12} B_{21} & A_{11} B_{12} + A_{12} B_{22} \\ A_{21} B_{11} + A_{22} B_{21} & A_{21} B_{12} + A_{22} B_{22} \end{pmatrix}$$
-   Cada cuadrante requiere 2 productos de matrices de tamaño $(n/2) \times (n/2)$. En total se disparan **$a = 8$ llamadas recursivas**:
-   * $M_1 = A_{11} \cdot B_{11}$, $M_2 = A_{12} \cdot B_{21}$
-   * $M_3 = A_{11} \cdot B_{12}$, $M_4 = A_{12} \cdot B_{22}$
-   * $M_5 = A_{21} \cdot B_{11}$, $M_6 = A_{22} \cdot B_{21}$
-   * $M_7 = A_{21} \cdot B_{12}$, $M_8 = A_{22} \cdot B_{22}$
-
-4. **Paso 4: Combinación:**
-   Se calculan los 4 cuadrantes finales mediante 4 sumas de matrices de tamaño $(n/2) \times (n/2)$:
-   * $C_{11} = M_1 + M_2$
-   * $C_{12} = M_3 + M_4$
-   * $C_{21} = M_5 + M_6$
-   * $C_{22} = M_7 + M_8$
-   Cada suma matricial de $(n/2) \times (n/2)$ elementos insume $(n/2)^2 = n^2 / 4$ operaciones. En total, las 4 sumas insumen $4 \cdot (n^2 / 4) = n^2$ operaciones, es decir, costo $\Theta(n^2)$.
-
-5. **Paso 5: Ecuación de Recurrencia y Teorema Maestro:**
-   $$T(n) = \begin{cases} \Theta(1) & \text{si } n = 1 \\ 8 \cdot T\left(\frac{n}{2}\right) + \Theta(n^2) & \text{si } n > 1 \end{cases}$$
-   Identificamos los parámetros del Teorema Maestro:
-   * $a = 8$ (número de subproblemas recursivos)
-   * $b = 2$ (factor de reducción del tamaño de entrada)
-   * $f(n) = \Theta(n^c)$ con $c = 2$ (costo de división y combinación de bloques)
-   
-   Calculamos el exponente crítico:
-   $$\log_b a = \log_2 8 = 3$$
-   Comparamos $\log_b a$ con $c$:
-   $$\log_b a = 3 > 2 = c$$
-   Dado que $\log_b a > c$, aplica estrictamente el **Caso 1 del Teorema Maestro** (el trabajo en las hojas del árbol domina el costo global):
-   $$T(n) = \Theta(n^{\log_b a}) = \Theta(n^{\log_2 8}) = \Theta(n^3)$$
-
-#### 2. Justificación Directa de Correctitud (Lista para Examen)
-
-* **Caso Base ($n = 1$):** Cuando las matrices son de $1 \times 1$, tienen un solo número cada una y el algoritmo multiplica directamente $A[0][0] \cdot B[0][0]$ en tiempo $O(1)$.
-* **Paso Recursivo ($n > 1$):**
-  Por propiedad de multiplicación de matrices por bloques, para obtener cada cuadrante de $C$ basta con multiplicar las mitades correspondientes de las filas de $A$ por las mitades de las columnas de $B$ y sumar ambos resultados parciales:
+* **Caso Base ($n = 1$):** Cuando las matrices son de $1 \times 1$, tienen un solo número cada una y devolvemos directamente el producto $A[0][0] \cdot B[0][0]$ en tiempo $O(1)$.
+* **División ($n > 1$):** Partimos las matrices $A$ y $B$ de $n \times n$ en **4 submatrices (cuadrantes)** de tamaño $(n/2) \times (n/2)$ cada una:
+  $$A = \begin{pmatrix} A_{11} & A_{12} \\ A_{21} & A_{22} \end{pmatrix}, \quad B = \begin{pmatrix} B_{11} & B_{12} \\ B_{21} & B_{22} \end{pmatrix}$$
+* **Conquista (8 llamadas recursivas):** Por propiedad de multiplicación de matrices por bloques, para obtener cada cuadrante de $C$ multiplicamos las mitades de las filas de $A$ por las mitades de las columnas de $B$ y sumamos ambos resultados parciales (2 productos por cuadrante, dando **$a = 8$ llamadas recursivas** de tamaño $n/2$):
   * Cuadrante superior izquierdo: $C_{11} = A_{11} B_{11} + A_{12} B_{21}$
   * Cuadrante superior derecho: $C_{12} = A_{11} B_{12} + A_{12} B_{22}$
   * Cuadrante inferior izquierdo: $C_{21} = A_{21} B_{11} + A_{22} B_{21}$
   * Cuadrante inferior derecho: $C_{22} = A_{21} B_{12} + A_{22} B_{22}$
-  Como las 8 llamadas recursivas resuelven submatrices de la mitad de tamaño ($n/2$) hasta llegar al caso base de $1 \times 1$, la suma de los bloques reconstruye exactamente la matriz producto $C$.
+* **Combinación:** Realizamos las 4 sumas de matrices de tamaño $(n/2) \times (n/2)$ y ensamblamos los 4 cuadrantes para devolver la matriz producto $C$ de $n \times n$.
 
-#### 3. Ejemplo Concreto y Traza Paso a Paso ($n = 2$)
+#### 2. Semi-Pseudocódigo Simplificado
 
-Sean las matrices $2 \times 2$:
-$$A = \begin{pmatrix} 1 & 2 \\ 3 & 4 \end{pmatrix}, \quad B = \begin{pmatrix} 5 & 6 \\ 7 & 8 \end{pmatrix}$$
+```text
+Algoritmo MultiplicarMatricesDyC(A, B, n):
+    // Caso Base: matriz de 1x1
+    si n == 1:
+        devolver [[ A[0][0] * B[0][0] ]]
 
-| Cuadrante / Operación | Definición Algebraica | Cálculo Numérico | Resultado |
-| :--- | :--- | :--- | :--- |
-| **Bloques de $A$** | $A_{11}=[1], A_{12}=[2], A_{21}=[3], A_{22}=[4]$ | Descomposición en $1 \times 1$ | 4 escalares |
-| **Bloques de $B$** | $B_{11}=[5], B_{12}=[6], B_{21}=[7], B_{22}=[8]$ | Descomposición en $1 \times 1$ | 4 escalares |
-| **$M_1$** | $A_{11} \cdot B_{11}$ | $1 \cdot 5$ | $5$ |
-| **$M_2$** | $A_{12} \cdot B_{21}$ | $2 \cdot 7$ | $14$ |
-| **$M_3$** | $A_{11} \cdot B_{12}$ | $1 \cdot 6$ | $6$ |
-| **$M_4$** | $A_{12} \cdot B_{22}$ | $2 \cdot 8$ | $16$ |
-| **$M_5$** | $A_{21} \cdot B_{11}$ | $3 \cdot 5$ | $15$ |
-| **$M_6$** | $A_{22} \cdot B_{21}$ | $4 \cdot 7$ | $28$ |
-| **$M_7$** | $A_{21} \cdot B_{12}$ | $3 \cdot 6$ | $18$ |
-| **$M_8$** | $A_{22} \cdot B_{22}$ | $4 \cdot 8$ | $32$ |
-| **$C_{11} = M_1 + M_2$** | $A_{11} B_{11} + A_{12} B_{21}$ | $5 + 14$ | **$19$** |
-| **$C_{12} = M_3 + M_4$** | $A_{11} B_{12} + A_{12} B_{22}$ | $6 + 16$ | **$22$** |
-| **$C_{21} = M_5 + M_6$** | $A_{21} B_{11} + A_{22} B_{21}$ | $15 + 28$ | **$43$** |
-| **$C_{22} = M_7 + M_8$** | $A_{21} B_{12} + A_{22} B_{22}$ | $18 + 32$ | **$50$** |
+    m = n / 2
+    // 1. Dividir A y B en 4 cuadrantes de m x m cada una
+    (A11, A12, A21, A22) = PartirEn4Bloques(A, m)
+    (B11, B12, B21, B22) = PartirEn4Bloques(B, m)
 
-Matriz final ensamblada:
-$$C = \begin{pmatrix} 19 & 22 \\ 43 & 50 \end{pmatrix}$$
-*Verificación por producto tradicional:*
-* Fila 1 × Columna 1: $1 \cdot 5 + 2 \cdot 7 = 19$. Correcto.
-* Fila 1 × Columna 2: $1 \cdot 6 + 2 \cdot 8 = 22$. Correcto.
-* Fila 2 × Columna 1: $3 \cdot 5 + 4 \cdot 7 = 43$. Correcto.
-* Fila 2 × Columna 2: $3 \cdot 6 + 4 \cdot 8 = 50$. Correcto.
+    // 2. Conquista: 8 multiplicaciones recursivas de tamaño n/2
+    C11 = MultiplicarMatricesDyC(A11, B11, m) + MultiplicarMatricesDyC(A12, B21, m)
+    C12 = MultiplicarMatricesDyC(A11, B12, m) + MultiplicarMatricesDyC(A12, B22, m)
+    C21 = MultiplicarMatricesDyC(A21, B11, m) + MultiplicarMatricesDyC(A22, B21, m)
+    C22 = MultiplicarMatricesDyC(A21, B12, m) + MultiplicarMatricesDyC(A22, B22, m)
 
-#### 4. Diagrama del Árbol de Recursión
+    // 3. Combinar los 4 cuadrantes en la matriz C de n x n
+    devolver EnsamblarMatriz(C11, C12, C21, C22)
+```
+
+#### 3. Justificación de Complejidad (Para entregar en el parcial)
+
+* **Complejidad Temporal:**
+  - En cada paso se hacen **$a = 8$ llamadas recursivas** sobre submatrices de tamaño $n/2$ (**$b = 2$**).
+  - Dividir en cuadrantes y sumar las 4 parejas de matrices de $(n/2) \times (n/2)$ recorre $4 \cdot (n/2)^2 = n^2$ elementos, por lo que cuesta **$f(n) = \Theta(n^2)$** (**$c = 2$**).
+  - Ecuación de recurrencia:
+    $$T(n) = 8 \cdot T(n/2) + \Theta(n^2)$$
+  - Por el **Teorema Maestro**, comparamos $\log_b a = \log_2 8 = 3$ con $c = 2$. Como $\log_b a = 3 > 2 = c$, aplica el **Caso 1** (dominan las hojas) y la complejidad temporal es **$\Theta(n^{\log_2 8}) = \Theta(n^3)$**.
+* **Complejidad Espacial:**
+  - En cada nivel activo de la pila recursiva (de altura $\log_2 n$) se reservan matrices auxiliares cuyo tamaño se reduce geométricamente: $n^2 + (n/2)^2 + (n/4)^2 + \dots = \Theta(n^2)$. Por lo tanto, la complejidad espacial es **$\Theta(n^2)$**.
 
 ```mermaid
 flowchart TD
@@ -140,43 +98,6 @@ flowchart TD
     classDef root fill:#1e40af,stroke:#1e3a8a,stroke-width:2px,color:#fff
     classDef mid fill:#334155,stroke:#1e293b,stroke-width:1px,color:#fff
     classDef leaf fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
-```
-
-#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
-
-```text
-Algoritmo MultiplicarMatrices(A, B):
-    n = dimension(A)  // Matriz de n x n (suponiendo n potencia de 2)
-    devolver MultiplicarMatricesDyC(A, B, n)
-
-función MultiplicarMatricesDyC(A, B, n):
-    // Caso Base: matriz de 1x1
-    si n == 1:
-        devolver [[ A[0][0] * B[0][0] ]]
-
-    m = n / 2
-    // Dividir A y B en 4 submatrices de m x m cada una:
-    (A11, A12, A21, A22) = PartirEn4Bloques(A, m)
-    (B11, B12, B21, B22) = PartirEn4Bloques(B, m)
-
-    // 8 multiplicaciones recursivas de tamaño m = n/2:
-    M1 = MultiplicarMatricesDyC(A11, B11, m)
-    M2 = MultiplicarMatricesDyC(A12, B21, m)
-    M3 = MultiplicarMatricesDyC(A11, B12, m)
-    M4 = MultiplicarMatricesDyC(A12, B22, m)
-    M5 = MultiplicarMatricesDyC(A21, B11, m)
-    M6 = MultiplicarMatricesDyC(A22, B21, m)
-    M7 = MultiplicarMatricesDyC(A21, B12, m)
-    M8 = MultiplicarMatricesDyC(A22, B22, m)
-
-    // 4 sumas de matrices de tamaño m x m en O(m^2):
-    C11 = M1 + M2
-    C12 = M3 + M4
-    C21 = M5 + M6
-    C22 = M7 + M8
-
-    // Combinar en matriz final C de n x n
-    devolver EnsamblarMatriz(C11, C12, C21, C22)
 ```
 
 <div class="trap-callout">
@@ -208,52 +129,37 @@ Se tiene un arreglo de $n \ge 3$ elementos en forma de pico, esto es: estrictame
 a. Implementar un algoritmo de división y conquista de orden $O(\log n)$ *(nota: en la Guía v1.0 figura por errata tipográfica $O(\log \log n)$)* que encuentre la posición $p$ del pico: `PosicionPico(v, ini, fin)`.
 b. Justificar el orden del algoritmo mediante el Teorema Maestro.
 
-**Qué está evaluando la cátedra**  
-Capacidad de descarte logarítmico aprovechando la dirección de la pendiente local, manejo riguroso de condiciones de borde en índices y demostración formal de que siempre existe al menos un pico en la mitad elegida.
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-#### 1. Deducción Metodológica Formal (Los 5 Pasos de DyC)
+* **Idea de la pendiente:** En vez de recorrer todo el arreglo, miramos la posición central `m = (ini + fin) / 2` y la comparamos con su vecino inmediato `v[m + 1]`:
+  1. **Caso Base (`ini == fin`):** Cuando el subarreglo tiene un solo elemento, ese único candidato es garantizadamente el pico y devolvemos su índice `ini` en $O(1)$.
+  2. **Si `v[m] < v[m + 1]` (sube hacia la derecha):** Como el arreglo sube estrictamente hasta el pico y recién después baja, si en `m` todavía estamos subiendo, el pico **está sí o sí a la derecha de `m`**. Descartamos toda la mitad izquierda y buscamos recursivamente en `[m + 1, fin]`.
+  3. **Si `v[m] > v[m + 1]` (baja hacia la derecha):** Significa que ya pasamos el pico o bien `m` mismo es el pico. Descartamos la derecha y buscamos recursivamente en `[ini, m]` (incluyendo a `m` porque puede ser el pico).
 
-1. **Paso 1: Definición del Invariante de Búsqueda:**
-   En cada llamada sobre el rango $[ini, fin]$, se mantiene el siguiente invariante: **garantizadamente existe al menos un pico local dentro del subarreglo $A[ini \dots fin]$**.
-2. **Paso 2: Caso Base:**
-   Cuando $ini = fin$, el rango contiene un único elemento. Por el invariante de búsqueda, este elemento debe ser un pico local. Se retorna $ini$ en tiempo $O(1)$.
-3. **Paso 3: División:**
-   Se calcula el índice central:
-   $$m = \lfloor(ini + fin) / 2\rfloor$$
-   Como $ini < fin$, necesariamente $m < fin$, lo cual garantiza que la posición $m + 1$ es siempre un índice válido dentro del arreglo (sin desbordamiento).
-4. **Paso 4: Conquista y Criterio de Descarte:**
-   Se comparan los elementos contiguos $A[m]$ y $A[m + 1]$:
-   * **Caso A ($A[m] < A[m + 1]$):** La pendiente asciende hacia la derecha. Por el Teorema de Existencia, existe al menos un pico en el subrango $[m + 1, fin]$. Se descarta toda la mitad izquierda $[ini, m]$.
-   * **Caso B ($A[m] > A[m + 1]$):** La pendiente desciende hacia la derecha (asciende hacia la izquierda). Por lo tanto, existe al menos un pico en el subrango $[ini, m]$ (el propio $m$ podría ser el pico). Se descarta el subrango $[m + 1, fin]$.
-5. **Paso 5: Ecuación de Recurrencia y Teorema Maestro:**
-   En cada paso se realiza exactamente una llamada recursiva sobre un subarreglo de tamaño a lo sumo $\lceil n/2 \rceil$ con trabajo de comparación $O(1)$:
-   $$T(n) = 1 \cdot T(n/2) + \Theta(1)$$
-   Parámetros: $a = 1, b = 2, c = 0$.
-   $$\log_b a = \log_2 1 = 0 = c$$
-   Aplica el **Caso 2 del Teorema Maestro** con $k = 0$:
-   $$T(n) = \Theta(n^c \log n) = \Theta(n^0 \log n) = \Theta(\log n)$$
+#### 2. Semi-Pseudocódigo Simplificado
 
-#### 2. Justificación Directa de Correctitud (Por qué siempre hay un pico en la mitad elegida)
+```text
+Algoritmo PosicionPico(v, ini, fin):
+    // Caso Base: queda un único elemento y es el pico
+    si ini == fin:
+        devolver ini
 
-* **Idea de la pendiente:** En el centro miramos los vecinos $A[m]$ y $A[m + 1]$. Como no hay elementos consecutivos iguales, los valores sí o sí suben o bajan:
-  * **Si $A[m] < A[m + 1]$ (sube hacia la derecha):** Como a partir de $m + 1$ los números van subiendo, pasan dos cosas posibles: o bien siguen subiendo sin parar hasta el borde derecho `fin` (entonces $A[fin]$ es un pico porque es más grande que el anterior y no tiene a nadie a la derecha), o bien en algún momento dejan de subir y bajan (y el primer número donde empieza a bajar es un pico porque le gana al de su izquierda y al de su derecha). Por eso **seguro hay un pico en la mitad derecha $[m + 1, fin]$**.
-  * **Si $A[m] > A[m + 1]$ (sube hacia la izquierda):** Por el mismo razonamiento hacia la izquierda, **seguro hay un pico en la mitad izquierda $[ini, m]$** (incluso el propio $A[m]$ podría ser el pico).
+    m = (ini + fin) / 2
 
-#### 3. Ejemplo Concreto y Traza Paso a Paso
+    // Si la pendiente sube hacia la derecha, el pico está en [m + 1 .. fin]
+    si v[m] < v[m + 1]:
+        devolver PosicionPico(v, m + 1, fin)
+    sino:
+        // Si la pendiente baja, el pico está en [ini .. m] (m puede ser el pico)
+        devolver PosicionPico(v, ini, m)
+```
 
-Sea el arreglo de $n = 7$ elementos:
-$$A = [1, 2, 1, 3, 5, 6, 4]$$
+#### 3. Justificación de Complejidad (Para entregar en el parcial)
 
-| Paso | Rango $[ini, fin]$ | $m$ | $A[m]$ | $A[m+1]$ | Comparación | Decisión / Rango Siguiente |
-| :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| **1** | $[0, 6]$ | $3$ | $3$ | $5$ | $3 < 5$ (sube a derecha) | Descartar izquierda $\implies [4, 6]$ |
-| **2** | $[4, 6]$ | $5$ | $6$ | $4$ | $6 > 4$ (baja a derecha) | Descartar derecha $\implies [4, 5]$ |
-| **3** | $[4, 5]$ | $4$ | $5$ | $6$ | $5 < 6$ (sube a derecha) | Descartar izquierda $\implies [5, 5]$ |
-| **4** | $[5, 5]$ | - | - | - | **$ini == fin = 5$** | **Caso base: Pico en índice 5 ($A[5] = 6$)** |
-
-*Verificación:* $A[5] = 6$ es estrictamente mayor que su vecino izquierdo $A[4] = 5$ y su vecino derecho $A[6] = 4$. Es un pico válido encontrado en solo 3 iteraciones ($<\log_2 7 \approx 2.8$).
-
-#### 4. Diagrama Visual de Búsqueda Binaria de la Pendiente
+* En cada paso descartamos la mitad del arreglo y realizamos **$a = 1$ llamada recursiva** sobre un subproblema de tamaño $n/2$ (**$b = 2$**), haciendo solo una comparación en tiempo constante **$f(n) = \Theta(1)$** (**$c = 0$**).
+* Ecuación de recurrencia:
+  $$T(n) = 1 \cdot T(n/2) + \Theta(1)$$
+* Aplicando el **Teorema Maestro**: $\log_b a = \log_2 1 = 0 = c$ (**Caso 2**), por lo que la complejidad temporal es **$T(n) = \Theta(n^0 \log n) = O(\log n)$**.
 
 ```mermaid
 flowchart LR
@@ -265,36 +171,12 @@ flowchart LR
     classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 ```
 
-#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
-
-```text
-Algoritmo EncontrarPico(A, n):
-    si n == 0:
-        devolver -1
-    devolver EncontrarPicoRec(A, 0, n - 1)
-
-función EncontrarPicoRec(A, ini, fin):
-    // Caso Base: un único elemento en el subarreglo es garantizadamente pico
-    si ini == fin:
-        devolver ini
-
-    m = (ini + fin) / 2
-
-    // Lema de la pendiente: si sube hacia la derecha, el pico está a la derecha
-    si A[m] < A[m + 1]:
-        devolver EncontrarPicoRec(A, m + 1, fin)
-    sino:
-        // Si la pendiente desciende, m puede ser el propio pico
-        devolver EncontrarPicoRec(A, ini, m)
-```
-
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Hacer <code>fin = m - 1</code> en la rama descendente:</strong> Si $A[m] > A[m+1]$, el elemento $A[m]$ podría ser precisamente el pico. Si ajustas <code>fin = m - 1</code>, excluyes a $m$ y el algoritmo puede retornar un índice incorrecto o fallar. Debe ser obligatoriamente <code>fin = m</code>.</li>
-    <li><strong>Desbordamiento de índice al calcular $m+1$:</strong> Si el bucle tiene condición <code>ini &le; fin</code>, en la última iteración $m = fin$ y la consulta <code>arr[m + 1]</code> arroja <code>IndexError</code>. La condición estricta debe ser <code>ini &lt; fin</code>.</li>
-    <li><strong>Creer que el arreglo debe estar ordenado:</strong> Este algoritmo funciona sobre arreglos desordenados gracias al Lema de la Pendiente. Afirmar en el examen que se requiere ordenar previamente ($O(n \log n)$) invalida la cota $O(\log n)$.</li>
+    <li><strong>Hacer <code>fin = m - 1</code> en la rama descendente:</strong> Si $v[m] > v[m+1]$, el elemento $v[m]$ podría ser precisamente el pico. Si pasas <code>m - 1</code>, excluyes a $m$ y el algoritmo puede retornar un índice incorrecto. Debe ser <code>PosicionPico(v, ini, m)</code>.</li>
+    <li><strong>Desbordamiento de índice al consultar $m+1$:</strong> Como el caso base corta en <code>ini == fin</code> y la división entera redondea hacia abajo, siempre se cumple $m < fin$, por lo que <code>v[m + 1]</code> nunca se sale de rango.</li>
   </ul>
 </div>
 
@@ -311,51 +193,42 @@ Se tiene un arreglo tal que `[1, 1, 1, ..., 0, 0, ...]` (es decir, unos seguidos
 a. Una función de orden $O(\log n)$ *(nota: en la Guía v1.0 figura por errata tipográfica $O(\log \log n)$)* que encuentre el índice del primer `0`. Si no hay ningún `0` (solo hay unos), debe devolver `-1`.
 b. Demostrar con el Teorema Maestro que la función es, en efecto, $O(\log n)$.
 
-**Qué está evaluando la cátedra**  
-Identificación de la propiedad de frontera de transición, manejo riguroso de casos donde el cero está en el índice 0 o no existe, y parada anticipada sin incurrir en recorridos lineales.
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-#### 1. Deducción Metodológica Formal (Los 5 Pasos de DyC)
+* Como el arreglo tiene todos los `1` al principio y todos los `0` al final, podemos partir al medio en cada paso buscando el punto exacto donde cambia de `1` a `0`:
+  1. **Caso Base (`ini > fin`):** Si el rango se queda sin elementos, significa que no había ningún `0` en todo el arreglo y devolvemos `-1`.
+  2. Calculamos la posición del medio `m = (ini + fin) / 2` y miramos `A[m]`:
+     - **Si `A[m] == 0` y su anterior es `1` (o `m == 0`):** Estamos parados justo en el primer `0` del arreglo, así que devolvemos `m` inmediatamente.
+     - **Si `A[m] == 0` y su anterior también es `0`:** El primer `0` está más hacia la izquierda; descartamos la mitad derecha y buscamos recursivamente en `[ini, m - 1]`.
+     - **Si `A[m] == 1`:** Como antes de un `1` solo puede haber otros `1`, el primer `0` solo puede estar a la derecha; descartamos la mitad izquierda y buscamos recursivamente en `[m + 1, fin]`.
 
-1. **Paso 1: Propiedad de Monotonía y Frontera:**
-   El arreglo $A$ es monótonamente decreciente no estricto: $A[i] \ge A[i+1]$ para todo $i$. El "primer cero" es el único índice $k$ que satisface:
-   $$A[k] = 0 \quad \land \quad (k = 0 \lor A[k - 1] = 1)$$
-2. **Paso 2: Casos Base de Rango Vacío:**
-   Si $ini > fin$, el subrango colapsó sin encontrar ningún cero (ocurre cuando el arreglo es puramente de unos). Se retorna $-1$.
-3. **Paso 3: División:**
-   Se evalúa el elemento en la posición media:
-   $$m = \lfloor(ini + fin) / 2\rfloor$$
-4. **Paso 4: Conquista y Reducción del Espacio de Búsqueda:**
-   * **Condición de Éxito Inmediato:** Si $A[m] == 0$ y además ($m == 0$ o $A[m - 1] == 1$), entonces $m$ es por definición el primer cero. Se retorna $m$ inmediatamente en $O(1)$.
-   * **Rama Izquierda ($A[m] == 0$ pero $A[m - 1] == 0$):** Hay más ceros hacia la izquierda. Se descarta la mitad derecha y se busca recursivamente en $[ini, m - 1]$.
-   * **Rama Derecha ($A[m] == 1$):** Por monotonía, todos los elementos desde $ini$ hasta $m$ son 1. El primer cero solo puede estar estrictamente a la derecha. Se busca en $[m + 1, fin]$.
-5. **Paso 5: Ecuación de Recurrencia y Teorema Maestro:**
-   $$T(n) = 1 \cdot T(n/2) + \Theta(1)$$
-   Con $a = 1, b = 2, c = 0$:
-   $$\log_2 1 = 0 = c \implies T(n) = \Theta(\log n)$$
-   Espacio auxiliar: $O(1)$ en implementación iterativa, $O(\log n)$ en la pila de recursión.
+#### 2. Semi-Pseudocódigo Simplificado
 
-#### 2. Justificación Directa de Correctitud (Lista para Examen)
+```text
+Algoritmo BuscarPrimerCero(A, ini, fin):
+    // Caso Base: rango vacío (no existen ceros en el arreglo)
+    si ini > fin:
+        devolver -1
 
-* Como el arreglo tiene todos los `1` al principio y todos los `0` al final, al mirar la posición del medio `m` solo pueden pasar tres cosas:
-  1. **Si `A[m] == 1`:** Como antes de un `1` solo puede haber otros `1`, es imposible que el primer `0` esté a la izquierda. Descartamos toda la mitad izquierda y buscamos a la derecha (`[m + 1, fin]`).
-  2. **Si `A[m] == 0` y su anterior es `1` (o `m == 0`):** Estamos parados justo en el cambio de `1` a `0`, así que `m` es el primer cero y lo devolvemos.
-  3. **Si `A[m] == 0` y su anterior también es `0`:** El primer cero está más atrás, así que descartamos la mitad derecha y buscamos a la izquierda (`[ini, m - 1]`).
-* Si el rango se queda sin elementos (`ini > fin`), significa que eran todos `1` y devolvemos `-1`.
+    m = (ini + fin) / 2
 
-#### 3. Ejemplo Concreto y Traza Paso a Paso
+    si A[m] == 0:
+        // Si está en el borde izquierdo o su anterior es 1, es el primer cero
+        si m == 0 o A[m - 1] == 1:
+            devolver m
+        // Si su anterior también es 0, buscar más a la izquierda
+        devolver BuscarPrimerCero(A, ini, m - 1)
+    sino:
+        // A[m] == 1: descartar mitad izquierda y buscar a la derecha
+        devolver BuscarPrimerCero(A, m + 1, fin)
+```
 
-Sea el arreglo de $n = 8$ elementos:
-$$A = [1, 1, 1, 1, 0, 0, 0, 0]$$
+#### 3. Justificación de Complejidad (Para entregar en el parcial)
 
-| Iteración | Rango $[ini, fin]$ | $m$ | $A[m]$ | Verificación $A[m-1]$ | Decisión / Rango Siguiente |
-| :---: | :---: | :---: | :---: | :---: | :--- |
-| **1** | $[0, 7]$ | $3$ | $1$ | No aplica ($A[m]=1$) | $A[3]=1 \implies$ Descartar $[0, 3]$. Nuevo rango: $[4, 7]$ |
-| **2** | $[4, 7]$ | $5$ | $0$ | $A[4] = 0$ | $A[5]=0$ pero $A[4]=0 \implies$ Hay ceros antes. Nuevo rango: $[4, 4]$ |
-| **3** | $[4, 4]$ | $4$ | $0$ | $A[3] = 1$ | **$A[4] = 0 \land A[3] = 1 \implies$ ¡Primer cero hallado en índice 4!** |
-
-*Resultado devuelto:* $4$. Complejidad real: 3 comparaciones ($\le \lceil \log_2 8 \rceil = 3$).
-
-#### 4. Diagrama Visual del Corte de Frontera
+* En cada paso descartamos una mitad completa y hacemos **$a = 1$ llamada recursiva** de tamaño $n/2$ (**$b = 2$**), realizando un número constante de comparaciones en tiempo **$f(n) = \Theta(1)$** (**$c = 0$**).
+* Ecuación de recurrencia:
+  $$T(n) = 1 \cdot T(n/2) + \Theta(1)$$
+* Por el **Teorema Maestro**, como $\log_b a = \log_2 1 = 0 = c$ (**Caso 2**), la complejidad temporal es **$T(n) = \Theta(n^0 \log n) = O(\log n)$**.
 
 ```mermaid
 graph LR
@@ -369,39 +242,12 @@ graph LR
     classDef primer fill:#15803d,stroke:#166534,stroke-width:3px,color:#fff
 ```
 
-#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
-
-```text
-Algoritmo BuscarPrimerCero(A, n):
-    si n == 0:
-        devolver -1
-    devolver BuscarPrimerCeroRec(A, 0, n - 1)
-
-función BuscarPrimerCeroRec(A, ini, fin):
-    // Caso Base: rango inválido sin ceros
-    si ini > fin:
-        devolver -1
-
-    m = (ini + fin) / 2
-
-    si A[m] == 0:
-        // Si es el primer elemento o el anterior es 1, encontramos el primer cero
-        si m == 0 o A[m - 1] == 1:
-            devolver m
-        // Continuar buscando un cero previo más a la izquierda
-        devolver BuscarPrimerCeroRec(A, ini, m - 1)
-    sino:
-        // A[m] == 1: por orden monótono, el primer cero debe residir a la derecha
-        devolver BuscarPrimerCeroRec(A, m + 1, fin)
-```
-
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Acceder a <code>arr[m - 1]</code> cuando $m = 0$:</strong> Si el primer cero está en la posición 0, evaluar <code>arr[m - 1]</code> en Python consultará <code>arr[-1]</code> (el último elemento del arreglo), produciendo un falso positivo o error lógico en otros lenguajes (C/Java) con <code>IndexOutOfBoundsException</code>. Siempre se debe anteponer la guarda <code>m == 0 or arr[m - 1] == 1</code>.</li>
-    <li><strong>Arreglos sin ceros (todos 1s):</strong> Si el arreglo no contiene ceros, el algoritmo debe retornar $-1$. Si no se maneja la condición de parada <code>ini &gt; fin</code>, el algoritmo puede retornar un índice erróneo.</li>
-    <li><strong>Hacer un recorrido lineal desde $m$:</strong> Al encontrar un 0 en $m$, algunos estudiantes retroceden linealmente con un bucle mientras <code>arr[i] == 0</code>. Eso degrada la complejidad a $O(n)$ en el peor caso (por ejemplo, en un arreglo compuesto íntegramente por ceros), anulando completamente el beneficio de la búsqueda binaria.</li>
+    <li><strong>Acceder a <code>A[m - 1]</code> cuando $m = 0$:</strong> Si el primer cero está en la posición 0, evaluar <code>A[m - 1]</code> sin chequear antes <code>m == 0</code> consulta <code>A[-1]</code> o lanza error de índice fuera de rango. Siempre poner primero <code>m == 0 o A[m - 1] == 1</code>.</li>
+    <li><strong>Hacer un recorrido lineal hacia atrás desde $m$:</strong> Al encontrar un 0 en $m$, retroceder con un bucle <code>while</code> hasta el primer cero degrada el peor caso a $O(n)$ (cuando todo el arreglo son ceros). Siempre debe seguir partiendo a la mitad con recursión.</li>
   </ul>
 </div>
 
@@ -416,7 +262,7 @@ función BuscarPrimerCeroRec(A, ini, fin):
 **Enunciado**  
 Dada una lista de números enteros (positivos y negativos), se desea obtener el subarreglo contiguo cuya suma sea máxima. Justificar la complejidad temporal del algoritmo realizado mediante División y Conquista.
 
-#### 1. Idea y Justificación en Lenguaje Natural
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
 * **¿Cómo pensamos la división?** Partimos el arreglo a la mitad en dos partes iguales: `izquierda` y `derecha`. El subarreglo contiguo de suma máxima tiene **solo tres lugares posibles** donde estar:
   1. **Completamente en la mitad izquierda:** lo encontramos llamando recursivamente sobre la parte izquierda.
@@ -464,7 +310,7 @@ función MejorCruzado(A, ini, medio, fin):
     devolver (mejor_izq + mejor_der, idx_izq, idx_der)
 ```
 
-#### 3. Justificación de Complejidad Temporal
+#### 3. Justificación de Complejidad (Para entregar en el parcial)
 
 * Hacemos **$a = 2$ llamadas recursivas**, cada una con la mitad de elementos (**$b = 2$**).
 * La función `MejorCruzado` recorre desde el centro hacia ambos extremos pasando una sola vez por cada elemento del intervalo actual, por lo que cuesta tiempo lineal **$f(n) = O(n)$** (es decir, **$c = 1$**).
@@ -483,7 +329,7 @@ función MejorCruzado(A, ini, medio, fin):
 **Enunciado**  
 Se consideran $n$ días consecutivos de cotización de una acción, numerados $i = 1, 2, \dots, n$, con precio $p(i)$ por acción. Se desea comprar 1000 acciones en algún día $i$ y venderlas todas en un día posterior $j$. Determinar por División y Conquista la máxima ganancia que puede obtenerse con complejidad mejor que $O(n^2)$ (en $O(n)$).
 
-#### 1. Idea y Justificación en Lenguaje Natural
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
 * Si dividimos los días en una **mitad izquierda** (días anteriores) y una **mitad derecha** (días posteriores), la mejor compra-venta puede ocurrir:
   1. Comprando y vendiendo dentro de la mitad izquierda (ganancia `g1`).
@@ -514,7 +360,7 @@ Algoritmo AnalizarIntervalo(precios, inicio, fin):
     devolver (minimo, maximo, ganancia)
 ```
 
-#### 3. Justificación de Complejidad Temporal
+#### 3. Justificación de Complejidad (Para entregar en el parcial)
 
 * Se realizan **$a = 2$ llamadas recursivas** sobre mitades de tamaño $n/2$ (**$b = 2$**), y la combinación hace únicamente restas y comparaciones en tiempo constante **$f(n) = \Theta(1)$** (**$c = 0$**).
 * Ecuación de recurrencia:
@@ -535,7 +381,7 @@ Indicar, utilizando el Teorema Maestro, la complejidad de cada una de las siguie
 * $D(n) = 3D(n/3) + \sqrt{n}$, $\quad E(n) = 3E(n/3) + n$, $\quad F(n) = 3F(n/3) + n^2$
 * $G(n) = 4G(n/2) + \sqrt{n}$, $\quad H(n) = 4H(n/2) + n$, $\quad I(n) = 4I(n/2) + n^2$
 
-#### 1. Idea y Justificación en Lenguaje Natural
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
 Para cualquier recurrencia $T(n) = a \cdot T(n/b) + \Theta(n^c)$, solo debemos comparar el exponente de las hojas **$\log_b a$** contra el exponente del trabajo exterior **$c$** (recordando que $\sqrt{n} = n^{0.5}$, por lo que $c = 0.5$):
 * Si **$\log_b a > c$** (ganan las hojas, Caso 1): el orden es **$O(n^{\log_b a})$**.
@@ -567,7 +413,7 @@ Para cualquier recurrencia $T(n) = a \cdot T(n/b) + \Theta(n^c)$, solo debemos c
 **Enunciado**  
 Implementar, por división y conquista, una función que, dado un arreglo y su tamaño (cantidad de elementos), determine si el mismo se encuentra ordenado de forma ascendente. Indicar y justificar el orden.
 
-#### 1. Idea y Justificación en Lenguaje Natural
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
 * Un arreglo de 0 o 1 elementos siempre está ordenado.
 * Si tiene más elementos, lo partimos a la mitad. Para que todo el arreglo esté ordenado deben cumplirse **tres condiciones a la vez**:
@@ -593,7 +439,7 @@ Algoritmo EstaOrdenado(A, ini, fin):
     devolver EstaOrdenado(A, ini, medio) y EstaOrdenado(A, medio + 1, fin)
 ```
 
-#### 3. Justificación de Complejidad Temporal
+#### 3. Justificación de Complejidad (Para entregar en el parcial)
 
 * En el peor caso (cuando el arreglo sí está ordenado), el algoritmo verifica las **$a = 2$ mitades** de tamaño $n/2$ (**$b = 2$**) y hace una sola comparación en el borde en tiempo **$O(1)$** (**$c = 0$**).
 * Recurrencia: $T(n) = 2 \cdot T(n/2) + O(1)$.
@@ -610,7 +456,7 @@ Algoritmo EstaOrdenado(A, ini, fin):
 **Enunciado**  
 Se cuenta con un arreglo de enteros ordenado de manera ascendente, que contiene exactamente un número duplicado (es decir, todos los demás elementos son distintos, sin duplicados). Implementar una función que encuentre dicho número utilizando división y conquista. Indicar y justificar la complejidad del algoritmo, utilizando el Teorema Maestro.
 
-#### 1. Idea y Justificación en Lenguaje Natural
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
 * *(Nota de cátedra: En la versión clásica de FIUBA los elementos son consecutivos, o bien comparamos la diferencia de valores contra la diferencia de índices).*
 * **Idea clave de los índices:** Como el arreglo está ordenado de forma estrictamente creciente salvo por el único par duplicado, entre dos posiciones `ini` y `medio` sin duplicados los valores están obligados a crecer **al menos tanto como la cantidad de pasos dados**: `A[medio] - A[ini] >= medio - ini` (o si son enteros consecutivos a partir de `A[0]`, antes del duplicado se cumple `A[i] == A[0] + i` y después del duplicado se atrasa en 1: `A[i] == A[0] + i - 1`).
@@ -637,7 +483,7 @@ Algoritmo EncontrarDuplicado(A, ini, fin):
         devolver EncontrarDuplicado(A, medio + 1, fin)
 ```
 
-#### 3. Justificación de Complejidad Temporal
+#### 3. Justificación de Complejidad (Para entregar en el parcial)
 
 * En cada paso descartamos una mitad completa y hacemos **$a = 1$ llamada recursiva** de tamaño $n/2$ (**$b = 2$**) con comparaciones en tiempo constante **$O(1)$** (**$c = 0$**).
 * Ecuación de recurrencia: $T(n) = 1 \cdot T(n/2) + O(1)$.
@@ -654,7 +500,7 @@ Algoritmo EncontrarDuplicado(A, ini, fin):
 **Enunciado**  
 Implementar un algoritmo que, por división y conquista, permita obtener la parte entera de la raíz cuadrada de un número $n$, en tiempo $O(\log n)$ *(nota: en la Guía v1.0 figura por errata tipográfica $O(\log \log n)$)*. Por ejemplo, para $n = 10$ debe devolver $3$, y para $n = 25$ debe devolver $5$.
 
-#### 1. Idea y Justificación en Lenguaje Natural
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
 * Buscamos el mayor entero $m \in [0, n]$ tal que $m^2 \le n$ y $(m + 1)^2 > n$.
 * Como la función $f(m) = m^2$ es estrictamente creciente para números positivos, podemos aplicar búsqueda binaria sobre el rango de candidatos `[ini, fin]` (inicialmente `[0, n]`):
@@ -682,7 +528,7 @@ función BuscarRaiz(n, ini, fin):
         devolver BuscarRaiz(n, medio + 1, fin)   // Falta crecer, probar más grandes
 ```
 
-#### 3. Justificación de Complejidad Temporal
+#### 3. Justificación de Complejidad (Para entregar en el parcial)
 
 * El rango inicial tiene tamaño $n$, y en cada paso se realiza **$a = 1$ llamada recursiva** sobre la mitad del intervalo (**$b = 2$**), realizando multiplicaciones y comparaciones en tiempo **$O(1)$** (**$c = 0$**).
 * Por el **Teorema Maestro**, $T(n) = T(n/2) + O(1)$ tiene $\log_2 1 = 0 = c$ (**Caso 2**), resultando en tiempo **$O(\log n)$**.
@@ -701,7 +547,7 @@ a. Suponiendo que el merge de las tres partes se realiza en tiempo lineal, calcu
 b. Si en vez de dividir en tres partes, se dividiera el arreglo en $n$, siendo $n$ la cantidad de elementos del arreglo, ¿a qué otro algoritmo de ordenamiento se asemeja esta implementación? ¿Cuál es el orden de dicho algoritmo?
 c. Dado lo obtenido en los puntos anteriores, ¿tiene sentido implementar MergeSort con $k$ separaciones, para $k > 2$?
 
-#### 1. Idea y Justificación en Lenguaje Natural (Respuestas a, b y c)
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
 * **Punto a (Dividir en 3 partes):**
   - Llamamos recursivamente a **$a = 3$ subproblemas** de tamaño **$n / 3$** ($b = 3$) y los unimos en tiempo lineal **$O(n)$** ($c = 1$).
@@ -725,14 +571,14 @@ c. Dado lo obtenido en los puntos anteriores, ¿tiene sentido implementar MergeS
 **Enunciado**  
 Un algoritmo sencillo para multiplicar matrices de $n \times n$ demora $O(n^3)$. El algoritmo de Strassen (que utiliza División y Conquista) lo hace en $O(n^{\log_2 7}) \approx O(n^{2.81})$. La profesora Manterola quiere implementar un algoritmo de División y Conquista que sea aún más veloz, donde divida al problema en $A$ subproblemas de tamaño de $n/4$, y que juntar las soluciones parciales sea $O(n^2)$. ¿Cuál es el máximo $A$ entero para que el orden del algoritmo sea menor que el del algoritmo de Strassen? Justificar.
 
-#### 1. Idea y Justificación en Lenguaje Natural
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
 * Planteamos la ecuación de recurrencia del algoritmo de la profesora Manterola:
   - Cantidad de subproblemas: **$a = A$**.
   - Tamaño de cada subproblema: $n / 4 \implies$ **$b = 4$**.
   - Costo de combinar soluciones: $O(n^2) \implies$ **$c = 2$**.
   $$T(n) = A \cdot T(n/4) + O(n^2)$$
-*Por el **Teorema Maestro**, como buscamos un orden que sea **menor que el de Strassen** ($\log_2 7 \approx 2.807$), pero sabemos que es mayor a $2$, estamos en el **Caso 1** donde el orden del algoritmo está dado por el exponente de las hojas: **$O(n^{\log_4 A})$**.
+* Por el **Teorema Maestro**, como buscamos un orden que sea **menor que el de Strassen** ($\log_2 7 \approx 2.807$), pero sabemos que es mayor a $2$, estamos en el **Caso 1** donde el orden del algoritmo está dado por el exponente de las hojas: **$O(n^{\log_4 A})$**.
 * Para que sea estrictamente más veloz que Strassen, necesitamos que su exponente sea menor que $\log_2 7$:
   $$\log_4 A < \log_2 7$$
 * Cambiamos a base 2 sabiendo que $\log_4 A = \frac{\log_2 A}{\log_2 4} = \frac{\log_2 A}{2}$:
@@ -751,14 +597,13 @@ Un algoritmo sencillo para multiplicar matrices de $n \times n$ demora $O(n^3)$.
 **Enunciado**  
 Implementar una función (que utilice división y conquista) de orden $O(n \log n)$ *(nota: en la Guía v1.0 figura por errata tipográfica $O(n \log \log n)$)* que, dado un arreglo de $n$ números enteros, devuelva `true` o `false` según si existe algún elemento que aparezca más de la mitad de las veces, sin ordenar el arreglo ni usar tabla de hash. Justificar el orden de la solución.
 
-#### 1. Idea y Justificación en Lenguaje Natural
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
 * **Propiedad clave:** Si un número aparece **más de la mitad de las veces** en todo el arreglo ($> n/2$), entonces es matemáticamente imposible que aparezca la mitad o menos en ambas mitades a la vez. **Obligatoriamente tiene que ser el elemento mayoritario en la mitad izquierda, o en la mitad derecha (o en ambas)**.
-* Entonces creamos una función recursiva `CandidatoMayoritario(A, ini, fin)` que devuelve el elemento mayoritario del rango (o `nulo` si no hay):
-  1. Si el rango tiene 1 solo elemento, ese elemento es el mayoritario de su rango.
-  2. Si tiene más, pedimos el candidato mayoritario de la mitad izquierda (`cand_izq`) y el de la mitad derecha (`cand_der`).
-  3. Si ambos coinciden, ese mismo es el ganador.
-  4. Si son distintos, **contamos cuántas veces aparece cada uno** en todo el rango actual `[ini, fin]` recorriéndolo con un ciclo lineal $O(n)$. Si alguno supera la mitad del tamaño del rango, lo devolvemos; si ninguno supera la mitad, devolvemos `nulo`.
+* Entonces creamos una función recursiva `BuscarMayoritario(A, ini, fin)` que devuelve el elemento mayoritario del rango (o `nulo` si no hay):
+  1. **Caso Base:** Si el rango tiene 1 solo elemento, ese elemento es el mayoritario de su rango.
+  2. **División y Conquista:** Si tiene más, pedimos el candidato mayoritario de la mitad izquierda (`cand_izq`) y el de la mitad derecha (`cand_der`).
+  3. **Combinación:** Si ambos coinciden, ese mismo es el ganador. Si son distintos, **contamos cuántas veces aparece cada uno** en todo el rango actual `[ini, fin]` recorriéndolo con un ciclo lineal $O(n)$. Si alguno supera la mitad del tamaño del rango, lo devolvemos; si ninguno supera la mitad, devolvemos `nulo`.
 
 #### 2. Semi-Pseudocódigo Simplificado
 
@@ -788,7 +633,7 @@ función BuscarMayoritario(A, ini, fin):
     devolver nulo
 ```
 
-#### 3. Justificación de Complejidad Temporal
+#### 3. Justificación de Complejidad (Para entregar en el parcial)
 
 * Dividimos el problema en **$a = 2$ llamadas recursivas** de tamaño $n/2$ (**$b = 2$**).
 * En la etapa de combinación, contar cuántas veces aparecen `cand_izq` y `cand_der` en el subarreglo actual recorre sus elementos en tiempo lineal **$f(n) = O(n)$** (**$c = 1$**).

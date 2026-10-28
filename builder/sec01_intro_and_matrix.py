@@ -9,27 +9,27 @@ def get_content():
 
 ## 1. Cómo usar esta guía
 
-Este documento fue diseñado con un único objetivo en mente: **aprobar el parcial de Teoría de Algoritmos optimizando cada minuto de estudio**. No es un compendio enciclopédico de teoría ni una transcripción de diapositivas. Es un manual de ingeniería algorítmica para el examen, estructurado a partir del análisis riguroso de los parciales reales tomados por la cátedra (Curso Echevarría) en 2024, 2025 y 2026, e incluye todos los ejercicios de la nueva `Guía de Ejercicios Prácticos v1.0 (Agosto 2026 — Curso Echevarría)`, alcanzando **83 ejercicios resueltos** clasificados por paradigma y dificultad del 1 al 5.
+Este documento fue diseñado con un único objetivo en mente: **aprobar el parcial de Teoría de Algoritmos optimizando cada minuto de estudio**. No es un compendio enciclopédico de teoría ni una transcripción de diapositivas. Es un manual de ingeniería algorítmica para el examen, estructurado a partir del análisis riguroso de los parciales reales tomados por la cátedra (Curso Echevarría) en 2024, 2025 y 2026, e incluye todos los ejercicios de la nueva `Guía de Ejercicios Prácticos v1.0 (Agosto 2026 — Curso Echevarría)`, alcanzando **79 ejercicios reales oficiales** clasificados por paradigma y ordenados por defecto de forma ascendente según su dificultad (`1/5` a `5/5`). Además, la sección **📝 Parciales (`parciales.html`)** agrupa todos los ejercicios tomados en parciales reales sin importar el paradigma para practicar directamente con exámenes reales.
 
 ### Planes de preparación según tu tiempo disponible
 
 * **Plan de Emergencia (48 a 72 horas antes del examen):**
   1. Leé la **Sección 3: Guía mental para reconocer el ejercicio en 30 segundos**.
-  2. Resolvé prioritariamente los ejercicios marcados como 🔴 **IMPRESCINDIBLE** (en especial los de parciales reales, incluido el nuevo **Parcial 2026-2-1**).
+  2. Entrá a la sección **📝 Parciales (`parciales.html`)**, que agrupa todos los ejercicios tomados en parciales reales sin importar el paradigma (incluido el nuevo **Parcial 2026-2-1**), y resolvé prioritariamente los marcados como 🔴 **IMPRESCINDIBLE**.
   3. Memorizá el esquema de 4 pasos obligatorios para **Reducciones NP-Completas** (Sección 10).
   4. Revisá el **Catálogo de Errores Típicos** y la **Checklist antes de entrar al parcial**.
 * **Plan Táctico (1 semana antes del examen):**
   1. Realizá el Plan de Emergencia completo.
   2. Sumá los ejercicios marcados como 🟡 **IMPORTANTE** de la `Guía de Ejercicios Prácticos v1.0` y enfocá el repaso en tus ejercicios pendientes de dominar.
-  3. Escribí en papel (sin mirar la solución) el pseudocódigo de cada ejercicio de Programación Dinámica, Backtracking y Greedy.
-  4. Resolvé los **Ejercicios Integradores Multi-Paradigma** (Sección 11, destacando **La Mochila — Ej 78** y **El Viajante TSP — Ej 79** en todos los paradigmas) y los **Ejercicios Tipo Parcial Generados** (Sección 12).
+  3. Escribí en papel (sin mirar la solución) la **Idea y Justificación en Lenguaje Natural** y el **Semi-Pseudocódigo Simplificado** de cada ejercicio.
+  4. Resolvé los **Ejercicios Integradores Multi-Paradigma** (Sección 11, destacando **La Mochila — Ej 78** y **El Viajante TSP — Ej 79** en todos los paradigmas) y todos los ejercicios de **📝 Parciales (`parciales.html`)**.
 * **Plan Integral (2 o más semanas):**
-  1. Recorré los **83 ejercicios resueltos** de la guía completa clasificados por paradigma y dificultad del 1 al 5 (`★☆☆☆☆` a `★★★★★`).
+  1. Recorré los **79 ejercicios reales oficiales** de la guía completa clasificados por paradigma y ordenados por defecto de forma ascendente según su dificultad (`1/5` a `5/5`, de `★☆☆☆☆` a `★★★★★`).
   2. Implementá en tu computadora los algoritmos más sensibles (o revisá las implementaciones en Python de la carpeta `Practicas/`).
   3. Dominá las demostraciones formales de optimalidad por *Greedy Stays Ahead*, argumento de intercambio y las recurrencias del Teorema Maestro.
 
 ### Reglas de oro para rendir el examen
-1. **Cada ejercicio se entrega en hoja separada:** La cátedra exige entregar cada pregunta en una hoja individual. Planteá la solución de forma limpia, separando claramente: *Idea conceptual*, *Pseudocódigo*, *Justificación de optimalidad/reconstrucción*, y *Cálculo de complejidad temporal y espacial*.
+1. **Cada ejercicio se entrega en hoja separada:** La cátedra exige entregar cada pregunta en una hoja individual. Todos los ejercicios de esta guía están estructurados exactamente como la **"Respuesta para escribir en la hoja del parcial"**, separando con claridad: *1. Idea y Justificación en Lenguaje Natural*, *2. Semi-Pseudocódigo Simplificado* y *3. Justificación de Complejidad*.
 2. **El pseudocódigo debe ser concreto:** No uses abstracciones vagas como `resolver_problema(grafo)`. Empleá estructuras de control estándar (`SI`, `PARA`, `MIENTRAS`, `RETORNAR`) y manipulá arreglos, matrices o listas explícitamente.
 3. **No omitir casos borde:** Estructura vacía, un solo elemento, elementos repetidos, grafo disconexo o capacidades nulas restan puntos valiosos si no están cubiertos.
 4. **La complejidad debe estar justificada:** Decir únicamente $O(n^2)$ sin explicar cuántas iteraciones hace cada bucle y qué costo tiene cada operación interna equivale a puntaje parcial.

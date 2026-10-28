@@ -5,25 +5,19 @@ def get_content():
 
 ### Conceptos Mínimos de Supervivencia
 
-1. **Estructura Canónica de un Modelo Matemático:**
-   En las correcciones de FIUBA, todo modelo debe estructurarse obligatoriamente en cinco bloques explícitos:
-   * **Conjuntos y Parámetros:** Definición rigurosa de índices, conjuntos de entrada y constantes numéricas con sus unidades físicas.
-   * **Variables de Decisión y Dominios:** Qué representa semánticamente cada variable, con su dominio matemático estricto ($x_i \in \{0, 1\}$, $y_j \ge 0$, $z \in \mathbb{R}$).
-   * **Función Objetivo:** Maximizar o minimizar una combinación lineal exacta. Está estrictamente prohibido multiplicar variables entre sí o emplear funciones no lineales directas ($\max$, $\min$, $|\cdot|$).
-   * **Restricciones Lineales:** Desigualdades e igualdades lineales ($\le, \ge, =$) que delimitan el poliedro convexo de soluciones factibles.
-   * **Conteo Exhaustivo de Variables y Restricciones:** Identificar la dimensionalidad exacta del modelo en función de los parámetros de entrada ($O(|V|)$, $O(|E|)$).
+1. **Qué Escribir en la Hoja del Parcial (Estructura Directa de 3 Bloques):**
+   En los parciales de TDA, un ejercicio de Programación Lineal se responde en papel de forma directa y ordenada en tres partes:
+   1. **Idea y Justificación en Lenguaje Natural:** Explicar brevemente qué decisión representa cada variable, qué se busca minimizar o maximizar, y por qué las restricciones modelan las reglas del enunciado (o cómo funciona la linealización si hay un $\min \max$).
+   2. **Modelo de Programación Lineal:**
+      * **Variables de decisión y dominios:** Definir qué significa cada variable y si es binaria ($x_i \in \{0, 1\}$), entera o continua no negativa ($x_{ij} \ge 0$).
+      * **Función Objetivo:** Expresión lineal a minimizar ($\min Z = \dots$) o maximizar ($\max Z = \dots$). Prohibido multiplicar dos variables entre sí o usar $\max, \min, |\cdot|$ sin linealizar.
+      * **Restricciones lineales:** Cada grupo de desigualdades o igualdades explicado en un renglón con su cuantificador ($\forall i \dots$).
+   3. **Cantidad y Tipo de Variables y Restricciones:** El recuento exacto en función de los datos de entrada (ej: *"$N$ variables binarias y $N - 2$ restricciones lineales"*).
 
-2. **Técnicas Clave de Linealización y Modelado Lógico:**
-   * **Minimización de un Máximo ($\min \max(f_1, f_2, \dots, f_k)$):**
-     Se introduce una variable auxiliar continua $Z \in \mathbb{R}$.
-     $$\min Z \quad \text{sujeto a:} \quad Z \ge f_r(x) \quad \forall r \in \{1, \dots, k\}$$
-     *Principio:* Al minimizar $Z$, el optimizador presiona $Z$ hacia abajo hasta topar con la cota más restrictiva, cumpliéndose en el óptimo que $Z^* = \max_r f_r(x^*)$.
-   * **Relación de Cobertura y Activación (*Linking Constraints*):**
-     Si la entidad $i$ solo puede activarse ($x_i = 1$) cuando al menos un recurso $j$ que la abastece está seleccionado ($y_j = 1$):
-     $$x_i \le \sum_{j \in Abastecedores(i)} y_j \quad \forall i$$
-     Si la sumatoria es 0, fuerza $x_i = 0$. Si es $\ge 1$, permite $x_i \le \text{valor}$, y al maximizar $\sum x_i$, se fijará en 1.
-   * **Unimodularidad Total (TUM):**
-     Si la matriz de restricciones $A$ de un problema continuo ($Ax \le b$) es totalmente unimodular (todo subdeterminante es $0, 1$ o $-1$) y el vector $b$ es entero, **todos los vértices del poliedro son enteros**. Esto permite resolver problemas de flujo o camino mínimo con Simplex continuo en tiempo polinomial garantizando soluciones $100\%$ enteras.
+2. **Trucos Clásicos de Examen:**
+   * **Minimizar un Máximo ($\min \max(f_1, \dots, f_k)$):** Crear una variable continua auxiliar $Z \ge 0$, pedir $\min Z$ y agregar las restricciones $Z \ge f_r(x)$ para cada $r$. Al minimizar $Z$, el modelo la empuja hacia abajo hasta chocar con el mayor de los $f_r$.
+   * **Restricción de Enlace / Cobertura ($x_i \le \sum y_j$):** Si un beneficio $x_i \in \{0, 1\}$ depende de activar al menos un recurso $y_j \in \{0, 1\}$ que lo cubre, escribimos $x_i \le \sum_{j \in \text{Cubren}(i)} y_j$. Si ningún $y_j$ vale $1$, la suma da $0$ y obliga a $x_i = 0$.
+   * **Unimodularidad Total (TUM):** En problemas de camino mínimo o flujo con conservación nodal pura ($\text{Sale} - \text{Entra} = b_i$ con $b_i \in \mathbb{Z}$), la matriz es Totalmente Unimodular. Esto garantiza que la **PL continua** da soluciones $100\%$ enteras en tiempo polinomial sin necesidad de declarar variables binarias.
 
 ---
 
@@ -37,130 +31,69 @@ Problemas donde se busca maximizar la cantidad de elementos cubiertos o benefici
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
 **Dificultad:** ★★★☆☆ (3/5)  
-**Origen:** Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 4  
-**Qué evalúa la cátedra:** Modelado de *Maximum Coverage Problem* en PLI, formulación rigurosa de restricciones de enlace (*linking constraints*) entre variables de recurso y variables de beneficio, y conteo analítico de componentes.
+**Origen:** Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 4
 
-#### 1. Enunciado Completo
+**Enunciado**  
 Paolo Casanova dispone de 2 días para realizar salidas a diferentes lugares cercanos y observar la mayor cantidad posible de especies de aves. Hay 10 especies en particular que desea encontrar ($E = \{1, \dots, 10\}$) y 6 lugares posibles a visitar ($L = \{1, \dots, 6\}$). Algunos lugares insumen medio día ($0.5$ días) y otros un día completo ($1.0$ días). Para cada lugar se conoce exactamente qué especies habitan allí según una matriz binaria de presencia $A_{ij}$ ($A_{ij} = 1$ si la especie $i$ habita en el lugar $j$, $0$ si no). Plantear un modelo de Programación Lineal Entera que determine qué lugares visitar para maximizar la cantidad de especies distintas encontradas en el tiempo disponible. Indicar la cantidad exacta de variables y restricciones del modelo.
 
-#### 2. Los 5 Pasos Metodológicos de Modelado en PLI
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-1. **Identificación de Decisiones y Recursos:**
-   - Decisión primaria: ¿Se visita el lugar $j \in L$? (Variable binaria $y_j$).
-   - Decisión secundaria/beneficio: ¿Se logra observar la especie $i \in E$? (Variable binaria $x_i$).
-   - Recurso limitante: Presupuesto temporal global de $2.0$ días.
-2. **Definición de Conjuntos y Parámetros:**
-   - $E = \{1, \dots, 10\}$: Conjunto de especies objetivo.
-   - $L = \{1, \dots, 6\}$: Conjunto de sitios candidatos.
-   - $d_j \in \{0.5, 1.0\}$: Duración de la visita al sitio $j$.
-   - $A_{ij} \in \{0, 1\}$: Matriz de incidencia especie-sitio.
-   - $T_{max} = 2.0$: Días disponibles.
-3. **Formulación de la Función Objetivo:**
-   Maximizar la cardinalidad del conjunto de especies distintas avistadas:
-   $$\max Z = \sum_{i \in E} x_i$$
-4. **Restricción Presupuestaria y Restricciones de Enlace:**
-   - Presupuesto de tiempo: La suma ponderada de sitios elegidos no excede $T_{max}$:
-     $$\sum_{j \in L} d_j \cdot y_j \le 2.0$$
-   - Enlace Lógico (*Coverage Constraint*): Para cada especie $i$, $x_i$ solo puede valer 1 si se visita al menos un sitio $j$ tal que $A_{ij} = 1$:
-     $$x_i \le \sum_{j \in L} A_{ij} \cdot y_j \quad \forall i \in E$$
-5. **Declaración Explícita de Dominios:**
-   $$y_j \in \{0, 1\} \quad \forall j \in L, \qquad x_i \in \{0, 1\} \quad \forall i \in E$$
-
-#### 3. Explicación Directa de por qué Funciona la Restricción de Enlace
-
-1. **Si no visitamos ningún lugar donde viva la especie `i`:** La suma de los `y_j` de sus lugares da `0`. Como `x_i <= 0` y es binaria, la restricción obliga a que `x_i = 0` (no podemos contar un ave que no vimos).
-2. **Si visitamos al menos un lugar donde vive la especie `i`:** La suma de sus `y_j` da `1` o más. Como buscamos maximizar la suma de `x_i`, el modelo automáticamente le pone el mayor valor permitido a `x_i`, que es `1`.
-3. **No cuenta dos veces la misma especie:** Aunque visitemos 2 o 3 lugares donde está la misma ave (la suma da `2` o `3`), como `x_i` es binaria (`{0, 1}`), nunca puede pasar de `1`. Así cada especie distinta suma como máximo `1`.
-
-#### 4. Diagrama Visual del Grafo de Cobertura Bipartito
+* **Dos familias de decisiones binarias:**
+  1. Por cada lugar $j \in \{1, \dots, 6\}$ definimos una variable binaria $y_j \in \{0, 1\}$ que vale $1$ si decidimos visitar ese lugar y $0$ si no.
+  2. Por cada especie de ave $i \in \{1, \dots, 10\}$ definimos otra variable binaria $x_i \in \{0, 1\}$ que vale $1$ si logramos avistar al menos una vez a la especie $i$, y $0$ si no.
+* **Qué buscamos maximizar:** Queremos maximizar la cantidad de **especies distintas** observadas, es decir, la suma $\sum_{i=1}^{10} x_i$.
+* **Cómo funcionan las restricciones:**
+  * **Límite de tiempo:** La suma del tiempo $d_j$ que toman los lugares visitados no puede superar los $2$ días disponibles ($\sum d_j \cdot y_j \le 2$).
+  * **Vínculo lugar-especie (Cobertura):** Para cada especie $i$, imponemos $x_i \le \sum_{j=1}^{6} A_{ij} \cdot y_j$.
+    * Si **no visitamos ningún lugar** donde viva la especie $i$, la suma de la derecha da $0$ y obliga a que $x_i = 0$ (no podemos contar un ave que no vimos).
+    * Si **visitamos uno o más lugares** donde vive la especie $i$, la suma da $\ge 1$. Como $x_i \in \{0, 1\}$ es binaria y estamos maximizando $\sum x_i$, el modelo le asignará automáticamente $x_i = 1$ (contando cada especie distinta a lo sumo una vez, aunque la veamos en varios lugares).
 
 ```mermaid
 flowchart LR
-    subgraph Lugares [Lugares Candidatos]
-        L1["L1: 0.5 dias"]
-        L2["L2: 1.0 dias"]
-        L3["L3: 0.5 dias"]
-        L4["L4: 1.0 dias"]
+    subgraph Lugares ["Lugares Candidatos (y_j ∈ {0,1})"]
+        L1["Lugar 1 (0.5 días)"]
+        L2["Lugar 2 (1.0 días)"]
+        L3["Lugar 3 (0.5 días)"]
     end
-    subgraph Especies [Especies Observadas]
-        E1["Especie 1"]
-        E2["Especie 2"]
-        E3["Especie 3"]
-        E4["Especie 4"]
+    subgraph Especies ["Especies Avistadas (x_i ∈ {0,1})"]
+        E1["Especie 1: x₁ ≤ y₁"]
+        E2["Especie 2: x₂ ≤ y₁ + y₂"]
+        E3["Especie 3: x₃ ≤ y₂ + y₃"]
     end
     L1 --> E1
     L1 --> E2
     L2 --> E2
     L2 --> E3
     L3 --> E3
-    L3 --> E4
-    L4 --> E1
-    L4 --> E4
 ```
 
-#### 5. Ejemplo Numérico y Traza de Decisión
+#### 2. Modelo de Programación Lineal (Listo para la Hoja del Parcial)
 
-Consideremos una instancia representativa con 4 lugares y 5 especies para verificar el enlace:
+1. **Variables de decisión y dominios:**
+   * $y_j \in \{0, 1\} \quad \forall j \in \{1, \dots, 6\}$: vale $1$ si Paolo visita el lugar $j$, y $0$ en caso contrario.
+   * $x_i \in \{0, 1\} \quad \forall i \in \{1, \dots, 10\}$: vale $1$ si la especie $i$ es observada en al menos un lugar visitado, y $0$ en caso contrario.
 
-| Lugar $j$ | Duración $d_j$ | Especies presentes ($A_{ij}=1$) |
-| :--- | :--- | :--- |
-| **L1** | 0.5 días | $\{E_1, E_2\}$ |
-| **L2** | 1.0 días | $\{E_2, E_3, E_4\}$ |
-| **L3** | 0.5 días | $\{E_3, E_5\}$ |
-| **L4** | 1.0 días | $\{E_1, E_4, E_5\}$ |
+2. **Función Objetivo:**
+   Maximizar la cantidad de especies distintas observadas:
+   $$\max Z = \sum_{i=1}^{10} x_i$$
 
-* **Presupuesto:** $T = 2.0$ días.
-* **Evaluación de combinaciones:**
-  - Visitar $\{L_1, L_3, L_2\}$: Duración $0.5 + 0.5 + 1.0 = 2.0$ días. Especies cubiertas: $\{E_1, E_2\} \cup \{E_3, E_5\} \cup \{E_2, E_3, E_4\} = \{E_1, E_2, E_3, E_4, E_5\}$ (5 especies).
-  - Valor objetivo óptimo: $Z^* = 5$.
-  - Variables: $y_1=1, y_2=1, y_3=1, y_4=0$; $x_1=x_2=x_3=x_4=x_5=1$.
+3. **Restricciones lineales:**
+   * **Presupuesto máximo de tiempo (2 días):** (donde $d_j \in \{0.5, 1.0\}$ es la duración del lugar $j$)
+     $$\sum_{j=1}^{6} d_j \cdot y_j \le 2$$
+   * **Activación de avistamiento por especie:** (donde $A_{ij} \in \{0, 1\}$ vale $1$ si la especie $i$ habita en el lugar $j$)
+     $$x_i \le \sum_{j=1}^{6} A_{ij} \cdot y_j \quad \forall i \in \{1, \dots, 10\}$$
 
-#### 6. Conteo Formal de Variables y Restricciones
+#### 3. Cantidad y Tipo de Variables y Restricciones
 
-* **Variables de Decisión:**
-  - $|L| = 6$ variables binarias de visita $y_j$.
-  - $|E| = 10$ variables binarias de avistamiento $x_i$.
-  - **Total de variables:** $6 + 10 = 16$ variables binarias.
-* **Restricciones Lineales:**
-  - 1 restricción de presupuesto temporal.
-  - $|E| = 10$ restricciones de cobertura lógica (una por especie).
-  - **Total de restricciones:** $1 + 10 = 11$ restricciones funcionales (además de los dominios $0 \le x_i, y_j \le 1$).
-
-#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
-
-```text
-Algoritmo ResolverObservacionAvesPLI(Especies, Lugares, duraciones, presencia, T_max):
-    Crear modelo de Programación Lineal Entera (PLI):
-
-    // 1. Variables de decisión binarias:
-    Para cada lugar j in Lugares:
-        Definir y[j] in {0, 1}   // 1 si se visita el sitio j, 0 si no
-    Para cada especie i in Especies:
-        Definir x[i] in {0, 1}   // 1 si se avista la especie i, 0 si no
-
-    // 2. Función Objetivo: maximizar especies distintas avistadas
-    Maximizar Z = Sumatoria_{i in Especies} x[i]
-
-    // 3. Restricciones:
-    // (a) Presupuesto temporal máximo de expedición:
-    Sumatoria_{j in Lugares} (duraciones[j] * y[j]) <= T_max
-
-    // (b) Enlace lógico de presencia por especie:
-    Para cada especie i in Especies:
-        x[i] <= Sumatoria_{j in Lugares} (presencia[i, j] * y[j])
-
-    // 4. Resolución mediante solver PLI estándar:
-    (Z_opt, valores_y, valores_x) = ResolverSolverPLI(modelo)
-
-    devolver (Z_opt, LugaresCon(valores_y == 1), EspeciesCon(valores_x == 1))
-```
+* **Cantidad y tipo de variables:** Exactamente **$16$ variables binarias** ($6$ variables binarias $y_j$ para los lugares + $10$ variables binarias $x_i$ para las especies; en forma genérica $|L| + |E|$ variables binarias).
+* **Cantidad de restricciones:** Exactamente **$11$ restricciones lineales funcionales** ($1$ restricción de presupuesto de tiempo + $10$ restricciones de enlace de cobertura, una por cada especie; en forma genérica $1 + |E|$ restricciones), además de las declaraciones de dominio binario.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Forzar igualdad en la cobertura ($x_i = \sum A_{ij} y_j$):</strong> Si Paolo visita 2 sitios que albergan a la especie $i$, $x_i$ se vería forzada a valer 2, violando el dominio binario o inflando artificialmente el valor objetivo al sumar dos veces la misma ave. La relación correcta es estrictamente de desigualdad $\le$.</li>
-    <li><strong>Declarar variables continuas en lugar de binarias:</strong> Si se omite $y_j \in \{0, 1\}$, el solver visitará fracciones de lugares (ej. visitar $0.25$ del lugar 1 y $0.25$ del lugar 4), obteniendo una solución matemáticamente óptima pero físicamente absurda.</li>
+    <li><strong>Poner igualdad ($x_i = \sum A_{ij} y_j$) en vez de menor o igual ($\le$):</strong> Si ponés $=$, cuando visites 2 lugares donde habita la misma especie $i$, la suma dará $2$. Como $x_i \in \{0, 1\}$ no puede valer $2$, ¡el modelo te prohibiría visitar dos lugares que compartan un ave! Siempre debe ser $\le$.</li>
+    <li><strong>No crear las variables $x_i$ y maximizar directamente $\sum_i \sum_j A_{ij} y_j$:</strong> Eso contaría varias veces a una misma especie si aparece en múltiples lugares visitados, cuando el enunciado pide maximizar especies <em>distintas</em>.</li>
   </ul>
 </div>
 
@@ -176,119 +109,66 @@ Problemas de infraestructura (antenas, sensores, cámaras) sobre grillas donde s
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
 **Dificultad:** ★★★☆☆ (3/5)  
-**Origen:** Parcial 2024-2-3 (10 de diciembre de 2024), Ejercicio 3  
-**Qué evalúa la cátedra:** Modelado de *Partial Set Cover* en PLI, formulación de umbrales porcentuales de servicio y minimización de costos fijos.
+**Origen:** Parcial 2024-2-3 (10 de diciembre de 2024), Ejercicio 3
 
-#### 1. Enunciado Completo
+**Enunciado**  
 Una empresa de telefonía celular colocará antenas en una grilla bidimensional de celdas para prestar servicio a vecindarios distribuidos en un mapa. Si se instala una antena en la celda $(i, j)$, brindará cobertura a un bloque de 9 celdas (la propia celda $(i, j)$ y sus 8 celdas contiguas en vecindad de Moore). Instalar una antena tiene un costo fijo $CTE > 0$ idéntico en cualquier celda. Se dispone de un conjunto $V$ de vecindarios distribuidos en la zona. La empresa exige brindar servicio a **por lo menos el 70% de los vecindarios** minimizando la inversión total. Plantear un modelo de Programación Lineal Entera indicando claramente variables, dominios, función objetivo, restricciones y su conteo exacto.
 
-#### 2. Los 5 Pasos Metodológicos de Modelado en PLI
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-1. **Identificación de Decisiones:**
-   - Decisión de infraestructura: ¿Se instala una antena en la celda candidata $c \in C$? Variable binaria $y_c$.
-   - Decisión de servicio: ¿El vecindario $v \in V$ resulta efectivamente cubierto? Variable binaria $x_v$.
-2. **Definición de Conjuntos y Parámetros:**
-   - $C$: Conjunto de celdas de la grilla donde es factible instalar antenas.
-   - $V$: Conjunto de vecindarios a servir.
-   - $Cubren(v) \subseteq C$: Conjunto de celdas candidatas cuya antena cubre al vecindario $v$ (es decir, todas las celdas $c$ a distancia Chebyshev $\le 1$ de la celda de $v$).
-   - $CTE$: Costo unitario de instalación de una antena.
-3. **Formulación de la Función Objetivo:**
-   Minimizar el gasto de instalación de infraestructura:
-   $$\min CostoTotal = CTE \cdot \sum_{c \in C} y_c$$
-4. **Restricciones de Cobertura y Umbral de Satisfacción:**
-   - **Umbral del 70%:** La cantidad total de vecindarios cubiertos debe ser al menos el $70\%$ del total:
-     $$\sum_{v \in V} x_v \ge 0.70 \cdot |V|$$
-   - **Enlace de Cobertura Física:** Un vecindario $v$ solo puede declararse cubierto si se instala al menos una antena en alguna celda dentro de su rango de alcance:
-     $$x_v \le \sum_{c \in Cubren(v)} y_c \quad \forall v \in V$$
-5. **Dominios de las Variables:**
-   $$y_c \in \{0, 1\} \quad \forall c \in C, \qquad x_v \in \{0, 1\} \quad \forall v \in V$$
-
-#### 3. Explicación Directa de por qué Funciona el Modelo
-
-1. **Si ninguna antena cubre al vecindario `v`:** La suma de las antenas en su bloque de $3 \times 3$ da `0`, lo que fuerza `x_v = 0`.
-2. **Meta del 70%:** La restricción `sum(x_v) >= 0.70 * |V|` obliga a que al menos el 70% de los vecindarios tengan `x_v = 1`, lo que a su vez obliga a encender las antenas `y_c` necesarias para cubrirlos.
-3. **No se instalan antenas de más:** Como la función objetivo minimiza el gasto total en antenas, el modelo solo activa las antenas estrictamente necesarias para llegar al 70%.
-
-#### 4. Diagrama Visual de Vecindad de Cobertura (3x3)
+* **Dos familias de variables binarias:**
+  1. Para cada celda candidata $c \in C$ de la grilla, definimos $y_c \in \{0, 1\}$, que vale $1$ si instalamos una antena en la celda $c$ y $0$ si no.
+  2. Para cada vecindario $v \in V$, definimos $x_v \in \{0, 1\}$, que vale $1$ si el vecindario $v$ queda cubierto por al menos una antena y $0$ si queda sin servicio.
+* **Qué buscamos minimizar:** La inversión total en antenas instaladas, que es $\sum_{c \in C} CTE \cdot y_c$.
+* **Cómo funcionan las restricciones:**
+  * **Vínculo antena-vecindario:** Para cada vecindario $v$, llamamos $\text{Cubren}(v) \subseteq C$ al conjunto de hasta $9$ celdas (la celda de $v$ y sus $8$ vecinas inmediatas) desde las cuales una antena alcanza a cubrir a $v$. Imponemos $x_v \le \sum_{c \in \text{Cubren}(v)} y_c$. Si no se instala ninguna antena en esas $9$ celdas, la suma da $0$ y obliga a que $x_v = 0$.
+  * **Exigencia del 70%:** Para obligar al modelo a dar servicio a por lo menos el $70\%$ de los vecindarios, exigimos que la suma de vecindarios cubiertos cumpla $\sum_{v \in V} x_v \ge 0.70 \cdot |V|$.
 
 ```mermaid
 graph TD
-    subgraph CeldaAntena [Antena Central]
+    subgraph CeldaAntena ["Antena en Celda (i, j) -> y_c = 1"]
         C["Celda Central (i, j)"]
     end
-    subgraph CeldasCubiertas [Radio de Vecindad]
-        V1["Vecino (i-1, j-1)"]
-        V2["Vecino (i-1, j)"]
-        V3["Vecino (i-1, j+1)"]
-        V4["Vecino (i, j-1)"]
-        V5["Vecino (i, j+1)"]
-        V6["Vecino (i+1, j-1)"]
-        V7["Vecino (i+1, j)"]
-        V8["Vecino (i+1, j+1)"]
+    subgraph CeldasCubiertas ["Bloque de 9 Celdas Cubiertas (3x3)"]
+        V1["(i-1, j-1)"]
+        V2["(i-1, j)"]
+        V3["(i-1, j+1)"]
+        V4["(i, j-1)"]
+        V5["(i, j+1)"]
+        V6["(i+1, j-1)"]
+        V7["(i+1, j)"]
+        V8["(i+1, j+1)"]
     end
-    C --> V1
-    C --> V2
-    C --> V3
-    C --> V4
-    C --> V5
-    C --> V6
-    C --> V7
-    C --> V8
+    C --> V1 & V2 & V3 & V4 & V5 & V6 & V7 & V8
 ```
 
-#### 5. Ejemplo Numérico y Traza
+#### 2. Modelo de Programación Lineal (Listo para la Hoja del Parcial)
 
-Supongamos una grilla pequeña con 10 vecindarios ($|V| = 10$).
-- Umbral requerido: $\lceil 0.70 \times 10 \rceil = 7$ vecindarios.
-- Supongamos que la antena $A_1$ cubre $\{v_1, v_2, v_3, v_4\}$, la antena $A_2$ cubre $\{v_4, v_5, v_6, v_7\}$ y la antena $A_3$ cubre $\{v_8, v_9, v_{10}\}$.
-- Con 2 antenas ($A_1$ y $A_2$), se cubren $\{v_1, \dots, v_7\}$ (7 vecindarios).
-- Inversión mínima: $2 \times CTE$.
-- Solución factible óptima: $y_{A1}=1, y_{A2}=1, y_{A3}=0$; $x_1=x_2=\dots=x_7=1$, $x_8=x_9=x_{10}=0$.
+1. **Variables de decisión y dominios:**
+   * $y_c \in \{0, 1\} \quad \forall c \in C$: vale $1$ si se instala una antena en la celda $c$, y $0$ si no.
+   * $x_v \in \{0, 1\} \quad \forall v \in V$: vale $1$ si el vecindario $v$ recibe cobertura de al menos una antena, y $0$ si no.
 
-#### 6. Conteo Formal de Variables y Restricciones
+2. **Función Objetivo:**
+   Minimizar el costo total de instalación de antenas:
+   $$\min Z = \sum_{c \in C} CTE \cdot y_c$$
 
-* **Variables de Decisión:**
-  - $|C|$ variables binarias de antena $y_c$.
-  - $|V|$ variables binarias de servicio $x_v$.
-  - **Total:** $|C| + |V|$ variables binarias.
-* **Restricciones Lineales:**
-  - 1 restricción global de umbral del 70%.
-  - $|V|$ restricciones individuales de cobertura de vecindario.
-  - **Total:** $|V| + 1$ restricciones lineales.
+3. **Restricciones lineales:**
+   * **Cobertura mínima del 70% de los vecindarios:**
+     $$\sum_{v \in V} x_v \ge 0.70 \cdot |V|$$
+   * **Vínculo físico de cobertura por vecindario:** (donde $\text{Cubren}(v)$ son las celdas a distancia $\le 1$ en fila y columna del vecindario $v$)
+     $$x_v \le \sum_{c \in \text{Cubren}(v)} y_c \quad \forall v \in V$$
 
-#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
+#### 3. Cantidad y Tipo de Variables y Restricciones
 
-```text
-Algoritmo FormularAntenas70PLI(Celdas, Vecindarios, Cubren, Costo_antena):
-    Crear modelo PLI:
-
-    // 1. Variables de decisión binarias:
-    Para cada celda c in Celdas:
-        Definir y[c] in {0, 1}       // 1 si se instala antena en c
-    Para cada vecindario v in Vecindarios:
-        Definir x[v] in {0, 1}       // 1 si el vecindario v queda cubierto
-
-    // 2. Función Objetivo: minimizar costo de antenas
-    Minimizar Costo = Sumatoria_{c in Celdas} (Costo_antena * y[c])
-
-    // 3. Restricciones:
-    // (a) Umbral mínimo de cobertura del 70%:
-    Sumatoria_{v in Vecindarios} x[v] >= techo(0.70 * cantidad(Vecindarios))
-
-    // (b) Cobertura física por vecindario:
-    Para cada vecindario v in Vecindarios:
-        x[v] <= Sumatoria_{c in Cubren[v]} y[c]
-
-    (Costo_opt, antenas_activas) = ResolverSolverPLI(modelo)
-    devolver (Costo_opt, antenas_activas)
-```
+* **Cantidad y tipo de variables:** **$|C| + |V|$ variables binarias** ($|C|$ variables binarias $y_c$ para las celdas de la grilla + $|V|$ variables binarias $x_v$ para los vecindarios).
+* **Cantidad de restricciones:** **$|V| + 1$ restricciones lineales funcionales** ($1$ restricción por el umbral global del $70\%$ + $|V|$ restricciones de enlace de cobertura, una por cada vecindario), además de los dominios binarios.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Confundir el sentido de la desigualdad del umbral:</strong> Escribir $\sum x_v \le 0.70 |V|$ en lugar de $\ge$. Si se pone $\le$, el modelo elegirá no cubrir a nadie ($x_v = 0$), obteniendo costo 0 pero incumpliendo la meta empresarial.</li>
-    <li><strong>Creer que el problema pide maximizar cobertura:</strong> La función objetivo NO es $\max \sum x_v$; es **minimizar el costo de antenas** sujeto a que la cobertura alcance el $70\%$. Maximizar cobertura instalaría antenas en toda la grilla innecesariamente.</li>
+    <li><strong>Maximizar vecindarios en lugar de minimizar costo:</strong> La función objetivo es $\min \sum CTE \cdot y_c$. El $70\%$ no es el objetivo a optimizar, sino una <strong>restricción de piso</strong> ($\ge 0.70 \cdot |V|$).</li>
+    <li><strong>Escribir al revés la desigualdad de enlace ($y_c \le x_v$):</strong> La forma correcta es $x_v \le \sum_{c \in \text{Cubren}(v)} y_c$ (sin antenas cercanas no hay cobertura).</li>
   </ul>
 </div>
 
@@ -304,104 +184,52 @@ Problemas de balance de oferta y demanda con capacidades máximas y costos de tr
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
 **Dificultad:** ★★★☆☆ (3/5)  
-**Origen:** Parcial 2025-1-1 (27 de mayo de 2025), Ejercicio 3  
-**Qué evalúa la cátedra:** Modelado de *Min-Cost Flow* en Programación Lineal continua, conservación nodal de flujo con fuentes de generación y pozos de demanda, y restricciones de capacidad de línea.
+**Origen:** Parcial 2025-1-1 (27 de mayo de 2025), Ejercicio 3
 
-#### 1. Enunciado Completo
+**Enunciado**  
 El sistema interconectado argentino está dividido en 9 regiones eléctricas ($R = \{1, \dots, 9\}$). Para cada región $i$ se conoce su capacidad de generación prevista $G_i \ge 0$ (en MWh) y su demanda requerida $D_i \ge 0$ (en MWh). Desde cualquier región $i$ se puede transmitir energía a otra región $j$ con un costo unitario de transporte $C_{ij} \ge 0$ pesos por MWh. Cada línea de transmisión posee una capacidad máxima de transporte de $CAP_{ij} \ge 0$ MWh/día. Plantear un modelo de Programación Lineal continuo que determine el despacho de energía más económico para satisfacer plenamente la demanda de todas las regiones sin violar capacidades de transporte. Indicar variables y restricciones.
 
-#### 2. Los 5 Pasos Metodológicos de Modelado en PL Continuo
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-1. **Identificación de la Naturaleza Continua:**
-   La energía eléctrica es un bien continuo medido en MWh. No se requieren variables binarias; es un problema de Programación Lineal clásica ($x_{ij} \ge 0$).
-2. **Definición de Conjuntos y Parámetros:**
-   - $R = \{1, \dots, 9\}$: Conjunto de nodos regionales.
-   - $L = \{(i, j) \in R \times R : i \ne j\}$: Líneas de transmisión disponibles.
-   - $G_i \ge 0$: Generación inyectada en el nodo $i$.
-   - $D_i \ge 0$: Demanda consumida en el nodo $i$.
-   - $C_{ij} \ge 0$: Costo por MWh en el arco $(i, j)$.
-   - $CAP_{ij} \ge 0$: Capacidad máxima del arco $(i, j)$.
-3. **Formulación de la Función Objetivo:**
-   Minimizar el costo total de despacho y transporte interregional:
-   $$\min CostoTotal = \sum_{(i, j) \in L} C_{ij} \cdot x_{ij}$$
-4. **Restricciones de Balance y Capacidad:**
-   - **Balance Nodal de Potencia:** En cada región $i \in R$, la generación local más la energía entrante desde otras regiones debe cubrir la energía saliente hacia otros nodos más la demanda local:
-     $$G_i + \sum_{k \in R, k \ne i} x_{ki} - \sum_{j \in R, j \ne i} x_{ij} = D_i \quad \forall i \in R$$
-     *(O en forma estándar: $\sum_{j} x_{ij} - \sum_{k} x_{ki} \le G_i - D_i$ si se permite generación ociosa).*
-   - **Capacidad de las Líneas de Transmisión:**
-     $$x_{ij} \le CAP_{ij} \quad \forall (i, j) \in L$$
-5. **No Negatividad de las Variables:**
-   $$x_{ij} \ge 0 \quad \forall (i, j) \in L$$
-
-#### 3. Explicación Directa del Balance de Energía
-
-En cada región $i$, toda la energía que se genera localmente más la que entra desde otras regiones tiene que ser igual a la que se consume allí más la que se envía hacia afuera:
-$$\text{Generación}_i + \text{Entra}_i - \text{Sale}_i = \text{Demanda}_i$$
-*(Nota: Si el país puede generar más energía de la que consume en total, basta con poner `Sale - Entra <= Generación - Demanda` para que las centrales no estén obligadas a inyectar el sobrante).*
-
-#### 4. Diagrama Visual de Red de Flujo con Costos
+* **Variables de decisión continuas:** Como la energía eléctrica (MWh) es una magnitud continua y divisible, no necesitamos variables enteras ni binarias. Por cada línea de transmisión dirigida desde una región $i$ hacia otra región $j$ ($i \neq j$), definimos una variable continua no negativa $x_{ij} \ge 0$ que indica cuántos MWh se envían de $i$ a $j$.
+* **Qué buscamos minimizar:** El costo total de transporte de energía en todo el país, sumando el costo por MWh $C_{ij}$ multiplicado por la energía enviada $x_{ij}$ en cada línea.
+* **Cómo funcionan las restricciones:**
+  1. **Conservación / Balance de energía en cada región $i$:** En toda región $i$, la energía que se genera localmente ($G_i$) más toda la energía que entra desde otras regiones ($\sum_k x_{ki}$) menos toda la energía que se envía hacia otras regiones ($\sum_j x_{ij}$) tiene que ser igual a la demanda local $D_i$ (o $\ge D_i$ si se permite no usar el $100\%$ de la generación máxima prevista).
+  2. **Tope de cada línea de transmisión:** La energía enviada de $i$ a $j$ no puede superar la capacidad física del cable ($x_{ij} \le CAP_{ij}$).
 
 ```mermaid
 flowchart LR
-    R1["Region 1: G1=100 D1=20"] -->|x12 Costo 5 Cap 50| R2["Region 2: G2=10 D2=80"]
-    R1 -->|x13 Costo 8 Cap 40| R3["Region 3: G3=30 D3=40"]
-    R2 -->|x23 Costo 3 Cap 30| R3
+    R1["Región 1<br/>Genera G₁, Demanda D₁"] -->|"x₁₂ ≤ CAP₁₂ (Costo C₁₂)"| R2["Región 2<br/>Genera G₂, Demanda D₂"]
+    R1 -->|"x₁₃ ≤ CAP₁₃ (Costo C₁₃)"| R3["Región 3<br/>Genera G₃, Demanda D₃"]
+    R2 -->|"x₂₃ ≤ CAP₂₃ (Costo C₂₃)"| R3
 ```
 
-#### 5. Ejemplo Numérico y Traza de Balance
+#### 2. Modelo de Programación Lineal (Listo para la Hoja del Parcial)
 
-Analicemos 3 regiones simplificadas:
-- $R_1$: $G_1 = 100, D_1 = 20 \implies \text{Excedente} = +80$.
-- $R_2$: $G_2 = 10, D_2 = 80 \implies \text{Déficit} = -70$.
-- $R_3$: $G_3 = 30, D_3 = 40 \implies \text{Déficit} = -10$.
-- Líneas:
-  - $(1, 2)$: $C_{12} = 5, CAP_{12} = 50$.
-  - $(1, 3)$: $C_{13} = 9, CAP_{13} = 40$.
-  - $(2, 3)$: $C_{23} = 2, CAP_{23} = 20$.
-- Despacho Óptimo:
-  - Enviar $50$ MWh por $(1, 2)$ al costo $5 \times 50 = 250$ (satura línea). Faltan $20$ en $R_2$.
-  - Enviar $30$ MWh por $(1, 3)$ al costo $9 \times 30 = 270$. $R_3$ recibe $30$, cubre sus $10$ de déficit y envía $20$ a $R_2$ por $(3, 2)$ si fuera bidireccional.
+1. **Variables de decisión y dominios:**
+   * $x_{ij} \in \mathbb{R}_{\ge 0} \quad (x_{ij} \ge 0) \quad \forall i, j \in \{1, \dots, 9\}, \; i \neq j$: cantidad de energía (en MWh) transmitida desde la región $i$ hacia la región $j$.
 
-#### 6. Conteo Formal de Variables y Restricciones
+2. **Función Objetivo:**
+   Minimizar el costo total de transmisión de energía:
+   $$\min Z = \sum_{i=1}^{9} \sum_{\substack{j=1 \\ j \neq i}}^{9} C_{ij} \cdot x_{ij}$$
 
-* **Variables de Decisión:**
-  - Cantidad de arcos posibles entre 9 regiones: $9 \times 8 = 72$ variables continuas no negativas ($x_{ij} \ge 0$).
-* **Restricciones Lineales:**
-  - 9 restricciones de balance nodal de potencia (una por región).
-  - 72 restricciones de cota superior de capacidad ($x_{ij} \le CAP_{ij}$).
-  - **Total:** $9 + 72 = 81$ restricciones lineales (más $x_{ij} \ge 0$).
+3. **Restricciones lineales:**
+   * **Balance de energía en cada región:** ($\text{Generación}_i + \text{Entra}_i - \text{Sale}_i = \text{Demanda}_i$; usar $\ge D_i$ si $G_i$ es un tope máximo opcional)
+     $$G_i + \sum_{\substack{k=1 \\ k \neq i}}^{9} x_{ki} - \sum_{\substack{j=1 \\ j \neq i}}^{9} x_{ij} = D_i \quad \forall i \in \{1, \dots, 9\}$$
+   * **Capacidad máxima de transmisión por línea:**
+     $$x_{ij} \le CAP_{ij} \quad \forall i, j \in \{1, \dots, 9\}, \; i \neq j$$
 
-#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
+#### 3. Cantidad y Tipo de Variables y Restricciones
 
-```text
-Algoritmo FormularDistribucionFlujoPL(Regiones, Aristas, Generacion, Demanda, Costo, Capacidad):
-    Crear modelo de Programación Lineal Continua:
-
-    // 1. Variables de decisión continuas:
-    Para cada arista (u, v) in Aristas:
-        Definir x[u, v] >= 0         // Potencia transportada por la línea
-
-    // 2. Función Objetivo: minimizar costo de transmisión
-    Minimizar CostoTotal = Sumatoria_{(u, v) in Aristas} (Costo[u, v] * x[u, v])
-
-    // 3. Restricciones:
-    // (a) Balance nodal de potencia para cada región i in Regiones:
-    Sumatoria_{v} x[i, v] - Sumatoria_{u} x[u, i] = Generacion[i] - Demanda[i]
-
-    // (b) Capacidad física máxima por línea:
-    Para cada arista (u, v) in Aristas:
-        x[u, v] <= Capacidad[u, v]
-
-    (Costo_min, flujos_optimos) = ResolverSimplex(modelo)
-    devolver (Costo_min, flujos_optimos)
-```
+* **Cantidad y tipo de variables:** Exactamente **$72$ variables continuas no negativas** ($9 \times 8 = 72$ pares ordenados $(i, j)$ con $i \neq j$; o $|E|$ variables continuas si solo existen ciertas líneas conectadas).
+* **Cantidad de restricciones:** Exactamente **$81$ restricciones lineales funcionales** ($9$ ecuaciones de balance nodal, una por cada región + $72$ desigualdades de capacidad máxima $x_{ij} \le CAP_{ij}$, una por cada línea dirigida), además de las $72$ condiciones de dominio $x_{ij} \ge 0$.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Declarar variables enteras $x_{ij} \in \mathbb{Z}^+$:</strong> La energía eléctrica no se transporta en paquetes indivisibles; forzar variables enteras convierte un problema resoluble en tiempo polinomial en un problema NP-Hard innecesariamente.</li>
-    <li><strong>Invertir los signos del balance nodal:</strong> Restar las entradas y sumar las salidas. El balance físico es: $(\text{Generación local}) + (\text{Flujo Entrante}) - (\text{Flujo Saliente}) = \text{Demanda local}$.</li>
+    <li><strong>Declarar variables enteras o binarias:</strong> La energía es continua y el enunciado pide explícitamente un modelo de <em>Programación Lineal continuo</em>. Poner $x_{ij} \in \mathbb{Z}$ o $\{0, 1\}$ está mal conceptualmente.</li>
+    <li><strong>Invertir entradas y salidas en el balance:</strong> Revisar siempre los subíndices: $\sum_k x_{ki}$ entra al nodo $i$, mientras que $\sum_j x_{ij}$ sale del nodo $i$.</li>
   </ul>
 </div>
 
@@ -409,7 +237,7 @@ Algoritmo FormularDistribucionFlujoPL(Regiones, Aristas, Generacion, Demanda, Co
 
 ### Patrón de Ejercicio 5.4: Camino Mínimo Formulado como Flujo Unitario
 
-Formulación de la búsqueda de rutas óptimas en grafos dirigidos acíclicos como problemas de inyección y extracción de una única unidad de flujo en Programación Lineal continua aprovechando Unimodularidad Total.
+Formulación de la búsqueda de rutas óptimas en grafos dirigidos como problemas de inyección y extracción de una única unidad de flujo en Programación Lineal continua aprovechando Unimodularidad Total.
 
 ---
 
@@ -417,91 +245,59 @@ Formulación de la búsqueda de rutas óptimas en grafos dirigidos acíclicos co
 
 **Clasificación:** 🟡 IMPORTANTE  
 **Dificultad:** ★★★☆☆ (3/5)  
-**Origen:** Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 5  
-**Qué evalúa la cátedra:** Formulación de caminos mínimos como problemas de flujo en PL, comprensión de la Unimodularidad Total (TUM) de matrices de incidencia de grafos, y justificación teórica de por qué la relajación continua garantiza soluciones enteras.
+**Origen:** Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 5
 
-#### 1. Enunciado Completo
+**Enunciado**  
 Para el traslado de una carga crítica de alta seguridad de la empresa INVAP desde el centro atómico Ezeiza ($s$) hasta el laboratorio central en Bariloche ($t$), se dispone de un grafo dirigido $G = (V, E)$. Cada tramo carretero $(u, v) \in E$ tiene un costo de póliza de seguro $C_{uv} > 0$. Plantear un modelo de Programación Lineal continuo que determine la ruta de menor costo de seguro. Justificar formalmente por qué no es necesario declarar las variables como binarias para obtener una ruta válida. Indicar la cantidad exacta de variables y restricciones.
 
-#### 2. Los 5 Pasos Metodológicos de Modelado en PL Continuo
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-1. **Inyección de Flujo Unitario:**
-   Se modela la búsqueda del camino inyectando exactamente $+1$ unidad de flujo en el nodo de origen $s$ (Ezeiza) y extrayendo $-1$ unidad en el sumidero $t$ (Bariloche).
-2. **Definición de Variables de Decisión:**
-   $x_{uv} \ge 0 \quad \forall (u, v) \in E$: Magnitud de flujo que transita por la arista $(u, v)$.
-3. **Función Objetivo:**
-   Minimizar el costo total del seguro devengado:
-   $$\min CostoSeguro = \sum_{(u, v) \in E} C_{uv} \cdot x_{uv}$$
-4. **Restricciones de Conservación de Flujo Nodal:**
-   Para cada nodo $i \in V$, la diferencia neta entre el flujo que emite y el flujo que recibe debe coincidir con su inyección externa:
-   $$\sum_{v : (i, v) \in E} x_{iv} - \sum_{u : (u, i) \in E} x_{ui} = b(i) \quad \forall i \in V$$
-   donde el vector de balance externo $b(i)$ está definido por:
-   $$b(i) = \begin{cases} +1 & \text{si } i = s \text{ (Ezeiza - Fuente)} \\ -1 & \text{si } i = t \text{ (Bariloche - Sumidero)} \\ 0 & \text{si } i \in V \setminus \{s, t\} \text{ (Puntos intermedios)} \end{cases}$$
-5. **Cotas de las Variables:**
-   $$x_{uv} \ge 0 \quad \forall (u, v) \in E$$
-
-#### 3. ¿Por qué no hace falta declarar variables binarias? (Justificación Directa para Examen)
-
-1. **Propiedad de Unimodularidad Total (TUM):** En cualquier problema de flujo o camino mínimo sobre un grafo donde las restricciones son únicamente de conservación (`flujo que sale - flujo que entra = balance`), la matriz del sistema es **Totalmente Unimodular**.
-2. **Qué garantiza esta propiedad:** Siempre que los valores de entrada/salida sean enteros (`+1` en Ezeiza, `-1` en Bariloche y `0` en el resto), **todos los vértices del poliedro tienen coordenadas enteras**.
-3. **Conclusión:** Al resolver el modelo con **PL continua** (Simplex en tiempo polinomial), el óptimo dará automáticamente valores enteros `0` o `1` en cada arista sin necesidad de partir la carga ni usar programación entera (PLI).
-
-#### 4. Diagrama Visual del Grafo de Traslado
+* **Cómo modelar el Camino Mínimo mediante Flujo Unitario:**
+  Imaginamos que inyectamos exactamente **$1$ unidad de flujo** en el origen $s$ (Ezeiza) y la extraemos en el destino $t$ (Bariloche). Por cada tramo carretero $(u, v) \in E$ definimos una variable continua no negativa $x_{uv} \ge 0$ que mide cuánto flujo transita por esa arista, y buscamos minimizar el costo total de seguro $\sum_{(u,v) \in E} C_{uv} \cdot x_{uv}$.
+* **Balance de conservación en cada nodo:**
+  * En **Ezeiza ($s$):** sale $1$ unidad más de la que entra ($\text{Sale}_s - \text{Entra}_s = 1$).
+  * En **Bariloche ($t$):** entra $1$ unidad más de la que sale ($\text{Sale}_t - \text{Entra}_t = -1$).
+  * En **cualquier ciudad intermedia ($i \notin \{s, t\}$):** todo lo que entra debe salir ($\text{Sale}_i - \text{Entra}_i = 0$).
+* **¿Por qué NO hace falta declarar variables binarias?** *(Pregunta obligatoria de examen)*:
+  Porque la matriz de restricciones de conservación de flujo en un grafo dirigido (matriz de incidencia nodo-arista) cumple la propiedad de **Unimodularidad Total (TUM)** (todo subdeterminante vale $0, 1$ o $-1$). Cuando la matriz es Totalmente Unimodular y los términos independientes del lado derecho son enteros ($+1, -1$ y $0$), **todos los vértices del poliedro factible son enteros**. Por lo tanto, al resolver el modelo con Programación Lineal continua (por ejemplo con Simplex), el óptimo hallado tendrá automáticamente valores enteros $x_{uv} \in \{0, 1\}$ marcando el camino óptimo sin fraccionar la carga.
 
 ```mermaid
 flowchart LR
-    S_NODE["Ezeiza s (+1)"] -->|C=12| N1["Neuquén"]
-    S_NODE -->|C=18| N2["Bahía Blanca"]
-    N1 -->|C=6| T_NODE["Bariloche t (-1)"]
-    N2 -->|C=7| T_NODE
-    N2 -->|C=3| N1
+    S_NODE["Ezeiza s<br/>Sale - Entra = +1"] -->|"C = 12"| N1["Neuquén<br/>Sale - Entra = 0"]
+    S_NODE -->|"C = 18"| N2["Bahía Blanca<br/>Sale - Entra = 0"]
+    N1 -->|"C = 6"| T_NODE["Bariloche t<br/>Sale - Entra = -1"]
+    N2 -->|"C = 7"| T_NODE
+    N2 -->|"C = 3"| N1
 ```
 
-#### 5. Ejemplo Numérico y Traza
+#### 2. Modelo de Programación Lineal (Listo para la Hoja del Parcial)
 
-Rutas alternativas en el grafo del diagrama:
-- Ruta 1: Ezeiza $\to$ Neuquén $\to$ Bariloche: Costo $12 + 6 = 18$.
-- Ruta 2: Ezeiza $\to$ Bahía Blanca $\to$ Bariloche: Costo $18 + 7 = 25$.
-- Ruta 3: Ezeiza $\to$ Bahía Blanca $\to$ Neuquén $\to$ Bariloche: Costo $18 + 3 + 6 = 27$.
-- El solver continuo asignará automáticamente: $x_{s,\text{Neuquén}} = 1.0$, $x_{\text{Neuquén}, t} = 1.0$, y todas las demás aristas en $0.0$.
-- Costo mínimo: $18$.
+1. **Variables de decisión y dominios:**
+   * $x_{uv} \in \mathbb{R}_{\ge 0} \quad (x_{uv} \ge 0) \quad \forall (u, v) \in E$: cantidad de flujo que circula por el tramo $(u, v)$ (en el óptimo valdrá $1$ si el tramo pertenece a la ruta elegida y $0$ si no).
 
-#### 6. Conteo Formal de Variables y Restricciones
+2. **Función Objetivo:**
+   Minimizar el costo total de seguro del camino:
+   $$\min Z = \sum_{(u, v) \in E} C_{uv} \cdot x_{uv}$$
 
-* **Variables de Decisión:** $|E|$ variables continuas ($x_{uv} \ge 0$).
-* **Restricciones Lineales:** $|V|$ restricciones de conservación de flujo nodal (1 en origen, 1 en destino y $|V| - 2$ intermedias).
-* *(Nota: Una de las restricciones es linealmente dependiente porque la suma de todos los balances es $1 + (-1) + 0 = 0$).*
+3. **Restricciones lineales (Conservación de flujo para cada nodo $i \in V$):**
+   * **En el origen $s$ (Ezeiza):**
+     $$\sum_{v : (s, v) \in E} x_{sv} - \sum_{u : (u, s) \in E} x_{us} = 1$$
+   * **En el destino $t$ (Bariloche):**
+     $$\sum_{v : (t, v) \in E} x_{tv} - \sum_{u : (u, t) \in E} x_{ut} = -1$$
+   * **En los nodos intermedios $i \in V \setminus \{s, t\}$:**
+     $$\sum_{v : (i, v) \in E} x_{iv} - \sum_{u : (u, i) \in E} x_{ui} = 0 \quad \forall i \in V \setminus \{s, t\}$$
 
-#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
+#### 3. Cantidad y Tipo de Variables y Restricciones
 
-```text
-Algoritmo FormularCaminoMinimoPL(Vertices, Aristas, Costo, origen, destino):
-    Crear modelo de Programación Lineal Continua:
-
-    // 1. Variables continuas (por TUM serán naturalmente enteras en {0, 1})
-    Para cada arista (u, v) in Aristas:
-        Definir x[u, v] >= 0
-
-    // 2. Función Objetivo: minimizar costo de seguro acumulado
-    Minimizar CostoSeguro = Sumatoria_{(u, v) in Aristas} (Costo[u, v] * x[u, v])
-
-    // 3. Restricciones de conservación de flujo unitario:
-    Para cada vértice i in Vertices:
-        flujo_neto = Sumatoria_{v} x[i, v] - Sumatoria_{u} x[u, i]
-        si i == origen:     flujo_neto == 1   // Inyecta 1 unidad
-        si i == destino:    flujo_neto == -1  // Extrae 1 unidad
-        si i es intermedio: flujo_neto == 0   // Conservación estricta
-
-    (Costo_min, aristas_activas) = ResolverSimplex(modelo)
-    devolver (Costo_min, aristas_activas)
-```
+* **Cantidad y tipo de variables:** Exactamente **$|E|$ variables continuas no negativas** ($x_{uv} \ge 0$, una por cada tramo dirigido del grafo).
+* **Cantidad de restricciones:** Exactamente **$|V|$ restricciones lineales de igualdad** (una ecuación de conservación de flujo por cada vértice del grafo: $1$ en el origen, $1$ en el destino y $|V| - 2$ en los nodos intermedios), además de las $|E|$ cotas de no negatividad $x_{uv} \ge 0$.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Declarar variables enteras $x_{uv} \in \{0, 1\}$ sin justificar TUM:</strong> Cuando el enunciado pide explícitamente "plantear un modelo de Programación Lineal y justificar la integralidad", imponer restricciones enteras anula el objetivo de la pregunta. Se debe plantear como **PL continuo** e invocar la Unimodularidad Total.</li>
-    <li><strong>Olvidar el nodo sumidero:</strong> Poner conservación $= 0$ en todos lados sin definir la extracción de $-1$ en el destino $t$.</li>
+    <li><strong>Poner $x_{uv} \in \{0, 1\}$:</strong> El enunciado pide explícitamente un modelo <em>continuo</em> y justificar por qué da entero. La palabra clave que buscan los correctores es <strong>Unimodularidad Total (TUM)</strong> de la matriz de incidencia.</li>
+    <li><strong>Olvidar las ecuaciones del origen $s$ y destino $t$:</strong> Si solo escribís que lo que entra es igual a lo que sale ($= 0$), la solución óptima trivial será $x_{uv} = 0$ en todas las aristas con costo $0$.</li>
   </ul>
 </div>
 
@@ -517,104 +313,58 @@ Transformación de funciones objetivo no lineales como minimax o discrepancias a
 
 **Clasificación:** 🟡 IMPORTANTE  
 **Dificultad:** ★★★☆☆ (3/5)  
-**Origen:** Guía de Ejercicios 05, Ejercicio 12 / Práctica de Examen  
-**Qué evalúa la cátedra:** Linealización formal del operador $\min \max(f_1, f_2)$ mediante variable auxiliar continua acotante, y formulación de partición de conjuntos en PLI.
+**Origen:** Guía de Ejercicios 05, Ejercicio 12 / Práctica de Examen
 
-#### 1. Enunciado Completo
+**Enunciado**  
 Dado un conjunto de $n$ tareas con tiempos de procesamiento enteros positivos $T = \{T_1, T_2, \dots, T_n\}$, se desea particionar las tareas entre dos procesadores idénticos $P_1$ y $P_2$ de manera que se minimice el *makespan* (el tiempo de finalización de la máquina más cargada):
 $$\min \max \left( \sum_{i \in P_1} T_i, \sum_{j \in P_2} T_j \right)$$
 Formular el problema como un modelo de Programación Lineal Entera, linealizando rigurosamente el operador $\max$. Indicar variables, dominios y conteo de restricciones.
 
-#### 2. Los 5 Pasos Metodológicos de Linealización en PLI
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-1. **Definición de Variables de Partición:**
-   Para cada tarea $i \in \{1, \dots, n\}$, definimos una variable binaria:
-   $$x_i = \begin{cases} 1 & \text{si la tarea } i \text{ se asigna al procesador } P_1 \\ 0 & \text{si la tarea } i \text{ se asigna al procesador } P_2 \end{cases}$$
-2. **Expresión de Carga de cada Máquina:**
-   - Carga del procesador $P_1$: $L_1 = \sum_{i=1}^n T_i \cdot x_i$.
-   - Carga del procesador $P_2$: $L_2 = \sum_{i=1}^n T_i \cdot (1 - x_i)$.
-3. **Introducción de la Variable Auxiliar Continua:**
-   Definimos una variable continua $Z \in \mathbb{R}$ que representará la cota superior del *makespan*:
-   $$Z \ge 0$$
-4. **Linealización del Máximo mediante Desigualdades:**
-   Para garantizar que $Z \ge \max(L_1, L_2)$, imponemos simultáneamente:
-   $$Z \ge \sum_{i=1}^n T_i \cdot x_i$$
-   $$Z \ge \sum_{i=1}^n T_i \cdot (1 - x_i)$$
-5. **Función Objetivo Lineal:**
-   $$\min Z$$
-
-#### 3. Explicación Directa de por qué Funciona la Linealización
-
-1. Como imponemos las dos restricciones `Z >= Carga_P1` y `Z >= Carga_P2`, la variable `Z` está obligada a ser **al menos tan grande como la máquina más cargada**.
-2. Como la función objetivo pide **minimizar `Z`**, el modelo "aprieta" a `Z` hacia abajo todo lo que puede hasta que choca contra la mayor de las dos cargas (`Z = max(Carga_P1, Carga_P2)`).
-3. De esa forma, achicar `Z` al mínimo es exactamente lo mismo que achicar la carga de la máquina más ocupada.
-
-#### 4. Diagrama Visual de Acotamiento de la Variable Z
+* **Variables binarias de partición:** Como cada tarea $i$ debe asignarse sí o sí al procesador $P_1$ o al procesador $P_2$, nos alcanza con una única variable binaria $x_i \in \{0, 1\}$ por tarea:
+  * Si $x_i = 1$, la tarea $i$ se ejecuta en $P_1$ (aportando $T_i \cdot x_i$ a la carga de $P_1$).
+  * Si $x_i = 0$, la tarea $i$ se ejecuta en $P_2$ (como $1 - x_i = 1$, aporta $T_i \cdot (1 - x_i)$ a la carga de $P_2$).
+* **Cómo linealizar la función $\min \max$:**
+  En Programación Lineal no está permitido escribir $\max(\dots)$ en la función objetivo. Para linealizarlo, introducimos una **variable continua auxiliar $Z \ge 0$** que representa el *makespan* (la carga del procesador más ocupado) y agregamos dos restricciones de cota superior:
+  1. $Z \ge \text{Carga de } P_1$
+  2. $Z \ge \text{Carga de } P_2$
+  Como $Z$ está obligada a ser mayor o igual que ambas cargas simultáneamente, y la función objetivo pide **minimizar $Z$** ($\min Z$), el optimizador reducirá $Z$ todo lo posible hasta que toque a la mayor de las dos cargas, logrando exactamente $Z = \max(\text{Carga}_{P_1}, \text{Carga}_{P_2})$.
 
 ```mermaid
 flowchart LR
-    T1["Tarea 1"] --> P1["Carga P1"]
-    T2["Tarea 2"] --> P2["Carga P2"]
-    P1 -->|Cota L1| Z["Variable Z Makespan"]
-    P2 -->|Cota L2| Z
-    MinZ["min Z"] -->|Presiona| Z
+    P1["Carga P₁ = Σ T_i · x_i"] -->|"Restricción 1: Z ≥ Carga P₁"| Z["Variable Auxiliar Continua Z"]
+    P2["Carga P₂ = Σ T_i · (1 - x_i)"] -->|"Restricción 2: Z ≥ Carga P₂"| Z
+    MinZ["Función Objetivo: min Z"] -->|"Empuja Z hacia abajo hasta el máximo"| Z
 ```
 
-#### 5. Ejemplo Numérico y Traza
+#### 2. Modelo de Programación Lineal (Listo para la Hoja del Parcial)
 
-Consideremos las tareas $T = \{3, 5, 8, 2, 4\}$:
-- Suma total: $3 + 5 + 8 + 2 + 4 = 22$. Carga ideal perfecta: $22 / 2 = 11$.
-- Asignación factible 1:
-  - $P_1 = \{8, 3\} \implies L_1 = 11$.
-  - $P_2 = \{5, 4, 2\} \implies L_2 = 11$.
-  - Restricciones: $Z \ge 11$ y $Z \ge 11 \implies Z^* = 11$.
-- Asignación factible 2:
-  - $P_1 = \{8, 5\} \implies L_1 = 13$.
-  - $P_2 = \{4, 3, 2\} \implies L_2 = 9$.
-  - Restricciones: $Z \ge 13$ y $Z \ge 9 \implies Z = 13$ (peor que el óptimo).
-- El solver devolverá $Z^* = 11$ con $x = [1, 0, 1, 0, 0]$.
+1. **Variables de decisión y dominios:**
+   * $x_i \in \{0, 1\} \quad \forall i \in \{1, \dots, n\}$: vale $1$ si la tarea $i$ se asigna al procesador $P_1$, y $0$ si se asigna al procesador $P_2$.
+   * $Z \in \mathbb{R}_{\ge 0} \quad (Z \ge 0)$: variable continua auxiliar que representa el tiempo de finalización del procesador más cargado (*makespan*).
 
-#### 6. Conteo Formal de Variables y Restricciones
+2. **Función Objetivo:**
+   Minimizar el tiempo de finalización máximo:
+   $$\min Z$$
 
-* **Variables de Decisión:**
-  - $n$ variables binarias de asignación $x_i \in \{0, 1\}$.
-  - 1 variable continua auxiliar $Z \ge 0$.
-  - **Total:** $n + 1$ variables ($n$ binarias, 1 continua).
-* **Restricciones Lineales:**
-  - 2 restricciones de cota superior sobre $Z$ ($Z \ge L_1$ y $Z \ge L_2$).
-  - **Total:** 2 restricciones lineales funcionales.
+3. **Restricciones lineales:**
+   * **Cota superior para el Procesador 1:**
+     $$Z \ge \sum_{i=1}^{n} T_i \cdot x_i$$
+   * **Cota superior para el Procesador 2:**
+     $$Z \ge \sum_{i=1}^{n} T_i \cdot (1 - x_i)$$
 
-#### 7. Pseudocódigo de Formulación y Resolución (Estilo Examen Presencial)
+#### 3. Cantidad y Tipo de Variables y Restricciones
 
-```text
-Algoritmo Formular2PartitionMinMaxPLI(tiempos, n):
-    Crear modelo PLI:
-
-    // 1. Variables de decisión:
-    Para cada tarea i desde 1 hasta n:
-        Definir x[i] in {0, 1}       // 1 si se asigna a máquina 1, 0 si a máquina 2
-    Definir Z >= 0                   // Variable continua auxiliar (makespan a minimizar)
-
-    // 2. Función Objetivo: minimizar la carga máxima
-    Minimizar Z
-
-    // 3. Restricciones de linealización del Min-Max:
-    // (a) Z acota superiormente a la carga de la Máquina 1:
-    Z >= Sumatoria_{i=1}^n (tiempos[i] * x[i])
-
-    // (b) Z acota superiormente a la carga de la Máquina 2:
-    Z >= Sumatoria_{i=1}^n (tiempos[i] * (1 - x[i]))
-
-    (Z_opt, asignaciones) = ResolverSolverPLI(modelo)
-    devolver (Z_opt, asignaciones)
-```
+* **Cantidad y tipo de variables:** **$n + 1$ variables en total**, compuestas por **$n$ variables binarias** ($x_1, \dots, x_n \in \{0, 1\}$) y **$1$ variable continua no negativa** ($Z \ge 0$). *(Nota: si se definieran dos variables binarias $x_{i,1}, x_{i,2}$ por tarea, serían $2n$ binarias + $1$ continua y se agregarían $n$ restricciones $x_{i,1} + x_{i,2} = 1$).*
+* **Cantidad de restricciones:** Exactamente **$2$ restricciones lineales funcionales** (una por cada procesador para acotar inferiormente a $Z$), además de los dominios de las variables.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Intentar linealizar $\max \min$ con el mismo truco:</strong> La técnica de variable auxiliar superior $Z \ge f_i$ solo funciona cuando la función objetivo es de **minimización**. Si se quisiera maximizar el mínimo ($\max \min$), se debe usar $Z \le f_i$. Aplicar $Z \ge f_i$ al maximizar $Z$ haría que $Z$ crezca hasta el infinito sin acotarse al valor mínimo real.</li>
-    <li><strong>Declarar $Z$ como entera innecesariamente:</strong> Si los tiempos son enteros, $Z$ adoptará un valor entero automáticamente; forzarla a entera solo recarga el árbol de Branch and Bound del solver sin ninguna necesidad matemática.</li>
+    <li><strong>Dejar $\max(\dots)$ escrito dentro de la función objetivo:</strong> La función $\max$ no es lineal. Si no creás la variable $Z$ y las dos desigualdades $Z \ge \dots$, el ejercicio se considera mal resuelto.</li>
+    <li><strong>Poner $Z \le \text{Carga}$ en vez de $Z \ge \text{Carga}$:</strong> Si ponés $\le$ y pedís minimizar $Z$, el solver fijará $Z = 0$ sin importar cuánto tarden las máquinas.</li>
   </ul>
 </div>
 
@@ -635,11 +385,13 @@ Problemas sobre rutas o líneas de tiempo donde no se permite dejar más de $k$ 
 **Enunciado**  
 Realizar un modelo de programación lineal que resuelva el problema del punto 3 (transporte con $N$ estaciones intermedias con tarifa $T_i$, sin poder saltear más de dos estaciones consecutivas, minimizando el costo total de paradas). Indicar la cantidad y tipo de variables del problema, y la cantidad de restricciones del mismo.
 
-#### 1. Idea y Justificación en Lenguaje Natural
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-* Por cada estación intermedia $i \in \{1, 2, \dots, N\}$ definimos una **variable de decisión binaria** $x_i \in \{0, 1\}$, que vale $1$ si el transporte decide detenerse en la estación $i$ (pagando la tarifa $T_i$) y $0$ si decide saltearla.
-* La regla de autonomía establece que **no se pueden saltear más de 2 estaciones consecutivas**. Dicho de forma equivalente: **en cualquier ventana de 3 estaciones seguidas $(i, \; i+1, \; i+2)$, el transporte está obligado a detenerse al menos una vez** (es imposible que las tres valgan $0$ al mismo tiempo).
-* En Programación Lineal Entera, exigir que al menos una de las tres variables binarias consecutivas tome el valor $1$ se escribe directamente mediante la desigualdad lineal:
+* **Variables de decisión binarias:** Por cada estación intermedia $i \in \{1, 2, \dots, N\}$ definimos una variable binaria $x_i \in \{0, 1\}$, que vale $1$ si el transporte se detiene en la estación $i$ (pagando la tarifa $T_i$) y $0$ si decide saltearla.
+* **Qué buscamos minimizar:** La suma de las tarifas de todas las estaciones donde el transporte decide detenerse: $\sum_{i=1}^N T_i \cdot x_i$.
+* **Cómo modelar que no se pueden saltear más de 2 estaciones seguidas:**
+  No poder saltear más de $2$ estaciones consecutivas significa que **en cualquier bloque o ventana de $3$ estaciones seguidas $(i, \; i+1, \; i+2)$, el transporte está obligado a detenerse en al menos una de las tres** (nunca pueden valer $0$ las tres al mismo tiempo).
+  En Programación Lineal Entera, exigir que al menos una de las tres variables binarias consecutivas valga $1$ se escribe directamente sumándolas y pidiendo que den al menos $1$:
   $$x_i + x_{i+1} + x_{i+2} \ge 1 \quad \forall i \in \{1, \dots, N - 2\}$$
 
 ```mermaid
@@ -652,51 +404,30 @@ flowchart LR
     end
 ```
 
-#### 2. Modelo Matemático y Semi-Pseudocódigo Simplificado
+#### 2. Modelo de Programación Lineal (Listo para la Hoja del Parcial)
 
-* **Parámetros:**
-  * $N$: Cantidad de estaciones intermedias ($N \ge 3$).
-  * $T_i \ge 0$: Tarifa fija de parada en la estación $i \in \{1, \dots, N\}$.
-* **Variables de Decisión y Dominios:**
-  $$x_i \in \{0, 1\} \quad \forall i \in \{1, \dots, N\}$$
-  donde $x_i = 1$ si el transporte se detiene en la estación $i$, y $0$ en caso contrario.
-* **Función Objetivo:**
-  Minimizar el costo total de las paradas realizadas:
-  $$\min Z = \sum_{i=1}^N T_i \cdot x_i$$
-* **Restricciones Lineales de Autonomía (Ventanas de 3 Estaciones Consecutivas):**
-  $$x_i + x_{i+1} + x_{i+2} \ge 1 \quad \forall i \in \{1, 2, \dots, N - 2\}$$
+1. **Variables de decisión y dominios:**
+   * $x_i \in \{0, 1\} \quad \forall i \in \{1, \dots, N\}$: vale $1$ si el transporte se detiene en la estación intermedia $i$, y $0$ si la saltea.
 
-```text
-Algoritmo FormularTransporteEstacionesPLI(T, N):
-    Crear modelo de Programación Lineal Entera (PLI):
+2. **Función Objetivo:**
+   Minimizar el costo total de las paradas realizadas:
+   $$\min Z = \sum_{i=1}^{N} T_i \cdot x_i$$
 
-    // 1. Variables de decisión binarias (N variables)
-    Para cada i desde 1 hasta N:
-        Definir x[i] en {0, 1}   // 1 si para en la estación i, 0 si la saltea
-
-    // 2. Función Objetivo: minimizar la suma de tarifas pagadas
-    Minimizar Z = Sumatoria_{i=1..N} (T[i] * x[i])
-
-    // 3. Restricciones de autonomía: no saltear más de 2 seguidas (N - 2 restricciones)
-    Para cada i desde 1 hasta N - 2:
-        x[i] + x[i + 1] + x[i + 2] >= 1
-
-    (Z_opt, valores_x) = ResolverSolverPLI(modelo)
-    estaciones_elegidas = [ i para i en 1..N si valores_x[i] == 1 ]
-    devolver (Z_opt, estaciones_elegidas)
-```
+3. **Restricciones lineales:**
+   * **Autonomía (al menos 1 parada cada 3 estaciones consecutivas):**
+     $$x_i + x_{i+1} + x_{i+2} \ge 1 \quad \forall i \in \{1, 2, \dots, N - 2\}$$
 
 #### 3. Cantidad y Tipo de Variables y Restricciones
 
-* **Cantidad y tipo de variables:** Exactamente **$N$ variables binarias** (enteras $0\text{-}1$, una por cada estación intermedia $i \in \{1, \dots, N\}$).
-* **Cantidad de restricciones:** Exactamente **$N - 2$ restricciones lineales funcionales** (una por cada terna consecutiva de estaciones $(i, i+1, i+2)$ desde $i = 1$ hasta $N - 2$, asumiendo $N \ge 3$), además de las $N$ declaraciones de dominio binario $x_i \in \{0, 1\}$.
+* **Cantidad y tipo de variables:** Exactamente **$N$ variables binarias** ($x_i \in \{0, 1\}$, una por cada estación intermedia).
+* **Cantidad de restricciones:** Exactamente **$N - 2$ restricciones lineales funcionales** (una por cada ventana de $3$ estaciones consecutivas $(i, i+1, i+2)$ desde $i = 1$ hasta $N - 2$, asumiendo $N \ge 3$), además de las $N$ declaraciones de dominio binario.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
   <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
   <ul>
-    <li><strong>Escribir que hay $N$ restricciones en lugar de $N - 2$:</strong> La última ventana de 3 estaciones empieza en $i = N - 2$ y abarca $(N-2, \; N-1, \; N)$. Si el índice $i$ llegara hasta $N$, intentaría acceder a variables inexistentes $x_{N+1}$ y $x_{N+2}$.</li>
-    <li><strong>Declarar variables continuas $x_i \ge 0$ sin aclarar que son binarias:</strong> La consigna pide explícitamente indicar el <em>tipo</em> de variables; es indispensable especificar que son <strong>binarias</strong> ($x_i \in \{0, 1\}$).</li>
+    <li><strong>Responder que hay $N$ restricciones en lugar de $N - 2$:</strong> La última terna de $3$ estaciones es $(N-2, \; N-1, \; N)$, que corresponde a $i = N - 2$. Si pusieras $i$ hasta $N$, aparecerían estaciones inexistentes $x_{N+1}$ y $x_{N+2}$.</li>
+    <li><strong>Olvidar aclarar el tipo de las variables:</strong> La consigna pide explícitamente <em>cantidad y tipo</em>; es obligatorio especificar que son <strong>binarias</strong> ($x_i \in \{0, 1\}$).</li>
   </ul>
 </div>
 
@@ -706,6 +437,6 @@ Algoritmo FormularTransporteEstacionesPLI(T, N):
 
 1. **Multiplicar dos variables de decisión:** Escribir términos como $x_i \cdot y_j$ destruye la linealidad del modelo. En PL/PLI todos los términos deben ser el producto de una constante conocida por una única variable.
 2. **Usar operadores $\max$, $\min$ o valores absolutos $|\cdot|$ directamente:** Deben linealizarse obligatoriamente mediante variables auxiliares continuas ($Z$) y sistemas de desigualdades.
-3. **No declarar el dominio estricto de las variables:** Omitir si una variable es binaria ($x_i \in \{0, 1\}$), continua no negativa ($x_{ij} \ge 0$) o entera no negativa ($z_k \in \mathbb{Z}^+$) es motivo de descuento directo del $40\%$ del valor de la pregunta.
-4. **Omitir el conteo analítico de variables y restricciones:** Si la consigna indica *"indicar variables y restricciones"*, debe tabularse cuántas variables continuas, cuántas binarias y cuántas restricciones lineales componen el modelo en función de los parámetros de entrada.
+3. **No declarar el dominio estricto de las variables:** Omitir si una variable es binaria ($x_i \in \{0, 1\}$), continua no negativa ($x_{ij} \ge 0$) o entera no negativa ($z_k \in \mathbb{Z}_{\ge 0}$) es motivo de descuento directo del $40\%$ del valor de la pregunta.
+4. **Omitir el conteo analítico de variables y restricciones:** Si la consigna indica *"indicar variables y restricciones"*, debe especificarse cuántas variables de cada tipo y cuántas restricciones lineales componen el modelo en función de los parámetros de entrada.
 """

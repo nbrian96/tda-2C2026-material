@@ -21,15 +21,14 @@ El INVAP debe transportar una carga de alta seguridad desde Ezeiza hasta Bariloc
 
 ---
 
-#### 1. Resolución por Algoritmo Greedy y Contraejemplo de No-Optimalidad
-* **Regla Voraz:** Desde la ciudad actual $u$, avanzar hacia la ciudad siguiente $v$ que tenga el menor costo de seguro inmediato $C_{uv}$.
-* **Contraejemplo Minimal:**
-  * Origen $E$ (Ezeiza). Opciones etapa 1: Ciudad $A$ (costo $10$), Ciudad $B$ (costo $20$).
-  * Desde $A$ al destino Bariloche: costo $100$.
-  * Desde $B$ al destino Bariloche: costo $5$.
-  * *Resultado Greedy:* Elige $E \to A$ (costo $10$), luego $A \to \text{Bariloche}$ (costo $100$). $\text{Costo Total} = 110$.
-  * *Ruta Óptima:* $E \to B \to \text{Bariloche}$. $\text{Costo Total} = 20 + 5 = 25$.
-  * Como $110 > 25$, **Greedy falla**.
+#### 1. Paradigma Greedy — Idea en Lenguaje Natural, Contraejemplo y Semi-Pseudocódigo
+
+* **Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja):**
+  * **Regla Voraz:** Estando en la ciudad actual $u$ (comenzando en Ezeiza), elegir siempre ir a la ciudad siguiente $v$ de la próxima etapa que tenga el **menor costo de seguro inmediato $C_{uv}$**.
+  * **Por qué NO es óptimo (Contraejemplo para la hoja):**
+    Consideremos Ezeiza ($E$) con dos paradas posibles en el Día 1: Ciudad $A$ con costo $C_{EA} = 10$ y Ciudad $B$ con costo $C_{EB} = 20$. En el Día 2, ir de $A$ a Bariloche ($T$) cuesta $C_{AT} = 100$, mientras que ir de $B$ a Bariloche cuesta $C_{BT} = 5$.
+    * **Greedy:** Elige $E \to A$ por ser más barato al inicio ($10 < 20$) y queda obligado a pagar $A \to T$ ($100$), con **costo total $= 110$**.
+    * **Óptimo:** Va por $E \to B \to T$ con **costo total $= 20 + 5 = 25 < 110$**. Queda refutada la optimalidad.
 
 ```mermaid
 flowchart LR
@@ -41,56 +40,76 @@ flowchart LR
     classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:2px,color:#fff
 ```
 
+* **Semi-Pseudocódigo Simplificado (Greedy):**
+
+```text
+FUNCION InvapCaminoGreedy(grafo_etapas, ezeiza, bariloche):
+    actual <- ezeiza
+    ruta <- [ezeiza]
+    costo_total <- 0
+
+    MIENTRAS actual != bariloche:
+        // Elegir vecino v de la siguiente etapa con mínimo costo C(actual, v)
+        siguiente <- argmin_{v en Vecinos(actual)} { C[actual, v] }
+        costo_total <- costo_total + C[actual, siguiente]
+        agregar siguiente a ruta
+        actual <- siguiente
+
+    RETORNAR (costo_total, ruta) // Complejidad O(|V| + |E|), NO garantiza óptimo
+```
+
 ---
 
-#### 2. Resolución Óptima por Programación Dinámica
-* Como el grafo es por etapas (viajes de día sin ciclos), es un **DAG (Grafo Dirigido Acíclico)**.
-* **Definición del Estado:**  
-  $$OPT(v) = \text{Mínimo costo de seguro acumulado para llegar desde Ezeiza hasta la ciudad } v.$$
-* **Casos Base:**  
-  $$OPT(\text{Ezeiza}) = 0, \qquad OPT(v) = +\infty \quad \forall v \neq \text{Ezeiza}$$
-* **Ecuación de Recurrencia:**  
-  Para cualquier ciudad $v \in V \setminus \{\text{Ezeiza}\}$:
-  $$OPT(v) = \min_{u \in \text{Predecesores}(v)} \Big\{ OPT(u) + C_{uv} \Big\}$$
-* **Orden de Llenado:** Orden topológico de los vértices (etapa por etapa, del día $1$ al día final).
+#### 2. Paradigma Programación Dinámica — Idea en Lenguaje Natural y Semi-Pseudocódigo
 
-**Pseudocódigo de Programación Dinámica**
+* **Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja):**
+  * Como el viaje avanza día por día hacia adelante sin retroceder, el grafo por etapas es un **DAG (Grafo Dirigido Acíclico)** y cumple la subestructura óptima.
+  * **Definición del Estado:** $OPT(v) =$ mínimo costo de seguro acumulado para llegar desde Ezeiza hasta la ciudad $v$.
+  * **Caso Base:** $OPT(\text{Ezeiza}) = 0$, e inicializamos $OPT(v) = +\infty$ para toda otra ciudad.
+  * **Ecuación de Recurrencia:** Para llegar a $v$ en la etapa $k$, probamos venir desde todas las ciudades predecesoras $u$ de la etapa $k-1$ que tienen ruta hacia $v$:
+    $$OPT(v) = \min_{u \in \text{Predecesores}(v)} \Big\{ OPT(u) + C_{uv} \Big\}$$
+  * **Orden de Llenado:** Por etapas en orden topológico (Día $1, 2, \dots$ hasta Bariloche).
+
+* **Semi-Pseudocódigo Simplificado (Programación Dinámica):**
 
 ```text
 FUNCION InvapCaminoOptimoPD(grafo_etapas, ezeiza, bariloche):
-    INICIALIZAR DP como diccionario con INFINITO para todo nodo
-    INICIALIZAR predecesor como diccionario con NULO para todo nodo
-    DP[ezeiza] <- 0
+    Inicializar OPT[v] <- INFINITO y padre[v] <- NULO para todo nodo v
+    OPT[ezeiza] <- 0
 
-    // Procesamos los nodos etapa por etapa (orden topológico)
-    PARA CADA etapa k <- 1 HASTA TotalEtapas:
-        PARA CADA v EN NodosDeEtapa(k):
-            PARA CADA (u, costo) EN AristasHacia(grafo_etapas, v):
-                SI DP[u] + costo < DP[v]:
-                    DP[v] <- DP[u] + costo
-                    predecesor[v] <- u
+    // Llenado en orden topológico (etapa por etapa)
+    PARA etapa k <- 1 HASTA TotalEtapas:
+        PARA CADA ciudad v EN Etapa(k):
+            PARA CADA arista entrante (u -> v) con costo C_uv:
+                SI OPT[u] + C_uv < OPT[v]:
+                    OPT[v] <- OPT[u] + C_uv
+                    padre[v] <- u
 
-    // Reconstrucción del camino óptimo
-    INICIALIZAR ruta como lista vacía
+    // Reconstrucción del camino óptimo hacia atrás desde Bariloche
+    ruta <- []
     actual <- bariloche
     MIENTRAS actual != NULO:
-        INSERTAR actual AL INICIO DE ruta
-        actual <- predecesor[actual]
+        insertar actual al inicio de ruta
+        actual <- padre[actual]
 
-    RETORNAR (DP[bariloche], ruta)
+    RETORNAR (OPT[bariloche], ruta)
 ```
 
-* **Complejidad:** Cada arista se recorre una sola vez al procesar su nodo destino. Tiempo: $\Theta(|V| + |E|)$. Espacio: $\Theta(|V|)$.
+* **Justificación de Complejidad:** Cada ciudad $v$ y cada tramo $(u, v)$ se inspecciona una única vez en el bucle por etapas. **Tiempo: $\mathcal{O}(|V| + |E|)$**. **Espacio: $\mathcal{O}(|V|)$** para los arreglos `OPT` y `padre`.
 
 ---
 
-#### 3. Resolución por Programación Lineal
-* **Variables:** $x_{uv} \ge 0$ (o $x_{uv} \in \{0, 1\}$; por Unimodularidad Total de la matriz de incidencia nodo-arco, la relajación continua produce soluciones enteras en $\{0, 1\}$) para cada arista dirigida $(u, v) \in E$.
-* **Función Objetivo:**
-  $$\min Z = \sum_{(u, v) \in E} C_{uv} \cdot x_{uv}$$
-* **Restricciones de Conservación de Flujo Unitario:**  
-  $$\sum_{w: (v, w) \in E} x_{vw} - \sum_{u: (u, v) \in E} x_{uv} = \begin{cases} +1 & \text{si } v = \text{Ezeiza} \\ -1 & \text{si } v = \text{Bariloche} \\ 0 & \forall v \in V \setminus \{\text{Ezeiza}, \text{Bariloche}\} \end{cases}$$
-* **Conteo:** $|E|$ variables de decisión y $|V|$ restricciones lineales de balance.
+#### 3. Paradigma Programación Lineal — Idea en Lenguaje Natural y Modelo para la Hoja
+
+* **Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja):**
+  * Modelamos el camino más corto como el envío de **$1$ unidad de flujo** desde Ezeiza ($+1$) hasta Bariloche ($-1$). En toda ciudad intermedia, si entramos por un tramo estamos obligados a salir por otro tramo ($\text{flujo que sale} - \text{flujo que entra} = 0$).
+* **Modelo Matemático Completo para escribir en la hoja:**
+  * **Variables de decisión:** $x_{uv} \in \{0, 1\}$ para cada tramo dirigido $(u, v) \in E$ ($1$ si el camión viaja por el tramo $u \to v$, $0$ si no). *(Nota: por Unimodularidad Total puede relajarse a $x_{uv} \ge 0$).*
+  * **Función Objetivo (Minimizar seguro total):**
+    $$\min Z = \sum_{(u, v) \in E} C_{uv} \cdot x_{uv}$$
+  * **Restricciones de Conservación de Camino (una por cada nodo $v \in V$):**
+    $$\sum_{w: (v, w) \in E} x_{vw} - \sum_{u: (u, v) \in E} x_{uv} = \begin{cases} +1 & \text{si } v = \text{Ezeiza (sale 1 vez)} \\ -1 & \text{si } v = \text{Bariloche (entra 1 vez)} \\ 0 & \forall v \in V \setminus \{\text{Ezeiza}, \text{Bariloche}\} \text{ (lo que entra = lo que sale)} \end{cases}$$
+  * **Conteo Exacto:** **$|E|$ variables** de decisión y **$|V|$ restricciones** lineales de conservación.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -114,25 +133,54 @@ Una empresa dispone de $N$ servidores y $M$ tareas. Cada tarea $j$ requiere una 
 1. Si todas las tareas tienen requerimiento unitario ($R_j = 1$), ¿qué paradigma conviene usar para maximizar tareas asignadas? Modelarlo.  
 2. Si las tareas tienen requerimientos heterogéneos ($R_j$ arbitrarios), ¿por qué Redes de Flujo estándar ya no puede modelar el problema directamente y se debe recurrir a Programación Lineal Entera?
 
-**Resolución y Comparativa de Paradigmas**
+---
 
 #### 1. Caso Unitario ($R_j = 1$): Redes de Flujo
-* Al ser las tareas de tamaño $1$, el problema se modela directamente con **Redes de Flujo**:
-  * Super-fuente $s \to \text{Tarea } j$ con capacidad $1$.
-  * $\text{Tarea } j \to \text{Servidor } i$ con capacidad $1$ (si es compatible).
-  * $\text{Servidor } i \to \text{Super-sumidero } t$ con capacidad $C_i$.
-* Se resuelve en tiempo polinomial estricto con Edmonds-Karp en $O(|V| \cdot |E|^2)$. El **Teorema de Integralidad** asegura que las tareas se asignan enteras sin fraccionamiento.
 
-#### 2. Caso Heterogéneo ($R_j$ arbitrarios): Imposibilidad de Flujo y Formulación en PLI
-* **Por qué falla Redes de Flujo:** En una red de flujo estándar, si mandamos $R_j$ unidades de flujo a través de una arista desde $s$ hacia la tarea $j$, el nodo de la tarea podría **bifurcar el flujo** entre dos servidores distintos (ej: enviar $3\text{ GB}$ al Servidor 1 y $2\text{ GB}$ al Servidor 2 para completar una tarea indivisible de $5\text{ GB}$). El flujo continuo conserva la suma, pero no puede imponer la condición de indivisibilidad (*all-or-nothing*) hacia un único servidor.
-* **Modelo en Programación Lineal Entera (PLI):**
-  * **Variables:** $x_{ji} \in \{0, 1\}$ ($1$ si la tarea $j$ se asigna íntegramente al servidor $i$, $0$ si no) para cada par compatible $(j, i)$.
-  * **Función Objetivo:**
+* **Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja):**
+  * Cuando cada tarea consume exactamente $R_j = 1$ unidad de memoria, el problema es un **Matching Bipartito con Capacidades** y se resuelve de forma óptima y polinomial con **Redes de Flujo**:
+    1. Creamos una **Super-Fuente $s$** y un **Super-Sumidero $t$**.
+    2. Conectamos $s \to \text{Tarea } j$ con **capacidad $1$** (cada tarea se asigna a lo sumo una vez).
+    3. Conectamos $\text{Tarea } j \to \text{Servidor } i$ con **capacidad $1$** para cada par compatible.
+    4. Conectamos $\text{Servidor } i \to t$ con **capacidad $C_i$** (máximo de tareas unitarias que soporta la memoria del servidor $i$).
+  * Por el **Teorema de Integralidad**, como las capacidades son enteras, Edmonds-Karp halla un flujo entero donde ninguna tarea se parte a la mitad en tiempo **$\mathcal{O}(|V| \cdot |E|^2)$**.
+
+* **Semi-Pseudocódigo Simplificado (Caso Unitario con Flujo):**
+
+```text
+FUNCION AsignarTareasUnitariasFlujo(Tareas, Servidores, CapServidor, Compatibles):
+    Crear red de flujo G con Super-Fuente s y Super-Sumidero t
+
+    PARA CADA tarea j EN Tareas:
+        agregar_arista(G, s, j, cap = 1)
+        PARA CADA servidor i EN Compatibles[j]:
+            agregar_arista(G, j, i, cap = 1)
+
+    PARA CADA servidor i EN Servidores:
+        agregar_arista(G, i, t, cap = CapServidor[i])
+
+    (max_tareas, flujo) <- EdmondsKarp(G, s, t)
+    RETORNAR (max_tareas, aristas (j -> i) con flujo(j, i) == 1)
+```
+
+---
+
+#### 2. Caso Heterogéneo ($R_j$ arbitrarios): Por qué falla Flujo y Modelo en PLI
+
+* **Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja):**
+  * **Por qué falla Redes de Flujo:** Si una tarea $j$ requiere $R_j = 5\text{ GB}$ indivisibles y ponemos capacidad $5$ en la arista $s \to j$, la red de flujo puede **bifurcar el caudal** en el nodo de la tarea, mandando por ejemplo $3\text{ GB}$ al Servidor $1$ y $2\text{ GB}$ al Servidor $2$. Las redes de flujo conservan la suma continua, pero **no pueden obligar a que todo el bloque de $R_j\text{ GB}$ vaya entero a un único servidor** (*Multiple Knapsack*, que es NP-Hard).
+  * **Solución mediante Programación Lineal Entera (PLI):** Definimos una variable binaria $x_{ji} \in \{0, 1\}$ que vale $1$ si la tarea $j$ se ejecuta **completa** en el servidor $i$, impidiendo cualquier partición.
+
+* **Modelo de PLI Simplificado para escribir en la hoja:**
+  * **Variables de decisión:** $x_{ji} \in \{0, 1\}$ para cada tarea $j \in \{1, \dots, M\}$ y servidor $i \in \{1, \dots, N\}$ ($x_{ji} = 0$ si no son compatibles).
+  * **Función Objetivo (Maximizar cantidad de tareas asignadas):**
     $$\max Z = \sum_{j=1}^M \sum_{i=1}^N x_{ji}$$
   * **Restricciones:**
-    * Unicidad de servidor por tarea: $\sum_{i=1}^N x_{ji} \le 1 \quad \forall j \in \{1, \dots, M\}$.
-    * Capacidad de memoria por servidor: $\sum_{j=1}^M R_j \cdot x_{ji} \le C_i \quad \forall i \in \{1, \dots, N\}$.
-    * Compatibilidad: $x_{ji} = 0$ si la tarea $j$ no es compatible con el servidor $i$.
+    1. **Cada tarea va a lo sumo a $1$ servidor ($M$ restricciones):**
+       $$\sum_{i=1}^N x_{ji} \le 1 \qquad \forall j \in \{1, \dots, M\}$$
+    2. **No superar la memoria $C_i$ de cada servidor ($N$ restricciones):**
+       $$\sum_{j=1}^M R_j \cdot x_{ji} \le C_i \qquad \forall i \in \{1, \dots, N\}$$
+  * **Conteo Exacto:** $M \cdot N$ variables binarias y $M + N$ restricciones estructurales.
 
 ```mermaid
 flowchart TD
@@ -165,14 +213,20 @@ Para el problema de Vertex Cover Mínimo en un grafo $G = (V, E)$, comparar tres
 2. **Solución Exacta Matemática:** Formulación en Programación Lineal Entera.  
 3. **Solución Heurística Polinomial:** Algoritmo de Aproximación con factor $2$ (basado en *Maximal Matching*).
 
-**Comparativa Técnica Exhaustiva**
+---
+
+#### 1. Idea y Comparativa en Lenguaje Natural (Qué escribir en la hoja)
 
 | Dimensión | 1. Backtracking con B&B | 2. Programación Lineal Entera (PLI) | 3. Algoritmo Aproximado (2-Aprox) |
 | :--- | :--- | :--- | :--- |
 | **Garantía de Solución** | Óptima exacta | Óptima exacta | Aproximada: $|C| \le 2 \cdot OPT$ |
-| **Complejidad Temporal** | $O(2^k \cdot |E|)$ (peor caso exponencial) | Exponencial en el peor caso (*Branch & Cut*) | **$O(|V| + |E|)$** (lineal) |
-| **Escalabilidad** | Eficiente solo para $k$ pequeño ($k \le 40$) | Eficiente para grafos medianos ($|V| \le 500$) | **Escala a millones de nodos y aristas** |
-| **Formulación Central** | Ramificación en aristas no cubiertas: $u \in C$ o $v \in C$ con podas de tamaño. | $\min \sum x_v$ s.a. $x_u + x_v \ge 1, \; \forall (u, v) \in E$, con $x_v \in \{0, 1\}$. | Iterar sobre aristas: tomar **ambos extremos** de aristas disjuntas hasta cubrir el grafo. |
+| **Complejidad Temporal** | $\mathcal{O}(2^{|V|})$ (o $\mathcal{O}(2^k \cdot |E|)$) | Exponencial en peor caso (*Branch & Cut*) | **$\mathcal{O}(|V| + |E|)$** (lineal) |
+| **Idea Central para la Hoja** | Elegir una arista descubierta $(u, v)$ y ramificar probando incluir $u$ o incluir $v$, podando si $|C_{\text{actual}}| \ge |C_{\text{mejor}}|$. | Variable binaria $x_v \in \{0, 1\}$ por vértice; exigir $x_u + x_v \ge 1$ en cada arista $(u, v) \in E$ minimizando $\sum x_v$. | Tomar una arista no cubierta $(u, v)$ y **agregar ambos extremos $u$ y $v$** al conjunto $C$, tachando sus aristas incidentes. |
+
+* **Justificación en Lenguaje Natural de por qué el 2-Aproximado garantiza $|C| \le 2 \cdot OPT$:**
+  1. Las aristas que elige el algoritmo no comparten ningún vértice entre sí (forman un *Matching* $M$). Por lo tanto, **cualquier solución óptima está obligada a elegir al menos $1$ vértice distinto por cada arista de $M$**, de modo que $OPT \ge |M|$.
+  2. Como nuestro algoritmo agrega **los $2$ extremos** ($u$ y $v$) por cada arista de $M$, en total elige $|C| = 2 \cdot |M|$ vértices.
+  3. Juntando ambas desigualdades: $|C| = 2 \cdot |M| \le 2 \cdot OPT$. Nunca usa más del doble de vértices que el óptimo y corre en tiempo lineal $\mathcal{O}(|V| + |E|)$.
 
 ```mermaid
 flowchart LR
@@ -186,28 +240,38 @@ flowchart LR
     classDef approx fill:#1d4ed8,stroke:#1e40af,stroke-width:2px,color:#fff
 ```
 
-**Pseudocódigo del Algoritmo 2-Aproximado para Vertex Cover**
+#### 2. Semi-Pseudocódigo Simplificado de los 3 Enfoques (Para la Hoja)
 
 ```text
-FUNCION VertexCoverAproximado2(G):
-    INICIALIZAR C como conjunto vacío
-    INICIALIZAR aristas_disjuntas como conjunto vacío
+// ENFOQUE 1: Backtracking con Branch & Bound (Exacto)
+FUNCION VertexCoverBT(G, C_actual, MEJOR_C):
+    // Poda por optimalidad (Branch & Bound)
+    SI tamaño(C_actual) >= tamaño(MEJOR_C):
+        RETORNAR MEJOR_C
 
-    // Recorremos todas las aristas
-    PARA CADA (u, v) EN E(G):
-        // Si la arista no está cubierta por los nodos ya elegidos
+    arista_descubierta <- buscar primera arista (u, v) de G con u no en C_actual y v no en C_actual
+    SI arista_descubierta == NULO:
+        RETORNAR copiar(C_actual) // Todas las aristas están cubiertas (nuevo récord)
+
+    // Ramificar: para cubrir (u, v) sí o sí hay que incluir u o incluir v
+    MEJOR_C <- VertexCoverBT(G, C_actual U {u}, MEJOR_C)
+    MEJOR_C <- VertexCoverBT(G, C_actual U {v}, MEJOR_C)
+    RETORNAR MEJOR_C
+
+// ENFOQUE 2: Modelo de Programación Lineal Entera (PLI Exacto)
+// Variables: x_v in {0, 1} para todo v en V (|V| variables)
+// Minimizar: Z = sum_{v en V} x_v
+// Sujeto a:  x_u + x_v >= 1   para toda arista (u, v) en E (|E| restricciones)
+
+// ENFOQUE 3: Algoritmo 2-Aproximado en O(|V| + |E|)
+FUNCION VertexCoverAproximado2(G = (V, E)):
+    C <- conjunto_vacio()
+    PARA CADA arista (u, v) EN E:
         SI u NO PERTENECE A C Y v NO PERTENECE A C:
-            AGREGAR u A C
-            AGREGAR v A C
-            AGREGAR (u, v) A aristas_disjuntas
-
+            agregar u a C
+            agregar v a C   // Obligatorio agregar AMBOS extremos
     RETORNAR C
 ```
-
-**Demostración Directa de la Garantía de Aproximación 2:**  
-1. Las aristas que fue eligiendo el algoritmo no se tocan entre sí (ninguna comparte vértices con otra). Si el algoritmo eligió `|M|` aristas disjuntas, **cualquier solución óptima tiene que elegir sí o sí al menos 1 vértice distinto por cada una de esas aristas** para poder cubrirlas (`OPT >= |M|`).
-2. Como nuestro algoritmo agrega **los 2 extremos** de cada arista elegida, en total agarra `|C| = 2 * |M|` vértices.
-3. Por lo tanto, `|C| = 2 * |M| <= 2 * OPT`: nunca usa más del doble de vértices que el óptimo y tarda `O(V + E)`.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
