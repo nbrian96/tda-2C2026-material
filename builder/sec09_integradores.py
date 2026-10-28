@@ -7,9 +7,10 @@ En los parciales más exigentes, la cátedra suele plantear un mismo escenario d
 
 ---
 
-### Ejercicio 32 — El Dilema del Transporte en Etapas: Greedy vs Programación Dinámica vs Programación Lineal
+### Ejercicio 75 — El Dilema del Transporte en Etapas: Greedy vs Programación Dinámica vs Programación Lineal
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★☆ (4/5)  
 **Origen:** Integrador Parcial 2025-1-2 (Ejercicios 2, 3 y 5 combinados)
 
 **Enunciado Integrador**  
@@ -102,9 +103,10 @@ FUNCION InvapCaminoOptimoPD(grafo_etapas, ezeiza, bariloche):
 
 ---
 
-### Ejercicio 33 — Asignación de Recursos con Restricción de Capacidad: Redes de Flujo vs PLI
+### Ejercicio 76 — Asignación de Recursos con Restricción de Capacidad: Redes de Flujo vs PLI
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★☆ (4/5)  
 **Origen:** Integrador Sistemas de Distribución / Asignación
 
 **Enunciado Integrador**  
@@ -151,9 +153,10 @@ flowchart TD
 
 ---
 
-### Ejercicio 34 — Cobertura de Nodos en Redes: Vertex Cover por Backtracking, PLI y Aproximación 2
+### Ejercicio 77 — Cobertura de Nodos en Redes: Vertex Cover por Backtracking, PLI y Aproximación 2
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★☆ (4/5)  
 **Origen:** Integrador Problemas NP-Hard (Vertex Cover)
 
 **Enunciado Integrador**  
@@ -216,9 +219,10 @@ FUNCION VertexCoverAproximado2(G):
 
 ---
 
-### Ejercicio 35 — El Problema Canónico de la Mochila (Knapsack) Resuelto en Todos los Paradigmas Algorítmicos
+### Ejercicio 78 — El Problema Canónico de la Mochila (Knapsack) Resuelto en Todos los Paradigmas Algorítmicos
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★★ (5/5)  
 **Origen:** Problema Arquetípico Canónico de TDA / Evaluación Integral Multi-Paradigma
 
 **Enunciado Integrador**  
@@ -537,9 +541,10 @@ FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
 
 ---
 
-### Ejercicio 36 — El Problema del Viajante de Comercio (TSP) Resuelto en Todos los Paradigmas Algorítmicos
+### Ejercicio 79 — El Problema del Viajante de Comercio (TSP) Resuelto en Todos los Paradigmas Algorítmicos
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★★ (5/5)  
 **Origen:** Problema Arquetípico Canónico de Grafos y NP-Hard / Evaluación Integral Multi-Paradigma
 
 **Enunciado Integrador**  

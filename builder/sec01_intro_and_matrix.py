@@ -9,22 +9,22 @@ def get_content():
 
 ## 1. Cómo usar esta guía
 
-Este documento fue diseñado con un único objetivo en mente: **aprobar el parcial de Teoría de Algoritmos optimizando cada minuto de estudio**. No es un compendio enciclopédico de teoría ni una transcripción de diapositivas. Es un manual de ingeniería algorítmica para el examen, estructurado a partir del análisis riguroso de los parciales reales tomados por la cátedra (Curso Echevarría) en 2024 y 2025, cruzados con la guía práctica oficial.
+Este documento fue diseñado con un único objetivo en mente: **aprobar el parcial de Teoría de Algoritmos optimizando cada minuto de estudio**. No es un compendio enciclopédico de teoría ni una transcripción de diapositivas. Es un manual de ingeniería algorítmica para el examen, estructurado a partir del análisis riguroso de los parciales reales tomados por la cátedra (Curso Echevarría) en 2024, 2025 y 2026, e incluye todos los ejercicios de la nueva `Guía de Ejercicios Prácticos v1.0 (Agosto 2026 — Curso Echevarría)`, alcanzando **83 ejercicios resueltos** clasificados por paradigma y dificultad del 1 al 5.
 
 ### Planes de preparación según tu tiempo disponible
 
 * **Plan de Emergencia (48 a 72 horas antes del examen):**
   1. Leé la **Sección 3: Guía mental para reconocer el ejercicio en 30 segundos**.
-  2. Resolvé exclusivamente los **32 ejercicios** marcados como 🔴 **IMPRESCINDIBLE**.
+  2. Resolvé prioritariamente los ejercicios marcados como 🔴 **IMPRESCINDIBLE** (en especial los de parciales reales, incluido el nuevo **Parcial 2026-2-1**).
   3. Memorizá el esquema de 4 pasos obligatorios para **Reducciones NP-Completas** (Sección 10).
   4. Revisá el **Catálogo de Errores Típicos** y la **Checklist antes de entrar al parcial**.
 * **Plan Táctico (1 semana antes del examen):**
   1. Realizá el Plan de Emergencia completo.
-  2. Sumá los **8 ejercicios** marcados como 🟡 **IMPORTANTE** y enfocá el repaso en tus ejercicios pendientes de dominar.
+  2. Sumá los ejercicios marcados como 🟡 **IMPORTANTE** de la `Guía de Ejercicios Prácticos v1.0` y enfocá el repaso en tus ejercicios pendientes de dominar.
   3. Escribí en papel (sin mirar la solución) el pseudocódigo de cada ejercicio de Programación Dinámica, Backtracking y Greedy.
-  4. Resolvé los **Ejercicios Integradores Multi-Paradigma** (Sección 11, destacando **La Mochila — Ej 35** y **El Viajante TSP — Ej 36** en todos los paradigmas) y los **Ejercicios Tipo Parcial Generados** (Sección 12).
+  4. Resolvé los **Ejercicios Integradores Multi-Paradigma** (Sección 11, destacando **La Mochila — Ej 78** y **El Viajante TSP — Ej 79** en todos los paradigmas) y los **Ejercicios Tipo Parcial Generados** (Sección 12).
 * **Plan Integral (2 o más semanas):**
-  1. Recorré los **40 ejercicios** de la guía completa (32 🔴 **IMPRESCINDIBLE** + 8 🟡 **IMPORTANTE**).
+  1. Recorré los **83 ejercicios resueltos** de la guía completa clasificados por paradigma y dificultad del 1 al 5 (`★☆☆☆☆` a `★★★★★`).
   2. Implementá en tu computadora los algoritmos más sensibles (o revisá las implementaciones en Python de la carpeta `Practicas/`).
   3. Dominá las demostraciones formales de optimalidad por *Greedy Stays Ahead*, argumento de intercambio y las recurrencias del Teorema Maestro.
 
@@ -38,7 +38,7 @@ Este documento fue diseñado con un único objetivo en mente: **aprobar el parci
 
 ## 2. Radiografía de los Parciales de TDA
 
-Un examen típico de esta cátedra consta exactamente de **5 ejercicios prácticos** (20 puntos cada uno), distribuidos estratégicamente para evaluar si el alumno sabe elegir la herramienta adecuada para cada problema.
+Un examen típico de esta cátedra consta de **5 a 6 ejercicios prácticos**, distribuidos estratégicamente para evaluar si el alumno sabe elegir la herramienta adecuada para cada problema.
 
 ### Inventario de Parciales Reales Analizados
 
@@ -72,18 +72,25 @@ Un examen típico de esta cátedra consta exactamente de **5 ejercicios práctic
    * *Ej 3 (Greedy):* Algoritmo voraz para el traslado INVAP y contraejemplo de por qué no es óptimo.
    * *Ej 4 (Backtracking):* Problema de las 8 Reinas con estructuras de datos para chequeo en $O(1)$.
    * *Ej 5 (Programación Lineal):* Modelo de PL para el camino óptimo INVAP (o 8 Reinas) con recuento de variables y restricciones.
+6. **Parcial 2026-2 — 1ª Oportunidad (TP-2026-2-1.pdf):**
+   * *Ej 1 (División y Conquista):* Subarreglo contiguo de suma máxima en lista con positivos y negativos ($O(n \log n)$).
+   * *Ej 2 (Backtracking):* Explorador en laberinto de $N \times M$ desde Entrada hasta Tesoro y variante para hallar el camino más corto.
+   * *Ej 3 (Programación Dinámica):* Ruta de transporte con $N$ estaciones intermedias con tarifa fija, pudiendo saltear hasta 2 estaciones consecutivas.
+   * *Ej 4 (Greedy):* Algoritmo voraz para el transporte de las $N$ estaciones, instancia óptima e instancia no óptima (contraejemplo).
+   * *Ej 5 (Programación Lineal):* Modelo de PLI para el transporte de las $N$ estaciones con conteo de variables y restricciones.
+   * *Ej 6 (Redes de Flujo):* Transporte de urnas desde $N$ centros de votación hasta el CNE mediante Ford-Fulkerson maximizando urnas por minuto.
 
 ### Matriz de Frecuencia y Dificultad por Tema
 
 | Tema / Paradigma | Frecuencia en Exámenes | Presencia Relativa | Dificultad Típica | Tipos de Pregunta Habituales |
 | :--- | :---: | :---: | :---: | :--- |
-| **Programación Dinámica (PD)** | 5 de 5 parciales | **100%** | Alta | Mochila multidimensional o con condiciones lógicas, secuencias/texto, mínimas operaciones, caminos en DAGs por etapas. |
-| **Algoritmos Greedy (Voraces)** | 5 de 5 parciales | **100%** | Media-Alta | *Interval Scheduling*, heurísticas de cobertura con costos, comparación con soluciones óptimas y demostración de contraejemplos. |
-| **Programación Lineal (PL / PLI)** | 4 de 5 parciales | **80%** | Media-Alta | Cobertura de conjuntos (*Set Cover*), Flujo de Costo Mínimo, caminos en grafos, linealización de funciones no lineales. Recuento de variables y restricciones. |
-| **Reducciones Polinomiales / NP-C** | 4 de 5 parciales | **80%** | Muy Alta | Demostración formal de NP-Completitud (*Dominating Set*, *TSP*), reducciones numéricas ($\le_P$), verificadores polinomiales. |
-| **Redes de Flujo (Flujo / Corte)** | 3 de 5 parciales | **60%** | Alta | *Matching Bipartito* (médicos/pacientes), transporte multipunto con super-fuente/sumidero, V/F teórico sobre cortes mínimos. |
-| **Backtracking & Branch and Bound** | 3 de 5 parciales | **60%** | Media | 8 Reinas con estructuras $O(1)$, descomposición numérica (Lagrange), *Vertex Cover* exacto con podas por factibilidad y cota. |
-| **División y Conquista (DyC)** | 1 de 5 parciales | **20%** | Media | Multiplicación de matrices por bloques, Teorema Maestro, búsquedas binarias adaptadas sobre arreglos unimodales/pico. |
+| **Programación Dinámica (PD)** | 6 de 6 parciales | **100%** | Alta | Mochila multidimensional o con condiciones lógicas, secuencias/texto, saltos de estaciones, mínimas operaciones, caminos en DAGs por etapas. |
+| **Algoritmos Greedy (Voraces)** | 6 de 6 parciales | **100%** | Media-Alta | *Interval Scheduling*, heurísticas de cobertura o transporte con costos, comparación con soluciones óptimas y demostración de contraejemplos. |
+| **Programación Lineal (PL / PLI)** | 5 de 6 parciales | **83%** | Media-Alta | Cobertura de conjuntos (*Set Cover*), ventanas de paradas consecutivas, Flujo de Costo Mínimo, caminos en grafos, linealización de funciones no lineales. Recuento de variables y restricciones. |
+| **Reducciones Polinomiales / NP-C** | 4 de 6 parciales | **67%** | Muy Alta | Demostración formal de NP-Completitud (*Dominating Set*, *TSP*), reducciones numéricas ($\le_P$), verificadores polinomiales. |
+| **Redes de Flujo (Flujo / Corte)** | 4 de 6 parciales | **67%** | Alta | *Matching Bipartito* (médicos/pacientes), transporte multipunto con super-fuente/sumidero (energía, urnas electorales), V/F teórico sobre cortes mínimos. |
+| **Backtracking & Branch and Bound** | 4 de 6 parciales | **67%** | Media | Laberintos $N \times M$ y camino más corto, 8 Reinas con estructuras $O(1)$, descomposición numérica (Lagrange), *Vertex Cover* exacto con podas. |
+| **División y Conquista (DyC)** | 2 de 6 parciales | **33%** | Media | Subarreglo contiguo de suma máxima, multiplicación de matrices por bloques, Teorema Maestro, búsquedas binarias adaptadas. |
 
 ---
 

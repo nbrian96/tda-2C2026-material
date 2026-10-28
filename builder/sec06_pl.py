@@ -33,9 +33,10 @@ Problemas donde se busca maximizar la cantidad de elementos cubiertos o benefici
 
 ---
 
-### Ejercicio 19 — Observación de Aves de Paolo Casanova (Máxima Cobertura con Presupuesto de Tiempo)
+### Ejercicio 60 — Observación de Aves de Paolo Casanova (Máxima Cobertura con Presupuesto de Tiempo)
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
 **Origen:** Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 4  
 **Qué evalúa la cátedra:** Modelado de *Maximum Coverage Problem* en PLI, formulación rigurosa de restricciones de enlace (*linking constraints*) entre variables de recurso y variables de beneficio, y conteo analítico de componentes.
 
@@ -171,9 +172,10 @@ Problemas de infraestructura (antenas, sensores, cámaras) sobre grillas donde s
 
 ---
 
-### Ejercicio 20 — Cobertura de Antenas Celulares con Umbral del 70% de Vecindarios
+### Ejercicio 61 — Cobertura de Antenas Celulares con Umbral del 70% de Vecindarios
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
 **Origen:** Parcial 2024-2-3 (10 de diciembre de 2024), Ejercicio 3  
 **Qué evalúa la cátedra:** Modelado de *Partial Set Cover* en PLI, formulación de umbrales porcentuales de servicio y minimización de costos fijos.
 
@@ -298,9 +300,10 @@ Problemas de balance de oferta y demanda con capacidades máximas y costos de tr
 
 ---
 
-### Ejercicio 21 — Distribución Energética Multizona con Costos de Transporte (Flujo de Costo Mínimo)
+### Ejercicio 62 — Distribución Energética Multizona con Costos de Transporte (Flujo de Costo Mínimo)
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
 **Origen:** Parcial 2025-1-1 (27 de mayo de 2025), Ejercicio 3  
 **Qué evalúa la cátedra:** Modelado de *Min-Cost Flow* en Programación Lineal continua, conservación nodal de flujo con fuentes de generación y pozos de demanda, y restricciones de capacidad de línea.
 
@@ -410,9 +413,10 @@ Formulación de la búsqueda de rutas óptimas en grafos dirigidos acíclicos co
 
 ---
 
-### Ejercicio 22 — Camino de Mínimo Riesgo (INVAP) como Flujo Unitario en PL
+### Ejercicio 63 — Camino de Mínimo Riesgo (INVAP) como Flujo Unitario en PL
 
 **Clasificación:** 🟡 IMPORTANTE  
+**Dificultad:** ★★★☆☆ (3/5)  
 **Origen:** Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 5  
 **Qué evalúa la cátedra:** Formulación de caminos mínimos como problemas de flujo en PL, comprensión de la Unimodularidad Total (TUM) de matrices de incidencia de grafos, y justificación teórica de por qué la relajación continua garantiza soluciones enteras.
 
@@ -509,9 +513,10 @@ Transformación de funciones objetivo no lineales como minimax o discrepancias a
 
 ---
 
-### Ejercicio 23 — 2-Partition Min-Max con Linealización de Variable Auxiliar
+### Ejercicio 64 — 2-Partition Min-Max con Linealización de Variable Auxiliar
 
 **Clasificación:** 🟡 IMPORTANTE  
+**Dificultad:** ★★★☆☆ (3/5)  
 **Origen:** Guía de Ejercicios 05, Ejercicio 12 / Práctica de Examen  
 **Qué evalúa la cátedra:** Linealización formal del operador $\min \max(f_1, f_2)$ mediante variable auxiliar continua acotante, y formulación de partición de conjuntos en PLI.
 
@@ -610,6 +615,88 @@ Algoritmo Formular2PartitionMinMaxPLI(tiempos, n):
   <ul>
     <li><strong>Intentar linealizar $\max \min$ con el mismo truco:</strong> La técnica de variable auxiliar superior $Z \ge f_i$ solo funciona cuando la función objetivo es de **minimización**. Si se quisiera maximizar el mínimo ($\max \min$), se debe usar $Z \le f_i$. Aplicar $Z \ge f_i$ al maximizar $Z$ haría que $Z$ crezca hasta el infinito sin acotarse al valor mínimo real.</li>
     <li><strong>Declarar $Z$ como entera innecesariamente:</strong> Si los tiempos son enteros, $Z$ adoptará un valor entero automáticamente; forzarla a entera solo recarga el árbol de Branch and Bound del solver sin ninguna necesidad matemática.</li>
+  </ul>
+</div>
+
+---
+
+### Patrón de Ejercicio 5.6: Cobertura por Ventanas Deslizantes en Secuencias
+
+Problemas sobre rutas o líneas de tiempo donde no se permite dejar más de $k$ posiciones consecutivas sin activar, modelables mediante restricciones de ventana deslizante de tamaño $k + 1$.
+
+---
+
+### Ejercicio 65 — Modelo de Programación Lineal para Ruta de Transporte con Estaciones
+
+**Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★☆☆☆ (2/5)  
+**Origen:** Parcial 2026-2-1 (Enunciados), Ejercicio 5
+
+**Enunciado**  
+Realizar un modelo de programación lineal que resuelva el problema del punto 3 (transporte con $N$ estaciones intermedias con tarifa $T_i$, sin poder saltear más de dos estaciones consecutivas, minimizando el costo total de paradas). Indicar la cantidad y tipo de variables del problema, y la cantidad de restricciones del mismo.
+
+#### 1. Idea y Justificación en Lenguaje Natural
+
+* Por cada estación intermedia $i \in \{1, 2, \dots, N\}$ definimos una **variable de decisión binaria** $x_i \in \{0, 1\}$, que vale $1$ si el transporte decide detenerse en la estación $i$ (pagando la tarifa $T_i$) y $0$ si decide saltearla.
+* La regla de autonomía establece que **no se pueden saltear más de 2 estaciones consecutivas**. Dicho de forma equivalente: **en cualquier ventana de 3 estaciones seguidas $(i, \; i+1, \; i+2)$, el transporte está obligado a detenerse al menos una vez** (es imposible que las tres valgan $0$ al mismo tiempo).
+* En Programación Lineal Entera, exigir que al menos una de las tres variables binarias consecutivas tome el valor $1$ se escribe directamente mediante la desigualdad lineal:
+  $$x_i + x_{i+1} + x_{i+2} \ge 1 \quad \forall i \in \{1, \dots, N - 2\}$$
+
+```mermaid
+flowchart LR
+    subgraph Ventana1 ["Ventana 1: x₁ + x₂ + x₃ ≥ 1"]
+        E1["Estación 1 (x₁)"] --- E2["Estación 2 (x₂)"] --- E3["Estación 3 (x₃)"]
+    end
+    subgraph Ventana2 ["Ventana 2: x₂ + x₃ + x₄ ≥ 1"]
+        E2 --- E3 --- E4["Estación 4 (x₄)"]
+    end
+```
+
+#### 2. Modelo Matemático y Semi-Pseudocódigo Simplificado
+
+* **Parámetros:**
+  * $N$: Cantidad de estaciones intermedias ($N \ge 3$).
+  * $T_i \ge 0$: Tarifa fija de parada en la estación $i \in \{1, \dots, N\}$.
+* **Variables de Decisión y Dominios:**
+  $$x_i \in \{0, 1\} \quad \forall i \in \{1, \dots, N\}$$
+  donde $x_i = 1$ si el transporte se detiene en la estación $i$, y $0$ en caso contrario.
+* **Función Objetivo:**
+  Minimizar el costo total de las paradas realizadas:
+  $$\min Z = \sum_{i=1}^N T_i \cdot x_i$$
+* **Restricciones Lineales de Autonomía (Ventanas de 3 Estaciones Consecutivas):**
+  $$x_i + x_{i+1} + x_{i+2} \ge 1 \quad \forall i \in \{1, 2, \dots, N - 2\}$$
+
+```text
+Algoritmo FormularTransporteEstacionesPLI(T, N):
+    Crear modelo de Programación Lineal Entera (PLI):
+
+    // 1. Variables de decisión binarias (N variables)
+    Para cada i desde 1 hasta N:
+        Definir x[i] en {0, 1}   // 1 si para en la estación i, 0 si la saltea
+
+    // 2. Función Objetivo: minimizar la suma de tarifas pagadas
+    Minimizar Z = Sumatoria_{i=1..N} (T[i] * x[i])
+
+    // 3. Restricciones de autonomía: no saltear más de 2 seguidas (N - 2 restricciones)
+    Para cada i desde 1 hasta N - 2:
+        x[i] + x[i + 1] + x[i + 2] >= 1
+
+    (Z_opt, valores_x) = ResolverSolverPLI(modelo)
+    estaciones_elegidas = [ i para i en 1..N si valores_x[i] == 1 ]
+    devolver (Z_opt, estaciones_elegidas)
+```
+
+#### 3. Cantidad y Tipo de Variables y Restricciones
+
+* **Cantidad y tipo de variables:** Exactamente **$N$ variables binarias** (enteras $0\text{-}1$, una por cada estación intermedia $i \in \{1, \dots, N\}$).
+* **Cantidad de restricciones:** Exactamente **$N - 2$ restricciones lineales funcionales** (una por cada terna consecutiva de estaciones $(i, i+1, i+2)$ desde $i = 1$ hasta $N - 2$, asumiendo $N \ge 3$), además de las $N$ declaraciones de dominio binario $x_i \in \{0, 1\}$.
+
+<div class="trap-callout">
+  <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
+  <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
+  <ul>
+    <li><strong>Escribir que hay $N$ restricciones en lugar de $N - 2$:</strong> La última ventana de 3 estaciones empieza en $i = N - 2$ y abarca $(N-2, \; N-1, \; N)$. Si el índice $i$ llegara hasta $N$, intentaría acceder a variables inexistentes $x_{N+1}$ y $x_{N+2}$.</li>
+    <li><strong>Declarar variables continuas $x_i \ge 0$ sin aclarar que son binarias:</strong> La consigna pide explícitamente indicar el <em>tipo</em> de variables; es indispensable especificar que son <strong>binarias</strong> ($x_i \in \{0, 1\}$).</li>
   </ul>
 </div>
 

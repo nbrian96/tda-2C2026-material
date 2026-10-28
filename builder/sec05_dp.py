@@ -24,9 +24,10 @@ Problemas de cálculo de pasos mínimos o secuencias de transformación entre do
 
 ---
 
-### Ejercicio 13 — Mínima Cantidad de Operaciones para Llegar de 0 a K (+1, × 2)
+### Ejercicio 53 — Mínima Cantidad de Operaciones para Llegar de 0 a K (+1, × 2)
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★☆☆☆ (2/5)  
 **Origen:** Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 2 / Guía 04 Ejercicio 11
 
 **Enunciado**  
@@ -221,9 +222,10 @@ Aparece cuando la mochila tiene múltiples recursos acoplados (peso y volumen) y
 
 ---
 
-### Ejercicio 14 — Mochila 2D con Selección Obligatoria y Excluyente de Guías de Aves
+### Ejercicio 54 — Mochila 2D con Selección Obligatoria y Excluyente de Guías de Aves
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★☆ (4/5)  
 **Origen:** Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 3
 
 **Enunciado**  
@@ -376,9 +378,10 @@ Minimizar una penalidad cuadrática o no lineal sobre la partición de un arregl
 
 ---
 
-### Ejercicio 15 — Justificación de Texto (Word Wrap / Knuth-Plass)
+### Ejercicio 55 — Justificación de Texto (Word Wrap / Knuth-Plass)
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★☆ (4/5)  
 **Origen:** Parcial 2024-2-3 (10 de diciembre de 2024), Ejercicio 2
 
 **Enunciado**  
@@ -494,9 +497,10 @@ Aparece cuando el problema presenta 3 dimensiones de recursos simultáneas (peso
 
 ---
 
-### Ejercicio 16 — Problema del Delivery: Mochila 3D con Límite de Seguro Financiero
+### Ejercicio 56 — Problema del Delivery: Mochila 3D con Límite de Seguro Financiero
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★☆ (4/5)  
 **Origen:** Parcial 2025-1-1 (27 de mayo de 2025), Ejercicio 4
 
 **Enunciado**  
@@ -593,9 +597,10 @@ Decisión sobre elementos consecutivos donde elegir un elemento prohíbe elegir 
 
 ---
 
-### Ejercicio 17 — Juan el Vago (Exclusión de Días Consecutivos)
+### Ejercicio 57 — Juan el Vago (Exclusión de Días Consecutivos)
 
 **Clasificación:** 🟡 IMPORTANTE  
+**Dificultad:** ★★☆☆☆ (2/5)  
 **Origen:** Guía de Ejercicios 04, Ejercicio 4 / Práctica
 
 **Enunciado**  
@@ -686,9 +691,10 @@ Selección de intervalos con pesos o beneficios arbitrarios donde Greedy falla y
 
 ---
 
-### Ejercicio 18 — Interval Scheduling Ponderado (DP + Búsqueda Binaria)
+### Ejercicio 58 — Interval Scheduling Ponderado (DP + Búsqueda Binaria)
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
 **Origen:** Guía de Ejercicios 04, Ejercicio 2 / Práctica
 
 **Enunciado**  
@@ -789,6 +795,106 @@ FUNCION BuscarUltimoCompatible(intervalos, i):
   <ul>
     <li><strong>Buscar $p(i)$ de forma lineal con un bucle hacia atrás:</strong> Si buscas el último intervalo compatible recorriendo desde $i-1$ hasta $1$, el preprocesamiento toma $O(n^2)$ en el peor caso, incumpliendo la cota exigida de $O(n \log n)$. Debe usarse Búsqueda Binaria sobre los tiempos de fin ordenados.</li>
     <li><strong>Ordenar por tiempo de inicio $s_i$ en vez de fin $f_i$:</strong> Para que el prefijo $1 \dots p(i)$ contenga exactamente todos los intervalos que terminan antes de $s_i$, el arreglo debe estar ordenado por $f_i$.</li>
+  </ul>
+</div>
+
+---
+
+### Patrón de Ejercicio 4.7: Saltos Acotados en Ruta con Costos por Parada
+
+Problemas de recorrido unidireccional de $0$ a $N+1$ donde en cada paso se permite avanzar $1, 2, \dots, k$ posiciones pagando la tarifa del nodo donde se aterriza.
+
+---
+
+### Ejercicio 59 — Ruta de Transporte con Estaciones y Salto de Hasta 2 Paradas
+
+**Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
+**Origen:** Parcial 2026-2-1 (Enunciados), Ejercicio 3
+
+**Enunciado**  
+Un transporte debe recorrer una ruta hasta su objetivo final. Para hacerlo tiene $N$ estaciones intermedias donde puede detenerse a descansar y cargar combustible. Cada estación le cobrará una tarifa fija $T[i]$ por detenerse, conocida y posiblemente diferente para cada estación. Desde cada estación puede ir a la siguiente, o saltear una o dos estaciones para evitar pagar la tarifa correspondiente. Por su autonomía, no se pueden saltear más de dos estaciones consecutivas. Diseñar un algoritmo de PD que permita hallar el viaje con menor costo de paradas. Indicar la complejidad de dicho algoritmo.
+
+#### 1. Idea y Justificación en Lenguaje Natural
+
+* Modelamos el punto de partida (origen) como la posición $0$ con costo $OPT(0) = 0$, las $N$ estaciones intermedias como las posiciones $1, 2, \dots, N$ con tarifas $T[1 \dots N]$, y el objetivo final (destino) como la posición $N + 1$ con tarifa $T[N + 1] = 0$ (llegar al destino no cobra peaje de parada intermedia, pero estamos obligados a alcanzarlo).
+* **Subestructura óptima y decisión hacia atrás:** Para llegar a cualquier estación $i$ (o al destino final $N + 1$), como por autonomía **a lo sumo podemos saltear 2 estaciones seguidas**, el último lugar donde el transporte se detuvo inmediatamente antes de $i$ tiene que haber sido obligatoriamente:
+  1. La estación $i - 1$ (avanzó directo sin saltear ninguna estación),
+  2. La estación $i - 2$ (salteó exactamente $1$ estación: la $i - 1$), o
+  3. La estación $i - 3$ (salteó exactamente $2$ estaciones seguidas: la $i - 2$ y la $i - 1$).
+* Como buscamos minimizar el gasto acumulado hasta $i$, debemos haber llegado de forma óptima a alguno de esos tres predecesores válidos y sumarle la tarifa $T[i]$ de la parada actual:
+  $$OPT(i) = T[i] + \min\Big(OPT(i - 1), \; OPT(i - 2), \; OPT(i - 3)\Big)$$
+* **Casos Base:**
+  * $OPT(0) = 0$ (estamos en el origen sin costo).
+  * $OPT(1) = T[1] + OPT(0) = T[1]$ (solo se puede llegar desde $0$).
+  * $OPT(2) = T[2] + \min(OPT(1), \; OPT(0)) = T[2]$ (suponiendo tarifas no negativas $T[k] \ge 0$, saltar directo de $0$ a $2$ cuesta $T[2]$).
+
+```mermaid
+flowchart LR
+    I3["OPT(i - 3)<br/>Saltea 2 estaciones"] -->|"+ T[i]"| I["OPT(i) = T[i] + min(...)"]:::opt
+    I2["OPT(i - 2)<br/>Saltea 1 estación"] -->|"+ T[i]"| I
+    I1["OPT(i - 1)<br/>Sin saltear"] -->|"+ T[i]"| I
+    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
+```
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+FUNCION RutaMenorCostoParadas(T, N):
+    // T[1..N] contiene las tarifas de las N estaciones intermedias
+    // Posición 0 = Origen (costo 0), Posición N+1 = Destino Final (tarifa 0)
+    INICIALIZAR DP como arreglo de tamaño (N + 2) en 0
+    INICIALIZAR padre como arreglo de tamaño (N + 2) en 0
+
+    // 1. Casos Base
+    DP[0] <- 0
+    SI N >= 1:
+        DP[1] <- T[1]
+        padre[1] <- 0
+    SI N >= 2:
+        // Puede venir de 0 (salteando la 1) o de 1
+        SI DP[0] <= DP[1]:
+            DP[2] <- T[2] + DP[0]
+            padre[2] <- 0
+        SINO:
+            DP[2] <- T[2] + DP[1]
+            padre[2] <- 1
+
+    // 2. Llenado Bottom-Up desde i = 3 hasta N + 1
+    PARA i <- 3 HASTA N + 1:
+        tarifa_actual <- (T[i] SI i <= N SINO 0)
+
+        // Buscamos el mejor predecesor entre i-1, i-2 e i-3
+        mejor_prev <- i - 1
+        SI DP[i - 2] < DP[mejor_prev]:
+            mejor_prev <- i - 2
+        SI DP[i - 3] < DP[mejor_prev]:
+            mejor_prev <- i - 3
+
+        DP[i] <- tarifa_actual + DP[mejor_prev]
+        padre[i] <- mejor_prev
+
+    // 3. Reconstrucción de las estaciones donde conviene detenerse
+    INICIALIZAR paradas como lista vacía
+    actual <- padre[N + 1]
+    MIENTRAS actual > 0:
+        INSERTAR actual AL INICIO DE paradas
+        actual <- padre[actual]
+
+    RETORNAR (DP[N + 1], paradas)
+```
+
+#### 3. Justificación de Complejidad
+
+* **Complejidad Temporal:** **$\mathcal{O}(N)$**. La tabla `DP` tiene exactamente $N + 2$ estados (desde $0$ hasta $N + 1$). Para cada estado $i$, se calcula el mínimo entre a lo sumo $3$ posiciones anteriores (`i-1`, `i-2`, `i-3`), lo cual requiere únicamente $2$ comparaciones en tiempo constante $\mathcal{O}(1)$. La reconstrucción del camino recorre hacia atrás a lo sumo $N$ estaciones en $\mathcal{O}(N)$. Por lo tanto, el tiempo total es lineal $\mathcal{O}(N)$.
+* **Complejidad Espacial:** **$\mathcal{O}(N)$** para almacenar los arreglos `DP` y `padre` de longitud $N + 2$ que permiten reconstruir las paradas elegidas (si solo se pidiera el valor numérico del costo mínimo sin reconstruir las estaciones, bastaría con mantener las últimas $3$ variables en espacio $\mathcal{O}(1)$).
+
+<div class="trap-callout">
+  <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
+  <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
+  <ul>
+    <li><strong>Devolver $DP[N]$ en lugar de $DP[N+1]$:</strong> El transporte no está obligado a detenerse en la estación $N$; si paró en $N-1$ o en $N-2$, puede saltear la estación $N$ y llegar directamente al destino final $N+1$. Olvidar el nodo destino $N+1$ (con $T[N+1]=0$) obliga erróneamente a pagar siempre la última estación.</li>
+    <li><strong>Confundir "saltear 2 estaciones" con restar $2$ al índice:</strong> Si estás en la estación $i$ y salteaste las 2 estaciones anteriores ($i-1$ e $i-2$), tu parada previa fue $i-3$, no $i-2$.</li>
   </ul>
 </div>
 

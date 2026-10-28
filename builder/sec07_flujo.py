@@ -37,9 +37,10 @@ Problemas de emparejamiento de entidades disjuntas (médicos-turnos, tareas-máq
 
 ---
 
-### Ejercicio 24 — Asignación de Turnos Médicos y Pacientes (Matching Bipartito Máximo)
+### Ejercicio 66 — Asignación de Turnos Médicos y Pacientes (Matching Bipartito Máximo)
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
 **Origen:** Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 4 / Guía 06 Ejercicio 15  
 **Qué evalúa la cátedra:** Modelado de matching con capacidades unitarias y franjas horarias mediante Redes de Flujo, creación de nodos compuestos para evitar colisiones de agenda, demostración mediante Teorema de Integralidad y análisis de complejidad.
 
@@ -167,9 +168,10 @@ Sistemas de transporte, logística o energía con múltiples fuentes de generaci
 
 ---
 
-### Ejercicio 25 — Red de Distribución Energética con Super-Fuente y Super-Sumidero (Ford-Fulkerson)
+### Ejercicio 67 — Red de Distribución Energética con Super-Fuente y Super-Sumidero (Ford-Fulkerson)
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
 **Origen:** Parcial 2025-1-1 (27 de mayo de 2025), Ejercicio 1  
 **Qué evalúa la cátedra:** Modelado de múltiples fuentes y sumideros con cotas heterogéneas, construcción de la red residual, ejecución de Ford-Fulkerson y análisis de corte mínimo para diagnóstico de cuellos de botella energéticos.
 
@@ -289,9 +291,10 @@ Preguntas conceptuales de demostración formal o refutación mediante contraejem
 
 ---
 
-### Ejercicio 26 — Análisis Teórico: Aumento Uniforme de Capacidades y Corte Mínimo
+### Ejercicio 68 — Análisis Teórico: Aumento Uniforme de Capacidades y Corte Mínimo
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
 **Origen:** Parcial 2024-2-3 (10 de diciembre de 2024), Ejercicio 1  
 **Qué evalúa la cátedra:** Comprensión matemática rigurosa de la definición de capacidad de un corte, sensibilidad ante perturbaciones uniformes $+1$, y construcción de contraejemplos matemáticos minimales irrebatibles.
 
@@ -361,9 +364,10 @@ Se dispone del flujo máximo y red residual calculados y se incrementa la capaci
 
 ---
 
-### Ejercicio 27 — Actualización de Flujo Máximo ante Aumento de Capacidad Unitaria en O(V + E)
+### Ejercicio 69 — Actualización de Flujo Máximo ante Aumento de Capacidad Unitaria en O(V + E)
 
 **Clasificación:** 🟡 IMPORTANTE  
+**Dificultad:** ★★★☆☆ (3/5)  
 **Origen:** Guía de Ejercicios 06, Ejercicio 5  
 **Qué evalúa la cátedra:** Comprensión profunda de la red residual, explotación del estado previo para actualización incremental (*dynamic max-flow*) y cota estricta de caminos de aumento en $O(V + E)$.
 
@@ -451,6 +455,113 @@ Algoritmo ActualizarFlujoAumentoUnitario(G_f, f, valor_flujo, s, t, u, v):
   <ul>
     <li><strong>Ejecutar Edmonds-Karp completo desde cero:</strong> Si se reinicia el algoritmo desde flujo 0, la complejidad vuelve a ser $O(V E^2)$, violando la cota obligatoria de $O(V + E)$ exigida en el enunciado.</li>
     <li><strong>Buscar más de un camino de aumento:</strong> Como la capacidad de una sola arista aumentó en 1, el flujo máximo no puede crecer en más de 1 unidad. Ejecutar un bucle `while` buscando caminos adicionales es conceptualmente redundante.</li>
+  </ul>
+</div>
+
+---
+
+### Patrón de Ejercicio 6.5: Transporte Multipunto hacia un Sumidero Central
+
+Problemas logísticos donde existen $N$ nodos de origen independientes que envían caudal a través de una red de postas o nodos intermedios hacia un único nodo destino final, resueltos mediante la introducción de una Super-Fuente $s$.
+
+---
+
+### Ejercicio 70 — Transporte de Urnas Electorales al Centro Nacional de Estadísticas
+
+**Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
+**Origen:** Parcial 2026-2-1 (Enunciados), Ejercicio 6
+
+**Enunciado**  
+Luego de las elecciones del domingo, en cierto país limítrofe, se deben llevar las urnas desde los $N$ centros de votación ($C_1, C_2, \dots, C_N$) hasta el Centro Nacional de Estadísticas ($CNE$) para proceder al escrutinio definitivo. Desde los centros de votación hay caminos que pasan por diversos puntos intermedios (como $A$ y $B$ en el grafo de referencia). Para cada camino se sabe la cantidad máxima de urnas por minuto que se pueden transportar. Diseñar un algoritmo que mediante Ford-Fulkerson (FF) calcule la cantidad de urnas a transportar por cada ruta para maximizar la cantidad de urnas transportadas por minuto. Indicar la complejidad del algoritmo desarrollado.
+
+#### 1. Idea y Justificación en Lenguaje Natural
+
+* El algoritmo de **Ford-Fulkerson** requiere una red de transporte con **una única fuente $s$** y **un único sumidero $t$**. En este problema ya contamos con un único sumidero natural, que es el **Centro Nacional de Estadísticas ($t = CNE$)**, pero tenemos múltiples orígenes ($C_1, C_2, \dots, C_N$).
+* **Reducción a fuente única:** Creamos un nodo ficticio llamado **Super-Fuente $s$** y agregamos una arista dirigida desde $s$ hacia cada uno de los $N$ centros de votación $(s \to C_i)$ con **capacidad $\infty$** (o bien, con capacidad igual a la suma de las capacidades de todos los caminos que salen de $C_i$, ya que el enunciado no impone un tope de emisión en el centro sino en las rutas).
+* **Conservación en puntos intermedios y maximización:** Los puntos de paso intermedios (como $A, B, \dots$) actúan como nodos internos donde rige la ley de conservación de flujo ($\text{urnas que entran por minuto} = \text{urnas que salen por minuto}$), y cada tramo vial dirigido $(u, v)$ conserva su capacidad máxima de urnas por minuto $c(u, v)$. Al ejecutar **Ford-Fulkerson** (implementado mediante **Edmonds-Karp** usando BFS para elegir siempre el camino de aumento más corto en cantidad de aristas) desde $s$ hasta $CNE$, el flujo final $f(u, v)$ en cada arista indica exactamente cuántas urnas por minuto deben enviarse por cada camino para alcanzar el máximo caudal posible hacia el $CNE$.
+
+```mermaid
+flowchart LR
+    s(("Super-Fuente s")) -->|"cap = ∞"| C1(("C1"))
+    s -->|"cap = ∞"| C2(("C2"))
+    s -->|"cap = ∞"| C3(("C3"))
+
+    C1 -->|"c(C1, A)"| A(("A"))
+    C1 -->|"c(C1, CNE)"| CNE(("CNE (Sumidero t)"))
+    C2 -->|"c(C2, A)"| A
+    C2 -->|"c(C2, B)"| B(("B"))
+    C3 -->|"c(C3, B)"| B
+    C3 -->|"c(C3, CNE)"| CNE
+
+    A -->|"c(A, B)"| B
+    A -->|"c(A, CNE)"| CNE
+    B -->|"c(B, CNE)"| CNE
+
+    classDef src fill:#1d4ed8,stroke:#1e40af,stroke-width:2px,color:#fff
+    classDef snk fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
+    class s src
+    class CNE snk
+```
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+FUNCION MaximizarTransporteUrnasFF(Centros, NodosIntermedios, Caminos, CNE):
+    // 1. Construir la red de flujo G = (V, E) y la red residual G_f
+    Crear grafo dirigido G y grafo residual G_f
+    Crear nodo ficticio SuperFuente s
+    Sumidero t <- CNE
+
+    // Conectar la Super-Fuente s a cada centro de votación C_i
+    PARA CADA C_i EN Centros:
+        agregar_arista(G, s, C_i, capacidad = INFINITO)
+        c_f(s, C_i) <- INFINITO
+        c_f(C_i, s) <- 0
+
+    // Cargar todos los caminos viales (u -> v) con su capacidad máxima de urnas/minuto
+    PARA CADA (u, v, max_urnas_min) EN Caminos:
+        agregar_arista(G, u, v, capacidad = max_urnas_min)
+        f(u, v) <- 0
+        c_f(u, v) <- max_urnas_min
+        c_f(v, u) <- 0
+
+    flujo_total_urnas <- 0
+
+    // 2. Ciclo principal de Ford-Fulkerson (Edmonds-Karp con BFS)
+    MIENTRAS exista un camino P desde s hasta t en G_f con c_f > 0 (hallado con BFS):
+        // Cuello de botella del camino de aumento P
+        delta <- MINIMO { c_f(u, v) para toda arista (u, v) en P }
+
+        // Actualizar flujos y capacidades residuales (directas y reversas)
+        PARA CADA arista (u, v) EN P:
+            SI (u, v) es arista original de G:
+                f(u, v) <- f(u, v) + delta
+            SINO:
+                // Se usó una arista backward (reversa): deshacemos flujo previo
+                f(v, u) <- f(v, u) - delta
+
+            c_f(u, v) <- c_f(u, v) - delta
+            c_f(v, u) <- c_f(v, u) + delta
+
+        flujo_total_urnas <- flujo_total_urnas + delta
+
+    // 3. Devolver el máximo de urnas/minuto y el detalle por cada camino original
+    RETORNAR (flujo_total_urnas, f)
+```
+
+#### 3. Justificación de Complejidad
+
+* **Con Ford-Fulkerson clásico (búsqueda de camino arbitrario con DFS):** En cada iteración se busca un camino de aumento en la red residual en tiempo $\mathcal{O}(|E|)$ (dado que $|V| \le |E| + 1$) y, al ser las capacidades enteras (urnas por minuto), el flujo aumenta al menos en $1$ unidad por iteración. Por lo tanto, la complejidad temporal es **$\mathcal{O}(|E| \cdot |f^*|)$** (pseudo-polinomial), donde $|f^*|$ es el flujo máximo total de urnas por minuto que llegan al $CNE$.
+* **Con Edmonds-Karp (implementación de Ford-Fulkerson usando BFS para elegir el camino más corto en cantidad de aristas):** Se garantiza que ocurren a lo sumo $\mathcal{O}(|V| \cdot |E|)$ aumentos de flujo, y cada BFS toma $\mathcal{O}(|E|)$. Por lo tanto, la complejidad temporal es estrictamente polinomial **$\mathcal{O}(|V| \cdot |E|^2)$**, donde $|V| = N + |\text{NodosIntermedios}| + 2$ y $|E| = N + |\text{Caminos}|$.
+* **Complejidad Espacial:** **$\mathcal{O}(|V| + |E|)$** para almacenar la red de flujo, la red residual $G_f$ y la cola del BFS.
+
+<div class="trap-callout">
+  <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
+  <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
+  <ul>
+    <li><strong>Ejecutar $N$ veces Ford-Fulkerson por separado desde cada centro $C_i$:</strong> Correr flujo máximo desde $C_1$ a $CNE$, luego desde $C_2$, etc., es incorrecto o subóptimo si no se mantiene una única red residual compartida. La forma limpia y estándar es unificar todos los orígenes con una única <strong>Super-Fuente $s$</strong> antes de iniciar el algoritmo.</li>
+    <li><strong>Omitir las aristas reversas (backward) $c_f(v, u)$ en la red residual:</strong> En el grafo del parcial existen enlaces cruzados entre nodos intermedios ($A \to B$). Sin aristas reversas, Ford-Fulkerson no puede reencaminar flujo y puede devolver un valor menor al óptimo.</li>
   </ul>
 </div>
 

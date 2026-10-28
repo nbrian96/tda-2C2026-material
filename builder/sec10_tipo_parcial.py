@@ -7,10 +7,11 @@ Esta sección contiene ejercicios integrales creados específicamente siguiendo 
 
 ---
 
-### Ejercicio 37 — Despacho de Drones de Emergencia con Ventanas de Batería
+### Ejercicio 80 — Despacho de Drones de Emergencia con Ventanas de Batería
 
 **Tipo:** Ejercicio de Examen Integrador  
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★☆ (4/5)  
 **Paradigma:** Redes de Flujo (Matching Bipartito con Restricción de Recursos)  
 **Qué evalúa la cátedra:** Modelado de capacidades heterogéneas ($c=2$ en fuentes intermedias), filtrado de compatibilidades temporales y espaciales previo al grafo, y demostración de integralidad.
 
@@ -103,10 +104,11 @@ Algoritmo DespacharDronesEmergencia(Drones, Puestos, Compatibilidades):
 
 ---
 
-### Ejercicio 38 — Plan de Publicidad Digital con Días de Enfriamiento y Presupuesto
+### Ejercicio 81 — Plan de Publicidad Digital con Días de Enfriamiento y Presupuesto
 
 **Tipo:** Ejercicio de Examen Integrador  
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★☆ (4/5)  
 **Paradigma:** Programación Dinámica (Exclusión Multidía con Restricción de Presupuesto)  
 **Qué evalúa la cátedra:** Definición formal de subproblemas 2D, manejo riguroso de saltos de índice ($i - 3$) por cooldown y reconstrucción exacta de decisiones.
 
@@ -213,10 +215,11 @@ Algoritmo PlanificarCampanaPublicidad(costos, beneficios, n, Presupuesto_Max):
 
 ---
 
-### Ejercicio 39 — Ubicación de Servidores Edge con Resiliencia del 80%
+### Ejercicio 82 — Ubicación de Servidores Edge con Resiliencia del 80%
 
 **Tipo:** Ejercicio de Examen Integrador  
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★☆ (4/5)  
 **Paradigma:** Programación Lineal Entera (Set Cover Ponderado con Umbral y Capacidad)  
 **Qué evalúa la cátedra:** Modelado en PLI de vinculación de cobertura (*linking constraints* de capacidad de tráfico), activación de servidores e imposición de metas porcentuales.
 
@@ -288,10 +291,11 @@ graph TD
 
 ---
 
-### Ejercicio 40 — NP-Completitud del Problema de Asignación de Frecuencias
+### Ejercicio 83 — NP-Completitud del Problema de Asignación de Frecuencias
 
 **Tipo:** Ejercicio de Examen Integrador  
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★☆ (4/5)  
 **Paradigma:** Reducciones Polinomiales (K-Coloring a Asignación de Frecuencias)  
 **Qué evalúa la cátedra:** Protocolo riguroso de 4 pasos de NP-Completitud, reducción de K-Coloring y equivalencia de clases independientes.
 

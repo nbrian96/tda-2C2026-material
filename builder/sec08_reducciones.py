@@ -35,9 +35,10 @@ Aparece de forma reiterada en los parciales de FIUBA (2024 y 2025). Requiere tra
 
 ---
 
-### Ejercicio 28 — Demostración de NP-Completitud de Dominating Set (desde Vertex Cover)
+### Ejercicio 71 — Demostración de NP-Completitud de Dominating Set (desde Vertex Cover)
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★☆ (4/5)  
 **Origen:** Parcial 2024-2-2 (Ej 5) y Parcial 2024-2-3 (Ej 5) / Guía 07 Ejercicio 2 y 14  
 **Qué evalúa la cátedra:** Protocolo de 4 pasos completo, diseño del triángulo auxiliar por arista, verificación polinomial y justificación de ida y vuelta en lenguaje claro.
 
@@ -165,9 +166,10 @@ Reducción polinomial estricta desde Ciclo Hamiltoniano hacia el Problema del Vi
 
 ---
 
-### Ejercicio 29 — El Dilema de Marco el Cadete: Reducción de Ciclo Hamiltoniano a TSP
+### Ejercicio 72 — El Dilema de Marco el Cadete: Reducción de Ciclo Hamiltoniano a TSP
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★☆ (4/5)  
 **Origen:** Parcial 2025-1-1 (27 de mayo de 2025), Ejercicio 5  
 **Qué evalúa la cátedra:** Reducción entre problemas NP-Completos de grafos, diseño de matrices de costo con penalización asimétrica (gadget métrico), y prueba bidireccional.
 
@@ -263,9 +265,10 @@ Demostración de que la versión de decisión del problema de cambio de monedas 
 
 ---
 
-### Ejercicio 30 — Reducción de Cambio de Monedas a Subset Sum
+### Ejercicio 73 — Reducción de Cambio de Monedas a Subset Sum
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★★☆ (4/5)  
 **Origen:** Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 5  
 **Qué evalúa la cátedra:** Concepto de orden de dificultad entre problemas en NP, transformación con copias de monedas y comprensión de que dos problemas NP-Completos se reducen mutuamente.
 
@@ -323,9 +326,10 @@ Reducción estructural basada en el Teorema del Complemento de Gallai en grafos 
 
 ---
 
-### Ejercicio 31 — Reducción Dual: Independent Set a Vertex Cover
+### Ejercicio 74 — Reducción Dual: Independent Set a Vertex Cover
 
 **Clasificación:** 🟡 IMPORTANTE  
+**Dificultad:** ★★★★☆ (4/5)  
 **Origen:** Guía de Ejercicios 07, Ejercicio 3  
 **Qué evalúa la cátedra:** Comprensión de la dualidad entre Independent Set y Vertex Cover por complemento en tiempo `O(1)`.
 

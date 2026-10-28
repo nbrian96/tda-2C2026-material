@@ -26,10 +26,11 @@ Aparece en enunciados de colocación de piezas (reinas, caballos, torres) donde 
 
 ---
 
-### Ejercicio 9 — Problema de las 8 Reinas con Control de Conflictos en O(1)
+### Ejercicio 39 — Problema de las N Reinas con Control de Conflictos en O(1)
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
-**Origen:** Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 4 / Guía 03 Ejercicio 3
+**Dificultad:** ★★★☆☆ (3/5)  
+**Origen:** Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 4 / Guía v1.0 (Curso Echevarría), Ejercicio 3.3
 
 **Enunciado**  
 Realizar un algoritmo que resuelva el problema de las 8 reinas mediante backtracking. El problema consiste en ubicar 8 reinas en un tablero de ajedrez de $8 \times 8$ de manera que no haya dos reinas en la misma fila, columna o diagonal. Indicar detalladamente las estructuras de datos utilizadas para representar el problema y la solución, garantizando que el chequeo de amenazas se realice en $O(1)$. Justificar la complejidad temporal y espacial.
@@ -169,10 +170,11 @@ Problemas donde se debe descomponer un número entero en sumas de componentes (c
 
 ---
 
-### Ejercicio 10 — Suma de Cuatro Cuadrados de Lagrange con Cotas y Podas
+### Ejercicio 40 — Suma de Cuatro Cuadrados de Lagrange con Cotas y Podas
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
-**Origen:** Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 1
+**Dificultad:** ★★★☆☆ (3/5)  
+**Origen:** Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 1 / Guía v1.0 (Curso Echevarría), Ejercicio 3.10
 
 **Enunciado**  
 El teorema de los cuatro cuadrados de Lagrange especifica que cualquier número entero no negativo $n$ puede expresarse como la suma de cuatro cuadrados de enteros no negativos:
@@ -283,9 +285,10 @@ Aparece cuando se solicita un algoritmo exacto para un problema NP-Hard sobre gr
 
 ---
 
-### Ejercicio 11 — Vertex Cover Mínimo por Branch and Bound
+### Ejercicio 41 — Vertex Cover Mínimo por Branch and Bound
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
 **Origen:** Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 1 / Guía 03 Ejercicio 13
 
 **Enunciado**  
@@ -401,9 +404,10 @@ Exploración binaria de inclusión/exclusión de elementos para alcanzar un valo
 
 ---
 
-### Ejercicio 12 — Suma de Subconjuntos con Podas Tempranas
+### Ejercicio 42 — Suma de Subconjuntos con Podas Tempranas
 
 **Clasificación:** 🟡 IMPORTANTE  
+**Dificultad:** ★★☆☆☆ (2/5)  
 **Origen:** Guía de Ejercicios 03, Ejercicio 11 / Práctica
 
 **Enunciado**  
@@ -510,6 +514,476 @@ función SubsetSumBT(indice, remanente, nums, solucion):
     <li><strong>Números negativos o nulos:</strong> Esta poda asume que todos los elementos son positivos ($L[i] > 0$). Si hubiera números negativos, sumar un elemento posterior podría reducir la suma actual y permitir alcanzar el objetivo.</li>
   </ul>
 </div>
+
+---
+
+### Ejercicio 43 — Explorador en el Laberinto (Camino al Tesoro y Camino Más Corto)
+
+**Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
+**Origen:** Parcial 2026-2-1 (Enunciados), Ejercicio 2
+
+**Enunciado**  
+Un explorador se encuentra en un laberinto representado por una matriz de $N \times M$. Debe encontrar un camino desde la Entrada hasta el tesoro. La matriz está codificada con `0` (casilla transitable), `1` (pared, intransitable), `E` (Entrada) y `T` (Tesoro). Puede moverse hacia arriba, abajo, izquierda o derecha, sin atravesar paredes ni visitar dos veces una misma casilla en el mismo camino.
+1. Diseñar un algoritmo de backtracking que encuentre y devuelva un camino desde la entrada hasta el tesoro.
+2. Indicar la complejidad del algoritmo.
+3. Indicar cómo cambiarías el algoritmo si se pide **EL CAMINO MÁS CORTO** hasta el tesoro.
+
+#### 1. Idea y Justificación en Lenguaje Natural
+
+* **1. Para encontrar UN camino cualquiera:**
+  - Desde la posición actual `(f, c)`, si estamos parados sobre `'T'` (el Tesoro), ¡éxito! Devolvemos `Verdadero`.
+  - Si no, probamos movernos a cada una de las 4 casillas vecinas `(nf, nc)` (arriba, abajo, izquierda, derecha).
+  - **Poda por Factibilidad:** Solo avanzamos a `(nf, nc)` si está dentro de los límites de la matriz, no es pared (`!= 1`) y no fue visitada todavía en el camino actual (`no visitado[nf][nc]`).
+  - Marcamos la casilla como visitada, la agregamos al camino y llamamos recursivamente. Si esa llamada encuentra el tesoro, cortamos y devolvemos el camino; si no tiene salida, **desmarcamos la casilla (`visitado[nf][nc] = Falso`) y la sacamos del camino** (backtrack) para probar otra dirección.
+* **2. Complejidad Temporal:**
+  - En cada casilla tenemos hasta 4 direcciones posibles (3 reales porque no volvemos hacia la casilla de la que acabamos de venir), y la longitud máxima de un camino sin repetir casillas es $N \cdot M$. Por lo tanto, en el peor caso explora **$O(4^{N \cdot M})$** (o más ajustado **$O(3^{N \cdot M})$**) estados, con espacio auxiliar $O(N \cdot M)$.
+* **3. ¿Cómo cambiaríamos el algoritmo si se pide EL CAMINO MÁS CORTO?**
+  - **Con Backtracking (Branch & Bound):**
+    1. En vez de frenar y devolver `Verdadero` al encontrar el primer camino a `'T'`, **guardamos ese camino como `mejor_camino`** (si es más corto que el `mejor_camino` registrado hasta ahora) y **seguimos explorando** el resto de las ramas.
+    2. **Agregamos Poda por Optimalidad (Branch & Bound):** Si en cualquier momento el largo de nuestro `camino_actual` (más la distancia Manhattan hasta `T`) ya es **mayor o igual** al largo del `mejor_camino` que ya tenemos guardado (`longitud(camino_actual) >= longitud(mejor_camino)`), **podamos la rama inmediatamente** sin seguir avanzando.
+  - *(Nota adicional para sumar puntos en el parcial: Como todas las aristas pesan 1 paso, el camino más corto en una grilla sin pesos también se puede resolver de forma óptima en tiempo polinomial $O(N \cdot M)$ cambiando la búsqueda a **BFS — Búsqueda a lo Ancho** con una cola).*
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo BuscarCaminoLaberinto(M, N_filas, M_cols):
+    (f_ini, c_ini) = encontrarPosicion(M, 'E')
+    visitado = matriz de N_filas x M_cols en Falso
+    visitado[f_ini][c_ini] = Verdadero
+    camino = [ (f_ini, c_ini) ]
+
+    si ExplorarBT(M, f_ini, c_ini, visitado, camino):
+        devolver camino
+    devolver "No existe camino al tesoro"
+
+función ExplorarBT(M, f, c, visitado, camino):
+    // Caso base: llegamos al Tesoro
+    si M[f][c] == 'T':
+        devolver Verdadero
+
+    direcciones = [ (-1, 0), (1, 0), (0, -1), (0, 1) ]  // Arriba, Abajo, Izq, Der
+
+    para cada (df, dc) en direcciones:
+        nf = f + df, nc = c + dc
+
+        // Poda de factibilidad: dentro del mapa, no es pared y no fue visitada
+        si esValida(nf, nc, M) y M[nf][nc] != 1 y no visitado[nf][nc]:
+            // 1. Marcar paso
+            visitado[nf][nc] = Verdadero
+            agregar (nf, nc) a camino
+
+            // 2. Explorar recursivamente
+            si ExplorarBT(M, nf, nc, visitado, camino):
+                devolver Verdadero
+
+            // 3. Deshacer paso (Backtrack)
+            quitar_ultimo(camino)
+            visitado[nf][nc] = Falso
+
+    devolver Falso
+```
+
+---
+
+### Ejercicio 44 — Suma de Dados (Todas las Tiradas que Suman S)
+
+**Clasificación:** 🟡 IMPORTANTE  
+**Dificultad:** ★★☆☆☆ (2/5)  
+**Origen:** Guía v1.0 (Curso Echevarría), Ejercicio 3.1
+
+**Enunciado**  
+Implementar un algoritmo de backtracking que reciba una cantidad de dados $n$ y una suma $s$, y devuelva todas las tiradas posibles de $n$ dados (caras del 1 al 6) cuya suma sea exactamente $s$.
+
+#### 1. Idea y Justificación en Lenguaje Natural
+
+* En cada nivel decidimos qué valor (del 1 al 6) salió en el dado actual, restándolo de la suma que nos falta (`faltante`).
+* **Podas claves para no explorar ramas inútiles:**
+  If nos quedan `dados_restantes` por tirar:
+  1. **Poda por suma mínima:** Si aun sacando puros `1` en todos los dados que faltan nos pasamos de lo que falta (`faltante < dados_restantes * 1`), podamos.
+  2. **Poda por suma máxima:** Si ni siquiera sacando puros `6` en todos los dados que faltan llegamos a cubrir lo que falta (`faltante > dados_restantes * 6`), podamos.
+* Complejidad en peor caso: **$O(6^n)$**.
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo TiradasSumaDados(n, s):
+    resultados = []
+    actual = []
+    DadosBT(n, s, actual, resultados)
+    devolver resultados
+
+función DadosBT(dados_restantes, faltante, actual, resultados):
+    // Caso base: ya tiramos todos los dados
+    si dados_restantes == 0:
+        si faltante == 0:
+            agregar copia(actual) a resultados
+        devolver
+
+    // Podas por mínimo (todos 1) y máximo (todos 6) alcanzables
+    si faltante < dados_restantes * 1 o faltante > dados_restantes * 6:
+        devolver
+
+    para cara desde 1 hasta 6:
+        agregar cara a actual
+        DadosBT(dados_restantes - 1, faltante - cara, actual, resultados)
+        quitar_ultimo(actual)   // Backtrack
+```
+
+---
+
+### Ejercicio 45 — Maximizar Sumatoria sin Superar N
+
+**Clasificación:** 🟡 IMPORTANTE  
+**Dificultad:** ★★☆☆☆ (2/5)  
+**Origen:** Guía v1.0 (Curso Echevarría), Ejercicio 3.2
+
+**Enunciado**  
+Dada una lista de enteros positivos $L$ y un entero $n$, implementar un algoritmo de backtracking que devuelva un subconjunto de $L$ que sume exactamente $n$, o, en caso de no existir, que devuelva el subconjunto de suma máxima sin superar el valor de $n$.
+
+#### 1. Idea y Justificación en Lenguaje Natural
+
+* Es una versión de **Branch & Bound** de *Subset Sum*: llevamos registro de la `mejor_solucion` y su `mejor_suma` (inicialmente `0`) que nunca supere $n$.
+* En cada elemento `L[i]` probamos incluirlo (si `suma_actual + L[i] <= n`) o excluirlo.
+* **Podas:**
+  1. **Corte inmediato por óptimo exacto:** Si `mejor_suma == n`, ya encontramos un subconjunto que suma exactamente $n$, así que cortamos todas las llamadas pendientes de inmediato.
+  2. **Poda por cota superior (sufijo restante):** Si sumando `suma_actual` más todos los números que quedan de `i` en adelante (`suma_restante`) no superamos a `mejor_suma` (`suma_actual + suma_restante <= mejor_suma`), podamos la rama porque es imposible mejorar el récord.
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo MaximizarSubconjunto(L, n):
+    mejor_sol = []
+    mejor_suma = 0
+    actual = []
+    MaxSumaBT(L, 0, n, 0, sumaTotal(L), actual, mejor_sol, mejor_suma)
+    devolver mejor_sol
+
+función MaxSumaBT(L, i, n, suma_act, resto_disp, actual, ref mejor_sol, ref mejor_suma):
+    si suma_act > mejor_suma:
+        mejor_suma = suma_act
+        mejor_sol = copia(actual)
+
+    // Si ya llegamos exacto a n, o se acabaron los números, o ni sumando todo lo que queda mejoramos:
+    si mejor_suma == n o i == longitud(L) o (suma_act + resto_disp <= mejor_suma):
+        devolver
+
+    // Rama 1: Incluir L[i] (Poda de factibilidad: no pasarse de n)
+    si suma_act + L[i] <= n:
+        agregar L[i] a actual
+        MaxSumaBT(L, i + 1, n, suma_act + L[i], resto_disp - L[i], actual, mejor_sol, mejor_suma)
+        quitar_ultimo(actual)
+
+    // Rama 2: Excluir L[i]
+    si mejor_suma < n:
+        MaxSumaBT(L, i + 1, n, suma_act, resto_disp - L[i], actual, mejor_sol, mejor_suma)
+```
+
+---
+
+### Ejercicio 46 — Resolución de Sudoku por Backtracking
+
+**Clasificación:** 🟡 IMPORTANTE  
+**Dificultad:** ★★★☆☆ (3/5)  
+**Origen:** Guía v1.0 (Curso Echevarría), Ejercicio 3.4
+
+**Enunciado**  
+Dada una matriz de $9 \times 9$ parcialmente completada (con `0` en las casillas vacías), implementar un algoritmo de backtracking que llene la matriz con números del 1 al 9 sin repetir número en cada fila, columna ni subgrupo de $3 \times 3$.
+
+#### 1. Idea y Justificación en Lenguaje Natural
+
+* Buscamos la primera celda vacía `(f, c)` del tablero (si no queda ninguna vacía, ¡el Sudoku ya está resuelto!).
+* Probamos colocar cada número `num` del `1` al `9` en esa celda:
+  - **Poda por Factibilidad:** Solo colocamos `num` si todavía no aparece en la fila `f`, ni en la columna `c`, ni en su bloque de $3 \times 3$ (cuyo inicio es `(f // 3) * 3` y `(c // 3) * 3`).
+  - Lo escribimos y llamamos recursivamente. Si la recursión devuelve `Verdadero`, terminamos; si no, **borramos el número volviendo a poner `0`** (backtrack) y probamos el siguiente.
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo ResolverSudoku(tablero):
+    celda = buscarPrimeraCeldaVacia(tablero)
+    si celda es nulo:
+        devolver Verdadero   // No quedan casillas vacías: Sudoku completo
+
+    (f, c) = celda
+    para num desde 1 hasta 9:
+        si esValidoSudoku(tablero, f, c, num):
+            tablero[f][c] = num
+            si ResolverSudoku(tablero):
+                devolver Verdadero
+            tablero[f][c] = 0    // Backtrack
+
+    devolver Falso
+
+función esValidoSudoku(tablero, f, c, num):
+    // Verificar fila f, columna c y subcuadrante 3x3 de esquina (f - f%3, c - c%3)
+    devolver (num no está en fila f) y (num no está en col c) y (num no está en bloque 3x3 de (f, c))
+```
+
+---
+
+### Ejercicio 47 — Recorrido del Caballo (Knight Tour)
+
+**Clasificación:** 🟡 IMPORTANTE  
+**Dificultad:** ★★★☆☆ (3/5)  
+**Origen:** Guía v1.0 (Curso Echevarría), Ejercicio 3.5
+
+**Enunciado**  
+Implementar un algoritmo de backtracking que, dado un caballo en un tablero de ajedrez de $8 \times 8$, determine la secuencia de movimientos en forma de $L$ para que el caballo pase por los 64 casilleros del tablero una única vez.
+
+#### 1. Idea y Justificación en Lenguaje Natural
+
+* Llevamos en la matriz `tablero[8][8]` el número de paso en que visitamos cada casilla (de `1` a `64`, y `0` si está libre).
+* Si `paso == 64`, ya visitamos las 64 casillas y terminamos.
+* Si no, desde la posición actual `(f, c)` probamos los **8 saltos posibles en forma de L** del caballo (`(±2, ±1)` y `(±1, ±2)`).
+* **Poda de factibilidad:** Que la nueva casilla `(nf, nc)` esté dentro del tablero $8 \times 8$ y no haya sido visitada aún (`tablero[nf][nc] == 0`).
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo KnightTour(f_ini, c_ini):
+    tablero = matriz de 8x8 inicializada en 0
+    tablero[f_ini][c_ini] = 1   // Paso 1 en la casilla inicial
+
+    si CaballoBT(tablero, f_ini, c_ini, 1):
+        devolver tablero
+    devolver "Sin solución"
+
+función CaballoBT(tablero, f, c, paso):
+    si paso == 64:
+        devolver Verdadero
+
+    saltos_L = [ (2,1), (1,2), (-1,2), (-2,1), (-2,-1), (-1,-2), (1,-2), (2,-1) ]
+
+    para cada (df, dc) en saltos_L:
+        nf = f + df, nc = c + dc
+        si 0 <= nf < 8 y 0 <= nc < 8 y tablero[nf][nc] == 0:
+            tablero[nf][nc] = paso + 1
+            si CaballoBT(tablero, nf, nc, paso + 1):
+                devolver Verdadero
+            tablero[nf][nc] = 0   // Backtrack
+
+    devolver Falso
+```
+
+---
+
+### Ejercicio 48 — Coloreo de Grafos con N Colores
+
+**Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★☆☆☆ (2/5)  
+**Origen:** Guía v1.0 (Curso Echevarría), Ejercicio 3.6 / Guía 03, Ejercicio 2
+
+**Enunciado**  
+Implementar un algoritmo que reciba un grafo y un número $n$ que, utilizando backtracking, indique si es posible pintar cada vértice con $n$ colores de tal forma que no haya dos vértices adyacentes con el mismo color.
+
+#### 1. Idea y Justificación en Lenguaje Natural
+
+* Numeramos los vértices de `0` a `V - 1` y vamos pintando **un vértice por nivel recursivo**.
+* Al estar en el vértice `v`, probamos asignarle cada color `c` desde `1` hasta `n`:
+  - **Poda por Factibilidad:** Miramos a los vecinos de `v` en el grafo; si ningún vecino tiene puesto el color `c`, se lo asignamos a `v` y pasamos recursivamente al vértice `v + 1`.
+  - Si la llamada falla, despintamos a `v` (`color[v] = 0`) y probamos el siguiente color.
+* Complejidad en peor caso: **$O(n^{|V|})$**.
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo ColorearGrafo(G, n_colores):
+    vertices = G.obtenerVertices()
+    color = diccionario inicializado en 0 para cada v en vertices
+    devolver ColorearBT(G, vertices, 0, n_colores, color)
+
+función ColorearBT(G, vertices, idx, n_colores, color):
+    // Caso base: todos los vértices fueron pintados sin conflicto
+    si idx == longitud(vertices):
+        devolver Verdadero
+
+    v = vertices[idx]
+    para c desde 1 hasta n_colores:
+        // Poda de factibilidad: ningún vecino adyacente debe tener el color c
+        si para todo vecino w de v en G se cumple (color[w] != c):
+            color[v] = c
+            si ColorearBT(G, vertices, idx + 1, n_colores, color):
+                devolver Verdadero
+            color[v] = 0   // Backtrack
+
+    devolver Falso
+```
+
+---
+
+### Ejercicio 49 — Camino Hamiltoniano por Backtracking
+
+**Clasificación:** 🟡 IMPORTANTE  
+**Dificultad:** ★★★☆☆ (3/5)  
+**Origen:** Guía v1.0 (Curso Echevarría), Ejercicio 3.7
+
+**Enunciado**  
+Un camino hamiltoniano es un camino de un grafo que visita todos los vértices del grafo una sola vez. Implementar un algoritmo de backtracking que encuentre un camino hamiltoniano de un grafo dado.
+
+#### 1. Idea y Justificación en Lenguaje Natural
+
+* Probamos iniciar el camino desde cada vértice `v` del grafo.
+* En cada paso recursivo, si la lista `camino` ya tiene longitud `|V|`, visitamos todos los vértices una sola vez y devolvemos `Verdadero`.
+* Si no, miramos los adyacentes del último vértice agregado (`actual`): para cada vecino `w` que **todavía no esté en `visitados`** (poda de factibilidad en $O(1)$ usando un set/arreglo booleano), lo marcamos como visitado, lo agregamos al camino y llamamos recursivamente. Si no llega a solución, lo sacamos y desmarcamos. Complejidad en peor caso: **$O(|V|!)$**.
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo CaminoHamiltoniano(G):
+    para cada v en G.vertices():
+        camino = [ v ]
+        visitados = { v }
+        si HamiltonianoBT(G, v, camino, visitados):
+            devolver camino
+    devolver nulo
+
+función HamiltonianoBT(G, actual, camino, visitados):
+    si longitud(camino) == G.cantidadVertices():
+        devolver Verdadero
+
+    para cada vecino w en G.adyacentes(actual):
+        si w no está en visitados:
+            agregar w a visitados
+            agregar w a camino
+
+            si HamiltonianoBT(G, w, camino, visitados):
+                devolver Verdadero
+
+            quitar_ultimo(camino)     // Backtrack
+            quitar w de visitados
+
+    devolver Falso
+```
+
+---
+
+### Ejercicio 50 — Maximum Independent Set (Conjunto Independiente Máximo)
+
+**Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
+**Origen:** Guía v1.0 (Curso Echevarría), Ejercicio 3.8 / Guía 03, Ejercicio 4
+
+**Enunciado**  
+Implementar un algoritmo que, dado un grafo no dirigido, devuelva un conjunto de vértices que represente un Maximum Independent Set del mismo (el subconjunto más grande posible de vértices donde ningún par sea adyacente entre sí).
+
+#### 1. Idea y Justificación en Lenguaje Natural
+
+* Es un problema de optimización (**Branch & Bound**): mantenemos el `mejor_conjunto` encontrado hasta el momento.
+* En el vértice `idx` tenemos dos ramas:
+  1. **Incluir el vértice `v`** en el conjunto actual, **solo si no es adyacente a ninguno de los ya incluidos** (Poda por Factibilidad).
+  2. **Excluir el vértice `v`**.
+* **Poda por Optimalidad (Branch & Bound):** Si el tamaño de nuestro conjunto `actual` más la cantidad de vértices que todavía quedan por evaluar (`restantes = |V| - idx`) **no supera al tamaño del `mejor_conjunto`** (`tamaño(actual) + restantes <= tamaño(mejor_conjunto)`), podamos la rama inmediatamente porque ni metiendo todos los vértices que quedan lograríamos superar el récord.
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo MaxIndependentSet(G):
+    vertices = G.vertices()
+    mejor = []
+    actual = []
+    MisBT(G, vertices, 0, actual, mejor)
+    devolver mejor
+
+función MisBT(G, vertices, idx, actual, ref mejor):
+    si longitud(actual) > longitud(mejor):
+        mejor = copia(actual)
+
+    restantes = longitud(vertices) - idx
+    // Poda Branch & Bound: ni sumando todos los vértices restantes superamos a 'mejor'
+    si idx == longitud(vertices) o (longitud(actual) + restantes <= longitud(mejor)):
+        devolver
+
+    v = vertices[idx]
+
+    // Rama 1: Incluir v (Poda de factibilidad: sin aristas hacia los ya elegidos en actual)
+    si para todo u en actual se cumple (no G.hayArista(v, u)):
+        agregar v a actual
+        MisBT(G, vertices, idx + 1, actual, mejor)
+        quitar_ultimo(actual)   // Backtrack
+
+    // Rama 2: Excluir v
+    MisBT(G, vertices, idx + 1, actual, mejor)
+```
+
+---
+
+### Ejercicio 51 — Isomorfismo de Grafos por Backtracking
+
+**Clasificación:** 🟡 IMPORTANTE  
+**Dificultad:** ★★★★☆ (4/5)  
+**Origen:** Guía v1.0 (Curso Echevarría), Ejercicio 3.9
+
+**Enunciado**  
+Implementar un algoritmo de backtracking que, dados dos grafos $G_1$ y $G_2$, determine si existe un Isomorfismo entre ambos (una correspondencia biyectiva entre sus vértices que preserve las adyacencias).
+
+#### 1. Idea y Justificación en Lenguaje Natural
+
+* Antes de empezar el backtracking aplicamos **filtros rápidos iniciales**: si $G_1$ y $G_2$ tienen distinta cantidad de vértices, distinta cantidad de aristas o distinta secuencia de grados ordenada, devolvemos `Falso` en el acto.
+* Luego buscamos armar un diccionario `mapeo[u] = v` que asigne a cada vértice $u \in G_1$ un vértice $v \in G_2$ no usado aún:
+  - **Poda por Grado:** Solo probamos mapear $u \to v$ si ambos tienen exactamente el **mismo grado** (`grado(G1, u) == grado(G2, v)`).
+  - **Poda por Consistencia de Adyacencias:** Para todo vecino $u'$ de $u$ en $G_1$ que **ya haya sido mapeado**, su pareja `mapeo[u']` debe ser obligatoriamente vecina de $v$ en $G_2$ (y viceversa). Si falla, descartamos ese emparejamiento en el acto.
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo SonIsomorfos(G1, G2):
+    si G1.cantVertices() != G2.cantVertices() o G1.cantAristas() != G2.cantAristas():
+        devolver Falso
+
+    V1 = G1.vertices(), V2 = G2.vertices()
+    mapeo = diccionario vacío      // u de G1 -> v de G2
+    usados_G2 = conjunto vacío
+
+    devolver IsomorfismoBT(G1, G2, V1, V2, 0, mapeo, usados_G2)
+
+función IsomorfismoBT(G1, G2, V1, V2, idx, mapeo, usados_G2):
+    si idx == longitud(V1):
+        devolver Verdadero
+
+    u = V1[idx]
+    para cada v en V2:
+        // Poda 1: v no usado y mismo grado que u
+        si v no está en usados_G2 y G1.grado(u) == G2.grado(v):
+            // Poda 2: preserva todas las aristas y no-aristas con los vértices ya mapeados
+            si preservaAdyacencias(G1, G2, u, v, mapeo):
+                mapeo[u] = v
+                agregar v a usados_G2
+
+                si IsomorfismoBT(G1, G2, V1, V2, idx + 1, mapeo, usados_G2):
+                    devolver Verdadero
+
+                quitar v de usados_G2   // Backtrack
+                borrar mapeo[u]
+
+    devolver Falso
+```
+
+---
+
+### Ejercicio 52 — Podas para Criptoaritmética: SEND + MORE = MONEY
+
+**Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
+**Origen:** Guía v1.0 (Curso Echevarría), Ejercicio 3.11
+
+**Enunciado**  
+Para el problema de fuerza bruta `"SEND + MORE = MONEY"` (asignar un dígito distinto de 0 a 9 a cada una de las 8 letras `S, E, N, D, M, O, R, Y` para que la suma sea válida), indicar **qué podas realizarías para agilizar su resolución por backtracking**. *(No se pide pseudocódigo, sólo explicar las podas).*
+
+#### 1. Idea y Explicación de las Podas en Lenguaje Natural
+
+En lugar de asignar las 8 letras a ciegas y recién verificar la cuenta al final ($10^8$ casos), aplicamos **4 podas fundamentales** que reducen la búsqueda a casi cero:
+
+1. **Poda por Dígitos No Repetidos (Alldifferent):**
+   Llevamos un arreglo booleano `digito_usado[10]`. Si un dígito ya fue asignado a una letra anterior, no se prueba en ninguna otra letra (baja de $10^8$ a $10! / 2! = 1.814.400$ estados).
+2. **Poda de Ceros a la Izquierda (Restricción de Dominio Inicial):**
+   Por regla matemática, ninguna palabra puede empezar con `0`. Por lo tanto, restringimos desde el inicio **`S != 0`** y **`M != 0`**.
+3. **Poda Analítica del Acarreo Más Significativo (`M = 1`):**
+   Como sumamos dos números de 4 cifras (`SEND + MORE`) y el resultado `MONEY` tiene **5 cifras**, la letra `M` es el acarreo de la columna de los miles. Pero la suma máxima de dos dígitos más un acarreo previo ($9 + 9 + 1 = 19$) jamás puede dar un acarreo de 2. Por lo tanto, **fijamos directamente `M = 1`** antes de empezar ( y además deducimos que `S` debe ser `8` o `9` y `O` debe ser `0` o `1`).
+4. **Poda Columna por Columna (Evaluación Incremental de Derecha a Izquierda):**
+   En vez de elegir las letras en cualquier orden, las asignamos **por columnas de derecha a izquierda** (unidades $\to$ decenas $\to$ centenas $\to$ miles):
+   - Primero asignamos `D`, `E` e `Y` y **verificamos en el acto** si `(D + E) % 10 == Y`. Si no coincide, **podamos la rama inmediatamente** sin siquiera tocar las otras 5 letras (y además podemos calcular directamente `Y = (D + E) % 10` y el acarreo `c1 = (D + E) // 10` sin hacer un ciclo para `Y`!).
+   - Luego en las decenas asignamos `N` y `R` y verificamos en el acto `(N + R + c1) % 10 == E`, y así sucesivamente en cada columna.
 
 ---
 

@@ -1,4 +1,4 @@
-"""Módulo 3: Algoritmos Greedy (Voraces)."""
+"""Módulo 3: Algoritmos Greedy (Voraces) — Fundamentos y Ejercicios de Parcial (13 al 18)."""
 
 def get_content():
     return r"""## 5. Tema 2: Algoritmos Greedy (Voraces)
@@ -32,9 +32,10 @@ Aparece con diferentes metáforas narrativas: charlas en un aula, pedidos de maf
 
 ---
 
-### Ejercicio 4 — Concesión de Permisos a Mafias en la Ruta Costera (Arnook)
+### Ejercicio 13 — Concesión de Permisos a Mafias en la Ruta Costera (Arnook)
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★☆☆☆ (2/5)  
 **Origen:** Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 3 / Guía 02 Ejercicio 12
 
 **Enunciado**  
@@ -153,9 +154,10 @@ En las evaluaciones teóricas y en los TPs de la cátedra se examina la relació
 
 ---
 
-### Ejercicio 5 — Mochila 0-1 con Garantía de Aproximación 1/2
+### Ejercicio 14 — Mochila 0-1 con Garantía de Aproximación 1/2
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
 **Origen:** Guía de Ejercicios 02, Ejercicio 8 / Diapositivas Explicativas de Cátedra
 
 **Enunciado**  
@@ -274,9 +276,10 @@ Se tienen tareas con tiempos de procesamiento y fechas límite de entrega (deadl
 
 ---
 
-### Ejercicio 6 — Minimización de Latencia Máxima (Earliest Deadline First)
+### Ejercicio 15 — Minimización de Latencia Máxima (Earliest Deadline First)
 
 **Clasificación:** 🟡 IMPORTANTE  
+**Dificultad:** ★★☆☆☆ (2/5)  
 **Origen:** Guía de Ejercicios 02, Ejercicio 9 / Práctica
 
 **Enunciado**  
@@ -392,9 +395,10 @@ Aparece cuando el problema exacto es NP-Hard (como Set Cover o Dominating Set) y
 
 ---
 
-### Ejercicio 7 — Ubicación Voraz de Antenas Celulares con Costo por Vecindario
+### Ejercicio 16 — Ubicación Voraz de Antenas Celulares con Costo por Vecindario
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★★☆☆ (3/5)  
 **Origen:** Parcial 2024-2-3 (10 de diciembre de 2024), Ejercicio 4
 
 **Enunciado**  
@@ -501,9 +505,10 @@ Aparece cuando se plantea un problema de etapas secuenciales y se pide evaluar s
 
 ---
 
-### Ejercicio 8 — Traslado Crítico INVAP: Enfoque Voraz y Contraejemplo Formal
+### Ejercicio 17 — Traslado Crítico INVAP: Enfoque Voraz y Contraejemplo Formal
 
 **Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★☆☆☆ (2/5)  
 **Origen:** Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 3
 
 **Enunciado**  
@@ -597,10 +602,52 @@ Algoritmo TrasladoINVAPGreedy(G, origen, destino):
 
 ---
 
-### Errores Frecuentes en Exámenes sobre Greedy
+### Ejercicio 18 — Ruta de Transporte con Estaciones (Greedy + Instancia Óptima y No Óptima)
 
-1. **Afirmar que Greedy es óptimo sin demostrarlo:** Poner *"es óptimo porque siempre elijo lo mejor en cada paso"* es causal de pérdida total de puntos. Se debe presentar *Greedy Stays Ahead* o *Argumento de Intercambio*.
-2. **Dar un contraejemplo sin números:** Un contraejemplo exige nodos, aristas y costos numéricos explícitos.
-3. **No justificar por qué el algoritmo es voraz:** Se debe explicitar que la decisión es local, miope e irrevocable.
-4. **Confundir Interval Scheduling con Interval Scheduling Ponderado:** Si las tareas tienen valores o beneficios distintos, ordenar por tiempo de fin no es óptimo.
+**Clasificación:** 🔴 IMPRESCINDIBLE  
+**Dificultad:** ★★☆☆☆ (2/5)  
+**Origen:** Parcial 2026-2-1 (Enunciados), Ejercicio 4
+
+**Enunciado**  
+Un transporte debe recorrer una ruta hasta su objetivo final pasando por $N$ estaciones intermedias con tarifas fijas $T[1 \dots N]$ por detenerse. Desde cada estación puede ir a la siguiente, o saltear una o dos estaciones (no puede saltear más de dos estaciones consecutivas). Diseñar un algoritmo greedy que permita resolver el problema. Si el algoritmo no asegura la solución óptima, indicar una instancia donde la solución obtenida sea la óptima y una instancia donde la solución obtenida no sea la óptima.
+
+#### 1. Idea y Justificación en Lenguaje Natural
+
+* **Regla Voraz:** Estando parados en la posición actual $i$ (empezando en el origen $i = 0$), miramos hasta 3 pasos adelante ($i+1, i+2, i+3$). Si el destino final ($N+1$) ya está a nuestro alcance ($i + 3 \ge N + 1$), saltamos directo al destino sin pagar nada más. Si no, **elegimos parar entre las estaciones alcanzables $\{i+1, i+2, i+3\}$ en aquella que tenga la menor tarifa inmediata** (y ante empate, en la más lejana).
+* **¿Asegura la solución óptima? NO.** Porque elegir una estación apenas más barata hoy puede dejarnos cortos de alcance y obligarnos a pisar estaciones carísimas más adelante.
+* **Instancia donde SÍ obtiene la solución óptima:**
+  - Tarifas de 3 estaciones: `T = [10, 20, 5]`.
+  - Desde el inicio (0) alcanza las estaciones 1 ($10), 2 ($20) y 3 ($5). Elige la más barata: **estación 3** (costo $5), y desde la 3 llega directo al destino (4). Costo Greedy = **$5**, que coincide con el óptimo global.
+* **Instancia donde NO obtiene la solución óptima (Contraejemplo):**
+  - Tarifas de 4 estaciones: `T = [5, 6, 100, 100]`.
+  - Desde el inicio (0) las alcanzables son 1 ($5), 2 ($6) y 3 ($100). Greedy elige la más barata: **estación 1** ($5).
+  - Pero desde la estación 1 solo alcanza hasta la 4 (estaciones 2, 3 y 4, con costos $6, $100 y $100), viéndose obligado a parar de nuevo en la **estación 2** ($6) para recién de ahí llegar al destino (5). **Costo Greedy = $5 + $6 = $11**.
+  - **Solución Óptima:** Saltar directo del inicio a la **estación 2** ($6) y de la estación 2 directo al destino (5) salteando la 3 y la 4. **Costo Óptimo = $6 < $11**.
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo TransporteGreedy(T, N):
+    actual = 0   // 0 es el origen, N+1 es el destino final
+    paradas = []
+    costo_total = 0
+
+    mientras actual + 3 < N + 1:
+        // Entre las 3 estaciones alcanzables (actual+1, actual+2, actual+3),
+        // elegir la de menor tarifa (en empate, la más lejana)
+        mejor_est = actual + 1
+        para k desde actual + 2 hasta actual + 3:
+            si T[k] <= T[mejor_est]:
+                mejor_est = k
+
+        agregar mejor_est a paradas
+        costo_total = costo_total + T[mejor_est]
+        actual = mejor_est
+
+    devolver (costo_total, paradas)
+```
+
+#### 3. Complejidad Temporal
+
+* En cada iteración avanzamos al menos 1 estación y miramos solo 3 opciones hacia adelante en $O(1)$. Por lo tanto, la complejidad temporal es **$O(N)$** y espacial **$O(N)$**.
 """
