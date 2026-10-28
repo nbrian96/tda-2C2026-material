@@ -149,8 +149,31 @@ function getPageForExercise(num) {
   if (num >= 66 && num <= 70) return "flujo.html";
   if (num >= 71 && num <= 74) return "reducciones.html";
   if (num >= 75 && num <= 79) return "integradores.html";
-  if (num >= 80 && num <= 83) return "tipo_parcial.html";
   return "index.html";
+}
+
+function sortCardsByDifficulty() {
+  const cards = Array.from(document.querySelectorAll(".exercise-card"));
+  if (cards.length <= 1) return;
+  const parentMap = new Map();
+  cards.forEach(card => {
+    const parent = card.parentNode;
+    if (!parentMap.has(parent)) parentMap.set(parent, []);
+    parentMap.get(parent).push(card);
+  });
+  parentMap.forEach((cardList, parent) => {
+    if (cardList.length > 1) {
+      cardList.sort((a, b) => {
+        const diffA = parseInt(a.getAttribute("data-difficulty") || "3", 10);
+        const diffB = parseInt(b.getAttribute("data-difficulty") || "3", 10);
+        if (diffA !== diffB) return diffA - diffB;
+        const numA = parseInt(a.getAttribute("data-num") || "0", 10);
+        const numB = parseInt(b.getAttribute("data-num") || "0", 10);
+        return numA - numB;
+      });
+      cardList.forEach(card => parent.appendChild(card));
+    }
+  });
 }
 
 // Initialization on DOM ready
@@ -163,6 +186,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (document.getElementById("entrenador-30s")) {
     initTrainer();
   }
+
+  // Ordenar tarjetas por dificultad ascendente (1★ a 5★) por defecto
+  sortCardsByDifficulty();
 
   // Abrir temporalmente todos los drawers para que Mermaid calcule la geometría real
   const drawers = document.querySelectorAll(".exercise-solution-drawer");
@@ -460,7 +486,9 @@ function applyFilters() {
 
     // Paradigm filter
     let matchesParadigm = true;
-    if (currentParadigm !== "all") {
+    if (currentParadigm === "parciales") {
+      matchesParadigm = (card.getAttribute("data-parcial") === "true");
+    } else if (currentParadigm !== "all") {
       matchesParadigm = (paradigm === currentParadigm);
     }
 

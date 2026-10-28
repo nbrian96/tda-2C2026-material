@@ -38,119 +38,62 @@ Realizar un algoritmo que resuelva el problema de las 8 reinas mediante backtrac
 **Qué está evaluando la cátedra**  
 Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos de acceso directo para columnas y diagonales directas/inversas en $O(1)$, y gestión simétrica del estado (*hacer decisión $\to$ recursión $\to$ deshacer decisión*).
 
-#### 1. Deducción Metodológica Formal (Los 5 Pasos de Backtracking)
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-1. **Paso 1: Definición del Estado y Vector Solución:**
-   Colocamos exactamente una reina por fila, avanzando fila por fila desde $fila = 0$ hasta $fila = 7$. Esto elimina automáticamente la posibilidad de conflictos de fila.
-   El vector solución es un arreglo unidimensional `solucion` de longitud 8, donde `solucion[i] = col` indica que en la fila $i$ la reina fue colocada en la columna `col`.
-2. **Paso 2: Deducción Matemática del Mapeo de Diagonales en $O(1)$:**
-   * **Columnas:** Arreglo booleano `col_ocupada[8]`. Si la columna $c$ tiene una reina, `col_ocupada[c] = True`.
-   * **Diagonal Principal ($\setminus$):** Para todas las celdas $(f, c)$ que comparten una misma diagonal principal descendente, la diferencia $f - c$ es una constante invariante:
-     $$-7 \le f - c \le 7$$
-     Para mapear este rango de 15 valores a índices válidos de arreglo $[0, 14]$, aplicamos un desplazamiento de $+7$:
-     $$\text{clave}_{\text{prin}}(f, c) = f - c + 7$$
-     Estructura: arreglo booleano `diag_prin[15]`.
-   * **Diagonal Secundaria ($/$):** Para todas las celdas $(f, c)$ que comparten una misma diagonal ascendente, la suma $f + c$ es una constante invariante:
-     $$0 \le f + c \le 14$$
-     Directamente mapea al rango $[0, 14]$:
-     $$\text{clave}_{\text{sec}}(f, c) = f + c$$
-     Estructura: arreglo booleano `diag_sec[15]`.
-3. **Paso 3: Poda por Factibilidad en $O(1)$:**
-   Una reina puede situarse en $(fila, col)$ si y solo si:
-   $$\neg \, col\_ocupada[col] \quad \land \quad \neg \, diag\_prin[fila - col + 7] \quad \land \quad \neg \, diag\_sec[fila + col]$$
-   Esta consulta involucra exactamente 3 accesos indexados a memoria en tiempo $O(1)$.
-4. **Paso 4: Mecanismo de Backtracking (Restauración de Estado):**
-   Al probar una columna factible, se marcan en `True` las 3 estructuras booleanas y se almacena `solucion[fila] = col`. Al retornar de la llamada recursiva (si esa rama no alcanzó solución), es **estrictamente obligatorio** restablecer los booleanos a `False` y `solucion[fila] = -1` antes de probar la siguiente columna.
-5. **Paso 5: Complejidad:**
-   * **Tiempo:** En el peor caso teórico sin podas el espacio sería $8^8 \approx 16.7$ millones de hojas. Al colocar una reina por fila y descartar columnas usadas, el árbol se reduce a $8! = 40.320$ permutaciones. Con las podas diagonales en tiempo real, el algoritmo explora apenas unos 876 nodos para hallar la primera solución. Complejidad asintótica: $O(N!)$ en el peor caso.
-   * **Espacio Auxiliar:** $O(N)$ para la pila de recursión (profundidad 8) más $8 + 15 + 15 = 38$ booleanos de control.
+* **Espacio de Búsqueda y Representación del Estado:**
+  - Colocamos exactamente una reina por fila avanzando secuencialmente ($fila = 0, \dots, n-1$). Esto descarta automáticamente cualquier conflicto entre filas y reduce el espacio de búsqueda de $n^n$ a las $n!$ permutaciones de columnas.
+  - El estado se representa con un arreglo unidimensional `solucion` de tamaño $n$, donde `solucion[i] = col` indica que en la fila $i$ la reina se ubica en la columna `col`.
+* **Podas por Factibilidad con Verificación en $O(1)$:**
+  Para validar en tiempo constante si una casilla $(fila, col)$ está amenazada sin recorrer el tablero con bucles $O(n)$, empleamos 3 arreglos booleanos de acceso directo:
+  1. **Columnas (`col_ocupada[n]`):** Si la columna `col` ya tiene una reina, no se puede usar.
+  2. **Diagonal Principal ($\setminus$, clave $fila - col + n - 1$):** Al movernos en diagonal descendente ($\Delta f = +1, \Delta c = +1$), la diferencia $fila - col$ permanece invariante en el rango $[-(n-1), n-1]$. Desplazamos con $+(n-1)$ para mapear a índices válidos $[0, 2n-2]$ en un arreglo booleano `diag_prin[2n - 1]`.
+  3. **Diagonal Secundaria ($/$, clave $fila + col$):** Al movernos en diagonal ascendente ($\Delta f = -1, \Delta c = +1$), la suma $fila + col$ es invariante en el rango $[0, 2n-2]$. Usamos el arreglo booleano `diag_sec[2n - 1]`.
+  - La casilla $(fila, col)$ es factible si y solo si los tres booleanos están en `Falso` (3 accesos indexados en tiempo $O(1)$).
+* **Mecanismo de Backtracking (Restauración de Estado):**
+  Al probar una columna factible, marcamos los 3 booleanos en `Verdadero` y asignamos `solucion[fila] = col`. Si la llamada recursiva no encuentra solución, es **estrictamente obligatorio** desmarcar los 3 booleanos en `Falso` y restaurar `solucion[fila] = -1` antes de probar la columna siguiente.
 
-#### 2. Explicación Directa de por qué el Chequeo Diagonal es O(1)
-
-* **Diagonal Principal ($\setminus$, baja de izquierda a derecha):** Cuando nos movemos un casillero abajo y uno a la derecha (`fila + 1`, `col + 1`), la resta `fila - col` no cambia. Por lo tanto, todas las casillas de una misma diagonal principal tienen el mismo resultado en `fila - col`. Le sumamos `+ 7` solo para que el índice quede entre `0` y `14` y no dé negativo.
-* **Diagonal Secundaria ($/$, sube de izquierda a derecha):** Cuando nos movemos un casillero arriba y uno a la derecha (`fila - 1`, `col + 1`), lo que se compensa y se mantiene siempre igual es la suma `fila + col` (entre `0` y `14`).
-* Gracias a esto, para saber si una casilla `(fila, col)` está amenazada no hace falta recorrer el tablero: alcanza con mirar 3 posiciones fijas en los arreglos booleanos (`col_ocupada[col]`, `diag_prin[fila - col + 7]` y `diag_sec[fila + col]`) en tiempo `O(1)`.
-
-#### 3. Ejemplo Concreto y Tabla de Traza Paso a Paso (Primeras Filas)
-
-Búsqueda de la primera solución sobre el tablero $8 \times 8$:
-
-| Fila | Columna Probada | Clave Col ($c$) | Clave Diag Prin ($f - c + 7$) | Clave Diag Sec ($f + c$) | Estado de Booleanos | Decisión |
-| :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| **0** | $0$ | $0$ | $0 - 0 + 7 = 7$ | $0 + 0 = 0$ | Libres | **Colocar Reina en $(0, 0)$**, marcar |
-| **1** | $0$ | $0$ | $1 - 0 + 7 = 8$ | $1 + 0 = 1$ | `col[0]=True` | **PODA** (conflicto columna 0) |
-| **1** | $1$ | $1$ | $1 - 1 + 7 = 7$ | $1 + 1 = 2$ | `diag_prin[7]=True` | **PODA** (conflicto diag prin con $(0,0)$) |
-| **1** | $2$ | $2$ | $1 - 2 + 7 = 6$ | $1 + 2 = 3$ | Libres | **Colocar Reina en $(1, 2)$**, marcar |
-| **2** | $0$ | $0$ | - | - | `col[0]=True` | **PODA** (conflicto columna 0) |
-| **2** | $1$ | $1$ | $2 - 1 + 7 = 8$ | $2 + 1 = 3$ | `diag_sec[3]=True` | **PODA** (conflicto diag sec con $(1,2)$) |
-| **2** | $2$ | $2$ | - | - | `col[2]=True` | **PODA** (conflicto columna 2) |
-| **2** | $3$ | $3$ | $2 - 3 + 7 = 6$ | $2 + 3 = 5$ | `diag_prin[6]=True` | **PODA** (conflicto diag prin con $(1,2)$) |
-| **2** | $4$ | $4$ | $2 - 4 + 7 = 5$ | $2 + 4 = 6$ | Libres | **Colocar Reina en $(2, 4)$**, marcar |
-
-*Primera solución completa hallada:*
-`solucion = [0, 4, 7, 5, 2, 6, 1, 3]` (columnas por fila de 0 a 7).
-
-#### 4. Diagrama del Árbol de Decisiones de Backtracking
-
-```mermaid
-graph TD
-    R["Raíz: Fila 0"] --> C0["Reina (0,0)"]:::opt
-    C0 --> F1_0["(1,0): Colisión Col"]:::bad
-    C0 --> F1_1["(1,1): Colisión Diag Prin"]:::bad
-    C0 --> F1_2["Reina (1,2)"]:::opt
-    F1_2 --> F2_0["(2,0): Colisión Col"]:::bad
-    F1_2 --> F2_1["(2,1): Colisión Diag Sec"]:::bad
-    F1_2 --> F2_4["Reina (2,4)"]:::opt
-    F2_4 --> SOL["... Avanza hasta completar Fila 7"]:::done
-    classDef opt fill:#1d4ed8,stroke:#1e40af,stroke-width:2px,color:#fff
-    classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:1px,color:#fff
-    classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
-```
-
-#### 5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
+#### 2. Semi-Pseudocódigo Simplificado
 
 ```text
-Algoritmo Resolver8Reinas():
-    n = 8
-    solucion = arreglo de tamaño n inicializado en -1
-    col_ocupada = arreglo de tamaño n en Falso
-    diag_prin = arreglo de tamaño (2n - 1) en Falso  // fila - col + (n - 1)
-    diag_sec = arreglo de tamaño (2n - 1) en Falso   // fila + col
-
-    si Resolver8ReinasBT(0, solucion, col_ocupada, diag_prin, diag_sec, n):
+Algoritmo NReinas(n):
+    solucion = arreglo[-1] * n
+    col_ocupada = arreglo[Falso] * n
+    diag_prin = arreglo[Falso] * (2*n - 1)  // clave: fila - col + (n - 1)
+    diag_sec = arreglo[Falso] * (2*n - 1)   // clave: fila + col
+    si NReinasBT(0, solucion, col_ocupada, diag_prin, diag_sec, n):
         devolver solucion
-    sino:
-        devolver "Sin solución"
+    devolver "Sin solución"
 
-función Resolver8ReinasBT(fila, solucion, col_ocupada, diag_prin, diag_sec, n):
-    // Caso Base: se ubicaron las 8 reinas sin conflictos
+función NReinasBT(fila, solucion, col_ocupada, diag_prin, diag_sec, n):
     si fila == n:
-        devolver Verdadero
+        devolver Verdadero  // Caso Base: se ubicaron las n reinas
 
     para col desde 0 hasta n - 1:
         dp = fila - col + (n - 1)
         ds = fila + col
-
-        // Poda por Factibilidad en O(1)
+        // Poda por factibilidad en O(1)
         si no col_ocupada[col] y no diag_prin[dp] y no diag_sec[ds]:
-            // 1. Marcar decisión
             solucion[fila] = col
-            col_ocupada[col] = Verdadero
-            diag_prin[dp] = Verdadero
-            diag_sec[ds] = Verdadero
-
-            // 2. Recursión a fila siguiente
-            si Resolver8ReinasBT(fila + 1, solucion, col_ocupada, diag_prin, diag_sec, n):
+            col_ocupada[col] = diag_prin[dp] = diag_sec[ds] = Verdadero
+            si NReinasBT(fila + 1, solucion, col_ocupada, diag_prin, diag_sec, n):
                 devolver Verdadero
-
-            // 3. Deshacer decisión (Backtrack)
             solucion[fila] = -1
-            col_ocupada[col] = Falso
-            diag_prin[dp] = Falso
-            diag_sec[ds] = Falso
+            col_ocupada[col] = diag_prin[dp] = diag_sec[ds] = Falso  // Backtrack
 
     devolver Falso
 ```
+
+#### 3. Justificación de Complejidad
+
+* **Árbol de Recursión y Estado:**
+  - El estado en cada llamada está determinado por la `fila` actual ($0 \le fila \le n$), con profundidad máxima $n$.
+  - En la fila $0$ hay $n$ opciones; en la fila $1$, a lo sumo $n-1$ opciones libres; en la fila $k$, a lo sumo $n-k$ opciones.
+* **Complejidad Temporal en Peor Caso:**
+  - En el peor caso teórico (cuando no se poda o se buscan todas las soluciones), el árbol tiene a lo sumo $n!$ hojas. En cada nodo, las verificaciones y transiciones toman $O(1)$ gracias a los vectores booleanos. La cota superior asintótica en el peor caso es **$O(n!)$**.
+* **Comportamiento Promedio con Podas:**
+  - Las podas en $O(1)$ de las diagonales principales y secundarias descartan subárboles completos en los primeros niveles. Para $n = 8$, de las $8^8 \approx 16.7 \times 10^6$ configuraciones ingenuas y las $8! = 40.320$ permutaciones, el algoritmo evalúa apenas **876 nodos** para hallar la primera solución válida.
+* **Complejidad Espacial:**
+  - **$O(n)$** auxiliar: la pila de llamadas tiene profundidad $n$, el vector de solución requiere tamaño $n$, y los arreglos booleanos ocupan $n + 2(2n-1) = 5n - 2 = O(n)$ memoria contigua.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -185,67 +128,31 @@ Desarrollar un algoritmo que, dado el valor de $n$, indique cuáles son los cuat
 **Qué está evaluando la cátedra**  
 Diseño de un árbol de backtracking acotado a profundidad 4, imposición de orden no creciente para eliminar ramas simétricas redundantes ($w \ge x \ge y \ge z$), poda por cota inferior y determinación analítica del último término en $O(1)$.
 
-#### 1. Deducción Metodológica Formal (Los 5 Pasos)
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-1. **Paso 1: Eliminación de Simetrías por Orden No Creciente:**
-   Toda solución permutable representa la misma descomposición. Para evitar explorar las $4! = 24$ permutaciones repetidas de una misma tupla, forzamos la restricción de monotonía:
-   $$w \ge x \ge y \ge z \ge 0$$
-2. **Paso 2: Determinación Analítica en $O(1)$ del Cuarto Cuadrado:**
-   No es necesario iterar en el cuarto nivel. Si ya asignamos $w, x, y$, el remanente obligatorio es $R = n - (w^2 + x^2 + y^2)$. El algoritmo simplemente verifica en $O(1)$ si $R$ es un cuadrado perfecto ($z = \lfloor\sqrt{R}\rfloor$ y $z^2 = R$) y si respeta $z \le y$. Si se cumplen ambas condiciones, la solución se completa con éxito sin bifurcaciones adicionales.
-3. **Paso 3: Poda por Cota Superior (Factibilidad):**
-   En el paso $k$ con remanente $R$, ningún valor $v$ puede superar $\lfloor\sqrt{R}\rfloor$, ni el valor asignado en el paso anterior $v_{\text{previo}}$:
-   $$v \le \min(v_{\text{previo}}, \; \lfloor\sqrt{R}\rfloor)$$
-4. **Paso 4: Poda por Cota Inferior (Optimalidad/Alcance):**
-   Quedan $(4 - paso)$ términos por asignar. Como los valores son no crecientes, cada uno de los términos restantes aportará a lo sumo $v^2$. Si la suma máxima potencial es estrictamente menor al remanente requerido:
-   $$(4 - paso) \cdot v^2 < R$$
-   entonces es **matemáticamente imposible** alcanzar $R$ utilizando valores menores o iguales a $v$. Se interrumpe el bucle de prueba (`break`) podando todo el resto del subárbol de una sola vez.
-5. **Paso 5: Complejidad:**
-   * **Tiempo:** Sin podas, 4 bucles hasta $\sqrt{n}$ requerirían $O((\sqrt{n})^4) = O(n^2)$. Al resolver el cuarto término analíticamente en $O(1)$, la cota máxima cae a $O((\sqrt{n})^3) = O(n^{3/2})$. Con la poda de simetría ($w \ge x \ge y \ge z$) y la cota inferior $(4-k)v^2 < R$, el número real de estados explorados es una pequeña fracción de $n^{3/2}$, resolviendo $n = 10^6$ en milisegundos.
-   * **Espacio Auxiliar:** $O(1)$ de memoria adicional fija más la pila de recursión de profundidad a lo sumo 4.
+* **Espacio de Búsqueda y Definición del Estado:**
+  - Se busca descomponer un entero $n \ge 0$ en la suma de 4 cuadrados no negativos: $n = w^2 + x^2 + y^2 + z^2$.
+  - El árbol de búsqueda tiene profundidad fija de 4 niveles ($paso = 0, 1, 2, 3$). El estado en cada llamada se define por `(paso, remanente, max_limite)`.
+* **Poda de Simetrías por Orden No Creciente:**
+  - Para no evaluar las $4! = 24$ permutaciones equivalentes de la misma descomposición, imponemos la restricción monótona $w \ge x \ge y \ge z \ge 0$. Cada término $v$ a probar no puede superar el valor asignado en el paso anterior (`max_limite`).
+* **Poda por Factibilidad (Cota Superior):**
+  - Ningún término $v$ puede superar la raíz cuadrada entera del remanente actual $R$: $v \le \min(max\_limite, \lfloor\sqrt{R}\rfloor)$.
+* **Poda por Cota Inferior (Optimalidad / Alcance):**
+  - Quedan $terminos\_restantes = 4 - paso$ términos por asignar. Como los valores son no crecientes, cada uno aportará a lo sumo $v^2$. Si $(4 - paso) \cdot v^2 < R$, es matemáticamente imposible cubrir $R$ con valores menores o iguales a $v$. Se interrumpe el bucle de prueba (`break`), podando todo el subárbol inferior.
+* **Poda Analítica del 4° Término en $O(1)$:**
+  - Al llegar a $paso = 3$, no se itera. Se calcula en $O(1)$ si el remanente $R$ es un cuadrado perfecto: $z = \lfloor\sqrt{R}\rfloor$. Si $z^2 == R$ y $z \le max\_limite$, se asigna $solucion[3] = z$ y se retorna con éxito directamente.
 
-#### 2. Ejemplo Concreto y Traza Paso a Paso ($n = 31$)
-
-Sea $n = 31$. Buscamos $w \ge x \ge y \ge z$ tales que $w^2 + x^2 + y^2 + z^2 = 31$.
-
-| Nivel / Paso | Remanente ($R$) | Límite Superior ($v \le \min$) | Valor $v$ Probado | ¿Poda $(4-k)v^2 < R$? | Acción Siguiente |
-| :---: | :---: | :---: | :---: | :---: | :--- |
-| **Paso 0 ($w$)** | $31$ | $\lfloor\sqrt{31}\rfloor = 5$ | $v = 5$ | $4 \cdot 5^2 = 100 \ge 31$ (OK) | Asignar $w = 5$, nuevo $R = 31 - 25 = 6$ |
-| **Paso 1 ($x$)** | $6$ | $\min(5, \lfloor\sqrt{6}\rfloor) = 2$ | $v = 2$ | $3 \cdot 2^2 = 12 \ge 6$ (OK) | Asignar $x = 2$, nuevo $R = 6 - 4 = 2$ |
-| **Paso 2 ($y$)** | $2$ | $\min(2, \lfloor\sqrt{2}\rfloor) = 1$ | $v = 1$ | $2 \cdot 1^2 = 2 \ge 2$ (OK) | Asignar $y = 1$, nuevo $R = 2 - 1 = 1$ |
-| **Paso 3 ($z$)** | $1$ | - | $z = \lfloor\sqrt{1}\rfloor = 1$ | $1^2 = 1 == R$ y $1 \le 1$ | **¡ÉXITO EN EL 4TO TÉRMINO!** |
-
-*Solución obtenida:* $(w, x, y, z) = (5, 2, 1, 1)$.
-*Verificación:* $5^2 + 2^2 + 1^2 + 1^2 = 25 + 4 + 1 + 1 = 31$.
-*Eficiencia:* Se halló la solución en exactamente 4 evaluaciones directas sin retrocesos.
-
-#### 3. Diagrama Visual del Árbol de Lagrange
-
-```mermaid
-graph TD
-    R["n = 31 | Términos restantes: 4"] --> W5["w = 5 | R = 6"]:::opt
-    W5 --> X2["x = 2 | R = 2"]:::opt
-    W5 --> X1["x = 1 - cota inferior 3 menor que 6 - PODA INFERIOR"]:::bad
-    X2 --> Y1["y = 1 | R = 1"]:::opt
-    Y1 --> Z1["z = sqrt(1) = 1 | SOLUCIÓN: (5, 2, 1, 1)"]:::done
-    classDef opt fill:#1d4ed8,stroke:#1e40af,stroke-width:2px,color:#fff
-    classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:1px,color:#fff
-    classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
-```
-
-#### 4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
+#### 2. Semi-Pseudocódigo Simplificado
 
 ```text
 Algoritmo CuatroCuadradosLagrange(n):
     solucion = arreglo [0, 0, 0, 0]
-    limite_inicial = entero(raiz(n))
-
-    si CuatroCuadradosBT(0, n, limite_inicial, solucion):
+    si LagrangeBT(0, n, entero(raiz(n)), solucion):
         devolver solucion
-    sino:
-        devolver "Sin solución"
+    devolver "Sin solución"
 
-función CuatroCuadradosBT(paso, remanente, max_limite, solucion):
-    // En el 4to término, se calcula directamente por raíz exacta en O(1)
+función LagrangeBT(paso, remanente, max_limite, solucion):
+    // 4to término resuelto analíticamente en O(1)
     si paso == 3:
         z = entero(raiz(remanente))
         si z * z == remanente y z <= max_limite:
@@ -254,19 +161,31 @@ función CuatroCuadradosBT(paso, remanente, max_limite, solucion):
         devolver Falso
 
     limite_sup = min(max_limite, entero(raiz(remanente)))
-
     para v desde limite_sup bajando hasta 0:
-        // Poda por cota inferior: ni usando v en todos los restantes alcanzamos remanente
-        terminos_restantes = 4 - paso
-        si terminos_restantes * (v * v) < remanente:
+        // Poda por cota inferior: ni usando v en los términos restantes alcanzamos remanente
+        si (4 - paso) * (v * v) < remanente:
             romper bucle // Ningún valor menor podrá alcanzarlo
 
         solucion[paso] = v
-        si CuatroCuadradosBT(paso + 1, remanente - v * v, v, solucion):
+        si LagrangeBT(paso + 1, remanente - v * v, v, solucion):
             devolver Verdadero
 
     devolver Falso
 ```
+
+#### 3. Justificación de Complejidad
+
+* **Árbol de Recursión y Estado:**
+  - El árbol posee una profundidad constante de a lo sumo 4 niveles ($paso \in \{0, 1, 2, 3\}$).
+  - En cada nivel $k$, la variable $v$ toma valores entre $0$ y $\lfloor\sqrt{n}\rfloor$.
+* **Complejidad Temporal en Peor Caso:**
+  - Sin optimizaciones, 4 bucles anidados hasta $\sqrt{n}$ requerirían $O((\sqrt{n})^4) = O(n^2)$.
+  - Al resolver el último término analíticamente en $O(1)$ mediante raíz entera, el árbol se reduce a 3 niveles libres, acotando el peor caso teórico a **$O(n^{3/2})$**.
+* **Comportamiento Promedio con Podas:**
+  - La restricción de orden monótono $w \ge x \ge y \ge z$ divide el espacio de búsqueda por $4! = 24$.
+  - La poda por cota inferior $(4 - paso) \cdot v^2 < R$ trunca de raíz las ramas infértiles, provocando que la búsqueda encuentre descomposiciones válidas casi de forma directa.
+* **Complejidad Espacial:**
+  - **$O(1)$** auxiliar: la pila recursiva tiene profundidad fija de 4 marcos y el arreglo de solución tiene 4 posiciones constantes.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -297,95 +216,66 @@ Implementar un algoritmo que dado un grafo no dirigido $G = (V, E)$ devuelva un 
 **Qué está evaluando la cátedra**  
 Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos extremos debe pertenecer a la cobertura), poda por cota superior (*Branch and Bound*) descartando ramas que alcancen o superen el mejor tamaño ya hallado.
 
-#### 1. Deducción Metodológica Formal (Los 5 Pasos)
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-1. **Paso 1: Definición de Vertex Cover:**
-   Un conjunto $C \subseteq V$ es un Vertex Cover de $G = (V, E)$ si para toda arista $(u, v) \in E$, se cumple que $u \in C \lor v \in C$. Buscamos minimizar $|C|$.
-2. **Paso 2: Ramificación por Arista No Cubierta (Factor de Branching 2):**
-   En lugar de ramificar vértice por vértice ($2^{|V|}$ hojas), buscamos una arista arbitraria $(u, v)$ que **aún no esté cubierta** por el conjunto actual $C$:
-   * **Rama 1:** Incluir el vértice $u$ en $C$ y continuar la búsqueda.
-   * **Rama 2:** Incluir el vértice $v$ en $C$ y continuar la búsqueda.
-   Esto garantiza que cada bifurcación cubre al menos una arista nueva y acota la profundidad del árbol al tamaño del Vertex Cover mínimo $k$.
-3. **Paso 3: Poda por Cota Superior (Branch and Bound):**
-   Mantenemos el tamaño de la mejor cobertura factible hallada hasta el momento: `mejor_tamano = len(mejor_solucion)` (inicializada trivialmente en $|V|$).
-   Si en cualquier nodo del árbol el tamaño de la cobertura actual satisface:
-   $$|C_{\text{actual}}| \ge \text{mejor tamaño}$$
-   se poda inmediatamente la rama. Ninguna extensión de $C_{\text{actual}}$ puede mejorar el récord actual.
-4. **Paso 4: Caso Base y Actualización del Récord:**
-   Si no quedan aristas sin cubrir, el conjunto actual $C_{\text{actual}}$ es un Vertex Cover válido y su tamaño es estrictamente menor a `mejor_tamano`. Se actualiza la mejor solución con una copia profunda de $C_{\text{actual}}$.
-5. **Paso 5: Complejidad:**
-   * **Tiempo:** $O(2^k \cdot |E|)$ en el peor caso, donde $k$ es el tamaño del Vertex Cover óptimo. Esto es exponencialmente superior al algoritmo ingenuo $O(2^{|V|} \cdot |E|)$, especialmente cuando $k \ll |V|$.
-   * **Espacio Auxiliar:** $O(|V|)$ para almacenar el conjunto actual y la pila de recursión.
+* **Espacio de Búsqueda y Definición del Problema:**
+  - Un Vertex Cover es un conjunto $C \subseteq V$ tal que toda arista $(u, v) \in E$ tiene al menos un extremo en $C$ ($u \in C \lor v \in C$). Buscamos minimizar $|C|$.
+  - El espacio de búsqueda combinatorio de todos los subconjuntos tiene tamaño $2^{|V|}$.
+* **Estrategia de Ramificación por Arista No Cubierta (Factor de Ramificación 2):**
+  - En lugar de ramificar vértice por vértice, buscamos una arista $(u, v) \in E$ que aún no esté cubierta por la selección actual ($u \notin C \land v \notin C$).
+  - Como obligatoriamente toda arista debe ser cubierta por una solución factible, al menos uno de sus dos extremos debe estar en $C$. Por ende, bifurcamos en exactamente dos ramas:
+    1. **Rama 1:** Incluir el vértice $u$ en $C$ y continuar la búsqueda.
+    2. **Rama 2:** Incluir el vértice $v$ en $C$ y continuar la búsqueda.
+* **Poda por Optimalidad (Branch and Bound):**
+  - Mantenemos la mejor cobertura factible encontrada hasta el momento (`mejor_solucion`), inicializada con $V$ (tamaño $|V|$).
+  - Si en cualquier nodo del árbol $|C_{\text{actual}}| \ge |mejor\_solucion|$, **podamos la rama de inmediato**. Como los costos son no negativos, ninguna extensión de $C_{\text{actual}}$ podrá mejorar el récord actual.
+* **Caso Base:**
+  - Si no quedan aristas sin cubrir y $|C_{\text{actual}}| < |mejor\_solucion|$, se halló una cobertura válida estrictamente menor: se actualiza `mejor_solucion` con una copia profunda de $C_{\text{actual}}$.
 
-#### 2. Ejemplo Concreto y Traza Paso a Paso
-
-Sea el grafo con 4 vértices $V = \{1, 2, 3, 4\}$ y aristas $E = \{(1, 2), (2, 3), (3, 4)\}$ (camino de 4 vértices).
-
-| Paso / Rama | Cobertura Actual ($C$) | Cota Actual ($|C|$) | Arista No Cubierta Elegida | Decisión / Poda |
-| :---: | :---: | :---: | :---: | :--- |
-| **Inicio** | $\emptyset$ | $0$ | $(1, 2)$ | Mejor récord inicial: $|V| = 4$ |
-| **Rama 1 (incluir 1)** | $\{1\}$ | $1 < 4$ | $(2, 3)$ | Ramificar con arista $(2, 3)$ |
-| **Rama 1.1 (incluir 2)** | $\{1, 2\}$ | $2 < 4$ | $(3, 4)$ | Ramificar con arista $(3, 4)$ |
-| **Rama 1.1.1 (incluir 3)** | $\{1, 2, 3\}$ | $3 < 4$ | Ninguna | **Cobertura válida hallada! Récord = 3** ($\{1, 2, 3\}$) |
-| **Rama 1.1.2 (incluir 4)** | $\{1, 2, 4\}$ | $3 \ge 3$ | - | **PODA BRANCH & BOUND** ($|C| \ge 3$) |
-| **Rama 1.2 (incluir 3)** | $\{1, 3\}$ | $2 < 3$ | $(3, 4)$ cubierta! Aristas libres: Ninguna! | **¡Nuevo Récord Óptimo = 2!** ($\{1, 3\}$) |
-| **Rama 2 (incluir 2)** | $\{2\}$ | $1 < 2$ | $(3, 4)$ | Ramificar con arista $(3, 4)$ |
-| **Rama 2.1 (incluir 3)** | $\{2, 3\}$ | $2 \ge 2$ | - | **PODA BRANCH & BOUND** ($|C| \ge 2$) |
-| **Rama 2.2 (incluir 4)** | $\{2, 4\}$ | $2 \ge 2$ | - | **PODA BRANCH & BOUND** ($|C| \ge 2$) |
-
-*Resultado óptimo final:* Vertex Cover de tamaño mínimo **$k = 2$** (por ejemplo $\{1, 3\}$ o $\{2, 3\}$).
-
-#### 3. Diagrama Visual del Árbol de Branch & Bound
-
-```mermaid
-graph TD
-    R["Raíz: C = {} | Récord = 4"] --> N1["Rama u=1: C = {1}"]:::opt
-    R --> N2["Rama v=2: C = {2}"]
-    N1 --> N1_2["Rama u=2: C = {1, 2}"]
-    N1 --> N1_3["Rama v=3: C = {1, 3} | RÉCORD = 2"]:::done
-    N1_2 --> N1_2_3["C = {1, 2, 3} | Récord = 3"]
-    N1_2 --> N1_2_4["C = (1, 2, 4) - PODA (tamano al menos 3)"]:::bad
-    N2 --> N2_3["C = (2, 3) - PODA (tamano al menos 2)"]:::bad
-    N2 --> N2_4["C = (2, 4) - PODA (tamano al menos 2)"]:::bad
-    classDef opt fill:#1d4ed8,stroke:#1e40af,stroke-width:2px,color:#fff
-    classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:1px,color:#fff
-    classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
-```
-
-#### 4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
+#### 2. Semi-Pseudocódigo Simplificado
 
 ```text
 Algoritmo MinimoVertexCover(V, E):
-    mejor_cobertura = copiar(V)  // Cota superior inicial (todos los vértices)
-    actual = conjunto_vacío()
+    mejor_sol = copiar(V)  // Cota superior inicial
+    actual = conjunto_vacio()
+    VertexCoverBT(actual, mejor_sol, E)
+    devolver mejor_sol
 
-    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
-    devolver mejor_cobertura
-
-función MinimoVertexCoverBT(actual, mejor_cobertura, E):
-    // Poda Branch & Bound: si el tamaño actual ya iguala o supera al mejor récord
-    si tamaño(actual) >= tamaño(mejor_cobertura):
-        devolver mejor_cobertura
+función VertexCoverBT(actual, ref mejor_sol, E):
+    // Poda por optimalidad (Branch & Bound)
+    si tamaño(actual) >= tamaño(mejor_sol):
+        devolver
 
     arista = BuscarAristaNoCubierta(E, actual)
-    si arista es nulo:
-        // Todas las aristas cubiertas con un tamaño estrictamente menor
-        devolver copiar(actual)
+    si arista es nulo:  // Caso Base: todas las aristas cubiertas con menor tamaño
+        mejor_sol = copiar(actual)
+        devolver
 
     (u, v) = arista
 
     // Rama 1: Incluir u
     agregar u a actual
-    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
-    quitar u de actual  // Deshacer (Backtrack)
+    VertexCoverBT(actual, mejor_sol, E)
+    quitar u de actual  // Backtrack
 
     // Rama 2: Incluir v
     agregar v a actual
-    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
-    quitar v de actual  // Deshacer (Backtrack)
-
-    devolver mejor_cobertura
+    VertexCoverBT(actual, mejor_sol, E)
+    quitar v de actual  // Backtrack
 ```
+
+#### 3. Justificación de Complejidad
+
+* **Árbol de Recursión y Estado:**
+  - El estado está definido por el conjunto `actual` de vértices seleccionados.
+  - El árbol es binario (factor de ramificación 2). Cada bifurcación cubre al menos una arista nueva, por lo que la profundidad máxima del árbol está acotada por el tamaño del Vertex Cover óptimo $k = |C^*| \le |V|$.
+* **Complejidad Temporal en Peor Caso:**
+  - La cantidad de nodos del árbol es a lo sumo $2^{k+1} - 1$. En cada nodo se inspecciona el conjunto de aristas para hallar una no cubierta en $O(|E|)$.
+  - Por lo tanto, la complejidad en el peor caso es **$O(2^k \cdot |E|)$** (algoritmo FPT - *Fixed Parameter Tractable*), exponencialmente superior al enfoque ingenuo de subconjuntos $O(2^{|V|} \cdot |E|)$ cuando $k \ll |V|$.
+* **Comportamiento Promedio con Podas:**
+  - La poda de Branch & Bound $|actual| \ge |mejor\_sol|$ elimina ramas completas en cuanto se iguala la cota. Inicializar la cota con una heurística rápida reduce todavía más los nodos evaluados.
+* **Complejidad Espacial:**
+  - **$O(|V| + |E|)$**: $O(|V|)$ para almacenar el conjunto actual y la mejor solución en la pila de recursión (profundidad $\le k \le |V|$), más el almacenamiento del grafo $G$.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -416,95 +306,64 @@ Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un
 **Qué está evaluando la cátedra**  
 Árbol binario de inclusión/exclusión, poda temprana por exceso de suma y optimización del espacio de búsqueda mediante ordenamiento previo de los elementos.
 
-#### 1. Deducción Metodológica Formal (Los 5 Pasos)
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-1. **Paso 1: Ordenamiento Previo para Poda en Bloque:**
-   Se ordena la lista $L$ de forma ascendente: $L[0] \le L[1] \le \dots \le L[n-1]$ en $O(n \log n)$.
-2. **Paso 2: Árbol Binario de Decisiones:**
-   En cada nivel $i$ correspondiente al elemento $L[i]$ con remanente $R$ ($R = S - \text{suma acumulada}$):
-   * **Rama Inclusión:** Tomar $L[i]$, reducir el remanente a $R - L[i]$ y avanzar al nivel $i+1$.
-   * **Rama Exclusión:** Omitir $L[i]$, mantener el remanente $R$ y avanzar al nivel $i+1$.
-3. **Paso 3: Poda por Ordenamiento (Corte Temprano):**
-   Si en el índice actual $L[i] > R$, como la lista está ordenada ascendentemente, todos los elementos posteriores $L[j] \ge L[i] > R$ para $j > i$. Por ende, **ningún elemento posterior podrá ser incluido sin exceder $S$**. Se corta la búsqueda de inmediato retornando `False`.
-4. **Paso 4: Caso Base:**
-   * Si $R = 0$: Se alcanzó la suma exacta $S$. Se retorna `True` inmediatamente con la solución acumulada.
-   * Si $i \ge n$ o $R < 0$: Se agotaron los elementos sin llegar a la suma. Retorna `False`.
-5. **Paso 5: Complejidad:**
-   * **Tiempo:** $O(2^n)$ en el peor caso teórico (cuando ningún subconjunto suma $S$ y las podas no pueden actuar hasta el final). Sin embargo, con $L$ ordenado, la poda temprana $L[i] > R$ reduce el espacio a una pequeña fracción.
-   * **Espacio Auxiliar:** $O(n)$ para la pila recursiva y el arreglo de la solución.
+* **Espacio de Búsqueda y Definición del Estado:**
+  - Dada una lista $L$ de $n$ enteros positivos y un entero objetivo $S$, se busca encontrar un subconjunto cuya suma sea exactamente $S$.
+  - Árbol de decisiones binario de inclusión/exclusión: para cada elemento $L[i]$ se decide si formará parte del subconjunto o no. El estado se define por `(i, remanente)`.
+* **Optimización Previa (Ordenamiento Ascendente):**
+  - Se ordena la lista $L$ de menor a mayor en $O(n \log n)$. Esto garantiza que para todo $j > i$, $L[j] \ge L[i]$.
+* **Poda por Factibilidad (Corte Temprano por Ordenamiento):**
+  - Si en el índice actual $L[i] > remanente$, como la lista está ordenada crecientemente, todos los elementos posteriores satisfacen $L[j] \ge L[i] > remanente$. Por lo tanto, **ningún elemento posterior podrá ser incluido sin exceder la suma**. Se corta la búsqueda de inmediato retornando `Falso`, podando el subárbol completo.
+* **Casos Base:**
+  - Éxito: si $remanente == 0$, se alcanzó la suma exacta $S$; se devuelve `Verdadero`.
+  - Fallo: si $i == \text{longitud}(L)$ (se agotaron los elementos) o $remanente < 0$, se devuelve `Falso`.
 
-#### 2. Ejemplo Concreto y Tabla de Traza Paso a Paso
-
-Sea $L = [2, 3, 5, 7, 10]$ y objetivo $S = 14$.
-
-| Nivel ($i$) | Elemento ($L[i]$) | Remanente ($R$) | Condición $L[i] > R$ | Decisión | Solución Parcial |
-| :---: | :---: | :---: | :---: | :---: | :--- |
-| **0** | $2$ | $14$ | $2 > 14$ (No) | **Incluir 2** $\implies R = 12$ | $\{2\}$ |
-| **1** | $3$ | $12$ | $3 > 12$ (No) | **Incluir 3** $\implies R = 9$ | $\{2, 3\}$ |
-| **2** | $5$ | $9$ | $5 > 9$ (No) | **Incluir 5** $\implies R = 4$ | $\{2, 3, 5\}$ |
-| **3** | $7$ | $4$ | $7 > 4$ (Sí) | **PODA TEMPRANA** ($7 > 4$) | Backtrack: Quitar 5 |
-| **2** | $5$ (excluir) | $9$ | - | **Excluir 5** $\implies R = 9$ | $\{2, 3\}$ |
-| **3** | $7$ | $9$ | $7 > 9$ (No) | **Incluir 7** $\implies R = 2$ | $\{2, 3, 7\}$ |
-| **4** | $10$ | $2$ | $10 > 2$ (Sí) | **PODA TEMPRANA** ($10 > 2$) | Backtrack: Quitar 7 |
-| **3** | $7$ (excluir) | $9$ | - | **Excluir 7** $\implies R = 9$ | $\{2, 3\}$ |
-| **4** | $10$ | $9$ | $10 > 9$ (Sí) | **PODA TEMPRANA** ($10 > 9$) | Backtrack: Quitar 3 |
-| **1** | $3$ (excluir) | $12$ | - | **Excluir 3** $\implies R = 12$ | $\{2\}$ |
-| **2** | $5$ | $12$ | $5 > 12$ (No) | **Incluir 5** $\implies R = 7$ | $\{2, 5\}$ |
-| **3** | $7$ | $7$ | $7 > 7$ (No) | **Incluir 7** $\implies R = 0$ | **¡ÉXITO: $R = 0$! Solución: $\{2, 5, 7\}$** |
-
-*Verificación:* $2 + 5 + 7 = 14 = S$.
-
-#### 3. Diagrama Visual del Árbol de Inclusión/Exclusión
-
-```mermaid
-graph TD
-    R["R = 14"] --> I2["Incluir 2: R=12"]:::opt
-    I2 --> I3["Incluir 3: R=9"]
-    I3 --> I5["Incluir 5: R=4"]
-    I5 --> P7["Probar 7: 7 supera a 4 - PODA TEMPRANA"]:::bad
-    I2 --> E3["Excluir 3: R=12"]:::opt
-    E3 --> I5_2["Incluir 5: R=7"]:::opt
-    I5_2 --> I7_2["Incluir 7: R=0 | SOLUCIÓN {2, 5, 7}"]:::done
-    classDef opt fill:#1d4ed8,stroke:#1e40af,stroke-width:2px,color:#fff
-    classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:1px,color:#fff
-    classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
-```
-
-#### 4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)
+#### 2. Semi-Pseudocódigo Simplificado
 
 ```text
-Algoritmo SubsetSumBacktracking(nums, target):
-    // 1. Ordenar crecientemente para habilitar podas tempranas en O(n log n)
-    ordenar nums de menor a mayor
+Algoritmo SubsetSum(L, S):
+    ordenar L de menor a mayor  // Habilita poda temprana en O(n log n)
     solucion = []
-
-    si SubsetSumBT(0, target, nums, solucion):
+    si SubsetSumBT(0, S, L, solucion):
         devolver solucion
-    sino:
-        devolver nulo
+    devolver "Sin solución"
 
-función SubsetSumBT(indice, remanente, nums, solucion):
+función SubsetSumBT(i, remanente, L, solucion):
     si remanente == 0:
         devolver Verdadero
-    si indice >= longitud(nums) o remanente < 0:
+    si i == longitud(L) o remanente < 0:
         devolver Falso
 
     // Poda temprana: al estar ordenado, ningún elemento posterior entrará
-    si nums[indice] > remanente:
+    si L[i] > remanente:
         devolver Falso
 
-    // Rama 1: Incluir nums[indice]
-    agregar nums[indice] a solucion
-    si SubsetSumBT(indice + 1, remanente - nums[indice], nums, solucion):
+    // Rama 1: Incluir L[i]
+    agregar L[i] a solucion
+    si SubsetSumBT(i + 1, remanente - L[i], L, solucion):
         devolver Verdadero
-    quitar_ultimo(solucion)  // Deshacer (Backtrack)
+    quitar_ultimo(solucion)  // Backtrack
 
-    // Rama 2: Excluir nums[indice]
-    si SubsetSumBT(indice + 1, remanente, nums, solucion):
+    // Rama 2: Excluir L[i]
+    si SubsetSumBT(i + 1, remanente, L, solucion):
         devolver Verdadero
 
     devolver Falso
 ```
+
+#### 3. Justificación de Complejidad
+
+* **Árbol de Recursión y Estado:**
+  - El estado en cada llamada está determinado por el índice $i$ ($0 \le i \le n$) y el $remanente \ge 0$.
+  - El árbol tiene altura $n$ y factor de ramificación 2 (inclusión y exclusión).
+* **Complejidad Temporal en Peor Caso:**
+  - En el peor caso teórico (cuando no existe solución y los elementos son muy pequeños, impidiendo que actúe la poda temprana hasta el final), el árbol genera a lo sumo $2^{n+1} - 1$ nodos.
+  - Ordenar $L$ cuesta $O(n \log n)$, por lo que la cota asintótica en el peor caso es **$O(2^n)$**.
+* **Comportamiento Promedio con Podas:**
+  - Gracias al ordenamiento previo, la condición $L[i] > remanente$ actúa a niveles altos del árbol, eliminando ramas completas antes de llegar a las hojas y reduciendo drásticamente los nodos evaluados en instancias reales.
+* **Complejidad Espacial:**
+  - **$O(n)$** auxiliar: la pila recursiva alcanza una profundidad máxima de $n$ niveles y el vector `solucion` almacena a lo sumo $n$ elementos.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -970,20 +829,67 @@ función IsomorfismoBT(G1, G2, V1, V2, idx, mapeo, usados_G2):
 **Enunciado**  
 Para el problema de fuerza bruta `"SEND + MORE = MONEY"` (asignar un dígito distinto de 0 a 9 a cada una de las 8 letras `S, E, N, D, M, O, R, Y` para que la suma sea válida), indicar **qué podas realizarías para agilizar su resolución por backtracking**. *(No se pide pseudocódigo, sólo explicar las podas).*
 
-#### 1. Idea y Explicación de las Podas en Lenguaje Natural
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-En lugar de asignar las 8 letras a ciegas y recién verificar la cuenta al final ($10^8$ casos), aplicamos **4 podas fundamentales** que reducen la búsqueda a casi cero:
+* **Espacio de Búsqueda y Naturaleza del Problema:**
+  - Asignar un dígito único $\{0, \dots, 9\}$ a cada una de las 8 letras $\{S, E, N, D, M, O, R, Y\}$ de modo que $SEND + MORE = MONEY$.
+  - Una búsqueda exhaustiva ingenua sin podas evalúa $10^8 = 100.000.000$ asignaciones, o $P(10, 8) = 1.814.400$ permutaciones si se exige que no se repitan dígitos.
+* **Podas Esenciales de Factibilidad y Dominio:**
+  1. **Poda por Dígitos Únicos (Alldifferent en $O(1)$):** Arreglo booleano `usado[10]`. Ningún dígito puede asignarse a más de una letra.
+  2. **Poda de Ceros a la Izquierda:** Como ningún número puede comenzar con cero, restringimos los dominios iniciales: $S \ne 0$ y $M \ne 0$.
+  3. **Poda Analítica de Acarreo ($M = 1$ y $O = 0$):** Sumar dos números de 4 dígitos produce a lo sumo $9999 + 9999 = 19998$. La quinta cifra $M$ es el acarreo de los miles y debe ser **estrictamente $M = 1$**. Además, para que la columna de miles genere acarreo ($S + 1 + c_3 \ge 10$) con $S \le 9$, la letra resultante $O$ solo puede ser $0$ o $1$; como $M = 1$, forzosamente **$O = 0$** y $S \in \{8, 9\}$.
+  4. **Poda Columna por Columna (Verificación Incremental de Derecha a Izquierda):**
+     En lugar de asignar todas las letras y sumar al final, procesamos por columnas desde las unidades hacia los miles:
+     - **Columna 0 (Unidades):** Asignar $D, E$. El dígito de $Y$ queda fijado analíticamente por $(D + E) \pmod{10}$ con acarreo $c_1 = (D + E) // 10$. Si $Y$ ya está usado o no coincide con una asignación previa, se poda la rama inmediatamente sin explorar las 5 letras restantes.
+     - **Columnas 1, 2 y 3 (Decenas, Centenas, Miles):** Se valida incrementalmente en cada columna $(L_1 + L_2 + c_{prev}) \pmod{10} == L_3$. Al primer fallo se descarta el subárbol completo.
 
-1. **Poda por Dígitos No Repetidos (Alldifferent):**
-   Llevamos un arreglo booleano `digito_usado[10]`. Si un dígito ya fue asignado a una letra anterior, no se prueba en ninguna otra letra (baja de $10^8$ a $10! / 2! = 1.814.400$ estados).
-2. **Poda de Ceros a la Izquierda (Restricción de Dominio Inicial):**
-   Por regla matemática, ninguna palabra puede empezar con `0`. Por lo tanto, restringimos desde el inicio **`S != 0`** y **`M != 0`**.
-3. **Poda Analítica del Acarreo Más Significativo (`M = 1`):**
-   Como sumamos dos números de 4 cifras (`SEND + MORE`) y el resultado `MONEY` tiene **5 cifras**, la letra `M` es el acarreo de la columna de los miles. Pero la suma máxima de dos dígitos más un acarreo previo ($9 + 9 + 1 = 19$) jamás puede dar un acarreo de 2. Por lo tanto, **fijamos directamente `M = 1`** antes de empezar ( y además deducimos que `S` debe ser `8` o `9` y `O` debe ser `0` o `1`).
-4. **Poda Columna por Columna (Evaluación Incremental de Derecha a Izquierda):**
-   En vez de elegir las letras en cualquier orden, las asignamos **por columnas de derecha a izquierda** (unidades $\to$ decenas $\to$ centenas $\to$ miles):
-   - Primero asignamos `D`, `E` e `Y` y **verificamos en el acto** si `(D + E) % 10 == Y`. Si no coincide, **podamos la rama inmediatamente** sin siquiera tocar las otras 5 letras (y además podemos calcular directamente `Y = (D + E) % 10` y el acarreo `c1 = (D + E) // 10` sin hacer un ciclo para `Y`!).
-   - Luego en las decenas asignamos `N` y `R` y verificamos en el acto `(N + R + c1) % 10 == E`, y así sucesivamente en cada columna.
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo CriptoSendMoreMoney():
+    asignacion = mapa vacio  // letra -> digito
+    usado = arreglo de 10 booleanos en Falso
+    // Fijaciones analíticas iniciales obligatorias
+    asignar('M', 1, asignacion, usado)
+    asignar('O', 0, asignacion, usado)
+    si CriptoBT(0, 0, asignacion, usado):
+        devolver asignacion
+    devolver "Sin solución"
+
+función CriptoBT(col, acarreo, asignacion, usado):
+    si col == 4:  // Caso Base: se validaron unidades, decenas, centenas y miles
+        devolver (acarreo == asignacion['M'])
+
+    (L1, L2, L3) = LetrasColumna(col)  // ej col 0: (D, E, Y)
+    para cada d1 en Candidatos(L1, asignacion, usado):
+        marcar(L1, d1, asignacion, usado)
+        para cada d2 en Candidatos(L2, asignacion, usado):
+            marcar(L2, d2, asignacion, usado)
+            suma = d1 + d2 + acarreo
+            d3, nuevo_ac = suma % 10, suma // 10
+            // Poda por factibilidad de columna en O(1)
+            si esValidoAsignar(L3, d3, asignacion, usado):
+                marcar(L3, d3, asignacion, usado)
+                si CriptoBT(col + 1, nuevo_ac, asignacion, usado):
+                    devolver Verdadero
+                desmarcar(L3, asignacion, usado)  // Backtrack
+            desmarcar(L2, asignacion, usado)
+        desmarcar(L1, asignacion, usado)
+
+    devolver Falso
+```
+
+#### 3. Justificación de Complejidad
+
+* **Árbol de Recursión y Estado:**
+  - El estado se define por `(col, acarreo)`, con profundidad máxima acotada a las 4 columnas del problema.
+* **Complejidad Temporal en Peor Caso:**
+  - El espacio combinatorio sin podas es $P(10, 8) = \frac{10!}{2!} = 1.814.400$ permutaciones en el peor caso.
+* **Comportamiento Promedio con Podas:**
+  - Al fijar $M = 1$ y $O = 0$, reducir el dominio de $S \in \{8, 9\}$ y verificar la consistencia aritmética de cada columna de derecha a izquierda antes de ramificar, la gran mayoría de las combinaciones se descartan en el nivel 0 (unidades).
+  - El número real de estados evaluados se reduce a menos de 50 llamadas recursivas, hallando la solución única $SEND = 9567, MORE = 1085, MONEY = 10652$ de forma prácticamente instantánea.
+* **Complejidad Espacial:**
+  - **$O(1)$** auxiliar: los arreglos de control de dígitos usados y asignación tienen tamaño 10 constante, y la pila recursiva alcanza una profundidad máxima de 4 marcos.
 
 ---
 

@@ -15,7 +15,6 @@ import sec06_pl
 import sec07_flujo
 import sec08_reducciones
 import sec09_integradores
-import sec10_tipo_parcial
 import sec11_errores_checklist
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -77,10 +76,14 @@ PARADIGM_TARGETS = [
         "modules": [sec09_integradores]
     },
     {
-        "filename": "tipo_parcial.html",
-        "title": "Simulacros Tipo Parcial y Checklist (4 Ejercicios)",
-        "paradigm_key": "tipo_parcial",
-        "modules": [sec10_tipo_parcial, sec11_errores_checklist]
+        "filename": "parciales.html",
+        "title": "Exámenes Parciales Oficiales (29 Ejercicios)",
+        "paradigm_key": "parciales",
+        "modules": [
+            sec01_intro_and_matrix, sec02_dyc, sec03_greedy, sec03b_greedy_guia,
+            sec04_backtracking, sec05_dp, sec06_pl, sec07_flujo, sec08_reducciones,
+            sec09_integradores, sec11_errores_checklist
+        ]
     }
 ]
 
@@ -103,7 +106,6 @@ def assemble_markdown():
         sec07_flujo.get_content(),
         sec08_reducciones.get_content(),
         sec09_integradores.get_content(),
-        sec10_tipo_parcial.get_content(),
         sec11_errores_checklist.get_content()
     ]
     full_md = "\n\n---\n\n".join(sections)
@@ -140,7 +142,7 @@ def convert_to_html(md_text):
         md_text,
         INDEX_FILE,
         active_paradigm="all",
-        page_title="Guía Interactiva Completa (83 Ejercicios)"
+        page_title="Guía Interactiva Completa (79 Ejercicios)"
     )
     print(f"      Página maestra generada: {os.path.basename(INDEX_FILE)}")
 
@@ -163,7 +165,7 @@ def verify_html_line_counts():
 
 def main():
     print("=" * 70)
-    print("INICIANDO CONSTRUCCIÓN DE LA GUÍA INTERACTIVA DE TDA (83 EJERCICIOS)")
+    print("INICIANDO CONSTRUCCIÓN DE LA GUÍA INTERACTIVA DE TDA (79 EJERCICIOS)")
     print("=" * 70)
     remove_legacy_files()
     md_text = assemble_markdown()

@@ -18,23 +18,23 @@
 <span class="hud-logo-icon">🚀</span><div><h1 class="hud-title">TDA — Guía Interactiva de Parciales</h1><span class="hud-subtitle">Edición Intensiva: Salvando el Cuatrimestre (2024–2026)</span></div>
 </a></div>
 <div class="hud-mode-selector" role="group" aria-label="Modo de Estudio"><button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')" title="Mostrar solo los ejercicios 🔴 IMPRESCINDIBLES de examen">
-<span class="mode-icon">⚡</span><span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span><span class="mode-badge" id="badgeEmergencyCount">50</span></button>
+<span class="mode-icon">⚡</span><span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span><span class="mode-badge" id="badgeEmergencyCount">48</span></button>
 <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')" title="Mostrar ejercicios pendientes de dominar y casos 🟡 IMPORTANTES">
-<span class="mode-icon">🎯</span><span class="mode-label"><span class="mode-label-long">Modo Táctico (Pendientes)</span><span class="mode-label-short">Táctico</span></span><span class="mode-badge" id="badgeTacticalCount">83</span></button>
+<span class="mode-icon">🎯</span><span class="mode-label"><span class="mode-label-long">Modo Táctico (Pendientes)</span><span class="mode-label-short">Táctico</span></span><span class="mode-badge" id="badgeTacticalCount">79</span></button>
 <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')" title="Mostrar todos los ejercicios de esta vista">
-<span class="mode-icon">📚</span><span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span><span class="mode-badge" id="badgeAllCount">83</span></button>
+<span class="mode-icon">📚</span><span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span><span class="mode-badge" id="badgeAllCount">79</span></button>
 </div>
 <div class="hud-quick-tools"><button class="tool-btn highlight-tool" onclick="scrollToExercise(78)" title="Ver La Mochila resuelta en todos los paradigmas"><span class="tool-icon">🎒</span> <span class="tool-text">Mochila Multi-P</span></button><button class="tool-btn highlight-tool" onclick="scrollToExercise(79)" title="Ver El Viajante (TSP) resuelto en todos los paradigmas"><span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span></button><button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)"><span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span></button><button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro"><span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span></button><button class="tool-btn" onclick="scrollToTrainer()" title="Ir al simulador de reconocimiento en 30 segundos"><span class="tool-icon">⚡</span> <span class="tool-text">Simulador 30s</span></button><button class="tool-btn" onclick="toggleDarkMode()" id="btnDarkMode" title="Cambiar modo claro / oscuro"><span class="tool-icon" id="darkModeIcon">🌙</span></button></div>
 </div>
 <div class="hud-row-secondary"><div class="hud-progress-wrap">
-<div class="progress-info"><span class="progress-title">Progreso en vista activa:</span><span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">83</span> dominados (<span id="progPercent">0%</span>)</span></div>
+<div class="progress-info"><span class="progress-title">Progreso en vista activa:</span><span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">79</span> dominados (<span id="progPercent">0%</span>)</span></div>
 <div class="progress-track"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
 </div>
 <div class="difficulty-filter-group d-flex align-items-center gap-1 flex-wrap" role="group" aria-label="Filtrar por dificultad"><span class="diff-filter-label small text-muted fw-semibold me-1">Dificultad:</span><button type="button" class="diff-btn active" data-diff="all" onclick="setDifficultyFilter('all')">Todas</button><button type="button" class="diff-btn" data-diff="1" onclick="setDifficultyFilter('1')" title="Nivel 1/5">1★</button><button type="button" class="diff-btn" data-diff="2" onclick="setDifficultyFilter('2')" title="Nivel 2/5">2★</button><button type="button" class="diff-btn" data-diff="3" onclick="setDifficultyFilter('3')" title="Nivel 3/5">3★</button><button type="button" class="diff-btn" data-diff="4" onclick="setDifficultyFilter('4')" title="Nivel 4/5">4★</button><button type="button" class="diff-btn" data-diff="5" onclick="setDifficultyFilter('5')" title="Nivel 5/5">5★</button></div>
 <div class="hud-search-box"><span class="search-icon">🔍</span><input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (tecla /): mochila, tsp, held-karp, arnook, invap..." oninput="handleSearch(this.value)">
 <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display: none;" title="Limpiar búsqueda">✕</button></div>
 </div>
-<div class="hud-row-pills"><div class="filter-pills-scroll" id="paradigmPills"><a href="index.html" class="pill-btn" data-paradigm="all">📚 Todos (83)</a><a href="dyc.html" class="pill-btn" data-paradigm="dyc">🔷 DyC (12)</a><a href="greedy.html" class="pill-btn" data-paradigm="greedy">🔶 Greedy (26)</a><a href="backtracking.html" class="pill-btn" data-paradigm="backtracking">🟣 Backtracking (14)</a><a href="dp.html" class="pill-btn" data-paradigm="dp">🟢 Prog. Dinámica (7)</a><a href="pl.html" class="pill-btn" data-paradigm="pl">🔵 Prog. Lineal (6)</a><a href="flujo.html" class="pill-btn active" data-paradigm="flujo">🔴 Redes de Flujo (5)</a><a href="reducciones.html" class="pill-btn" data-paradigm="reducciones">🟡 Reducciones NP (4)</a><a href="integradores.html" class="pill-btn" data-paradigm="integradores">⚡ Integradores (5)</a><a href="tipo_parcial.html" class="pill-btn" data-paradigm="tipo_parcial">📝 Tipo Parcial (4)</a></div></div>
+<div class="hud-row-pills"><div class="filter-pills-scroll" id="paradigmPills"><a href="index.html" class="pill-btn" data-paradigm="all">📚 Todos (79)</a><a href="parciales.html" class="pill-btn" data-paradigm="parciales">📝 Parciales (29)</a><a href="dyc.html" class="pill-btn" data-paradigm="dyc">🔷 DyC (12)</a><a href="greedy.html" class="pill-btn" data-paradigm="greedy">🔶 Greedy (26)</a><a href="backtracking.html" class="pill-btn" data-paradigm="backtracking">🟣 Backtracking (14)</a><a href="dp.html" class="pill-btn" data-paradigm="dp">🟢 Prog. Dinámica (7)</a><a href="pl.html" class="pill-btn" data-paradigm="pl">🔵 Prog. Lineal (6)</a><a href="flujo.html" class="pill-btn active" data-paradigm="flujo">🔴 Redes de Flujo (5)</a><a href="reducciones.html" class="pill-btn" data-paradigm="reducciones">🟡 Reducciones NP (4)</a><a href="integradores.html" class="pill-btn" data-paradigm="integradores">⚡ Integradores (5)</a></div></div>
 </div>
 <div class="emergency-banner" id="emergencyBanner"><div class="banner-inner"><span class="banner-icon">⚡</span><span><strong>Modo Emergencia (48–72h):</strong> Mostrando los <strong id="emergencyBannerCount">50</strong> ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de exámenes reales en esta vista.</span><button class="banner-dismiss" onclick="dismissBanner()" title="Ocultar aviso">✕</button></div>
 </div>
@@ -80,28 +80,15 @@ $$C(A, B) = \sum_{u \in A, v \in B} c(u, v)$$</p>
 <h3>Patrón de Ejercicio 6.1: Matching Bipartito y Asignación con Restricciones</h3>
 <p>Problemas de emparejamiento de entidades disjuntas (médicos-turnos, tareas-máquinas, estudiantes-proyectos) bajo cotas de compatibilidad y unicidad.</p>
 <hr />
-<article class="exercise-card" id="ej-66" data-num="66" data-priority="imprescindible" data-paradigm="flujo" data-difficulty="3" data-title="asignación de turnos médicos y pacientes (matching bipartito máximo)" data-origin="parcial 2024-2-2 (26 de noviembre de 2024), ejercicio 4 / guía 06 ejercicio 15"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 66</span><h3 class="exercise-title">Asignación de Turnos Médicos y Pacientes (Matching Bipartito Máximo)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-flujo">Redes de Flujo</span><span class="badge badge-origin" title="Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 4 / Guía 06 Ejercicio 15">🏛️ Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 4</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="66" onchange="toggleMastered(66, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><h4>1. Enunciado Completo</h4>
-<p>En un centro médico de alta complejidad se dispone de un conjunto de $M$ profesionales médicos y un conjunto de $P$ pacientes. Cada médico $m \in M$ dispone de un listado de franjas horarias libres $H_m$ para consultas. Cada paciente $p \in P$ requiere a lo sumo una cita médica y ha declarado un listado de tuplas compatibles $(m, h)$ donde puede y desea ser atendido. Se desea diseñar un algoritmo eficiente basado en redes de flujo que determine la asignación que maximice la cantidad total de citas médicas efectivas, garantizando que:</p>
+<article class="exercise-card" id="ej-66" data-num="66" data-priority="imprescindible" data-paradigm="flujo" data-difficulty="3" data-parcial="true" data-title="asignación de turnos médicos y pacientes (matching bipartito máximo)" data-origin="parcial 2024-2-2 (26 de noviembre de 2024), ejercicio 4 / guía 06 ejercicio 15"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 66</span><h3 class="exercise-title">Asignación de Turnos Médicos y Pacientes (Matching Bipartito Máximo)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-flujo">Redes de Flujo</span><span class="badge badge-origin" title="Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 4 / Guía 06 Ejercicio 15">🏛️ Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 4</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="66" onchange="toggleMastered(66, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+En un centro médico de alta complejidad se dispone de un conjunto de $M$ profesionales médicos y un conjunto de $P$ pacientes. Cada médico $m \in M$ dispone de un listado de franjas horarias libres $H_m$ para consultas. Cada paciente $p \in P$ requiere a lo sumo una cita médica y ha declarado un listado de tuplas compatibles $(m, h)$ donde puede y desea ser atendido. Se desea diseñar un algoritmo eficiente basado en redes de flujo que determine la asignación que maximice la cantidad total de citas médicas efectivas, garantizando que:</p>
 <ul><li>Ningún médico atienda a más de un paciente en una misma franja horaria.</li><li>Ningún paciente reciba más de un turno médico.
-Detallar la topología formal de la red, capacidades, algoritmo empleado, demostración de correctitud y complejidad asintótica.</li></ul></div><details class="exercise-solution-drawer" id="solution-drawer-66"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>2. Los 5 Pasos Metodológicos de Modelado en Redes de Flujo</h4>
-<ol><li>
-<p><strong>Diseño de la Topología en Capas Nodal:</strong>
-Para desacoplar médicos de franjas horarias y evitar que un médico atienda a dos pacientes a la misma hora, construimos una red dirigida en 4 niveles de nodos:</p>
-</li><li>
-<p>Nivel 0: Super-fuente $s$.</p>
-</li><li>Nivel 1: Capa de pacientes: un nodo $p$ por cada paciente $p \in P$.</li><li>Nivel 2: Capa de citas específicas: un nodo compuesto $(m, h)$ por cada médico $m$ y cada franja horaria disponible $h \in H_m$.</li><li>Nivel 3: Super-sumidero $t$.</li><li><strong>Definición de Aristas y Asignación de Capacidades:</strong></li><li><strong>Fuente a Pacientes:</strong> Aristas dirigidas $(s, p)$ con capacidad $c(s, p) = 1$ para todo $p \in P$. <em>Significado:</em> Cada paciente puede recibir a lo sumo 1 consulta en todo el sistema.</li><li><strong>Pacientes a Turnos Disponibles:</strong> Aristas dirigidas $(p, (m, h))$ con capacidad $c(p, (m, h)) = 1$ para cada compatibilidad declarada por el paciente $p$. <em>Significado:</em> El paciente puede optar por dicho horario.</li><li><strong>Turnos a Sumidero:</strong> Aristas dirigidas $((m, h), t)$ con capacidad $c((m, h), t) = 1$ para cada franja médica $(m, h)$. <em>Significado:</em> Cada médico solo puede atender a un único paciente en esa franja temporal.</li><li>
-<p><strong>Conservación de Flujo e Invariantes:</strong>
-En cada nodo intermedio $p$ y $(m, h)$, el flujo entrante coincide con el saliente: un paciente solo transmite su unidad de flujo hacia una única cita compatible, y esa cita la transmite a $t$.</p>
-</li><li>
-<p><strong>Algoritmo de Resolución:</strong>
-Ejecutar <strong>Edmonds-Karp</strong> (Ford-Fulkerson con BFS) desde $s$ hasta $t$ en la red construida.</p>
-</li><li>
-<p><strong>Decodificación del Matching:</strong>
-Toda arista $(p, (m, h))$ con flujo residual saturado $f(p, (m, h)) = 1$ representa una cita médica confirmada entre el paciente $p$, el médico $m$ y el horario $h$.</p>
-</li></ol>
-<h4>3. Justificación Directa de Correctitud e Integralidad (Lista para Examen)</h4>
-<ol><li><strong>Por qué no da medios turnos (Teorema de Integralidad):</strong> Como todas las capacidades de la red son números enteros (<code>1</code>), el algoritmo de flujo máximo garantiza que el flujo por cada arista será entero (<code>0</code> o <code>1</code>). Ningún paciente queda partido entre dos médicos.</li><li><strong>A lo sumo 1 turno por paciente:</strong> Como la arista que entra a cada paciente desde la fuente <code>s</code> tiene capacidad <code>1</code>, por conservación de flujo de ese paciente puede salir como máximo <code>1</code> unidad de flujo hacia un único turno <code>(m, h)</code>.</li><li><strong>A lo sumo 1 paciente por médico y horario:</strong> Como la arista que sale de cada nodo <code>(m, h)</code> hacia el sumidero <code>t</code> tiene capacidad <code>1</code>, a ese turno puede entrar como máximo <code>1</code> paciente.</li><li><strong>Por qué maximiza las citas:</strong> Cada unidad de flujo que llega a <code>t</code> equivale exactamente a 1 cita médica válida asignada, por lo que hallar el flujo máximo equivale a encontrar la mayor cantidad posible de citas.</li></ol>
-<h4>4. Diagrama Visual de la Red en 4 Capas</h4>
+Detallar la topología formal de la red, capacidades, algoritmo empleado, demostración de correctitud y complejidad asintótica.</li></ul></div><details class="exercise-solution-drawer" id="solution-drawer-66"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li>
+<p><strong>Cómo armamos los nodos (Red en 4 capas):</strong>
+Para evitar que un mismo médico atienda a dos pacientes en el mismo horario, <strong>no conectamos pacientes directo a médicos</strong>, sino que creamos un nodo compuesto $(m, h)$ por cada par <code>(médico, horario disponible)</code>:</p>
+<ol><li><strong>Super-fuente $s$</strong> y <strong>Super-sumidero $t$</strong>.</li><li><strong>Capa de Pacientes:</strong> Un nodo $p$ por cada paciente $p \in P$.</li><li><strong>Capa de Turnos:</strong> Un nodo $(m, h)$ por cada médico $m \in M$ y cada franja libre $h \in H_m$.</li><li><strong>Qué capacidades ponemos en las aristas:</strong></li><li><strong>De $s$ a cada paciente $p$:</strong> Arista dirigida $(s \to p)$ con <strong>capacidad $1$</strong> (garantiza que cada paciente reciba a lo sumo $1$ turno en total).</li><li><strong>De cada paciente $p$ a sus turnos compatibles $(m, h)$:</strong> Arista dirigida $(p \to (m, h))$ con <strong>capacidad $1$</strong> por cada tupla compatible declarada por $p$.</li><li><strong>De cada turno $(m, h)$ al sumidero $t$:</strong> Arista dirigida $((m, h) \to t)$ con <strong>capacidad $1$</strong> (garantiza que ese médico en ese horario atienda a lo sumo a $1$ paciente).</li><li><strong>Por qué funciona (Teorema de Integralidad y Optimalidad):</strong></li><li><strong>Sin medios turnos (Teorema de Integralidad):</strong> Como todas las capacidades son enteras ($1$), Ford-Fulkerson / Edmonds-Karp garantiza que el flujo óptimo en cada arista será entero ($0$ o $1$). Ningún paciente queda partido entre dos turnos.</li><li><strong>Conservación y validez:</strong> Por conservación de flujo en los nodos intermedios, cada unidad de flujo que sale de $s$ y llega a $t$ pasa por un único paciente $p$ y un único turno $(m, h)$.</li><li><strong>Maximización:</strong> El valor del flujo máximo $|f^*|$ de $s$ a $t$ coincide exactamente con la cantidad máxima posible de citas médicas válidas, y las aristas $(p \to (m, h))$ con flujo $f = 1$ indican qué turno se asignó a cada paciente.</li></ol>
+</li></ul>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
     S_SRC["Nodo Fuente s"] -->|1| P1["Paciente 1"]
     S_SRC -->|1| P2["Paciente 2"]
@@ -115,87 +102,56 @@ Toda arista $(p, (m, h))$ con flujo residual saturado $f(p, (m, h)) = 1$ represe
     T2 -->|1| T_SNK
     T3 -->|1| T_SNK
 </pre></div>
-<h4>5. Ejemplo Numérico y Traza de Aumento</h4>
-<p>Consideremos 3 pacientes y 3 turnos:</p>
-<ul><li>Pacientes: $P_1, P_2, P_3$.</li><li>Turnos: $T_1 = (\text{Perez}, 9), T_2 = (\text{Perez}, 10), T_3 = (\text{Gomez}, 9)$.</li><li>Compatibilidades: $P_1 \to \{T_1, T_2\}$; $P_2 \to \{T_2, T_3\}$; $P_3 \to \{T_3\}$.</li></ul>
-<table>
-<thead><tr>
-<th style="text-align: center;">Iteración</th><th style="text-align: left;">Camino de Aumento en $G_f$</th><th style="text-align: center;">Cuello de Botella</th><th style="text-align: center;">Flujo Acumulado</th><th style="text-align: left;">Asignación Provisional</th></tr>
-</thead>
-<tbody><tr>
-<td style="text-align: center;"><strong>1</strong></td><td style="text-align: left;">$s \to P_1 \to T_1 \to t$</td><td style="text-align: center;">$1$</td><td style="text-align: center;">$1$</td><td style="text-align: left;">$P_1 \to T_1$</td></tr>
-<tr><td style="text-align: center;"><strong>2</strong></td><td style="text-align: left;">$s \to P_2 \to T_2 \to t$</td><td style="text-align: center;">$1$</td><td style="text-align: center;">$2$</td><td style="text-align: left;">$P_1 \to T_1, P_2 \to T_2$</td></tr>
-<tr><td style="text-align: center;"><strong>3</strong></td><td style="text-align: left;">$s \to P_3 \to T_3 \to t$</td><td style="text-align: center;">$1$</td><td style="text-align: center;">$3$</td><td style="text-align: left;">$P_1 \to T_1, P_2 \to T_2, P_3 \to T_3$</td></tr>
-<tr><td style="text-align: center;"><strong>Fin</strong></td><td style="text-align: left;">No hay más caminos alcanzables hacia $t$</td><td style="text-align: center;">-</td><td style="text-align: center;"><strong>$3$ citas</strong></td><td style="text-align: left;">Citas óptimas = 3</td></tr>
-</tbody>
-</table>
-<p><em>Si en la iteración 1 se hubiera elegido $s \to P_1 \to T_2 \to t$, en la siguiente iteración el camino de aumento residual usaría la arista backward $T_2 \to P_1$ para redirigir a $P_1$ hacia $T_1$ y liberar $T_2$ para $P_2$, alcanzando igualmente el óptimo de 3.</em></p>
-<h4>6. Análisis de Complejidad Asintótica</h4>
-<ul><li><strong>Cantidad de Nodos:</strong> $|V| = 2 + |P| + \sum_{m \in M} |H_m| = O(|P| + |Turnos|)$.</li><li><strong>Cantidad de Aristas:</strong> $|E| = |P| + |Compatibilidades| + |Turnos| = O(|Compatibilidades|)$.</li><li><strong>Cota del Flujo Máximo:</strong> $|f^*| \le \min(|P|, |Turnos|) \le |P|$.</li><li>Como cada camino de aumento se halla en $O(|E|)$ y se requieren a lo sumo $|P|$ aumentos unitarios:
-$$\text{Complejidad Temporal:} \quad O(|P| \cdot |E|)$$
-lo cual es estrictamente polinomial y óptimo para redes unitarias.</li></ul>
-<h4>7. Pseudocódigo del Algoritmo (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo AsignarTurnosMedicos(Medicos, Pacientes, HorariosPorMedico, Compatibilidades):
-    Construir Red de Flujo G = (V, E) con super-fuente s y super-sumidero t:
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION AsignarTurnosMedicos(Medicos, Pacientes, HorariosPorMedico, Compatibilidades):
+    Crear red de flujo dirigida G con super-fuente s y super-sumidero t
 
-    // 1. Nivel 0 -&gt; Nivel 1: Arcos desde la fuente s a cada paciente p (capacidad 1)
-    para cada p in Pacientes:
-        agregar_arco(G, s, p, capacidad = 1)
+    // 1. Fuente s -&gt; cada paciente p (capacidad 1: a lo sumo 1 turno por paciente)
+    PARA CADA p EN Pacientes:
+        agregar_arista(G, s, p, cap = 1)
 
-    // 2. Nivel 1 -&gt; Nivel 2: Arcos desde el paciente p a sus turnos compatibles (m, h)
-    para cada p in Pacientes:
-        para cada tupla (m, h) in Compatibilidades[p]:
-            agregar_arco(G, p, (m, h), capacidad = 1)
+    // 2. Paciente p -&gt; cada turno compatible (m, h) (capacidad 1)
+    PARA CADA p EN Pacientes:
+        PARA CADA (m, h) EN Compatibilidades[p]:
+            agregar_arista(G, p, (m, h), cap = 1)
 
-    // 3. Nivel 2 -&gt; Nivel 3: Arcos desde cada turno (m, h) al sumidero t (capacidad 1)
-    // (Nota: si el enunciado agregara un tope diario C_m por médico, se intercala un nodo m
-    //  con arcos (m, h) -&gt; m de cap 1 y m -&gt; t de cap C_m)
-    para cada m in Medicos:
-        para cada h in HorariosPorMedico[m]:
-            agregar_arco(G, (m, h), t, capacidad = 1)
+    // 3. Turno (m, h) -&gt; sumidero t (capacidad 1: a lo sumo 1 paciente por médico y hora)
+    PARA CADA m EN Medicos:
+        PARA CADA h EN HorariosPorMedico[m]:
+            agregar_arista(G, (m, h), t, cap = 1)
 
-    // 4. Ejecución de flujo máximo mediante algoritmo polinomial estándar:
-    flujo_maximo = EdmondsKarp(G, s, t)
+    // 4. Correr flujo máximo con Edmonds-Karp (Ford-Fulkerson con BFS)
+    flujo &lt;- EdmondsKarp(G, s, t)
 
-    // 5. Decodificar asignaciones (aristas intermedias p -&gt; (m, h) con flujo_maximo == 1)
-    citas_confirmadas = []
-    para cada arco (p, (m, h)) con flujo_maximo(p, (m, h)) == 1:
-        agregar (p, m, h) a citas_confirmadas
+    // 5. Recuperar las citas asignadas (aristas con flujo == 1)
+    citas_confirmadas &lt;- []
+    PARA CADA arista (p -&gt; (m, h)) EN G:
+        SI flujo(p, (m, h)) == 1:
+            agregar (p, m, h) a citas_confirmadas
 
-    devolver (cantidad(citas_confirmadas), citas_confirmadas)
+    RETORNAR citas_confirmadas
 </code></pre></div></div>
+<h4>3. Justificación de Complejidad</h4>
+<ul><li><strong>Tamaño de la red:</strong><ul><li>Nodos: $|V| = 2 + |P| + |T|$, donde $|T| = \sum_{m \in M} |H_m|$ es el total de turnos ofrecidos.</li><li>Aristas: $|E| = |P| + |C| + |T| = \mathcal{O}(|P| + |C| + |T|)$, donde $|C|$ es el total de compatibilidades declaradas.</li></ul>
+</li><li><strong>Costo de armar la red:</strong> Recorrer pacientes, turnos y compatibilidades toma tiempo y espacio lineal <strong>$\mathcal{O}(|V| + |E|)$</strong>.</li><li><strong>Costo de correr Ford-Fulkerson / Edmonds-Karp:</strong> Como todas las aristas de $s$ a los pacientes tienen capacidad $1$, el flujo máximo está acotado por $|f^*| \le \min(|P|, |T|) \le |P|$. Cada búsqueda de camino de aumento por BFS/DFS cuesta $\mathcal{O}(|E|)$ y aumenta el flujo en al menos $1$ unidad, por lo que ocurren a lo sumo $|P|$ iteraciones. La complejidad temporal total es <strong>$\mathcal{O}(|P| \cdot |E|)$</strong> (estrictamente polinomial), y la complejidad espacial es <strong>$\mathcal{O}(|V| + |E|)$</strong>.</li></ul>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
 <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
-<ul><li><strong>Conectar pacientes directamente a los médicos:</strong> Si se crea un nodo por médico con capacidad igual a la cantidad de horarios, se pierde el control de concurrencia: el algoritmo podría asignarle 3 pacientes al Dr. Pérez a las 09:00 hs. Es **obligatorio crear un nodo por cada par (médico, horario)**.</li><li><strong>Olvidar justificar el Teorema de Integralidad:</strong> Si no se menciona que las capacidades enteras garantizan flujo $0$ o $1$, la cátedra descuenta puntos al asumir que las soluciones podrían ser fraccionarias (ej. paciente atendido $0.5$ por un médico y $0.5$ por otro).</li></ul>
+<ul><li><strong>Conectar pacientes directamente a los médicos:</strong> Si se crea un nodo por médico con capacidad igual a la cantidad de horarios, se pierde el control de concurrencia: el algoritmo podría asignarle 3 pacientes al Dr. Pérez a las 09:00 hs. Es <strong>obligatorio crear un nodo por cada par (médico, horario)</strong>.</li><li><strong>Olvidar justificar el Teorema de Integralidad:</strong> Si no se menciona que las capacidades enteras garantizan flujo $0$ o $1$, la cátedra descuenta puntos al asumir que las soluciones podrían ser fraccionarias (ej. paciente atendido $0.5$ por un médico y $0.5$ por otro).</li></ul>
 </div></div></details></div></article>
 <hr />
 <h3>Patrón de Ejercicio 6.2: Redes de Demanda y Suministro con Super-Nodos</h3>
 <p>Sistemas de transporte, logística o energía con múltiples fuentes de generación y múltiples centros de consumo, requiriendo super-fuente y super-sumidero para balancear el sistema.</p>
 <hr />
-<article class="exercise-card" id="ej-67" data-num="67" data-priority="imprescindible" data-paradigm="flujo" data-difficulty="3" data-title="red de distribución energética con super-fuente y super-sumidero (ford-fulkerson)" data-origin="parcial 2025-1-1 (27 de mayo de 2025), ejercicio 1"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 67</span><h3 class="exercise-title">Red de Distribución Energética con Super-Fuente y Super-Sumidero (Ford-Fulkerson)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-flujo">Redes de Flujo</span><span class="badge badge-origin" title="Parcial 2025-1-1 (27 de mayo de 2025), Ejercicio 1">🏛️ Parcial 2025-1-1 (27 de mayo de 2025), Ejercicio 1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="67" onchange="toggleMastered(67, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><h4>1. Enunciado Completo</h4>
-<p>El sistema interconectado energético nacional está constituido por 9 regiones geográficas ($R_1, \dots, R_9$). Para cada región $i$ se conoce su capacidad de generación prevista $G_i \ge 0$ (MWh) y su demanda requerida $D_i \ge 0$ (MWh). Entre pares de regiones existen líneas de transmisión de alta tensión con capacidad máxima $CAP_{ij}$ MWh/día. Se desea diseñar un algoritmo basado en redes de flujo que determine si es factible abastecer la demanda total de todas las regiones y, en caso afirmativo, cuánta energía transportar por cada línea. Si la demanda no puede cubrirse, el algoritmo debe identificar el conjunto crítico de líneas que causan el cuello de botella.</p></div><details class="exercise-solution-drawer" id="solution-drawer-67"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>2. Los 5 Pasos Metodológicos de Modelado con Super-Nodos</h4>
-<ol><li>
-<p><strong>Creación de Super-Fuente ($S$) y Super-Sumidero ($T$):</strong>
-Dado que existen múltiples puntos generadores y múltiples centros de consumo, introducimos dos vértices ficticios:</p>
+<article class="exercise-card" id="ej-67" data-num="67" data-priority="imprescindible" data-paradigm="flujo" data-difficulty="3" data-parcial="true" data-title="red de distribución energética con super-fuente y super-sumidero (ford-fulkerson)" data-origin="parcial 2025-1-1 (27 de mayo de 2025), ejercicio 1"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 67</span><h3 class="exercise-title">Red de Distribución Energética con Super-Fuente y Super-Sumidero (Ford-Fulkerson)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-flujo">Redes de Flujo</span><span class="badge badge-origin" title="Parcial 2025-1-1 (27 de mayo de 2025), Ejercicio 1">🏛️ Parcial 2025-1-1 (27 de mayo de 2025), Ejercicio 1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="67" onchange="toggleMastered(67, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+El sistema interconectado energético nacional está constituido por 9 regiones geográficas ($R_1, \dots, R_9$). Para cada región $i$ se conoce su capacidad de generación prevista $G_i \ge 0$ (MWh) y su demanda requerida $D_i \ge 0$ (MWh). Entre pares de regiones existen líneas de transmisión de alta tensión con capacidad máxima $CAP_{ij}$ MWh/día. Se desea diseñar un algoritmo basado en redes de flujo que determine si es factible abastecer la demanda total de todas las regiones y, en caso afirmativo, cuánta energía transportar por cada línea. Si la demanda no puede cubrirse, el algoritmo debe identificar el conjunto crítico de líneas que causan el cuello de botella.</p></div><details class="exercise-solution-drawer" id="solution-drawer-67"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li>
+<p><strong>Cómo armamos los nodos (Super-Fuente $S$ y Super-Sumidero $T$):</strong>
+Como tenemos múltiples regiones que generan energía y múltiples regiones que consumen, creamos una <strong>Super-Fuente $S$</strong> (que inyecta toda la generación disponible del país) y un <strong>Super-Sumidero $T$</strong> (que absorbe toda la demanda requerida), además de los $9$ nodos de las regiones $R_1, \dots, R_9$.</p>
 </li><li>
-<p>Super-fuente $S$: inyecta toda la generación del país a la red.</p>
-</li><li>Super-sumidero $T$: absorbe toda la demanda del país desde la red.</li><li><strong>Definición de Aristas y Capacidades:</strong></li><li><strong>Alimentación desde Generadores:</strong> Para cada región $i$ con $G_i &gt; 0$, creamos arista dirigida $(S, R_i)$ con capacidad $c(S, R_i) = G_i$.</li><li><strong>Extracción hacia Consumidores:</strong> Para cada región $j$ con $D_j &gt; 0$, creamos arista dirigida $(R_j, T)$ con capacidad $c(R_j, T) = D_j$.</li><li><strong>Líneas de Red:</strong> Para cada línea de transmisión entre $i$ y $j$, arista $(R_i, R_j)$ con capacidad $c(R_i, R_j) = CAP_{ij}$.</li><li>
-<p><strong>Criterio de Factibilidad Global:</strong>
-Sea $D_{total} = \sum_{j=1}^9 D_j$ la demanda acumulada.</p>
-</li><li>
-<p>Si $\text{FlujoMax}(S, T) = D_{total}$: El sistema es <strong>factible</strong>. Todas las aristas $(R_j, T)$ están saturadas al $100\%$.</p>
-</li><li>Si $\text{FlujoMax}(S, T) &lt; D_{total}$: El sistema tiene un <strong>déficit energético insalvable</strong>.</li><li>
-<p><strong>Diagnóstico del Cuello de Botella vía Corte Mínimo:</strong>
-Si hay déficit, hallamos el corte mínimo $(A, B)$ alcanzable desde $S$ en la red residual final $G_f$. Las aristas que cruzan de $A$ a $B$ están totalmente saturadas y constituyen el cuello de botella físico de la red.</p>
-</li><li>
-<p><strong>Determinación del Transporte Interregional:</strong>
-Para cada línea $(R_i, R_j)$, el valor $f(R_i, R_j)$ representa exactamente la energía a transmitir en MWh/día.</p>
-</li></ol>
-<h4>3. Justificación Directa de Conservación y Factibilidad</h4>
-<p>En cada región <code>i</code>, por ley de conservación de flujo en la red, todo lo que entra tiene que ser igual a todo lo que sale:</p>
-<ul><li><strong>Lo que entra a la región <code>i</code>:</strong> La energía que genera localmente (que viene desde la super-fuente <code>S</code>, con tope <code>G_i</code>) más la energía que importa desde otras regiones.</li><li><strong>Lo que sale de la región <code>i</code>:</strong> La energía que consume su propia demanda (que va hacia el super-sumidero <code>T</code>, con tope <code>D_i</code>) más la energía que exporta a otras regiones.</li></ul>
-<p>Si el flujo máximo que llega al super-sumidero <code>T</code> alcanza la suma de todas las demandas <code>D_total</code>, significa que todas las aristas hacia <code>T</code> se llenaron al 100% y <strong>toda la demanda del país quedó cubierta</strong>. Si da menos que <code>D_total</code>, es imposible cubrir la demanda y las aristas que cruzan el corte mínimo <code>(A, B)</code> son los cuellos de botella.</p>
-<h4>4. Diagrama Visual de la Red con Super-Fuente y Super-Sumidero</h4>
+<p><strong>Qué capacidades ponemos en las aristas:</strong></p>
+<ul><li><strong>De la Super-Fuente $S$ a cada región generadora $R_i$ ($G_i &gt; 0$):</strong> Arista dirigida $(S \to R_i)$ con <strong>capacidad $G_i$</strong> (máxima energía que puede aportar esa región).</li><li><strong>De cada región consumidora $R_j$ ($D_j &gt; 0$) al Super-Sumidero $T$:</strong> Arista dirigida $(R_j \to T)$ con <strong>capacidad $D_j$</strong> (demanda que necesita cubrir esa región).</li><li><strong>Entre regiones conectadas $(R_i, R_j)$:</strong> Arista dirigida $(R_i \to R_j)$ con <strong>capacidad $CAP_{ij}$</strong> (límite físico de la línea de alta tensión).</li></ul>
+</li><li><strong>Por qué funciona (Conservación de Flujo y Corte Mínimo):</strong><ol><li><strong>Condición de factibilidad total:</strong> Sea $D_{\text{total}} = \sum_{j=1}^9 D_j$ la demanda nacional. Por conservación de flujo en cada región, todo lo que entra (generación local desde $S$ $+$ importación) es igual a todo lo que sale (consumo local hacia $T$ $+$ exportación). Como las aristas que llegan a $T$ suman capacidad $D_{\text{total}}$, el flujo máximo de $S$ a $T$ es a lo sumo $D_{\text{total}}$.</li><li><strong>Si $\text{FlujoMax}(S, T) == D_{\text{total}}$:</strong> Todas las aristas $(R_j \to T)$ se saturaron al $100\%$, por lo que <strong>es factible cubrir toda la demanda</strong> y el flujo $f(R_i, R_j)$ da los MWh a enviar por cada línea.</li><li><strong>Diagnóstico de cuellos de botella (Teorema Max-Flow Min-Cut):</strong> Si $\text{FlujoMax}(S, T) &lt; D_{\text{total}}$, la demanda no se puede abastecer. Corremos un BFS desde $S$ en la red residual final $G_f$ para obtener el conjunto $A$ de nodos alcanzables y $B = V \setminus A$. Las líneas originales $(R_i \to R_j)$ que cruzan de $A$ hacia $B$ están saturadas al $100\%$ y forman el <strong>corte mínimo (cuello de botella físico)</strong> que impide llegar a $D_{\text{total}}$.</li></ol>
+</li></ul>
 <div class="mermaid-wrapper"><pre class="mermaid">graph LR
     S((Super-Fuente S)) -->|G1| R1["R1 (Generadora)"]
     S -->|G2| R2["R2 (Generadora)"]
@@ -206,41 +162,39 @@ Para cada línea $(R_i, R_j)$, el valor $f(R_i, R_j)$ representa exactamente la 
     R4 -->|D4| T((Super-Sumidero T))
     R3 -->|D3| T
 </pre></div>
-<h4>5. Ejemplo Numérico y Traza</h4>
-<ul><li>Regiones:<ul><li>$R_1$: $G_1 = 50, D_1 = 0$.</li><li>$R_2$: $G_2 = 40, D_2 = 0$.</li><li>$R_3$: $G_3 = 0, D_3 = 60$.</li><li>$R_4$: $G_4 = 0, D_4 = 30$.</li></ul>
-</li><li>Demanda total requerida: $60 + 30 = 90$ MWh. Generación total: $50 + 40 = 90$ MWh.</li><li>Capacidades de línea:<ul><li>$(R_1, R_3) = 35$, $(R_1, R_4) = 15$.</li><li>$(R_2, R_3) = 25$, $(R_2, R_4) = 15$.</li></ul>
-</li><li>Despacho:<ul><li>$R_1$ envía $35$ a $R_3$ y $15$ a $R_4$ (total $50$, satura $S \to R_1$).</li><li>$R_2$ envía $25$ a $R_3$ y $15$ a $R_4$ (total $40$, satura $S \to R_2$).</li><li>$R_3$ recibe $35 + 25 = 60$ y los envía a $T$ (cubre su demanda de $60$).</li><li>$R_4$ recibe $15 + 15 = 30$ y los envía a $T$ (cubre su demanda de $30$).</li></ul>
-</li><li>Flujo Máximo $= 90 = D_{total}$. Sistema <strong>100% Factible</strong>.</li></ul>
-<h4>6. Análisis de Complejidad</h4>
-<ul><li>Número de nodos: $|V| = 9 + 2 = 11$.</li><li>Número de aristas: $|E| \le 9 (\text{fuente}) + 9 (\text{sumidero}) + 72 (\text{líneas}) = 90$.</li><li>Complejidad con Edmonds-Karp: $O(|V| \cdot |E|^2) \approx 11 \cdot 90^2 \approx 89.100$ operaciones elementales, ejecutándose en menos de $0.5$ milisegundos.</li></ul>
-<h4>7. Pseudocódigo del Algoritmo y Diagnóstico de Corte (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo DiagnosticarRedEnergetica(Generacion, Demanda, Lineas):
-    Construir Red de Flujo G con superfuente S y supersumidero T:
-    demanda_total = sumatoria(Demanda[r] para cada r)
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION AbastecerRedEnergetica(Regiones, Generacion, Demanda, Lineas):
+    Crear red de flujo G con Super-Fuente S y Super-Sumidero T
+    D_total &lt;- 0
 
-    // 1. Conectar superfuente S a regiones generadoras
-    para cada r in Generacion donde Generacion[r] &gt; 0:
-        agregar_arco(G, S, r, capacidad = Generacion[r])
+    // 1. Conectar Super-Fuente S a regiones con generación y regiones con demanda a T
+    PARA CADA r EN Regiones:
+        SI Generacion[r] &gt; 0:
+            agregar_arista(G, S, r, cap = Generacion[r])
+        SI Demanda[r] &gt; 0:
+            agregar_arista(G, r, T, cap = Demanda[r])
+            D_total &lt;- D_total + Demanda[r]
 
-    // 2. Conectar regiones demandantes a supersumidero T
-    para cada r in Demanda donde Demanda[r] &gt; 0:
-        agregar_arco(G, r, T, capacidad = Demanda[r])
+    // 2. Agregar líneas de transmisión entre regiones
+    PARA CADA (u, v, CAP_uv) EN Lineas:
+        agregar_arista(G, u, v, cap = CAP_uv)
 
-    // 3. Arcos dirigidos de transporte interzonal
-    para cada (u, v, cap) in Lineas:
-        agregar_arco(G, u, v, capacidad = cap)
+    // 3. Ejecutar Edmonds-Karp (Ford-Fulkerson con BFS)
+    (flujo_max, f, G_f) &lt;- EdmondsKarp(G, S, T)
 
-    // 4. Flujo máximo y red residual final con algoritmo polinomial
-    (valor_flujo, flujo_maximo, G_f) = EdmondsKarp(G, S, T)
-
-    si valor_flujo == demanda_total:
-        devolver (Verdadero, flujo_maximo, &quot;Demanda satisfecha al 100%&quot;)
-    sino:
-        // Hallar corte mínimo (A, B) por BFS en red residual G_f desde S
-        A_alcanzables = NodosAlcanzablesDesde(G_f, S)
-        cuellos_botella = [ (u, v) para (u, v, cap) en Lineas si u in A_alcanzables y v no in A_alcanzables ]
-        devolver (Falso, flujo_maximo, cuellos_botella)
+    // 4. Verificar si se cubrió el 100% de la demanda o hallar el Corte Mínimo
+    SI flujo_max == D_total:
+        RETORNAR (&quot;FACTIBLE&quot;, f)
+    SINO:
+        A &lt;- NodosAlcanzablesConBFS(G_f, S)
+        cuellos_de_botella &lt;- []
+        PARA CADA (u, v, CAP_uv) EN Lineas:
+            SI u PERTENECE A A Y v NO PERTENECE A A:
+                agregar (u, v) a cuellos_de_botella
+        RETORNAR (&quot;INFACTIBLE - Cuellos de botella:&quot;, cuellos_de_botella)
 </code></pre></div></div>
+<h4>3. Justificación de Complejidad</h4>
+<ul><li><strong>Tamaño de la red:</strong> Para $R$ regiones ($R = 9$ en el enunciado), la red tiene $|V| = R + 2$ nodos y $|E| \le 2R + |\text{Líneas}|$ aristas (a lo sumo $9 + 9 + 72 = 90$ aristas).</li><li><strong>Costo de armar la red y hallar el corte:</strong> Construir la red y hacer el BFS final sobre $G_f$ cuesta <strong>$\mathcal{O}(|V| + |E|)$</strong>.</li><li><strong>Costo de correr Edmonds-Karp:</strong> La complejidad temporal es estrictamente polinomial <strong>$\mathcal{O}(|V| \cdot |E|^2)$</strong> (con $R = 9$ es $\mathcal{O}(1)$ en la práctica, apenas $\sim 11 \times 90^2 \approx 89.100$ operaciones). Si se usa Ford-Fulkerson con DFS, es pseudo-polinomial $\mathcal{O}(|E| \cdot D_{\text{total}})$. Complejidad espacial: <strong>$\mathcal{O}(|V| + |E|)$</strong>.</li></ul>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
 <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
 <ul><li><strong>Crear aristas bidireccionales sumando flujos netos erróneamente:</strong> En una línea de transmisión se debe modelar con dos aristas dirigidas opuestas independientes $(u, v)$ y $(v, u)$, cada una con su capacidad $CAP$.</li><li><strong>No distinguir capacidad de generación de capacidad de transporte:</strong> Asumir que toda la energía generada llega si $\sum G_i \ge \sum D_i$. El examen evalúa precisamente el cuello de botella en las líneas intermedias.</li></ul>
@@ -249,19 +203,26 @@ Para cada línea $(R_i, R_j)$, el valor $f(R_i, R_j)$ representa exactamente la 
 <h3>Patrón de Ejercicio 6.3: Análisis Teórico y Propiedades de Cortes Mínimos</h3>
 <p>Preguntas conceptuales de demostración formal o refutación mediante contraejemplos matemáticos mínimos ante perturbaciones uniformes en las capacidades de las aristas.</p>
 <hr />
-<article class="exercise-card" id="ej-68" data-num="68" data-priority="imprescindible" data-paradigm="flujo" data-difficulty="3" data-title="análisis teórico: aumento uniforme de capacidades y corte mínimo" data-origin="parcial 2024-2-3 (10 de diciembre de 2024), ejercicio 1"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 68</span><h3 class="exercise-title">Análisis Teórico: Aumento Uniforme de Capacidades y Corte Mínimo</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-flujo">Redes de Flujo</span><span class="badge badge-origin" title="Parcial 2024-2-3 (10 de diciembre de 2024), Ejercicio 1">🏛️ Parcial 2024-2-3 (10 de diciembre de 2024), Ejercicio 1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="68" onchange="toggleMastered(68, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><h4>1. Enunciado Completo</h4>
-<p>Indicar si la siguiente afirmación es verdadera o falsa. Si es verdadera, proveer una demostración formal rigurosa. Si es falsa, construir un contraejemplo explícito indicando nodos, aristas, capacidades originales, corte original, nuevas capacidades y el nuevo corte mínimo:<br />
-<em>“Sea $G = (V, E)$ una red de flujo arbitraria con fuente $s$, sumidero $t$ y capacidades enteras positivas $c(e)$ en cada arista $e \in E$. Sea $(A, B)$ un corte mínimo $s-t$ con respecto a las capacidades $c$. Si se suma $1$ a la capacidad de cada arista de la red ($c&#x27;(e) = c(e) + 1$), el corte $(A, B)$ sigue siendo obligatoriamente un corte mínimo respecto a las nuevas capacidades $c&#x27;$.”</em></p></div><details class="exercise-solution-drawer" id="solution-drawer-68"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>2. Explicación Directa de por qué es FALSA</h4>
-<p><strong>La afirmación es FALSA.</strong></p>
-<ul><li><strong>Por qué falla la intuición:</strong> Cuando sumamos <code>+1</code> a la capacidad de <strong>cada arista</strong>, la capacidad de un corte <strong>no aumenta en <code>+1</code></strong>, sino que aumenta en <strong><code>+1</code> por cada arista que tenga ese corte</strong>.<ul><li>Es decir: <code>Capacidad_Nueva = Capacidad_Vieja + cantidad_de_aristas_del_corte</code>.</li></ul>
-</li><li>Por lo tanto, un corte que era mínimo pero tenía <strong>muchas aristas chicas</strong> va a subir mucho más de capacidad que otro corte que tenía <strong>una sola arista grande</strong>, perdiendo el primer puesto como corte mínimo.</li></ul>
-<h4>3. Contraejemplo Numérico Directo</h4>
-<p>Armemos una red donde compiten dos cortes entre <code>s</code> y <code>t</code>:</p>
-<ul><li><strong>Corte 1 (del lado de <code>s</code>):</strong> Tiene <strong>5 aristas</strong> en paralelo saliendo de <code>s</code>, cada una de capacidad <code>2</code>:<ul><li>Capacidad original: <code>2 + 2 + 2 + 2 + 2 = 10</code>.</li></ul>
-</li><li><strong>Corte 2 (del lado de <code>t</code>):</strong> Tiene <strong>1 sola arista</strong> entrando a <code>t</code>, de capacidad <code>11</code>:<ul><li>Capacidad original: <code>11</code>.</li></ul>
-</li><li><strong>Antes de sumar 1:</strong> El corte mínimo es el <strong>Corte 1</strong> porque <code>10 &lt; 11</code>.</li><li><strong>Después de sumar <code>+1</code> a cada arista:</strong><ul><li><strong>Corte 1 (5 aristas):</strong> Cada una de las 5 aristas pasa de <code>2</code> a <code>3</code> $\to$ Nueva capacidad: <code>3 * 5 = 15</code>.</li><li><strong>Corte 2 (1 arista):</strong> Su única arista pasa de <code>11</code> a <code>12</code> $\to$ Nueva capacidad: <code>12</code>.</li></ul>
-</li><li><strong>Conclusión:</strong> Ahora <code>12 &lt; 15</code>, por lo que el Corte 1 <strong>dejó de ser el corte mínimo</strong> y el nuevo corte mínimo pasó a ser el Corte 2. Queda refutada la afirmación.</li></ul>
-<h4>4. Diagrama Visual del Contraejemplo</h4>
+<article class="exercise-card" id="ej-68" data-num="68" data-priority="imprescindible" data-paradigm="flujo" data-difficulty="3" data-parcial="true" data-title="análisis teórico: aumento uniforme de capacidades y corte mínimo" data-origin="parcial 2024-2-3 (10 de diciembre de 2024), ejercicio 1"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 68</span><h3 class="exercise-title">Análisis Teórico: Aumento Uniforme de Capacidades y Corte Mínimo</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-flujo">Redes de Flujo</span><span class="badge badge-origin" title="Parcial 2024-2-3 (10 de diciembre de 2024), Ejercicio 1">🏛️ Parcial 2024-2-3 (10 de diciembre de 2024), Ejercicio 1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="68" onchange="toggleMastered(68, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Indicar si la siguiente afirmación es verdadera o falsa. Si es verdadera, proveer una demostración formal rigurosa. Si es falsa, construir un contraejemplo explícito indicando nodos, aristas, capacidades originales, corte original, nuevas capacidades y el nuevo corte mínimo:<br />
+<em>“Sea $G = (V, E)$ una red de flujo arbitraria con fuente $s$, sumidero $t$ y capacidades enteras positivas $c(e)$ en cada arista $e \in E$. Sea $(A, B)$ un corte mínimo $s-t$ con respecto a las capacidades $c$. Si se suma $1$ a la capacidad de cada arista de la red ($c&#x27;(e) = c(e) + 1$), el corte $(A, B)$ sigue siendo obligatoriamente un corte mínimo respecto a las nuevas capacidades $c&#x27;$.”</em></p></div><details class="exercise-solution-drawer" id="solution-drawer-68"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li><strong>Respuesta directa:</strong> <strong>La afirmación es FALSA.</strong></li><li>
+<p><strong>Por qué falla (Justificación en un renglón):</strong> Cuando sumamos $+1$ a la capacidad de <strong>cada arista</strong>, la capacidad de un corte $(A, B)$ <strong>no aumenta en $+1$</strong>, sino que aumenta en <strong>$+1$ por cada arista que cruza el corte</strong>:
+$$C&#x27;(A, B) = \sum_{e \in \delta^+(A)} (c(e) + 1) = C(A, B) + |\delta^+(A)|$$
+Por lo tanto, un corte que era mínimo pero tenía <strong>muchas aristas chicas</strong> sube mucho más que otro corte que tenía <strong>una sola arista grande</strong>, dejando de ser el corte mínimo.</p>
+</li><li>
+<p><strong>Contraejemplo de un renglón para la hoja:</strong></p>
+<ul><li>Armamos una red donde el <strong>Corte 1</strong> ($A_1 = \{s\}$) tiene <strong>$5$ aristas en paralelo</strong> de capacidad $2$ saliendo de $s$ hacia un nodo intermedio $v$ (capacidad original $C_1 = 5 \times 2 = \mathbf{10}$), y el <strong>Corte 2</strong> ($A_2 = V \setminus \{t\}$) tiene <strong>$1$ sola arista</strong> desde $v$ hacia $t$ de capacidad $\mathbf{11}$ ($C_2 = 11$).</li><li><strong>Antes de sumar $+1$:</strong> El corte mínimo único es el <strong>Corte 1</strong> porque $10 &lt; 11$.</li><li><strong>Después de sumar $+1$ a cada arista:</strong> Las $5$ aristas del Corte 1 pasan a capacidad $3$ y su corte sube a $C&#x27;_1 = 5 \times 3 = \mathbf{15}$, mientras que la única arista del Corte 2 pasa de $11$ a $C&#x27;_2 = \mathbf{12}$. Como ahora $12 &lt; 15$, el Corte 1 <strong>dejó de ser mínimo</strong> y el nuevo corte mínimo es el Corte 2.</li></ul>
+</li></ul>
+<table>
+<thead><tr>
+<th style="text-align: left;">Corte Evaluado</th><th style="text-align: center;">Aristas que cruzan de $A$ a $B$</th><th style="text-align: center;">Capacidad Original $C$</th><th style="text-align: center;">Cantidad de Aristas $|\delta^+|$</th><th style="text-align: center;">Nueva Capacidad $C&#x27; = C + |\delta^+|$</th><th style="text-align: center;">¿Es Corte Mínimo?</th></tr>
+</thead>
+<tbody><tr>
+<td style="text-align: left;"><strong>Corte 1 ($A_1=\{s\}$)</strong></td><td style="text-align: center;">$5$ aristas de capacidad $2$</td><td style="text-align: center;"><strong>$10$</strong></td><td style="text-align: center;">$5$</td><td style="text-align: center;">$10 + 5 = \mathbf{15}$</td><td style="text-align: center;"><strong>Antes SÍ ($10 &lt; 11$) / Después NO</strong></td></tr>
+<tr><td style="text-align: left;"><strong>Corte 2 ($B_2=\{t\}$)</strong></td><td style="text-align: center;">$1$ arista de capacidad $11$</td><td style="text-align: center;">$11$</td><td style="text-align: center;">$1$</td><td style="text-align: center;">$11 + 1 = \mathbf{12}$</td><td style="text-align: center;"><strong>Antes NO / Después SÍ ($12 &lt; 15$)</strong></td></tr>
+</tbody>
+</table>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
     S_SRC["Fuente s"] -->|c=2 → c'=3| u1["u1"]
     S_SRC -->|c=2 → c'=3| u2["u2"]
@@ -275,45 +236,47 @@ Para cada línea $(R_i, R_j)$, el valor $f(R_i, R_j)$ representa exactamente la 
     u5 -->|c=10| v
     v -->|c=11 → c'=12| T_SNK["Sumidero t"]
 </pre></div>
-<h4>5. Tabla Comparativa de Capacidades de Corte</h4>
-<table>
-<thead><tr>
-<th style="text-align: left;">Corte</th><th style="text-align: center;">Composición de Aristas</th><th style="text-align: center;">Capacidad Original $C$</th><th style="text-align: center;">Aristas $|\delta^+|$</th><th style="text-align: center;">Nueva Capacidad $C&#x27;$</th><th style="text-align: center;">¿Es Mínimo?</th></tr>
-</thead>
-<tbody><tr>
-<td style="text-align: left;"><strong>Corte 1 ($A_1=\{s\}$)</strong></td><td style="text-align: center;">5 aristas de capacidad 2</td><td style="text-align: center;"><strong>$10$</strong></td><td style="text-align: center;">$5$</td><td style="text-align: center;">$10 + 5 = \mathbf{15}$</td><td style="text-align: center;"><strong>NO</strong> (Pierde minimalidad)</td></tr>
-<tr><td style="text-align: left;"><strong>Corte 2 ($B_2=\{t\}$)</strong></td><td style="text-align: center;">1 arista de capacidad 11</td><td style="text-align: center;">$11$</td><td style="text-align: center;">$1$</td><td style="text-align: center;">$11 + 1 = \mathbf{12}$</td><td style="text-align: center;"><strong>SÍ (Nuevo Corte Mínimo)</strong></td></tr>
-</tbody>
-</table>
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">// Construcción y verificación formal del contraejemplo en papel:
+PROCEDIMIENTO ContraejemploCorteMinimoMasUno():
+    // Grafo con fuente s, nodos intermedios u1..u5, v y sumidero t
+    // Corte 1: A1 = {s}, B1 = {u1..u5, v, t} -&gt; corta las 5 aristas (s, u_i) de cap 2
+    C_original_Corte1 &lt;- 5 * 2   // = 10 (Corte Mínimo Original)
+
+    // Corte 2: A2 = {s, u1..u5, v}, B2 = {t} -&gt; corta la única arista (v, t) de cap 11
+    C_original_Corte2 &lt;- 1 * 11  // = 11
+
+    // Al sumar +1 a toda arista e de la red, cada corte suma su cantidad de aristas:
+    C_nuevo_Corte1 &lt;- C_original_Corte1 + 5  // 10 + 5 = 15
+    C_nuevo_Corte2 &lt;- C_original_Corte2 + 1  // 11 + 1 = 12
+
+    // Como C_nuevo_Corte2 (12) &lt; C_nuevo_Corte1 (15), A1 dejó de ser corte mínimo
+    RETORNAR FALSO
+</code></pre></div></div>
+<h4>3. Justificación de Complejidad</h4>
+<ul><li><strong>Verificación del contraejemplo:</strong> El grafo construido tiene $|V| = 8$ nodos y $|E| = 11$ aristas; calcular la capacidad de ambos cortes antes y después de la perturbación toma tiempo constante <strong>$\mathcal{O}(1)$</strong> (y en un grafo general de $|E|$ aristas, evaluar la capacidad de un corte dado $(A, B)$ cuesta <strong>$\mathcal{O}(|E|)$</strong> recorriendo las aristas que van de $A$ hacia $B$).</li></ul>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
 <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
-<ul><li><strong>Decir que es Verdadera asumiendo que "sumar una constante no cambia el mínimo":</strong> En optimización lineal, sumar una constante a la función objetivo no cambia el óptimo. Pero aquí **no se suma una constante al corte**, se suma 1 a cada arista, por lo que a cada corte se le suma una constante distinta proporcional a su cantidad de aristas ($C&#x27; = C + k$).</li><li><strong>Dar un contraejemplo sin valores numéricos explícitos:</strong> Un contraejemplo debe incluir el grafo completo, los conjuntos de vértices $A$ y $B$, y la cuenta aritmética explícita de antes y después.</li></ul>
+<ul><li><strong>Decir que es Verdadera asumiendo que "sumar una constante no cambia el mínimo":</strong> En optimización lineal, sumar una constante a la función objetivo no cambia el óptimo. Pero aquí <strong>no se suma una constante al corte</strong>, se suma 1 a cada arista, por lo que a cada corte se le suma una constante distinta proporcional a su cantidad de aristas ($C&#x27; = C + k$).</li><li><strong>Dar un contraejemplo sin valores numéricos explícitos:</strong> Un contraejemplo debe incluir el grafo completo, los conjuntos de vértices $A$ y $B$, y la cuenta aritmética explícita de antes y después.</li></ul>
 </div></div></details></div></article>
 <hr />
 <h3>Patrón de Ejercicio 6.4: Actualización Dinámica de Flujo Máximo</h3>
 <p>Se dispone del flujo máximo y red residual calculados y se incrementa la capacidad de una única arista en 1 unidad. Se pide actualizar el flujo en tiempo lineal $O(V + E)$ sin reejecutar el algoritmo desde cero.</p>
 <hr />
-<article class="exercise-card" id="ej-69" data-num="69" data-priority="importante" data-paradigm="flujo" data-difficulty="3" data-title="actualización de flujo máximo ante aumento de capacidad unitaria en o(v + e)" data-origin="guía de ejercicios 06, ejercicio 5"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 69</span><h3 class="exercise-title">Actualización de Flujo Máximo ante Aumento de Capacidad Unitaria en O(V + E)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-flujo">Redes de Flujo</span><span class="badge badge-origin" title="Guía de Ejercicios 06, Ejercicio 5">🏛️ Guía de Ejercicios 06, Ejercicio 5</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="69" onchange="toggleMastered(69, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><h4>1. Enunciado Completo</h4>
-<p>Dada una red de flujo $G = (V, E)$ con capacidades enteras positivas, se ha calculado previamente un flujo máximo $f^*$ de $s$ a $t$ y se dispone de su red residual asociada $G_f$. Supongamos que se incrementa en una unidad la capacidad de una arista arbitraria $(u, v) \in E$ (de $c(u, v)$ pasa a $c(u, v) + 1$). Diseñar un algoritmo que recalcule el nuevo flujo máximo en tiempo estrictamente acotado por $O(V + E)$. Justificar la correctitud y la cota temporal.</p></div><details class="exercise-solution-drawer" id="solution-drawer-69"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>2. Los 5 Pasos Metodológicos de Actualización Incremental</h4>
-<ol><li>
-<p><strong>Impacto Local en la Red Residual:</strong>
-Al modificarse únicamente la arista $(u, v)$, en la red residual $G_f$ la capacidad residual de esa arista pasa de $c_f(u, v) = c(u, v) - f^*(u, v)$ a:
-$$c_f&#x27;(u, v) = c(u, v) + 1 - f^*(u, v) = c_f(u, v) + 1$$
-Todas las demás capacidades residuales de la red permanecen inalteradas.</p>
+<article class="exercise-card" id="ej-69" data-num="69" data-priority="importante" data-paradigm="flujo" data-difficulty="3" data-parcial="false" data-title="actualización de flujo máximo ante aumento de capacidad unitaria en o(v + e)" data-origin="guía de ejercicios 06, ejercicio 5"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 69</span><h3 class="exercise-title">Actualización de Flujo Máximo ante Aumento de Capacidad Unitaria en O(V + E)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-flujo">Redes de Flujo</span><span class="badge badge-origin" title="Guía de Ejercicios 06, Ejercicio 5">🏛️ Guía de Ejercicios 06, Ejercicio 5</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="69" onchange="toggleMastered(69, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Dada una red de flujo $G = (V, E)$ con capacidades enteras positivas, se ha calculado previamente un flujo máximo $f^*$ de $s$ a $t$ y se dispone de su red residual asociada $G_f$. Supongamos que se incrementa en una unidad la capacidad de una arista arbitraria $(u, v) \in E$ (de $c(u, v)$ pasa a $c(u, v) + 1$). Diseñar un algoritmo que recalcule el nuevo flujo máximo en tiempo estrictamente acotado por $O(V + E)$. Justificar la correctitud y la cota temporal.</p></div><details class="exercise-solution-drawer" id="solution-drawer-69"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li>
+<p><strong>Cómo actualizamos la red residual:</strong>
+No debemos reiniciar Ford-Fulkerson desde cero (eso tardaría $\mathcal{O}(V E^2)$). Aprovechamos la red residual $G_f$ que ya tenemos calculada y simplemente <strong>sumamos $+1$ a la capacidad residual directa de la arista modificada</strong>:
+$$c&#x27;_f(u, v) = c_f(u, v) + 1$$</p>
 </li><li>
-<p><strong>Propiedad de Acotamiento del Incremento:</strong>
-Por el Teorema Max-Flow Min-Cut, la capacidad de cualquier corte que contenga a $(u, v)$ aumenta a lo sumo en $1$, y los cortes que no la contienen mantienen su capacidad idéntica. Por lo tanto, el nuevo flujo máximo $f_{nuevo}^*$ satisface estrictamente:
-$$|f^*| \le |f_{nuevo}^*| \le |f^*| + 1$$</p>
+<p><strong>Por qué el flujo máximo solo puede subir en $0$ o en $1$ (Teorema de Corte Mínimo e Integralidad):</strong></p>
+<ol><li>Como solo aumentamos en $+1$ la capacidad de una única arista $(u, v)$, la capacidad del corte mínimo de la red puede aumentar <strong>a lo sumo en $1$ unidad</strong> (sube en $1$ si $(u, v)$ era parte de todos los cortes mínimos, o en $0$ si existe otro cuello de botella).</li><li>Como todas las capacidades son enteras, por el <strong>Teorema de Integralidad</strong> el nuevo flujo máximo solo puede valer $|f^*|$ o $|f^*| + 1$.</li></ol>
 </li><li>
-<p><strong>Búsqueda de Camino de Aumento Único:</strong>
-Dado que las capacidades son enteras y el incremento es a lo sumo 1, alcanza con buscar <strong>a lo sumo un camino de aumento</strong> desde $s$ hasta $t$ en la red residual actualizada $G_f&#x27;$ mediante BFS o DFS.</p>
-</li><li>
-<p><strong>Actualización de Flujos:</strong></p>
-</li><li>Si se encuentra un camino de aumento $P$ de $s$ a $t$: su cuello de botella es necesariamente $\ge 1$ (al ser capacidades enteras). Se empuja exactamente 1 unidad de flujo a lo largo de $P$, actualizando las aristas forward y backward. El nuevo flujo máximo es $|f^*| + 1$.</li><li>Si no existe ningún camino de aumento en $G_f&#x27;$: $t$ sigue siendo inalcanzable desde $s$. El flujo máximo se mantiene en $|f^*|$.</li><li><strong>Cómputo en Tiempo Lineal:</strong>
-Un único recorrido BFS/DFS sobre la red residual toma $O(|V| + |E|)$.</li></ol>
-<h4>3. Justificación Directa de Correctitud (Lista para Examen)</h4>
-<ol><li><strong>El flujo máximo solo puede subir en <code>0</code> o en <code>1</code>:</strong> Como las capacidades son enteras y solo subimos en <code>+1</code> la capacidad de una única arista <code>(u, v)</code>, cualquier corte de la red aumentó su capacidad a lo sumo en <code>1</code>.</li><li><strong>Alcanza con un solo recorrido BFS/DFS:</strong></li><li>Actualizamos la red residual sumando <code>+1</code> a la arista <code>(u, v)</code>.</li><li>Hacemos <strong>un único BFS</strong> desde <code>s</code> hasta <code>t</code> en <code>O(V + E)</code>.</li><li>Si encontramos un camino de <code>s</code> a <code>t</code>, mandamos <code>1</code> unidad de flujo más por ese camino y ya tenemos el nuevo flujo máximo (<code>|f*| + 1</code>).</li><li>Si no hay camino de <code>s</code> a <code>t</code>, significa que hay otro cuello de botella que frena el flujo, así que el flujo máximo sigue siendo el mismo (<code>|f*|</code>).</li></ol>
-<h4>4. Diagrama Visual del Proceso de Actualización</h4>
+<p><strong>Cómo hallamos el nuevo flujo óptimo en un solo paso:</strong>
+Corremos <strong>un único BFS (o DFS)</strong> desde la fuente $s$ hasta el sumidero $t$ sobre la red residual actualizada $G&#x27;_f$:</p>
+<ul><li><strong>Si el BFS encuentra un camino de aumento $P$ de $s$ a $t$:</strong> Como las capacidades residuales son enteras positivas, el cuello de botella es al menos $1$. Empujamos $\Delta = 1$ unidad de flujo por $P$, actualizamos $G&#x27;_f$ y devolvemos $|f^*| + 1$ (que ya es máximo porque no puede subir más de $1$).</li><li><strong>Si el BFS no llega a $t$:</strong> No existe camino de aumento en $G&#x27;_f$, por lo que el flujo máximo sigue siendo exactamente $f^*$ con valor $|f^*|$.</li></ul>
+</li></ul>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
     A["c'(u,v) = c(u,v) + 1"] --> B["c'_f(u,v) = c_f(u,v) + 1"]
     B --> C{"¿BFS en G'_f halla<br/>camino s → t?"}
@@ -323,40 +286,41 @@ Un único recorrido BFS/DFS sobre la red residual toma $O(|V| + |E|)$.</li></ol>
     classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
     classDef same fill:#1e40af,stroke:#1e3a8a,stroke-width:2px,color:#fff
 </pre></div>
-<h4>5. Ejemplo Numérico y Traza</h4>
-<p>Sea una red con $s \to u \to v \to t$:</p>
-<ul><li>Capacidades: $c(s, u) = 5$, $c(u, v) = 3$, $c(v, t) = 5$.</li><li>Flujo máximo previo: $f^* = 3$ (cuello de botella en $(u, v)$).</li><li>Red residual inicial $G_f$: $c_f(u, v) = 3 - 3 = 0$. No hay camino de $s$ a $t$.</li><li>Se aumenta la capacidad de $(u, v)$ de 3 a 4:<ul><li>$c_f&#x27;(u, v) = 0 + 1 = 1$.</li><li>BFS halla el camino $s \to u \to v \to t$ con capacidades residuales $(2, 1, 2)$.</li><li>Cuello de botella del camino: $\min(2, 1, 2) = 1$.</li><li>Se empuja 1 unidad: $f(s, u) = 4, f(u, v) = 4, f(v, t) = 4$.</li><li>Nuevo flujo máximo: $3 + 1 = 4$.</li></ul>
-</li></ul>
-<h4>6. Pseudocódigo del Algoritmo en O(V + E) (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo ActualizarFlujoAumentoUnitario(G_f, f, valor_flujo, s, t, u, v):
-    // 1. Incrementar en 1 unidad la capacidad residual de la arista modificada
-    c_f(u, v) = c_f(u, v) + 1
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION ActualizarFlujoMasUno(G_f, f, valor_flujo, s, t, u, v):
+    // 1. Actualizar en O(1) la capacidad residual de la única arista modificada
+    c_f(u, v) &lt;- c_f(u, v) + 1
 
-    // 2. Realizar un único BFS desde s en G_f para buscar camino de aumento en O(V + E)
-    camino = BFS_BuscarCamino(G_f, s, t)
+    // 2. Buscar UN único camino de aumento de s a t en G_f usando BFS
+    camino_P &lt;- BuscarCaminoBFS(G_f, s, t)
 
-    // 3. Actualizar flujo si se encontró camino
-    si camino != nulo:
-        // Como las capacidades son enteras, el cuello de botella es exactamente Delta = 1
-        para cada arista (x, y) en camino:
-            f(x, y) = f(x, y) + 1
-            c_f(x, y) = c_f(x, y) - 1
-            c_f(y, x) = c_f(y, x) + 1
-        devolver (valor_flujo + 1, f)
-    sino:
-        // Si no hay camino de aumento, el flujo previo sigue siendo el óptimo
-        devolver (valor_flujo, f)
+    // 3. Si existe camino, empujar exactamente 1 unidad de flujo
+    SI camino_P != NULO:
+        PARA CADA arista (x, y) EN camino_P:
+            SI (x, y) es arista original:
+                f(x, y) &lt;- f(x, y) + 1
+            SINO:
+                f(y, x) &lt;- f(y, x) - 1
+            c_f(x, y) &lt;- c_f(x, y) - 1
+            c_f(y, x) &lt;- c_f(y, x) + 1
+
+        RETORNAR (valor_flujo + 1, f)
+
+    // Si no hay camino a t, el flujo máximo no cambió
+    RETORNAR (valor_flujo, f)
 </code></pre></div></div>
+<h4>3. Justificación de Complejidad</h4>
+<ul><li><strong>Actualización de la arista $(u, v)$:</strong> Incrementar $c_f(u, v)$ en $1$ cuesta <strong>$\mathcal{O}(1)$</strong>.</li><li><strong>Búsqueda y aumento en la red residual:</strong> Ejecutamos <strong>una sola vez</strong> el recorrido BFS desde $s$ hasta $t$ sobre $G&#x27;_f$, lo cual visita cada nodo y arista a lo sumo una vez en tiempo <strong>$\mathcal{O}(|V| + |E|)$</strong>. Si halla el camino simple $P$ (de longitud a lo sumo $|V|$ aristas), actualizar el flujo a lo largo de $P$ cuesta $\mathcal{O}(|V|)$.</li><li><strong>Complejidad Total:</strong> Tiempo <strong>$\mathcal{O}(|V| + |E|)$</strong> y espacio adicional <strong>$\mathcal{O}(|V|)$</strong> para la cola y el arreglo de visitados/padres del BFS.</li></ul>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
 <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
-<ul><li><strong>Ejecutar Edmonds-Karp completo desde cero:</strong> Si se reinicia el algoritmo desde flujo 0, la complejidad vuelve a ser $O(V E^2)$, violando la cota obligatoria de $O(V + E)$ exigida en el enunciado.</li><li><strong>Buscar más de un camino de aumento:</strong> Como la capacidad de una sola arista aumentó en 1, el flujo máximo no puede crecer en más de 1 unidad. Ejecutar un bucle `while` buscando caminos adicionales es conceptualmente redundante.</li></ul>
+<ul><li><strong>Ejecutar Edmonds-Karp completo desde cero:</strong> Si se reinicia el algoritmo desde flujo 0, la complejidad vuelve a ser $O(V E^2)$, violando la cota obligatoria de $O(V + E)$ exigida en el enunciado.</li><li><strong>Buscar más de un camino de aumento:</strong> Como la capacidad de una sola arista aumentó en 1, el flujo máximo no puede crecer en más de 1 unidad. Ejecutar un bucle <code>while</code> buscando caminos adicionales es conceptualmente redundante.</li></ul>
 </div></div></details></div></article>
 <hr />
 <h3>Patrón de Ejercicio 6.5: Transporte Multipunto hacia un Sumidero Central</h3>
 <p>Problemas logísticos donde existen $N$ nodos de origen independientes que envían caudal a través de una red de postas o nodos intermedios hacia un único nodo destino final, resueltos mediante la introducción de una Super-Fuente $s$.</p>
 <hr />
-<article class="exercise-card" id="ej-70" data-num="70" data-priority="imprescindible" data-paradigm="flujo" data-difficulty="3" data-title="transporte de urnas electorales al centro nacional de estadísticas" data-origin="parcial 2026-2-1 (enunciados), ejercicio 6"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 70</span><h3 class="exercise-title">Transporte de Urnas Electorales al Centro Nacional de Estadísticas</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-flujo">Redes de Flujo</span><span class="badge badge-origin" title="Parcial 2026-2-1 (Enunciados), Ejercicio 6">🏛️ Parcial 2026-2-1 (Enunciados), Ejercicio 6</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="70" onchange="toggleMastered(70, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Luego de las elecciones del domingo, en cierto país limítrofe, se deben llevar las urnas desde los $N$ centros de votación ($C_1, C_2, \dots, C_N$) hasta el Centro Nacional de Estadísticas ($CNE$) para proceder al escrutinio definitivo. Desde los centros de votación hay caminos que pasan por diversos puntos intermedios (como $A$ y $B$ en el grafo de referencia). Para cada camino se sabe la cantidad máxima de urnas por minuto que se pueden transportar. Diseñar un algoritmo que mediante Ford-Fulkerson (FF) calcule la cantidad de urnas a transportar por cada ruta para maximizar la cantidad de urnas transportadas por minuto. Indicar la complejidad del algoritmo desarrollado.</p></div><details class="exercise-solution-drawer" id="solution-drawer-70"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-70" data-num="70" data-priority="imprescindible" data-paradigm="flujo" data-difficulty="3" data-parcial="true" data-title="transporte de urnas electorales al centro nacional de estadísticas" data-origin="parcial 2026-2-1 (enunciados), ejercicio 6"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 70</span><h3 class="exercise-title">Transporte de Urnas Electorales al Centro Nacional de Estadísticas</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-flujo">Redes de Flujo</span><span class="badge badge-origin" title="Parcial 2026-2-1 (Enunciados), Ejercicio 6">🏛️ Parcial 2026-2-1 (Enunciados), Ejercicio 6</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="70" onchange="toggleMastered(70, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Luego de las elecciones del domingo, en cierto país limítrofe, se deben llevar las urnas desde los $N$ centros de votación ($C_1, C_2, \dots, C_N$) hasta el Centro Nacional de Estadísticas ($CNE$) para proceder al escrutinio definitivo. Desde los centros de votación hay caminos que pasan por diversos puntos intermedios (como $A$ y $B$ en el grafo de referencia). Para cada camino se sabe la cantidad máxima de urnas por minuto que se pueden transportar. Diseñar un algoritmo que mediante Ford-Fulkerson (FF) calcule la cantidad de urnas a transportar por cada ruta para maximizar la cantidad de urnas transportadas por minuto. Indicar la complejidad del algoritmo desarrollado.</p></div><details class="exercise-solution-drawer" id="solution-drawer-70"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
 <ul><li>El algoritmo de <strong>Ford-Fulkerson</strong> requiere una red de transporte con <strong>una única fuente $s$</strong> y <strong>un único sumidero $t$</strong>. En este problema ya contamos con un único sumidero natural, que es el <strong>Centro Nacional de Estadísticas ($t = CNE$)</strong>, pero tenemos múltiples orígenes ($C_1, C_2, \dots, C_N$).</li><li><strong>Reducción a fuente única:</strong> Creamos un nodo ficticio llamado <strong>Super-Fuente $s$</strong> y agregamos una arista dirigida desde $s$ hacia cada uno de los $N$ centros de votación $(s \to C_i)$ con <strong>capacidad $\infty$</strong> (o bien, con capacidad igual a la suma de las capacidades de todos los caminos que salen de $C_i$, ya que el enunciado no impone un tope de emisión en el centro sino en las rutas).</li><li><strong>Conservación en puntos intermedios y maximización:</strong> Los puntos de paso intermedios (como $A, B, \dots$) actúan como nodos internos donde rige la ley de conservación de flujo ($\text{urnas que entran por minuto} = \text{urnas que salen por minuto}$), y cada tramo vial dirigido $(u, v)$ conserva su capacidad máxima de urnas por minuto $c(u, v)$. Al ejecutar <strong>Ford-Fulkerson</strong> (implementado mediante <strong>Edmonds-Karp</strong> usando BFS para elegir siempre el camino de aumento más corto en cantidad de aristas) desde $s$ hasta $CNE$, el flujo final $f(u, v)$ en cada arista indica exactamente cuántas urnas por minuto deben enviarse por cada camino para alcanzar el máximo caudal posible hacia el $CNE$.</li></ul>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
     s(("Super-Fuente s")) -->|"cap = ∞"| C1(("C1"))

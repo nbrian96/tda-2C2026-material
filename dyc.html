@@ -18,23 +18,23 @@
 <span class="hud-logo-icon">🚀</span><div><h1 class="hud-title">TDA — Guía Interactiva de Parciales</h1><span class="hud-subtitle">Edición Intensiva: Salvando el Cuatrimestre (2024–2026)</span></div>
 </a></div>
 <div class="hud-mode-selector" role="group" aria-label="Modo de Estudio"><button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')" title="Mostrar solo los ejercicios 🔴 IMPRESCINDIBLES de examen">
-<span class="mode-icon">⚡</span><span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span><span class="mode-badge" id="badgeEmergencyCount">50</span></button>
+<span class="mode-icon">⚡</span><span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span><span class="mode-badge" id="badgeEmergencyCount">48</span></button>
 <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')" title="Mostrar ejercicios pendientes de dominar y casos 🟡 IMPORTANTES">
-<span class="mode-icon">🎯</span><span class="mode-label"><span class="mode-label-long">Modo Táctico (Pendientes)</span><span class="mode-label-short">Táctico</span></span><span class="mode-badge" id="badgeTacticalCount">83</span></button>
+<span class="mode-icon">🎯</span><span class="mode-label"><span class="mode-label-long">Modo Táctico (Pendientes)</span><span class="mode-label-short">Táctico</span></span><span class="mode-badge" id="badgeTacticalCount">79</span></button>
 <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')" title="Mostrar todos los ejercicios de esta vista">
-<span class="mode-icon">📚</span><span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span><span class="mode-badge" id="badgeAllCount">83</span></button>
+<span class="mode-icon">📚</span><span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span><span class="mode-badge" id="badgeAllCount">79</span></button>
 </div>
 <div class="hud-quick-tools"><button class="tool-btn highlight-tool" onclick="scrollToExercise(78)" title="Ver La Mochila resuelta en todos los paradigmas"><span class="tool-icon">🎒</span> <span class="tool-text">Mochila Multi-P</span></button><button class="tool-btn highlight-tool" onclick="scrollToExercise(79)" title="Ver El Viajante (TSP) resuelto en todos los paradigmas"><span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span></button><button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)"><span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span></button><button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro"><span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span></button><button class="tool-btn" onclick="scrollToTrainer()" title="Ir al simulador de reconocimiento en 30 segundos"><span class="tool-icon">⚡</span> <span class="tool-text">Simulador 30s</span></button><button class="tool-btn" onclick="toggleDarkMode()" id="btnDarkMode" title="Cambiar modo claro / oscuro"><span class="tool-icon" id="darkModeIcon">🌙</span></button></div>
 </div>
 <div class="hud-row-secondary"><div class="hud-progress-wrap">
-<div class="progress-info"><span class="progress-title">Progreso en vista activa:</span><span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">83</span> dominados (<span id="progPercent">0%</span>)</span></div>
+<div class="progress-info"><span class="progress-title">Progreso en vista activa:</span><span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">79</span> dominados (<span id="progPercent">0%</span>)</span></div>
 <div class="progress-track"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
 </div>
 <div class="difficulty-filter-group d-flex align-items-center gap-1 flex-wrap" role="group" aria-label="Filtrar por dificultad"><span class="diff-filter-label small text-muted fw-semibold me-1">Dificultad:</span><button type="button" class="diff-btn active" data-diff="all" onclick="setDifficultyFilter('all')">Todas</button><button type="button" class="diff-btn" data-diff="1" onclick="setDifficultyFilter('1')" title="Nivel 1/5">1★</button><button type="button" class="diff-btn" data-diff="2" onclick="setDifficultyFilter('2')" title="Nivel 2/5">2★</button><button type="button" class="diff-btn" data-diff="3" onclick="setDifficultyFilter('3')" title="Nivel 3/5">3★</button><button type="button" class="diff-btn" data-diff="4" onclick="setDifficultyFilter('4')" title="Nivel 4/5">4★</button><button type="button" class="diff-btn" data-diff="5" onclick="setDifficultyFilter('5')" title="Nivel 5/5">5★</button></div>
 <div class="hud-search-box"><span class="search-icon">🔍</span><input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (tecla /): mochila, tsp, held-karp, arnook, invap..." oninput="handleSearch(this.value)">
 <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display: none;" title="Limpiar búsqueda">✕</button></div>
 </div>
-<div class="hud-row-pills"><div class="filter-pills-scroll" id="paradigmPills"><a href="index.html" class="pill-btn" data-paradigm="all">📚 Todos (83)</a><a href="dyc.html" class="pill-btn active" data-paradigm="dyc">🔷 DyC (12)</a><a href="greedy.html" class="pill-btn" data-paradigm="greedy">🔶 Greedy (26)</a><a href="backtracking.html" class="pill-btn" data-paradigm="backtracking">🟣 Backtracking (14)</a><a href="dp.html" class="pill-btn" data-paradigm="dp">🟢 Prog. Dinámica (7)</a><a href="pl.html" class="pill-btn" data-paradigm="pl">🔵 Prog. Lineal (6)</a><a href="flujo.html" class="pill-btn" data-paradigm="flujo">🔴 Redes de Flujo (5)</a><a href="reducciones.html" class="pill-btn" data-paradigm="reducciones">🟡 Reducciones NP (4)</a><a href="integradores.html" class="pill-btn" data-paradigm="integradores">⚡ Integradores (5)</a><a href="tipo_parcial.html" class="pill-btn" data-paradigm="tipo_parcial">📝 Tipo Parcial (4)</a></div></div>
+<div class="hud-row-pills"><div class="filter-pills-scroll" id="paradigmPills"><a href="index.html" class="pill-btn" data-paradigm="all">📚 Todos (79)</a><a href="parciales.html" class="pill-btn" data-paradigm="parciales">📝 Parciales (29)</a><a href="dyc.html" class="pill-btn active" data-paradigm="dyc">🔷 DyC (12)</a><a href="greedy.html" class="pill-btn" data-paradigm="greedy">🔶 Greedy (26)</a><a href="backtracking.html" class="pill-btn" data-paradigm="backtracking">🟣 Backtracking (14)</a><a href="dp.html" class="pill-btn" data-paradigm="dp">🟢 Prog. Dinámica (7)</a><a href="pl.html" class="pill-btn" data-paradigm="pl">🔵 Prog. Lineal (6)</a><a href="flujo.html" class="pill-btn" data-paradigm="flujo">🔴 Redes de Flujo (5)</a><a href="reducciones.html" class="pill-btn" data-paradigm="reducciones">🟡 Reducciones NP (4)</a><a href="integradores.html" class="pill-btn" data-paradigm="integradores">⚡ Integradores (5)</a></div></div>
 </div>
 <div class="emergency-banner" id="emergencyBanner"><div class="banner-inner"><span class="banner-icon">⚡</span><span><strong>Modo Emergencia (48–72h):</strong> Mostrando los <strong id="emergencyBannerCount">50</strong> ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de exámenes reales en esta vista.</span><button class="banner-dismiss" onclick="dismissBanner()" title="Ocultar aviso">✕</button></div>
 </div>
@@ -57,14 +57,14 @@
 <h3>Edición Intensiva: "Salvando el Cuatrimestre"</h3>
 <hr />
 <h2>1. Cómo usar esta guía</h2>
-<p>Este documento fue diseñado con un único objetivo en mente: <strong>aprobar el parcial de Teoría de Algoritmos optimizando cada minuto de estudio</strong>. No es un compendio enciclopédico de teoría ni una transcripción de diapositivas. Es un manual de ingeniería algorítmica para el examen, estructurado a partir del análisis riguroso de los parciales reales tomados por la cátedra (Curso Echevarría) en 2024, 2025 y 2026, e incluye todos los ejercicios de la nueva <code>Guía de Ejercicios Prácticos v1.0 (Agosto 2026 — Curso Echevarría)</code>, alcanzando <strong>83 ejercicios resueltos</strong> clasificados por paradigma y dificultad del 1 al 5.</p>
+<p>Este documento fue diseñado con un único objetivo en mente: <strong>aprobar el parcial de Teoría de Algoritmos optimizando cada minuto de estudio</strong>. No es un compendio enciclopédico de teoría ni una transcripción de diapositivas. Es un manual de ingeniería algorítmica para el examen, estructurado a partir del análisis riguroso de los parciales reales tomados por la cátedra (Curso Echevarría) en 2024, 2025 y 2026, e incluye todos los ejercicios de la nueva <code>Guía de Ejercicios Prácticos v1.0 (Agosto 2026 — Curso Echevarría)</code>, alcanzando <strong>79 ejercicios reales oficiales</strong> clasificados por paradigma y ordenados por defecto de forma ascendente según su dificultad (<code>1/5</code> a <code>5/5</code>). Además, la sección <strong>📝 Parciales (<code>parciales.html</code>)</strong> agrupa todos los ejercicios tomados en parciales reales sin importar el paradigma para practicar directamente con exámenes reales.</p>
 <h3>Planes de preparación según tu tiempo disponible</h3>
-<ul><li><strong>Plan de Emergencia (48 a 72 horas antes del examen):</strong><ol><li>Leé la <strong>Sección 3: Guía mental para reconocer el ejercicio en 30 segundos</strong>.</li><li>Resolvé prioritariamente los ejercicios marcados como 🔴 <strong>IMPRESCINDIBLE</strong> (en especial los de parciales reales, incluido el nuevo <strong>Parcial 2026-2-1</strong>).</li><li>Memorizá el esquema de 4 pasos obligatorios para <strong>Reducciones NP-Completas</strong> (Sección 10).</li><li>Revisá el <strong>Catálogo de Errores Típicos</strong> y la <strong>Checklist antes de entrar al parcial</strong>.</li></ol>
-</li><li><strong>Plan Táctico (1 semana antes del examen):</strong><ol><li>Realizá el Plan de Emergencia completo.</li><li>Sumá los ejercicios marcados como 🟡 <strong>IMPORTANTE</strong> de la <code>Guía de Ejercicios Prácticos v1.0</code> y enfocá el repaso en tus ejercicios pendientes de dominar.</li><li>Escribí en papel (sin mirar la solución) el pseudocódigo de cada ejercicio de Programación Dinámica, Backtracking y Greedy.</li><li>Resolvé los <strong>Ejercicios Integradores Multi-Paradigma</strong> (Sección 11, destacando <strong>La Mochila — Ej 78</strong> y <strong>El Viajante TSP — Ej 79</strong> en todos los paradigmas) y los <strong>Ejercicios Tipo Parcial Generados</strong> (Sección 12).</li></ol>
-</li><li><strong>Plan Integral (2 o más semanas):</strong><ol><li>Recorré los <strong>83 ejercicios resueltos</strong> de la guía completa clasificados por paradigma y dificultad del 1 al 5 (<code>★☆☆☆☆</code> a <code>★★★★★</code>).</li><li>Implementá en tu computadora los algoritmos más sensibles (o revisá las implementaciones en Python de la carpeta <code>Practicas/</code>).</li><li>Dominá las demostraciones formales de optimalidad por <em>Greedy Stays Ahead</em>, argumento de intercambio y las recurrencias del Teorema Maestro.</li></ol>
+<ul><li><strong>Plan de Emergencia (48 a 72 horas antes del examen):</strong><ol><li>Leé la <strong>Sección 3: Guía mental para reconocer el ejercicio en 30 segundos</strong>.</li><li>Entrá a la sección <strong>📝 Parciales (<code>parciales.html</code>)</strong>, que agrupa todos los ejercicios tomados en parciales reales sin importar el paradigma (incluido el nuevo <strong>Parcial 2026-2-1</strong>), y resolvé prioritariamente los marcados como 🔴 <strong>IMPRESCINDIBLE</strong>.</li><li>Memorizá el esquema de 4 pasos obligatorios para <strong>Reducciones NP-Completas</strong> (Sección 10).</li><li>Revisá el <strong>Catálogo de Errores Típicos</strong> y la <strong>Checklist antes de entrar al parcial</strong>.</li></ol>
+</li><li><strong>Plan Táctico (1 semana antes del examen):</strong><ol><li>Realizá el Plan de Emergencia completo.</li><li>Sumá los ejercicios marcados como 🟡 <strong>IMPORTANTE</strong> de la <code>Guía de Ejercicios Prácticos v1.0</code> y enfocá el repaso en tus ejercicios pendientes de dominar.</li><li>Escribí en papel (sin mirar la solución) la <strong>Idea y Justificación en Lenguaje Natural</strong> y el <strong>Semi-Pseudocódigo Simplificado</strong> de cada ejercicio.</li><li>Resolvé los <strong>Ejercicios Integradores Multi-Paradigma</strong> (Sección 11, destacando <strong>La Mochila — Ej 78</strong> y <strong>El Viajante TSP — Ej 79</strong> en todos los paradigmas) y todos los ejercicios de <strong>📝 Parciales (<code>parciales.html</code>)</strong>.</li></ol>
+</li><li><strong>Plan Integral (2 o más semanas):</strong><ol><li>Recorré los <strong>79 ejercicios reales oficiales</strong> de la guía completa clasificados por paradigma y ordenados por defecto de forma ascendente según su dificultad (<code>1/5</code> a <code>5/5</code>, de <code>★☆☆☆☆</code> a <code>★★★★★</code>).</li><li>Implementá en tu computadora los algoritmos más sensibles (o revisá las implementaciones en Python de la carpeta <code>Practicas/</code>).</li><li>Dominá las demostraciones formales de optimalidad por <em>Greedy Stays Ahead</em>, argumento de intercambio y las recurrencias del Teorema Maestro.</li></ol>
 </li></ul>
 <h3>Reglas de oro para rendir el examen</h3>
-<ol><li><strong>Cada ejercicio se entrega en hoja separada:</strong> La cátedra exige entregar cada pregunta en una hoja individual. Planteá la solución de forma limpia, separando claramente: <em>Idea conceptual</em>, <em>Pseudocódigo</em>, <em>Justificación de optimalidad/reconstrucción</em>, y <em>Cálculo de complejidad temporal y espacial</em>.</li><li><strong>El pseudocódigo debe ser concreto:</strong> No uses abstracciones vagas como <code>resolver_problema(grafo)</code>. Empleá estructuras de control estándar (<code>SI</code>, <code>PARA</code>, <code>MIENTRAS</code>, <code>RETORNAR</code>) y manipulá arreglos, matrices o listas explícitamente.</li><li><strong>No omitir casos borde:</strong> Estructura vacía, un solo elemento, elementos repetidos, grafo disconexo o capacidades nulas restan puntos valiosos si no están cubiertos.</li><li><strong>La complejidad debe estar justificada:</strong> Decir únicamente $O(n^2)$ sin explicar cuántas iteraciones hace cada bucle y qué costo tiene cada operación interna equivale a puntaje parcial.</li></ol>
+<ol><li><strong>Cada ejercicio se entrega en hoja separada:</strong> La cátedra exige entregar cada pregunta en una hoja individual. Todos los ejercicios de esta guía están estructurados exactamente como la <strong>"Respuesta para escribir en la hoja del parcial"</strong>, separando con claridad: <em>1. Idea y Justificación en Lenguaje Natural</em>, <em>2. Semi-Pseudocódigo Simplificado</em> y <em>3. Justificación de Complejidad</em>.</li><li><strong>El pseudocódigo debe ser concreto:</strong> No uses abstracciones vagas como <code>resolver_problema(grafo)</code>. Empleá estructuras de control estándar (<code>SI</code>, <code>PARA</code>, <code>MIENTRAS</code>, <code>RETORNAR</code>) y manipulá arreglos, matrices o listas explícitamente.</li><li><strong>No omitir casos borde:</strong> Estructura vacía, un solo elemento, elementos repetidos, grafo disconexo o capacidades nulas restan puntos valiosos si no están cubiertos.</li><li><strong>La complejidad debe estar justificada:</strong> Decir únicamente $O(n^2)$ sin explicar cuántas iteraciones hace cada bucle y qué costo tiene cada operación interna equivale a puntaje parcial.</li></ol>
 <hr />
 <h2>2. Radiografía de los Parciales de TDA</h2>
 <p>Un examen típico de esta cátedra consta de <strong>5 a 6 ejercicios prácticos</strong>, distribuidos estratégicamente para evaluar si el alumno sabe elegir la herramienta adecuada para cada problema.</p>
@@ -157,85 +157,45 @@ Para recurrencias de la forma:</p>
 <h3>Patrón de Ejercicio 1.1: Álgebra Matricial y Partición en Bloques</h3>
 <p>En los parciales aparece el requerimiento de formular algoritmos multiplicativos dividiendo estructuras bidimensionales en cuadrantes y deduciendo la complejidad formal con el Teorema Maestro.</p>
 <hr />
-<article class="exercise-card" id="ej-1" data-num="1" data-priority="imprescindible" data-paradigm="dyc" data-difficulty="3" data-title="multiplicación de matrices cuadradas por bloques" data-origin="parcial 2025-1-2 (17 de junio de 2025), ejercicio 1"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 1</span><h3 class="exercise-title">Multiplicación de Matrices Cuadradas por Bloques</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 1">🏛️ Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="1" onchange="toggleMastered(1, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Realizar un algoritmo que resuelva la multiplicación de dos matrices cuadradas de orden $n$ ($A$ y $B$) mediante división y conquista. Recordemos la definición: $C = A \times B$ donde $C_{ij} = \sum_{k=1}^n A_{ik} \cdot B_{kj}$ para todo $i, j \in \{1, \dots, n\}$. Para simplificar el algoritmo se puede suponer que $n$ es una potencia de 2. Indicar y justificar el orden de complejidad temporal y espacial del algoritmo.</p>
-<p><strong>Qué está evaluando la cátedra</strong><br />
-Partición de matrices en 4 bloques de orden $n/2$, formulación de las llamadas recursivas de multiplicación, suma de matrices en la etapa de combinación, y aplicación rigurosa del Teorema Maestro sin saltarse el análisis de casos.</p></div><details class="exercise-solution-drawer" id="solution-drawer-1"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
-<ol><li>
-<p><strong>Paso 1: División:</strong>
-Se dividen las matrices cuadradas $A$ y $B$ de orden $n \times n$ en 4 submatrices (cuadrantes) de tamaño $(n/2) \times (n/2)$:
+<article class="exercise-card" id="ej-1" data-num="1" data-priority="imprescindible" data-paradigm="dyc" data-difficulty="3" data-parcial="true" data-title="multiplicación de matrices cuadradas por bloques" data-origin="parcial 2025-1-2 (17 de junio de 2025), ejercicio 1"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 1</span><h3 class="exercise-title">Multiplicación de Matrices Cuadradas por Bloques</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 1">🏛️ Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="1" onchange="toggleMastered(1, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Realizar un algoritmo que resuelva la multiplicación de dos matrices cuadradas de orden $n$ ($A$ y $B$) mediante división y conquista. Recordemos la definición: $C = A \times B$ donde $C_{ij} = \sum_{k=1}^n A_{ik} \cdot B_{kj}$ para todo $i, j \in \{1, \dots, n\}$. Para simplificar el algoritmo se puede suponer que $n$ es una potencia de 2. Indicar y justificar el orden de complejidad temporal y espacial del algoritmo.</p></div><details class="exercise-solution-drawer" id="solution-drawer-1"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li><strong>Caso Base ($n = 1$):</strong> Cuando las matrices son de $1 \times 1$, tienen un solo número cada una y devolvemos directamente el producto $A[0][0] \cdot B[0][0]$ en tiempo $O(1)$.</li><li>
+<p><strong>División ($n &gt; 1$):</strong> Partimos las matrices $A$ y $B$ de $n \times n$ en <strong>4 submatrices (cuadrantes)</strong> de tamaño $(n/2) \times (n/2)$ cada una:
 $$A = \begin{pmatrix} A_{11} &amp; A_{12} \\ A_{21} &amp; A_{22} \end{pmatrix}, \quad B = \begin{pmatrix} B_{11} &amp; B_{12} \\ B_{21} &amp; B_{22} \end{pmatrix}$$</p>
 </li><li>
-<p><strong>Paso 2: Casos Base:</strong>
-Cuando $n = 1$, las matrices se reducen a un único escalar cada una:
-$$C_{11} = A_{11} \cdot B_{11}$$
-Esta multiplicación escalar elemental se ejecuta en tiempo $O(1)$.</p>
+<p><strong>Conquista (8 llamadas recursivas):</strong> Por propiedad de multiplicación de matrices por bloques, para obtener cada cuadrante de $C$ multiplicamos las mitades de las filas de $A$ por las mitades de las columnas de $B$ y sumamos ambos resultados parciales (2 productos por cuadrante, dando <strong>$a = 8$ llamadas recursivas</strong> de tamaño $n/2$):</p>
+<ul><li>Cuadrante superior izquierdo: $C_{11} = A_{11} B_{11} + A_{12} B_{21}$</li><li>Cuadrante superior derecho: $C_{12} = A_{11} B_{12} + A_{12} B_{22}$</li><li>Cuadrante inferior izquierdo: $C_{21} = A_{21} B_{11} + A_{22} B_{21}$</li><li>Cuadrante inferior derecho: $C_{22} = A_{21} B_{12} + A_{22} B_{22}$</li></ul>
+</li><li><strong>Combinación:</strong> Realizamos las 4 sumas de matrices de tamaño $(n/2) \times (n/2)$ y ensamblamos los 4 cuadrantes para devolver la matriz producto $C$ de $n \times n$.</li></ul>
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo MultiplicarMatricesDyC(A, B, n):
+    // Caso Base: matriz de 1x1
+    si n == 1:
+        devolver [[ A[0][0] * B[0][0] ]]
+
+    m = n / 2
+    // 1. Dividir A y B en 4 cuadrantes de m x m cada una
+    (A11, A12, A21, A22) = PartirEn4Bloques(A, m)
+    (B11, B12, B21, B22) = PartirEn4Bloques(B, m)
+
+    // 2. Conquista: 8 multiplicaciones recursivas de tamaño n/2
+    C11 = MultiplicarMatricesDyC(A11, B11, m) + MultiplicarMatricesDyC(A12, B21, m)
+    C12 = MultiplicarMatricesDyC(A11, B12, m) + MultiplicarMatricesDyC(A12, B22, m)
+    C21 = MultiplicarMatricesDyC(A21, B11, m) + MultiplicarMatricesDyC(A22, B21, m)
+    C22 = MultiplicarMatricesDyC(A21, B12, m) + MultiplicarMatricesDyC(A22, B22, m)
+
+    // 3. Combinar los 4 cuadrantes en la matriz C de n x n
+    devolver EnsamblarMatriz(C11, C12, C21, C22)
+</code></pre></div></div>
+<h4>3. Justificación de Complejidad (Para entregar en el parcial)</h4>
+<ul><li>
+<p><strong>Complejidad Temporal:</strong></p>
+<ul><li>En cada paso se hacen <strong>$a = 8$ llamadas recursivas</strong> sobre submatrices de tamaño $n/2$ (<strong>$b = 2$</strong>).</li><li>Dividir en cuadrantes y sumar las 4 parejas de matrices de $(n/2) \times (n/2)$ recorre $4 \cdot (n/2)^2 = n^2$ elementos, por lo que cuesta <strong>$f(n) = \Theta(n^2)$</strong> (<strong>$c = 2$</strong>).</li><li>
+<p>Ecuación de recurrencia:
+$$T(n) = 8 \cdot T(n/2) + \Theta(n^2)$$</p>
 </li><li>
-<p><strong>Paso 3: Conquista (Llamadas Recursivas):</strong>
-De acuerdo al producto matricial por bloques, la matriz resultante $C$ satisface:
-$$C = \begin{pmatrix} C_{11} &amp; C_{12} \\ C_{21} &amp; C_{22} \end{pmatrix} = \begin{pmatrix} A_{11} B_{11} + A_{12} B_{21} &amp; A_{11} B_{12} + A_{12} B_{22} \\ A_{21} B_{11} + A_{22} B_{21} &amp; A_{21} B_{12} + A_{22} B_{22} \end{pmatrix}$$
-Cada cuadrante requiere 2 productos de matrices de tamaño $(n/2) \times (n/2)$. En total se disparan <strong>$a = 8$ llamadas recursivas</strong>:</p>
-</li><li>
-<p>$M_1 = A_{11} \cdot B_{11}$, $M_2 = A_{12} \cdot B_{21}$</p>
-</li><li>$M_3 = A_{11} \cdot B_{12}$, $M_4 = A_{12} \cdot B_{22}$</li><li>$M_5 = A_{21} \cdot B_{11}$, $M_6 = A_{22} \cdot B_{21}$</li><li>
-<p>$M_7 = A_{21} \cdot B_{12}$, $M_8 = A_{22} \cdot B_{22}$</p>
-</li><li>
-<p><strong>Paso 4: Combinación:</strong>
-Se calculan los 4 cuadrantes finales mediante 4 sumas de matrices de tamaño $(n/2) \times (n/2)$:</p>
-</li><li>
-<p>$C_{11} = M_1 + M_2$</p>
-</li><li>$C_{12} = M_3 + M_4$</li><li>$C_{21} = M_5 + M_6$</li><li>
-<p>$C_{22} = M_7 + M_8$
-Cada suma matricial de $(n/2) \times (n/2)$ elementos insume $(n/2)^2 = n^2 / 4$ operaciones. En total, las 4 sumas insumen $4 \cdot (n^2 / 4) = n^2$ operaciones, es decir, costo $\Theta(n^2)$.</p>
-</li><li>
-<p><strong>Paso 5: Ecuación de Recurrencia y Teorema Maestro:</strong>
-$$T(n) = \begin{cases} \Theta(1) &amp; \text{si } n = 1 \\ 8 \cdot T\left(\frac{n}{2}\right) + \Theta(n^2) &amp; \text{si } n &gt; 1 \end{cases}$$
-Identificamos los parámetros del Teorema Maestro:</p>
-</li><li>
-<p>$a = 8$ (número de subproblemas recursivos)</p>
-</li><li>$b = 2$ (factor de reducción del tamaño de entrada)</li><li>$f(n) = \Theta(n^c)$ con $c = 2$ (costo de división y combinación de bloques)</li></ol>
-<p>Calculamos el exponente crítico:
-$$\log_b a = \log_2 8 = 3$$
-Comparamos $\log_b a$ con $c$:
-$$\log_b a = 3 &gt; 2 = c$$
-Dado que $\log_b a &gt; c$, aplica estrictamente el <strong>Caso 1 del Teorema Maestro</strong> (el trabajo en las hojas del árbol domina el costo global):
-$$T(n) = \Theta(n^{\log_b a}) = \Theta(n^{\log_2 8}) = \Theta(n^3)$$</p>
-<h4>2. Justificación Directa de Correctitud (Lista para Examen)</h4>
-<ul><li><strong>Caso Base ($n = 1$):</strong> Cuando las matrices son de $1 \times 1$, tienen un solo número cada una y el algoritmo multiplica directamente $A[0][0] \cdot B[0][0]$ en tiempo $O(1)$.</li><li>
-<p><strong>Paso Recursivo ($n &gt; 1$):</strong>
-Por propiedad de multiplicación de matrices por bloques, para obtener cada cuadrante de $C$ basta con multiplicar las mitades correspondientes de las filas de $A$ por las mitades de las columnas de $B$ y sumar ambos resultados parciales:</p>
-<ul><li>Cuadrante superior izquierdo: $C_{11} = A_{11} B_{11} + A_{12} B_{21}$</li><li>Cuadrante superior derecho: $C_{12} = A_{11} B_{12} + A_{12} B_{22}$</li><li>Cuadrante inferior izquierdo: $C_{21} = A_{21} B_{11} + A_{22} B_{21}$</li><li>Cuadrante inferior derecho: $C_{22} = A_{21} B_{12} + A_{22} B_{22}$
-Como las 8 llamadas recursivas resuelven submatrices de la mitad de tamaño ($n/2$) hasta llegar al caso base de $1 \times 1$, la suma de los bloques reconstruye exactamente la matriz producto $C$.</li></ul>
+<p>Por el <strong>Teorema Maestro</strong>, comparamos $\log_b a = \log_2 8 = 3$ con $c = 2$. Como $\log_b a = 3 &gt; 2 = c$, aplica el <strong>Caso 1</strong> (dominan las hojas) y la complejidad temporal es <strong>$\Theta(n^{\log_2 8}) = \Theta(n^3)$</strong>.</p>
+</li><li><strong>Complejidad Espacial:</strong></li><li>En cada nivel activo de la pila recursiva (de altura $\log_2 n$) se reservan matrices auxiliares cuyo tamaño se reduce geométricamente: $n^2 + (n/2)^2 + (n/4)^2 + \dots = \Theta(n^2)$. Por lo tanto, la complejidad espacial es <strong>$\Theta(n^2)$</strong>.</li></ul>
 </li></ul>
-<h4>3. Ejemplo Concreto y Traza Paso a Paso ($n = 2$)</h4>
-<p>Sean las matrices $2 \times 2$:
-$$A = \begin{pmatrix} 1 &amp; 2 \\ 3 &amp; 4 \end{pmatrix}, \quad B = \begin{pmatrix} 5 &amp; 6 \\ 7 &amp; 8 \end{pmatrix}$$</p>
-<table>
-<thead><tr>
-<th style="text-align: left;">Cuadrante / Operación</th><th style="text-align: left;">Definición Algebraica</th><th style="text-align: left;">Cálculo Numérico</th><th style="text-align: left;">Resultado</th></tr>
-</thead>
-<tbody><tr>
-<td style="text-align: left;"><strong>Bloques de $A$</strong></td><td style="text-align: left;">$A_{11}=[1], A_{12}=[2], A_{21}=[3], A_{22}=[4]$</td><td style="text-align: left;">Descomposición en $1 \times 1$</td><td style="text-align: left;">4 escalares</td></tr>
-<tr><td style="text-align: left;"><strong>Bloques de $B$</strong></td><td style="text-align: left;">$B_{11}=[5], B_{12}=[6], B_{21}=[7], B_{22}=[8]$</td><td style="text-align: left;">Descomposición en $1 \times 1$</td><td style="text-align: left;">4 escalares</td></tr>
-<tr><td style="text-align: left;"><strong>$M_1$</strong></td><td style="text-align: left;">$A_{11} \cdot B_{11}$</td><td style="text-align: left;">$1 \cdot 5$</td><td style="text-align: left;">$5$</td></tr>
-<tr><td style="text-align: left;"><strong>$M_2$</strong></td><td style="text-align: left;">$A_{12} \cdot B_{21}$</td><td style="text-align: left;">$2 \cdot 7$</td><td style="text-align: left;">$14$</td></tr>
-<tr><td style="text-align: left;"><strong>$M_3$</strong></td><td style="text-align: left;">$A_{11} \cdot B_{12}$</td><td style="text-align: left;">$1 \cdot 6$</td><td style="text-align: left;">$6$</td></tr>
-<tr><td style="text-align: left;"><strong>$M_4$</strong></td><td style="text-align: left;">$A_{12} \cdot B_{22}$</td><td style="text-align: left;">$2 \cdot 8$</td><td style="text-align: left;">$16$</td></tr>
-<tr><td style="text-align: left;"><strong>$M_5$</strong></td><td style="text-align: left;">$A_{21} \cdot B_{11}$</td><td style="text-align: left;">$3 \cdot 5$</td><td style="text-align: left;">$15$</td></tr>
-<tr><td style="text-align: left;"><strong>$M_6$</strong></td><td style="text-align: left;">$A_{22} \cdot B_{21}$</td><td style="text-align: left;">$4 \cdot 7$</td><td style="text-align: left;">$28$</td></tr>
-<tr><td style="text-align: left;"><strong>$M_7$</strong></td><td style="text-align: left;">$A_{21} \cdot B_{12}$</td><td style="text-align: left;">$3 \cdot 6$</td><td style="text-align: left;">$18$</td></tr>
-<tr><td style="text-align: left;"><strong>$M_8$</strong></td><td style="text-align: left;">$A_{22} \cdot B_{22}$</td><td style="text-align: left;">$4 \cdot 8$</td><td style="text-align: left;">$32$</td></tr>
-<tr><td style="text-align: left;"><strong>$C_{11} = M_1 + M_2$</strong></td><td style="text-align: left;">$A_{11} B_{11} + A_{12} B_{21}$</td><td style="text-align: left;">$5 + 14$</td><td style="text-align: left;"><strong>$19$</strong></td></tr>
-<tr><td style="text-align: left;"><strong>$C_{12} = M_3 + M_4$</strong></td><td style="text-align: left;">$A_{11} B_{12} + A_{12} B_{22}$</td><td style="text-align: left;">$6 + 16$</td><td style="text-align: left;"><strong>$22$</strong></td></tr>
-<tr><td style="text-align: left;"><strong>$C_{21} = M_5 + M_6$</strong></td><td style="text-align: left;">$A_{21} B_{11} + A_{22} B_{21}$</td><td style="text-align: left;">$15 + 28$</td><td style="text-align: left;"><strong>$43$</strong></td></tr>
-<tr><td style="text-align: left;"><strong>$C_{22} = M_7 + M_8$</strong></td><td style="text-align: left;">$A_{21} B_{12} + A_{22} B_{22}$</td><td style="text-align: left;">$18 + 32$</td><td style="text-align: left;"><strong>$50$</strong></td></tr>
-</tbody>
-</table>
-<p>Matriz final ensamblada:
-$$C = \begin{pmatrix} 19 &amp; 22 \\ 43 &amp; 50 \end{pmatrix}$$
-<em>Verificación por producto tradicional:</em></p>
-<ul><li>Fila 1 × Columna 1: $1 \cdot 5 + 2 \cdot 7 = 19$. Correcto.</li><li>Fila 1 × Columna 2: $1 \cdot 6 + 2 \cdot 8 = 22$. Correcto.</li><li>Fila 2 × Columna 1: $3 \cdot 5 + 4 \cdot 7 = 43$. Correcto.</li><li>Fila 2 × Columna 2: $3 \cdot 6 + 4 \cdot 8 = 50$. Correcto.</li></ul>
-<h4>4. Diagrama del Árbol de Recursión</h4>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart TD
     R["Raíz: T(n) — Costo combinación Θ(n²)"]:::root --> L1["M1 = A11·B11<br/>T(n/2)"]:::mid
     R --> L2["M2 = A12·B21<br/>T(n/2)"]:::mid
@@ -250,40 +210,6 @@ $$C = \begin{pmatrix} 19 &amp; 22 \\ 43 &amp; 50 \end{pmatrix}$$
     classDef mid fill:#334155,stroke:#1e293b,stroke-width:1px,color:#fff
     classDef leaf fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 </pre></div>
-<h4>5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo MultiplicarMatrices(A, B):
-    n = dimension(A)  // Matriz de n x n (suponiendo n potencia de 2)
-    devolver MultiplicarMatricesDyC(A, B, n)
-
-función MultiplicarMatricesDyC(A, B, n):
-    // Caso Base: matriz de 1x1
-    si n == 1:
-        devolver [[ A[0][0] * B[0][0] ]]
-
-    m = n / 2
-    // Dividir A y B en 4 submatrices de m x m cada una:
-    (A11, A12, A21, A22) = PartirEn4Bloques(A, m)
-    (B11, B12, B21, B22) = PartirEn4Bloques(B, m)
-
-    // 8 multiplicaciones recursivas de tamaño m = n/2:
-    M1 = MultiplicarMatricesDyC(A11, B11, m)
-    M2 = MultiplicarMatricesDyC(A12, B21, m)
-    M3 = MultiplicarMatricesDyC(A11, B12, m)
-    M4 = MultiplicarMatricesDyC(A12, B22, m)
-    M5 = MultiplicarMatricesDyC(A21, B11, m)
-    M6 = MultiplicarMatricesDyC(A22, B21, m)
-    M7 = MultiplicarMatricesDyC(A21, B12, m)
-    M8 = MultiplicarMatricesDyC(A22, B22, m)
-
-    // 4 sumas de matrices de tamaño m x m en O(m^2):
-    C11 = M1 + M2
-    C12 = M3 + M4
-    C21 = M5 + M6
-    C22 = M7 + M8
-
-    // Combinar en matriz final C de n x n
-    devolver EnsamblarMatriz(C11, C12, C21, C22)
-</code></pre></div></div>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
 <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
 <ul><li><strong>Afirmar que DyC clásico reduce la complejidad a $O(n^2)$ o $O(n^{2.81})$:</strong> El algoritmo estándar por cuadrantes realiza 8 multiplicaciones ($a = 8$), lo que da exactamente $\Theta(n^3)$, igual que el método iterativo cúbico de 3 bucles. Para bajar a $O(n^{\log_2 7}) \approx O(n^{2.81})$ es indispensable el truco algebraico de Volker Strassen (7 multiplicaciones).</li><li><strong>Confusión de índices en los productos cruzados:</strong> Un error muy penalizado es escribir $A_{12} B_{12}$ en lugar de $A_{12} B_{21}$. Recuerde que la fila de $A$ multiplica a la columna de $B$.</li><li><strong>Olvidar el costo de partición y combinación:</strong> Copiar matrices o sumarlas no es gratis; toma $\Theta(n^2)$. Omitir este término en la recurrencia anula la justificación del Teorema Maestro.</li></ul>
@@ -292,54 +218,34 @@ función MultiplicarMatricesDyC(A, B, n):
 <h3>Patrón de Ejercicio 1.2: Búsqueda Binaria sobre Propiedades Monótonas</h3>
 <p>Se busca un elemento o punto crítico en arreglos que no están completamente ordenados pero que presentan una propiedad monótona o un cambio de tendencia detectable en tiempo $O(\log n)$.</p>
 <hr />
-<article class="exercise-card" id="ej-2" data-num="2" data-priority="imprescindible" data-paradigm="dyc" data-difficulty="2" data-title="elemento pico en un arreglo unimodal" data-origin="guía v1.0 (curso echevarría), ejercicio 1.6 / guía 01, ejercicio 4 / parcial fiuba"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 2</span><h3 class="exercise-title">Elemento Pico en un Arreglo Unimodal</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★☆☆☆ (2/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.6 / Guía 01, Ejercicio 4 / Parcial FIUBA">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.6</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="2" onchange="toggleMastered(2, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+<article class="exercise-card" id="ej-2" data-num="2" data-priority="imprescindible" data-paradigm="dyc" data-difficulty="2" data-parcial="true" data-title="elemento pico en un arreglo unimodal" data-origin="guía v1.0 (curso echevarría), ejercicio 1.6 / guía 01, ejercicio 4 / parcial fiuba"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 2</span><h3 class="exercise-title">Elemento Pico en un Arreglo Unimodal</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★ (2/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.6 / Guía 01, Ejercicio 4 / Parcial FIUBA">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.6</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="2" onchange="toggleMastered(2, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
 Se tiene un arreglo de $n \ge 3$ elementos en forma de pico, esto es: estrictamente creciente hasta una determinada posición $p$, y estrictamente decreciente a partir de ella (con $0 &lt; p &lt; n - 1$). Por ejemplo, en el arreglo <code>[1, 2, 3, 1, 0, -2]</code> la posición del pico es $p = 2$. Se pide:
 a. Implementar un algoritmo de división y conquista de orden $O(\log n)$ <em>(nota: en la Guía v1.0 figura por errata tipográfica $O(\log \log n)$)</em> que encuentre la posición $p$ del pico: <code>PosicionPico(v, ini, fin)</code>.
-b. Justificar el orden del algoritmo mediante el Teorema Maestro.</p>
-<p><strong>Qué está evaluando la cátedra</strong><br />
-Capacidad de descarte logarítmico aprovechando la dirección de la pendiente local, manejo riguroso de condiciones de borde en índices y demostración formal de que siempre existe al menos un pico en la mitad elegida.</p></div><details class="exercise-solution-drawer" id="solution-drawer-2"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
-<ol><li>
-<p><strong>Paso 1: Definición del Invariante de Búsqueda:</strong>
-En cada llamada sobre el rango $[ini, fin]$, se mantiene el siguiente invariante: <strong>garantizadamente existe al menos un pico local dentro del subarreglo $A[ini \dots fin]$</strong>.</p>
-</li><li>
-<p><strong>Paso 2: Caso Base:</strong>
-Cuando $ini = fin$, el rango contiene un único elemento. Por el invariante de búsqueda, este elemento debe ser un pico local. Se retorna $ini$ en tiempo $O(1)$.</p>
-</li><li>
-<p><strong>Paso 3: División:</strong>
-Se calcula el índice central:
-$$m = \lfloor(ini + fin) / 2\rfloor$$
-Como $ini &lt; fin$, necesariamente $m &lt; fin$, lo cual garantiza que la posición $m + 1$ es siempre un índice válido dentro del arreglo (sin desbordamiento).</p>
-</li><li>
-<p><strong>Paso 4: Conquista y Criterio de Descarte:</strong>
-Se comparan los elementos contiguos $A[m]$ y $A[m + 1]$:</p>
-</li><li>
-<p><strong>Caso A ($A[m] &lt; A[m + 1]$):</strong> La pendiente asciende hacia la derecha. Por el Teorema de Existencia, existe al menos un pico en el subrango $[m + 1, fin]$. Se descarta toda la mitad izquierda $[ini, m]$.</p>
-</li><li><strong>Caso B ($A[m] &gt; A[m + 1]$):</strong> La pendiente desciende hacia la derecha (asciende hacia la izquierda). Por lo tanto, existe al menos un pico en el subrango $[ini, m]$ (el propio $m$ podría ser el pico). Se descarta el subrango $[m + 1, fin]$.</li><li><strong>Paso 5: Ecuación de Recurrencia y Teorema Maestro:</strong>
-En cada paso se realiza exactamente una llamada recursiva sobre un subarreglo de tamaño a lo sumo $\lceil n/2 \rceil$ con trabajo de comparación $O(1)$:
-$$T(n) = 1 \cdot T(n/2) + \Theta(1)$$
-Parámetros: $a = 1, b = 2, c = 0$.
-$$\log_b a = \log_2 1 = 0 = c$$
-Aplica el <strong>Caso 2 del Teorema Maestro</strong> con $k = 0$:
-$$T(n) = \Theta(n^c \log n) = \Theta(n^0 \log n) = \Theta(\log n)$$</li></ol>
-<h4>2. Justificación Directa de Correctitud (Por qué siempre hay un pico en la mitad elegida)</h4>
-<ul><li><strong>Idea de la pendiente:</strong> En el centro miramos los vecinos $A[m]$ y $A[m + 1]$. Como no hay elementos consecutivos iguales, los valores sí o sí suben o bajan:<ul><li><strong>Si $A[m] &lt; A[m + 1]$ (sube hacia la derecha):</strong> Como a partir de $m + 1$ los números van subiendo, pasan dos cosas posibles: o bien siguen subiendo sin parar hasta el borde derecho <code>fin</code> (entonces $A[fin]$ es un pico porque es más grande que el anterior y no tiene a nadie a la derecha), o bien en algún momento dejan de subir y bajan (y el primer número donde empieza a bajar es un pico porque le gana al de su izquierda y al de su derecha). Por eso <strong>seguro hay un pico en la mitad derecha $[m + 1, fin]$</strong>.</li><li><strong>Si $A[m] &gt; A[m + 1]$ (sube hacia la izquierda):</strong> Por el mismo razonamiento hacia la izquierda, <strong>seguro hay un pico en la mitad izquierda $[ini, m]$</strong> (incluso el propio $A[m]$ podría ser el pico).</li></ul>
+b. Justificar el orden del algoritmo mediante el Teorema Maestro.</p></div><details class="exercise-solution-drawer" id="solution-drawer-2"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li><strong>Idea de la pendiente:</strong> En vez de recorrer todo el arreglo, miramos la posición central <code>m = (ini + fin) / 2</code> y la comparamos con su vecino inmediato <code>v[m + 1]</code>:<ol><li><strong>Caso Base (<code>ini == fin</code>):</strong> Cuando el subarreglo tiene un solo elemento, ese único candidato es garantizadamente el pico y devolvemos su índice <code>ini</code> en $O(1)$.</li><li><strong>Si <code>v[m] &lt; v[m + 1]</code> (sube hacia la derecha):</strong> Como el arreglo sube estrictamente hasta el pico y recién después baja, si en <code>m</code> todavía estamos subiendo, el pico <strong>está sí o sí a la derecha de <code>m</code></strong>. Descartamos toda la mitad izquierda y buscamos recursivamente en <code>[m + 1, fin]</code>.</li><li><strong>Si <code>v[m] &gt; v[m + 1]</code> (baja hacia la derecha):</strong> Significa que ya pasamos el pico o bien <code>m</code> mismo es el pico. Descartamos la derecha y buscamos recursivamente en <code>[ini, m]</code> (incluyendo a <code>m</code> porque puede ser el pico).</li></ol>
 </li></ul>
-<h4>3. Ejemplo Concreto y Traza Paso a Paso</h4>
-<p>Sea el arreglo de $n = 7$ elementos:
-$$A = [1, 2, 1, 3, 5, 6, 4]$$</p>
-<table>
-<thead><tr>
-<th style="text-align: center;">Paso</th><th style="text-align: center;">Rango $[ini, fin]$</th><th style="text-align: center;">$m$</th><th style="text-align: center;">$A[m]$</th><th style="text-align: center;">$A[m+1]$</th><th style="text-align: center;">Comparación</th><th style="text-align: left;">Decisión / Rango Siguiente</th></tr>
-</thead>
-<tbody><tr>
-<td style="text-align: center;"><strong>1</strong></td><td style="text-align: center;">$[0, 6]$</td><td style="text-align: center;">$3$</td><td style="text-align: center;">$3$</td><td style="text-align: center;">$5$</td><td style="text-align: center;">$3 &lt; 5$ (sube a derecha)</td><td style="text-align: left;">Descartar izquierda $\implies [4, 6]$</td></tr>
-<tr><td style="text-align: center;"><strong>2</strong></td><td style="text-align: center;">$[4, 6]$</td><td style="text-align: center;">$5$</td><td style="text-align: center;">$6$</td><td style="text-align: center;">$4$</td><td style="text-align: center;">$6 &gt; 4$ (baja a derecha)</td><td style="text-align: left;">Descartar derecha $\implies [4, 5]$</td></tr>
-<tr><td style="text-align: center;"><strong>3</strong></td><td style="text-align: center;">$[4, 5]$</td><td style="text-align: center;">$4$</td><td style="text-align: center;">$5$</td><td style="text-align: center;">$6$</td><td style="text-align: center;">$5 &lt; 6$ (sube a derecha)</td><td style="text-align: left;">Descartar izquierda $\implies [5, 5]$</td></tr>
-<tr><td style="text-align: center;"><strong>4</strong></td><td style="text-align: center;">$[5, 5]$</td><td style="text-align: center;">-</td><td style="text-align: center;">-</td><td style="text-align: center;">-</td><td style="text-align: center;"><strong>$ini == fin = 5$</strong></td><td style="text-align: left;"><strong>Caso base: Pico en índice 5 ($A[5] = 6$)</strong></td></tr>
-</tbody>
-</table>
-<p><em>Verificación:</em> $A[5] = 6$ es estrictamente mayor que su vecino izquierdo $A[4] = 5$ y su vecino derecho $A[6] = 4$. Es un pico válido encontrado en solo 3 iteraciones ($&lt;\log_2 7 \approx 2.8$).</p>
-<h4>4. Diagrama Visual de Búsqueda Binaria de la Pendiente</h4>
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo PosicionPico(v, ini, fin):
+    // Caso Base: queda un único elemento y es el pico
+    si ini == fin:
+        devolver ini
+
+    m = (ini + fin) / 2
+
+    // Si la pendiente sube hacia la derecha, el pico está en [m + 1 .. fin]
+    si v[m] &lt; v[m + 1]:
+        devolver PosicionPico(v, m + 1, fin)
+    sino:
+        // Si la pendiente baja, el pico está en [ini .. m] (m puede ser el pico)
+        devolver PosicionPico(v, ini, m)
+</code></pre></div></div>
+<h4>3. Justificación de Complejidad (Para entregar en el parcial)</h4>
+<ul><li>En cada paso descartamos la mitad del arreglo y realizamos <strong>$a = 1$ llamada recursiva</strong> sobre un subproblema de tamaño $n/2$ (<strong>$b = 2$</strong>), haciendo solo una comparación en tiempo constante <strong>$f(n) = \Theta(1)$</strong> (<strong>$c = 0$</strong>).</li><li>
+<p>Ecuación de recurrencia:
+$$T(n) = 1 \cdot T(n/2) + \Theta(1)$$</p>
+</li><li>
+<p>Aplicando el <strong>Teorema Maestro</strong>: $\log_b a = \log_2 1 = 0 = c$ (<strong>Caso 2</strong>), por lo que la complejidad temporal es <strong>$T(n) = \Theta(n^0 \log n) = O(\log n)$</strong>.</p>
+</li></ul>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
     A["Rango [0..6]: m=3<br/>A[3]=3 &lt; A[4]=5"]:::step -->|Descarta izq [0..3]| B["Rango [4..6]: m=5<br/>A[5]=6 &gt; A[6]=4"]:::step
     B -->|Conserva m=5| C["Rango [4..5]: m=4<br/>A[4]=5 &lt; A[5]=6"]:::step
@@ -348,73 +254,42 @@ $$A = [1, 2, 1, 3, 5, 6, 4]$$</p>
     classDef step fill:#1e40af,stroke:#1e3a8a,stroke-width:2px,color:#fff
     classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 </pre></div>
-<h4>5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo EncontrarPico(A, n):
-    si n == 0:
+<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
+<p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
+<ul><li><strong>Hacer <code>fin = m - 1</code> en la rama descendente:</strong> Si $v[m] &gt; v[m+1]$, el elemento $v[m]$ podría ser precisamente el pico. Si pasas <code>m - 1</code>, excluyes a $m$ y el algoritmo puede retornar un índice incorrecto. Debe ser <code>PosicionPico(v, ini, m)</code>.</li><li><strong>Desbordamiento de índice al consultar $m+1$:</strong> Como el caso base corta en <code>ini == fin</code> y la división entera redondea hacia abajo, siempre se cumple $m &lt; fin$, por lo que <code>v[m + 1]</code> nunca se sale de rango.</li></ul>
+</div>
+<hr /></div></details></div></article>
+<article class="exercise-card" id="ej-3" data-num="3" data-priority="imprescindible" data-paradigm="dyc" data-difficulty="1" data-parcial="false" data-title="búsqueda del primer cero en un arreglo de unos y ceros" data-origin="guía v1.0 (curso echevarría), ejercicio 1.4 / guía 01, ejercicio 2"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 3</span><h3 class="exercise-title">Búsqueda del Primer Cero en un Arreglo de Unos y Ceros</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-1" title="Dificultad 1 de 5">★ (1/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.4 / Guía 01, Ejercicio 2">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.4</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="3" onchange="toggleMastered(3, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Se tiene un arreglo tal que <code>[1, 1, 1, ..., 0, 0, ...]</code> (es decir, unos seguidos de ceros). Se pide:
+a. Una función de orden $O(\log n)$ <em>(nota: en la Guía v1.0 figura por errata tipográfica $O(\log \log n)$)</em> que encuentre el índice del primer <code>0</code>. Si no hay ningún <code>0</code> (solo hay unos), debe devolver <code>-1</code>.
+b. Demostrar con el Teorema Maestro que la función es, en efecto, $O(\log n)$.</p></div><details class="exercise-solution-drawer" id="solution-drawer-3"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li>Como el arreglo tiene todos los <code>1</code> al principio y todos los <code>0</code> al final, podemos partir al medio en cada paso buscando el punto exacto donde cambia de <code>1</code> a <code>0</code>:<ol><li><strong>Caso Base (<code>ini &gt; fin</code>):</strong> Si el rango se queda sin elementos, significa que no había ningún <code>0</code> en todo el arreglo y devolvemos <code>-1</code>.</li><li>Calculamos la posición del medio <code>m = (ini + fin) / 2</code> y miramos <code>A[m]</code>:</li><li><strong>Si <code>A[m] == 0</code> y su anterior es <code>1</code> (o <code>m == 0</code>):</strong> Estamos parados justo en el primer <code>0</code> del arreglo, así que devolvemos <code>m</code> inmediatamente.</li><li><strong>Si <code>A[m] == 0</code> y su anterior también es <code>0</code>:</strong> El primer <code>0</code> está más hacia la izquierda; descartamos la mitad derecha y buscamos recursivamente en <code>[ini, m - 1]</code>.</li><li><strong>Si <code>A[m] == 1</code>:</strong> Como antes de un <code>1</code> solo puede haber otros <code>1</code>, el primer <code>0</code> solo puede estar a la derecha; descartamos la mitad izquierda y buscamos recursivamente en <code>[m + 1, fin]</code>.</li></ol>
+</li></ul>
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo BuscarPrimerCero(A, ini, fin):
+    // Caso Base: rango vacío (no existen ceros en el arreglo)
+    si ini &gt; fin:
         devolver -1
-    devolver EncontrarPicoRec(A, 0, n - 1)
-
-función EncontrarPicoRec(A, ini, fin):
-    // Caso Base: un único elemento en el subarreglo es garantizadamente pico
-    si ini == fin:
-        devolver ini
 
     m = (ini + fin) / 2
 
-    // Lema de la pendiente: si sube hacia la derecha, el pico está a la derecha
-    si A[m] &lt; A[m + 1]:
-        devolver EncontrarPicoRec(A, m + 1, fin)
+    si A[m] == 0:
+        // Si está en el borde izquierdo o su anterior es 1, es el primer cero
+        si m == 0 o A[m - 1] == 1:
+            devolver m
+        // Si su anterior también es 0, buscar más a la izquierda
+        devolver BuscarPrimerCero(A, ini, m - 1)
     sino:
-        // Si la pendiente desciende, m puede ser el propio pico
-        devolver EncontrarPicoRec(A, ini, m)
+        // A[m] == 1: descartar mitad izquierda y buscar a la derecha
+        devolver BuscarPrimerCero(A, m + 1, fin)
 </code></pre></div></div>
-<div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
-<p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
-<ul><li><strong>Hacer <code>fin = m - 1</code> en la rama descendente:</strong> Si $A[m] &gt; A[m+1]$, el elemento $A[m]$ podría ser precisamente el pico. Si ajustas <code>fin = m - 1</code>, excluyes a $m$ y el algoritmo puede retornar un índice incorrecto o fallar. Debe ser obligatoriamente <code>fin = m</code>.</li><li><strong>Desbordamiento de índice al calcular $m+1$:</strong> Si el bucle tiene condición <code>ini &le; fin</code>, en la última iteración $m = fin$ y la consulta <code>arr[m + 1]</code> arroja <code>IndexError</code>. La condición estricta debe ser <code>ini &lt; fin</code>.</li><li><strong>Creer que el arreglo debe estar ordenado:</strong> Este algoritmo funciona sobre arreglos desordenados gracias al Lema de la Pendiente. Afirmar en el examen que se requiere ordenar previamente ($O(n \log n)$) invalida la cota $O(\log n)$.</li></ul>
-</div>
-<hr /></div></details></div></article>
-<article class="exercise-card" id="ej-3" data-num="3" data-priority="imprescindible" data-paradigm="dyc" data-difficulty="1" data-title="búsqueda del primer cero en un arreglo de unos y ceros" data-origin="guía v1.0 (curso echevarría), ejercicio 1.4 / guía 01, ejercicio 2"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 3</span><h3 class="exercise-title">Búsqueda del Primer Cero en un Arreglo de Unos y Ceros</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-1" title="Dificultad 1 de 5">★☆☆☆☆ (1/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.4 / Guía 01, Ejercicio 2">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.4</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="3" onchange="toggleMastered(3, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Se tiene un arreglo tal que <code>[1, 1, 1, ..., 0, 0, ...]</code> (es decir, unos seguidos de ceros). Se pide:
-a. Una función de orden $O(\log n)$ <em>(nota: en la Guía v1.0 figura por errata tipográfica $O(\log \log n)$)</em> que encuentre el índice del primer <code>0</code>. Si no hay ningún <code>0</code> (solo hay unos), debe devolver <code>-1</code>.
-b. Demostrar con el Teorema Maestro que la función es, en efecto, $O(\log n)$.</p>
-<p><strong>Qué está evaluando la cátedra</strong><br />
-Identificación de la propiedad de frontera de transición, manejo riguroso de casos donde el cero está en el índice 0 o no existe, y parada anticipada sin incurrir en recorridos lineales.</p></div><details class="exercise-solution-drawer" id="solution-drawer-3"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Deducción Metodológica Formal (Los 5 Pasos de DyC)</h4>
-<ol><li>
-<p><strong>Paso 1: Propiedad de Monotonía y Frontera:</strong>
-El arreglo $A$ es monótonamente decreciente no estricto: $A[i] \ge A[i+1]$ para todo $i$. El "primer cero" es el único índice $k$ que satisface:
-$$A[k] = 0 \quad \land \quad (k = 0 \lor A[k - 1] = 1)$$</p>
+<h4>3. Justificación de Complejidad (Para entregar en el parcial)</h4>
+<ul><li>En cada paso descartamos una mitad completa y hacemos <strong>$a = 1$ llamada recursiva</strong> de tamaño $n/2$ (<strong>$b = 2$</strong>), realizando un número constante de comparaciones en tiempo <strong>$f(n) = \Theta(1)$</strong> (<strong>$c = 0$</strong>).</li><li>
+<p>Ecuación de recurrencia:
+$$T(n) = 1 \cdot T(n/2) + \Theta(1)$$</p>
 </li><li>
-<p><strong>Paso 2: Casos Base de Rango Vacío:</strong>
-Si $ini &gt; fin$, el subrango colapsó sin encontrar ningún cero (ocurre cuando el arreglo es puramente de unos). Se retorna $-1$.</p>
-</li><li>
-<p><strong>Paso 3: División:</strong>
-Se evalúa el elemento en la posición media:
-$$m = \lfloor(ini + fin) / 2\rfloor$$</p>
-</li><li>
-<p><strong>Paso 4: Conquista y Reducción del Espacio de Búsqueda:</strong></p>
-</li><li><strong>Condición de Éxito Inmediato:</strong> Si $A[m] == 0$ y además ($m == 0$ o $A[m - 1] == 1$), entonces $m$ es por definición el primer cero. Se retorna $m$ inmediatamente en $O(1)$.</li><li><strong>Rama Izquierda ($A[m] == 0$ pero $A[m - 1] == 0$):</strong> Hay más ceros hacia la izquierda. Se descarta la mitad derecha y se busca recursivamente en $[ini, m - 1]$.</li><li><strong>Rama Derecha ($A[m] == 1$):</strong> Por monotonía, todos los elementos desde $ini$ hasta $m$ son 1. El primer cero solo puede estar estrictamente a la derecha. Se busca en $[m + 1, fin]$.</li><li><strong>Paso 5: Ecuación de Recurrencia y Teorema Maestro:</strong>
-$$T(n) = 1 \cdot T(n/2) + \Theta(1)$$
-Con $a = 1, b = 2, c = 0$:
-$$\log_2 1 = 0 = c \implies T(n) = \Theta(\log n)$$
-Espacio auxiliar: $O(1)$ en implementación iterativa, $O(\log n)$ en la pila de recursión.</li></ol>
-<h4>2. Justificación Directa de Correctitud (Lista para Examen)</h4>
-<ul><li>Como el arreglo tiene todos los <code>1</code> al principio y todos los <code>0</code> al final, al mirar la posición del medio <code>m</code> solo pueden pasar tres cosas:<ol><li><strong>Si <code>A[m] == 1</code>:</strong> Como antes de un <code>1</code> solo puede haber otros <code>1</code>, es imposible que el primer <code>0</code> esté a la izquierda. Descartamos toda la mitad izquierda y buscamos a la derecha (<code>[m + 1, fin]</code>).</li><li><strong>Si <code>A[m] == 0</code> y su anterior es <code>1</code> (o <code>m == 0</code>):</strong> Estamos parados justo en el cambio de <code>1</code> a <code>0</code>, así que <code>m</code> es el primer cero y lo devolvemos.</li><li><strong>Si <code>A[m] == 0</code> y su anterior también es <code>0</code>:</strong> El primer cero está más atrás, así que descartamos la mitad derecha y buscamos a la izquierda (<code>[ini, m - 1]</code>).</li></ol>
-</li><li>Si el rango se queda sin elementos (<code>ini &gt; fin</code>), significa que eran todos <code>1</code> y devolvemos <code>-1</code>.</li></ul>
-<h4>3. Ejemplo Concreto y Traza Paso a Paso</h4>
-<p>Sea el arreglo de $n = 8$ elementos:
-$$A = [1, 1, 1, 1, 0, 0, 0, 0]$$</p>
-<table>
-<thead><tr>
-<th style="text-align: center;">Iteración</th><th style="text-align: center;">Rango $[ini, fin]$</th><th style="text-align: center;">$m$</th><th style="text-align: center;">$A[m]$</th><th style="text-align: center;">Verificación $A[m-1]$</th><th style="text-align: left;">Decisión / Rango Siguiente</th></tr>
-</thead>
-<tbody><tr>
-<td style="text-align: center;"><strong>1</strong></td><td style="text-align: center;">$[0, 7]$</td><td style="text-align: center;">$3$</td><td style="text-align: center;">$1$</td><td style="text-align: center;">No aplica ($A[m]=1$)</td><td style="text-align: left;">$A[3]=1 \implies$ Descartar $[0, 3]$. Nuevo rango: $[4, 7]$</td></tr>
-<tr><td style="text-align: center;"><strong>2</strong></td><td style="text-align: center;">$[4, 7]$</td><td style="text-align: center;">$5$</td><td style="text-align: center;">$0$</td><td style="text-align: center;">$A[4] = 0$</td><td style="text-align: left;">$A[5]=0$ pero $A[4]=0 \implies$ Hay ceros antes. Nuevo rango: $[4, 4]$</td></tr>
-<tr><td style="text-align: center;"><strong>3</strong></td><td style="text-align: center;">$[4, 4]$</td><td style="text-align: center;">$4$</td><td style="text-align: center;">$0$</td><td style="text-align: center;">$A[3] = 1$</td><td style="text-align: left;"><strong>$A[4] = 0 \land A[3] = 1 \implies$ ¡Primer cero hallado en índice 4!</strong></td></tr>
-</tbody>
-</table>
-<p><em>Resultado devuelto:</em> $4$. Complejidad real: 3 comparaciones ($\le \lceil \log_2 8 \rceil = 3$).</p>
-<h4>4. Diagrama Visual del Corte de Frontera</h4>
+<p>Por el <strong>Teorema Maestro</strong>, como $\log_b a = \log_2 1 = 0 = c$ (<strong>Caso 2</strong>), la complejidad temporal es <strong>$T(n) = \Theta(n^0 \log n) = O(\log n)$</strong>.</p>
+</li></ul>
 <div class="mermaid-wrapper"><pre class="mermaid">graph LR
     subgraph Unos [Zona de 1s]
         N0["A[0] = 1"] --> N1["A[1] = 1"] --> N2["A[2] = 1"] --> N3["A[3] = 1"]
@@ -425,36 +300,13 @@ $$A = [1, 1, 1, 1, 0, 0, 0, 0]$$</p>
     N3 -. Frontera de Transición .-> N4
     classDef primer fill:#15803d,stroke:#166534,stroke-width:3px,color:#fff
 </pre></div>
-<h4>5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo BuscarPrimerCero(A, n):
-    si n == 0:
-        devolver -1
-    devolver BuscarPrimerCeroRec(A, 0, n - 1)
-
-función BuscarPrimerCeroRec(A, ini, fin):
-    // Caso Base: rango inválido sin ceros
-    si ini &gt; fin:
-        devolver -1
-
-    m = (ini + fin) / 2
-
-    si A[m] == 0:
-        // Si es el primer elemento o el anterior es 1, encontramos el primer cero
-        si m == 0 o A[m - 1] == 1:
-            devolver m
-        // Continuar buscando un cero previo más a la izquierda
-        devolver BuscarPrimerCeroRec(A, ini, m - 1)
-    sino:
-        // A[m] == 1: por orden monótono, el primer cero debe residir a la derecha
-        devolver BuscarPrimerCeroRec(A, m + 1, fin)
-</code></pre></div></div>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
 <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
-<ul><li><strong>Acceder a <code>arr[m - 1]</code> cuando $m = 0$:</strong> Si el primer cero está en la posición 0, evaluar <code>arr[m - 1]</code> en Python consultará <code>arr[-1]</code> (el último elemento del arreglo), produciendo un falso positivo o error lógico en otros lenguajes (C/Java) con <code>IndexOutOfBoundsException</code>. Siempre se debe anteponer la guarda <code>m == 0 or arr[m - 1] == 1</code>.</li><li><strong>Arreglos sin ceros (todos 1s):</strong> Si el arreglo no contiene ceros, el algoritmo debe retornar $-1$. Si no se maneja la condición de parada <code>ini &gt; fin</code>, el algoritmo puede retornar un índice erróneo.</li><li><strong>Hacer un recorrido lineal desde $m$:</strong> Al encontrar un 0 en $m$, algunos estudiantes retroceden linealmente con un bucle mientras <code>arr[i] == 0</code>. Eso degrada la complejidad a $O(n)$ en el peor caso (por ejemplo, en un arreglo compuesto íntegramente por ceros), anulando completamente el beneficio de la búsqueda binaria.</li></ul>
+<ul><li><strong>Acceder a <code>A[m - 1]</code> cuando $m = 0$:</strong> Si el primer cero está en la posición 0, evaluar <code>A[m - 1]</code> sin chequear antes <code>m == 0</code> consulta <code>A[-1]</code> o lanza error de índice fuera de rango. Siempre poner primero <code>m == 0 o A[m - 1] == 1</code>.</li><li><strong>Hacer un recorrido lineal hacia atrás desde $m$:</strong> Al encontrar un 0 en $m$, retroceder con un bucle <code>while</code> hasta el primer cero degrada el peor caso a $O(n)$ (cuando todo el arreglo son ceros). Siempre debe seguir partiendo a la mitad con recursión.</li></ul>
 </div>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-4" data-num="4" data-priority="imprescindible" data-paradigm="dyc" data-difficulty="3" data-title="subarreglo contiguo de suma máxima" data-origin="parcial 2026-2-1 (enunciados), ejercicio 1 / guía 01 (resuelto)"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 4</span><h3 class="exercise-title">Subarreglo Contiguo de Suma Máxima</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Parcial 2026-2-1 (Enunciados), Ejercicio 1 / Guía 01 (Resuelto)">🏛️ Parcial 2026-2-1 (Enunciados), Ejercicio 1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="4" onchange="toggleMastered(4, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Dada una lista de números enteros (positivos y negativos), se desea obtener el subarreglo contiguo cuya suma sea máxima. Justificar la complejidad temporal del algoritmo realizado mediante División y Conquista.</p></div><details class="exercise-solution-drawer" id="solution-drawer-4"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-4" data-num="4" data-priority="imprescindible" data-paradigm="dyc" data-difficulty="3" data-parcial="true" data-title="subarreglo contiguo de suma máxima" data-origin="parcial 2026-2-1 (enunciados), ejercicio 1 / guía 01 (resuelto)"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 4</span><h3 class="exercise-title">Subarreglo Contiguo de Suma Máxima</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Parcial 2026-2-1 (Enunciados), Ejercicio 1 / Guía 01 (Resuelto)">🏛️ Parcial 2026-2-1 (Enunciados), Ejercicio 1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="4" onchange="toggleMastered(4, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Dada una lista de números enteros (positivos y negativos), se desea obtener el subarreglo contiguo cuya suma sea máxima. Justificar la complejidad temporal del algoritmo realizado mediante División y Conquista.</p></div><details class="exercise-solution-drawer" id="solution-drawer-4"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
 <ul><li><strong>¿Cómo pensamos la división?</strong> Partimos el arreglo a la mitad en dos partes iguales: <code>izquierda</code> y <code>derecha</code>. El subarreglo contiguo de suma máxima tiene <strong>solo tres lugares posibles</strong> donde estar:<ol><li><strong>Completamente en la mitad izquierda:</strong> lo encontramos llamando recursivamente sobre la parte izquierda.</li><li><strong>Completamente en la mitad derecha:</strong> lo encontramos llamando recursivamente sobre la parte derecha.</li><li><strong>Cruzando el medio (empieza en la izquierda y termina en la derecha):</strong> como tiene que ser contiguo, sí o sí pasa por el centro. Para que sume lo máximo posible, caminamos desde el centro hacia la izquierda acumulando la mejor suma parcial, y desde el centro hacia la derecha acumulando la mejor suma parcial. Uniendo esos dos tramos tenemos el mejor subarreglo cruzado en tiempo lineal $O(n)$.</li></ol>
 </li><li>Finalmente, comparamos las sumas de los tres candidatos (<code>izquierda</code>, <code>derecha</code> y <code>cruzado</code>) y devolvemos el que tenga mayor suma.</li></ul>
 <h4>2. Semi-Pseudocódigo Simplificado</h4>
@@ -494,7 +346,7 @@ función MejorCruzado(A, ini, medio, fin):
 
     devolver (mejor_izq + mejor_der, idx_izq, idx_der)
 </code></pre></div></div>
-<h4>3. Justificación de Complejidad Temporal</h4>
+<h4>3. Justificación de Complejidad (Para entregar en el parcial)</h4>
 <ul><li>Hacemos <strong>$a = 2$ llamadas recursivas</strong>, cada una con la mitad de elementos (<strong>$b = 2$</strong>).</li><li>La función <code>MejorCruzado</code> recorre desde el centro hacia ambos extremos pasando una sola vez por cada elemento del intervalo actual, por lo que cuesta tiempo lineal <strong>$f(n) = O(n)$</strong> (es decir, <strong>$c = 1$</strong>).</li><li>
 <p>Ecuación de recurrencia:
 $$T(n) = 2 \cdot T(n/2) + O(n)$$</p>
@@ -502,8 +354,8 @@ $$T(n) = 2 \cdot T(n/2) + O(n)$$</p>
 <p>Por el <strong>Teorema Maestro</strong>, como $\log_b a = \log_2 2 = 1 = c$ (<strong>Caso 2</strong>), la complejidad temporal total es <strong>$O(n \log n)$</strong>.</p>
 </li></ul>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-5" data-num="5" data-priority="imprescindible" data-paradigm="dyc" data-difficulty="2" data-title="compra y venta de acciones para máxima ganancia" data-origin="guía v1.0 (curso echevarría), problema resuelto 1.a"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 5</span><h3 class="exercise-title">Compra y Venta de Acciones para Máxima Ganancia</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★☆☆☆ (2/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Problema Resuelto 1.A">🏛️ Guía v1.0 (Curso Echevarría), Problema Resuelto 1.A</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="5" onchange="toggleMastered(5, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Se consideran $n$ días consecutivos de cotización de una acción, numerados $i = 1, 2, \dots, n$, con precio $p(i)$ por acción. Se desea comprar 1000 acciones en algún día $i$ y venderlas todas en un día posterior $j$. Determinar por División y Conquista la máxima ganancia que puede obtenerse con complejidad mejor que $O(n^2)$ (en $O(n)$).</p></div><details class="exercise-solution-drawer" id="solution-drawer-5"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-5" data-num="5" data-priority="imprescindible" data-paradigm="dyc" data-difficulty="2" data-parcial="false" data-title="compra y venta de acciones para máxima ganancia" data-origin="guía v1.0 (curso echevarría), problema resuelto 1.a"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 5</span><h3 class="exercise-title">Compra y Venta de Acciones para Máxima Ganancia</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★ (2/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Problema Resuelto 1.A">🏛️ Guía v1.0 (Curso Echevarría), Problema Resuelto 1.A</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="5" onchange="toggleMastered(5, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Se consideran $n$ días consecutivos de cotización de una acción, numerados $i = 1, 2, \dots, n$, con precio $p(i)$ por acción. Se desea comprar 1000 acciones en algún día $i$ y venderlas todas en un día posterior $j$. Determinar por División y Conquista la máxima ganancia que puede obtenerse con complejidad mejor que $O(n^2)$ (en $O(n)$).</p></div><details class="exercise-solution-drawer" id="solution-drawer-5"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
 <ul><li>Si dividimos los días en una <strong>mitad izquierda</strong> (días anteriores) y una <strong>mitad derecha</strong> (días posteriores), la mejor compra-venta puede ocurrir:<ol><li>Comprando y vendiendo dentro de la mitad izquierda (ganancia <code>g1</code>).</li><li>Comprando y vendiendo dentro de la mitad derecha (ganancia <code>g2</code>).</li><li><strong>Comprando en la mitad izquierda y vendiendo en la mitad derecha:</strong> para ganar lo máximo posible cruzando las mitades, nos conviene comprar en el día <strong>más barato</strong> de la izquierda (<code>min1</code>) y vender en el día <strong>más caro</strong> de la derecha (<code>max2</code>), ganando <code>max2 - min1</code>.</li></ol>
 </li><li>Para no recalcular mínimos y máximos con un ciclo en cada paso (lo que llevaría a $O(n \log n)$), hacemos que cada llamada recursiva devuelva directamente una tripla <code>(mínimo, máximo, ganancia)</code>. Así combinamos las dos mitades con solo un par de comparaciones en tiempo constante $O(1)$.</li></ul>
 <h4>2. Semi-Pseudocódigo Simplificado</h4>
@@ -526,7 +378,7 @@ Se consideran $n$ días consecutivos de cotización de una acción, numerados $i
 
     devolver (minimo, maximo, ganancia)
 </code></pre></div></div>
-<h4>3. Justificación de Complejidad Temporal</h4>
+<h4>3. Justificación de Complejidad (Para entregar en el parcial)</h4>
 <ul><li>Se realizan <strong>$a = 2$ llamadas recursivas</strong> sobre mitades de tamaño $n/2$ (<strong>$b = 2$</strong>), y la combinación hace únicamente restas y comparaciones en tiempo constante <strong>$f(n) = \Theta(1)$</strong> (<strong>$c = 0$</strong>).</li><li>
 <p>Ecuación de recurrencia:
 $$T(n) = 2 \cdot T(n/2) + \Theta(1)$$</p>
@@ -534,31 +386,67 @@ $$T(n) = 2 \cdot T(n/2) + \Theta(1)$$</p>
 <p>Aplicando el <strong>Teorema Maestro</strong>, $\log_b a = \log_2 2 = 1 &gt; 0 = c$ (<strong>Caso 1</strong>), por lo que la complejidad es <strong>$T(n) = O(n^{\log_2 2}) = O(n)$</strong>.</p>
 </li></ul>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-6" data-num="6" data-priority="importante" data-paradigm="dyc" data-difficulty="1" data-title="aplicación sistemática del teorema maestro (9 recurrencias)" data-origin="guía v1.0 (curso echevarría), ejercicio 1.1"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 6</span><h3 class="exercise-title">Aplicación Sistemática del Teorema Maestro (9 Recurrencias)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-1" title="Dificultad 1 de 5">★☆☆☆☆ (1/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.1">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="6" onchange="toggleMastered(6, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+<article class="exercise-card" id="ej-6" data-num="6" data-priority="importante" data-paradigm="dyc" data-difficulty="1" data-parcial="false" data-title="aplicación sistemática del teorema maestro (9 recurrencias)" data-origin="guía v1.0 (curso echevarría), ejercicio 1.1"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 6</span><h3 class="exercise-title">Aplicación Sistemática del Teorema Maestro (9 Recurrencias)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-1" title="Dificultad 1 de 5">★ (1/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.1">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="6" onchange="toggleMastered(6, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
 Indicar, utilizando el Teorema Maestro, la complejidad de cada una de las siguientes ecuaciones de recurrencia:</p>
-<ul><li>$A(n) = 2A(n/4) + \sqrt{n}$, $\quad B(n) = 2B(n/4) + n$, $\quad C(n) = 2C(n/4) + n^2$</li><li>$D(n) = 3D(n/3) + \sqrt{n}$, $\quad E(n) = 3E(n/3) + n$, $\quad F(n) = 3F(n/3) + n^2$</li><li>$G(n) = 4G(n/2) + \sqrt{n}$, $\quad H(n) = 4H(n/2) + n$, $\quad I(n) = 4I(n/2) + n^2$</li></ul></div><details class="exercise-solution-drawer" id="solution-drawer-6"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
-<p>Para cualquier recurrencia $T(n) = a \cdot T(n/b) + \Theta(n^c)$, solo debemos comparar el exponente de las hojas <strong>$\log_b a$</strong> contra el exponente del trabajo exterior <strong>$c$</strong> (recordando que $\sqrt{n} = n^{0.5}$, por lo que $c = 0.5$):</p>
-<ul><li>Si <strong>$\log_b a &gt; c$</strong> (ganan las hojas, Caso 1): el orden es <strong>$O(n^{\log_b a})$</strong>.</li><li>Si <strong>$\log_b a = c$</strong> (empatados, Caso 2): el orden es <strong>$O(n^c \log n)$</strong>.</li><li>Si <strong>$\log_b a &lt; c$</strong> (gana el trabajo exterior, Caso 3): el orden es <strong>$O(n^c)$</strong>.</li></ul>
-<h4>2. Resolución Completa de las 9 Ecuaciones</h4>
+<ul><li>$A(n) = 2A(n/4) + \sqrt{n}$, $\quad B(n) = 2B(n/4) + n$, $\quad C(n) = 2C(n/4) + n^2$</li><li>$D(n) = 3D(n/3) + \sqrt{n}$, $\quad E(n) = 3E(n/3) + n$, $\quad F(n) = 3F(n/3) + n^2$</li><li>$G(n) = 4G(n/2) + \sqrt{n}$, $\quad H(n) = 4H(n/2) + n$, $\quad I(n) = 4I(n/2) + n^2$</li></ul></div><details class="exercise-solution-drawer" id="solution-drawer-6"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li>Para toda ecuación de recurrencia de la forma $T(n) = a \cdot T(n/b) + f(n)$ con $a \ge 1, b &gt; 1$, donde el trabajo no recursivo de partición y combinación satisface $f(n) = \Theta(n^c)$ (con $c \ge 0$), el Teorema Maestro analiza la competencia asintótica entre dos fuerzas dentro del árbol de llamadas recursivas:<ol><li><strong>El trabajo acumulado en las hojas:</strong> en el nivel más profundo ($h = \log_b n$), la cantidad de hojas es $a^{\log_b n} = n^{\log_b a}$, cada una con costo $O(1)$. Por ende, el exponente crítico de las hojas es <strong>$\log_b a$</strong>.</li><li><strong>El trabajo en la raíz (división y combinación):</strong> en el nivel superior, el trabajo exterior está gobernado por el exponente <strong>$c$</strong> de $f(n) = \Theta(n^c)$. En particular: $\sqrt{n} = n^{0.5}$ ($c = 0.5$), $n = n^1$ ($c = 1$), y $n^2$ ($c = 2$).</li></ol>
+</li><li>La regla de decisión sistemática consiste en contrastar $\log_b a$ contra $c$:<ul><li><strong>Caso 1 ($\log_b a &gt; c$): Dominan las hojas.</strong> El costo del nivel base supera al trabajo de combinación. El orden es <strong>$\Theta(n^{\log_b a})$</strong>.</li><li><strong>Caso 2 ($\log_b a = c$): Trabajo balanceado.</strong> Cada uno de los $\log_b n$ niveles del árbol realiza el mismo orden de trabajo $\Theta(n^c)$. El orden es <strong>$\Theta(n^c \log n)$</strong>.</li><li><strong>Caso 3 ($\log_b a &lt; c$): Domina la raíz.</strong> El trabajo en la cima supera la suma geométrica de los niveles inferiores. Si se cumple la condición de regularidad ($a \cdot f(n/b) \le k \cdot f(n)$ para alguna constante $k &lt; 1$), el orden es <strong>$\Theta(n^c)$</strong>.</li></ul>
+</li></ul>
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo EvaluarTeoremaMaestro(a, b, c):
+    // Entrada:
+    //   a: cantidad de subproblemas recursivos (a &gt;= 1)
+    //   b: factor de división del tamaño de entrada (b &gt; 1)
+    //   c: exponente del costo de partición/combinación f(n) = Theta(n^c)
+    // Salida: Cota asintótica de T(n) = a * T(n/b) + Theta(n^c)
+
+    exponente_hojas = log(a) / log(b)   // log_b(a)
+
+    si exponente_hojas &gt; c:
+        // Caso 1: La suma geométrica crece hacia las hojas (n^(log_b a) hojas)
+        devolver &quot;Theta(n^&quot; + exponente_hojas + &quot;)&quot;
+
+    sino si exponente_hojas == c:
+        // Caso 2: Cada uno de los log_b(n) niveles aporta Theta(n^c) de costo
+        devolver &quot;Theta(n^&quot; + c + &quot; * log n)&quot;
+
+    sino: // exponente_hojas &lt; c
+        // Caso 3: La suma decrece geométricamente; domina el costo de la raíz f(n)
+        // Condición de regularidad: a * (n/b)^c = (a / b^c) * n^c &lt;= k * n^c con k = a / b^c &lt; 1
+        devolver &quot;Theta(n^&quot; + c + &quot;)&quot;
+</code></pre></div></div>
+<h4>3. Justificación de Complejidad (Para entregar en el parcial)</h4>
+<p>Deducción formal agrupando las 9 recurrencias por su estructura de ramificación $(a, b)$:</p>
+<ul><li>
+<p><strong>Familia 1: $a = 2, b = 4 \implies \log_b a = \log_4 2 = 0.5$</strong></p>
+<ul><li><strong>$A(n) = 2A(n/4) + \sqrt{n}$:</strong> Aquí $f(n) = n^{0.5} \implies c = 0.5$. Como $\log_4 2 = 0.5 = c$, aplica el <strong>Caso 2</strong> (balance equitativo): <strong>$\Theta(\sqrt{n} \log n)$</strong>.</li><li><strong>$B(n) = 2B(n/4) + n$:</strong> Aquí $f(n) = n^1 \implies c = 1$. Como $\log_4 2 = 0.5 &lt; 1 = c$, aplica el <strong>Caso 3</strong> (domina la raíz, regularidad $2(n/4) = n/2 \le \frac{1}{2} n$): <strong>$\Theta(n)$</strong>.</li><li><strong>$C(n) = 2C(n/4) + n^2$:</strong> Aquí $f(n) = n^2 \implies c = 2$. Como $\log_4 2 = 0.5 &lt; 2 = c$, aplica el <strong>Caso 3</strong> (domina la raíz, regularidad $2(n/4)^2 = n^2/8 \le \frac{1}{8} n^2$): <strong>$\Theta(n^2)$</strong>.</li></ul>
+</li><li>
+<p><strong>Familia 2: $a = 3, b = 3 \implies \log_b a = \log_3 3 = 1$</strong></p>
+<ul><li><strong>$D(n) = 3D(n/3) + \sqrt{n}$:</strong> Aquí $f(n) = n^{0.5} \implies c = 0.5$. Como $\log_3 3 = 1 &gt; 0.5 = c$, aplica el <strong>Caso 1</strong> (dominan las $n^1$ hojas): <strong>$\Theta(n)$</strong>.</li><li><strong>$E(n) = 3E(n/3) + n$:</strong> Aquí $f(n) = n^1 \implies c = 1$. Como $\log_3 3 = 1 = c$, aplica el <strong>Caso 2</strong> (balance equitativo en cada nivel): <strong>$\Theta(n \log n)$</strong>.</li><li><strong>$F(n) = 3F(n/3) + n^2$:</strong> Aquí $f(n) = n^2 \implies c = 2$. Como $\log_3 3 = 1 &lt; 2 = c$, aplica el <strong>Caso 3</strong> (domina la raíz, regularidad $3(n/3)^2 = n^2/3 \le \frac{1}{3} n^2$): <strong>$\Theta(n^2)$</strong>.</li></ul>
+</li><li>
+<p><strong>Familia 3: $a = 4, b = 2 \implies \log_b a = \log_2 4 = 2$</strong></p>
+<ul><li><strong>$G(n) = 4G(n/2) + \sqrt{n}$:</strong> Aquí $f(n) = n^{0.5} \implies c = 0.5$. Como $\log_2 4 = 2 &gt; 0.5 = c$, aplica el <strong>Caso 1</strong> (dominan las $n^2$ hojas): <strong>$\Theta(n^2)$</strong>.</li><li><strong>$H(n) = 4H(n/2) + n$:</strong> Aquí $f(n) = n^1 \implies c = 1$. Como $\log_2 4 = 2 &gt; 1 = c$, aplica el <strong>Caso 1</strong> (dominan las $n^2$ hojas): <strong>$\Theta(n^2)$</strong>.</li><li><strong>$I(n) = 4I(n/2) + n^2$:</strong> Aquí $f(n) = n^2 \implies c = 2$. Como $\log_2 4 = 2 = c$, aplica el <strong>Caso 2</strong> (balance equitativo): <strong>$\Theta(n^2 \log n)$</strong>.</li></ul>
+</li></ul>
+<h5>Tabla Resumen de las 9 Recurrencias</h5>
 <table>
 <thead><tr>
 <th style="text-align: left;">Recurrencia</th><th style="text-align: center;">$a$</th><th style="text-align: center;">$b$</th><th style="text-align: center;">$\log_b a$</th><th style="text-align: center;">$f(n) = n^c$</th><th style="text-align: center;">Comparación ($\log_b a$ vs $c$)</th><th style="text-align: center;">Caso TM</th><th style="text-align: left;">Complejidad Final</th></tr>
 </thead>
 <tbody><tr>
-<td style="text-align: left;"><strong>$A(n) = 2A(n/4) + \sqrt{n}$</strong></td><td style="text-align: center;">$2$</td><td style="text-align: center;">$4$</td><td style="text-align: center;">$\log_4 2 = 0.5$</td><td style="text-align: center;">$n^{0.5}$ ($c=0.5$)</td><td style="text-align: center;">$0.5 = 0.5$</td><td style="text-align: center;">Caso 2</td><td style="text-align: left;"><strong>$O(\sqrt{n} \log n)$</strong></td></tr>
-<tr><td style="text-align: left;"><strong>$B(n) = 2B(n/4) + n$</strong></td><td style="text-align: center;">$2$</td><td style="text-align: center;">$4$</td><td style="text-align: center;">$\log_4 2 = 0.5$</td><td style="text-align: center;">$n^1$ ($c=1$)</td><td style="text-align: center;">$0.5 &lt; 1$</td><td style="text-align: center;">Caso 3</td><td style="text-align: left;"><strong>$O(n)$</strong></td></tr>
-<tr><td style="text-align: left;"><strong>$C(n) = 2C(n/4) + n^2$</strong></td><td style="text-align: center;">$2$</td><td style="text-align: center;">$4$</td><td style="text-align: center;">$\log_4 2 = 0.5$</td><td style="text-align: center;">$n^2$ ($c=2$)</td><td style="text-align: center;">$0.5 &lt; 2$</td><td style="text-align: center;">Caso 3</td><td style="text-align: left;"><strong>$O(n^2)$</strong></td></tr>
-<tr><td style="text-align: left;"><strong>$D(n) = 3D(n/3) + \sqrt{n}$</strong></td><td style="text-align: center;">$3$</td><td style="text-align: center;">$3$</td><td style="text-align: center;">$\log_3 3 = 1$</td><td style="text-align: center;">$n^{0.5}$ ($c=0.5$)</td><td style="text-align: center;">$1 &gt; 0.5$</td><td style="text-align: center;">Caso 1</td><td style="text-align: left;"><strong>$O(n)$</strong></td></tr>
-<tr><td style="text-align: left;"><strong>$E(n) = 3E(n/3) + n$</strong></td><td style="text-align: center;">$3$</td><td style="text-align: center;">$3$</td><td style="text-align: center;">$\log_3 3 = 1$</td><td style="text-align: center;">$n^1$ ($c=1$)</td><td style="text-align: center;">$1 = 1$</td><td style="text-align: center;">Caso 2</td><td style="text-align: left;"><strong>$O(n \log n)$</strong></td></tr>
-<tr><td style="text-align: left;"><strong>$F(n) = 3F(n/3) + n^2$</strong></td><td style="text-align: center;">$3$</td><td style="text-align: center;">$3$</td><td style="text-align: center;">$\log_3 3 = 1$</td><td style="text-align: center;">$n^2$ ($c=2$)</td><td style="text-align: center;">$1 &lt; 2$</td><td style="text-align: center;">Caso 3</td><td style="text-align: left;"><strong>$O(n^2)$</strong></td></tr>
-<tr><td style="text-align: left;"><strong>$G(n) = 4G(n/2) + \sqrt{n}$</strong></td><td style="text-align: center;">$4$</td><td style="text-align: center;">$2$</td><td style="text-align: center;">$\log_2 4 = 2$</td><td style="text-align: center;">$n^{0.5}$ ($c=0.5$)</td><td style="text-align: center;">$2 &gt; 0.5$</td><td style="text-align: center;">Caso 1</td><td style="text-align: left;"><strong>$O(n^2)$</strong></td></tr>
-<tr><td style="text-align: left;"><strong>$H(n) = 4H(n/2) + n$</strong></td><td style="text-align: center;">$4$</td><td style="text-align: center;">$2$</td><td style="text-align: center;">$\log_2 4 = 2$</td><td style="text-align: center;">$n^1$ ($c=1$)</td><td style="text-align: center;">$2 &gt; 1$</td><td style="text-align: center;">Caso 1</td><td style="text-align: left;"><strong>$O(n^2)$</strong></td></tr>
-<tr><td style="text-align: left;"><strong>$I(n) = 4I(n/2) + n^2$</strong></td><td style="text-align: center;">$4$</td><td style="text-align: center;">$2$</td><td style="text-align: center;">$\log_2 4 = 2$</td><td style="text-align: center;">$n^2$ ($c=2$)</td><td style="text-align: center;">$2 = 2$</td><td style="text-align: center;">Caso 2</td><td style="text-align: left;"><strong>$O(n^2 \log n)$</strong></td></tr>
+<td style="text-align: left;"><strong>$A(n) = 2A(n/4) + \sqrt{n}$</strong></td><td style="text-align: center;">$2$</td><td style="text-align: center;">$4$</td><td style="text-align: center;">$\log_4 2 = 0.5$</td><td style="text-align: center;">$n^{0.5}$ ($c=0.5$)</td><td style="text-align: center;">$0.5 = 0.5$</td><td style="text-align: center;">Caso 2</td><td style="text-align: left;"><strong>$\Theta(\sqrt{n} \log n)$</strong></td></tr>
+<tr><td style="text-align: left;"><strong>$B(n) = 2B(n/4) + n$</strong></td><td style="text-align: center;">$2$</td><td style="text-align: center;">$4$</td><td style="text-align: center;">$\log_4 2 = 0.5$</td><td style="text-align: center;">$n^1$ ($c=1$)</td><td style="text-align: center;">$0.5 &lt; 1$</td><td style="text-align: center;">Caso 3</td><td style="text-align: left;"><strong>$\Theta(n)$</strong></td></tr>
+<tr><td style="text-align: left;"><strong>$C(n) = 2C(n/4) + n^2$</strong></td><td style="text-align: center;">$2$</td><td style="text-align: center;">$4$</td><td style="text-align: center;">$\log_4 2 = 0.5$</td><td style="text-align: center;">$n^2$ ($c=2$)</td><td style="text-align: center;">$0.5 &lt; 2$</td><td style="text-align: center;">Caso 3</td><td style="text-align: left;"><strong>$\Theta(n^2)$</strong></td></tr>
+<tr><td style="text-align: left;"><strong>$D(n) = 3D(n/3) + \sqrt{n}$</strong></td><td style="text-align: center;">$3$</td><td style="text-align: center;">$3$</td><td style="text-align: center;">$\log_3 3 = 1$</td><td style="text-align: center;">$n^{0.5}$ ($c=0.5$)</td><td style="text-align: center;">$1 &gt; 0.5$</td><td style="text-align: center;">Caso 1</td><td style="text-align: left;"><strong>$\Theta(n)$</strong></td></tr>
+<tr><td style="text-align: left;"><strong>$E(n) = 3E(n/3) + n$</strong></td><td style="text-align: center;">$3$</td><td style="text-align: center;">$3$</td><td style="text-align: center;">$\log_3 3 = 1$</td><td style="text-align: center;">$n^1$ ($c=1$)</td><td style="text-align: center;">$1 = 1$</td><td style="text-align: center;">Caso 2</td><td style="text-align: left;"><strong>$\Theta(n \log n)$</strong></td></tr>
+<tr><td style="text-align: left;"><strong>$F(n) = 3F(n/3) + n^2$</strong></td><td style="text-align: center;">$3$</td><td style="text-align: center;">$3$</td><td style="text-align: center;">$\log_3 3 = 1$</td><td style="text-align: center;">$n^2$ ($c=2$)</td><td style="text-align: center;">$1 &lt; 2$</td><td style="text-align: center;">Caso 3</td><td style="text-align: left;"><strong>$\Theta(n^2)$</strong></td></tr>
+<tr><td style="text-align: left;"><strong>$G(n) = 4G(n/2) + \sqrt{n}$</strong></td><td style="text-align: center;">$4$</td><td style="text-align: center;">$2$</td><td style="text-align: center;">$\log_2 4 = 2$</td><td style="text-align: center;">$n^{0.5}$ ($c=0.5$)</td><td style="text-align: center;">$2 &gt; 0.5$</td><td style="text-align: center;">Caso 1</td><td style="text-align: left;"><strong>$\Theta(n^2)$</strong></td></tr>
+<tr><td style="text-align: left;"><strong>$H(n) = 4H(n/2) + n$</strong></td><td style="text-align: center;">$4$</td><td style="text-align: center;">$2$</td><td style="text-align: center;">$\log_2 4 = 2$</td><td style="text-align: center;">$n^1$ ($c=1$)</td><td style="text-align: center;">$2 &gt; 1$</td><td style="text-align: center;">Caso 1</td><td style="text-align: left;"><strong>$\Theta(n^2)$</strong></td></tr>
+<tr><td style="text-align: left;"><strong>$I(n) = 4I(n/2) + n^2$</strong></td><td style="text-align: center;">$4$</td><td style="text-align: center;">$2$</td><td style="text-align: center;">$\log_2 4 = 2$</td><td style="text-align: center;">$n^2$ ($c=2$)</td><td style="text-align: center;">$2 = 2$</td><td style="text-align: center;">Caso 2</td><td style="text-align: left;"><strong>$\Theta(n^2 \log n)$</strong></td></tr>
 </tbody>
 </table>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-7" data-num="7" data-priority="importante" data-paradigm="dyc" data-difficulty="1" data-title="determinar si un arreglo está ordenado" data-origin="guía v1.0 (curso echevarría), ejercicio 1.2"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 7</span><h3 class="exercise-title">Determinar si un Arreglo está Ordenado</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-1" title="Dificultad 1 de 5">★☆☆☆☆ (1/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.2">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.2</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="7" onchange="toggleMastered(7, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Implementar, por división y conquista, una función que, dado un arreglo y su tamaño (cantidad de elementos), determine si el mismo se encuentra ordenado de forma ascendente. Indicar y justificar el orden.</p></div><details class="exercise-solution-drawer" id="solution-drawer-7"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-7" data-num="7" data-priority="importante" data-paradigm="dyc" data-difficulty="1" data-parcial="false" data-title="determinar si un arreglo está ordenado" data-origin="guía v1.0 (curso echevarría), ejercicio 1.2"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 7</span><h3 class="exercise-title">Determinar si un Arreglo está Ordenado</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-1" title="Dificultad 1 de 5">★ (1/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.2">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.2</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="7" onchange="toggleMastered(7, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Implementar, por división y conquista, una función que, dado un arreglo y su tamaño (cantidad de elementos), determine si el mismo se encuentra ordenado de forma ascendente. Indicar y justificar el orden.</p></div><details class="exercise-solution-drawer" id="solution-drawer-7"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
 <ul><li>Un arreglo de 0 o 1 elementos siempre está ordenado.</li><li>Si tiene más elementos, lo partimos a la mitad. Para que todo el arreglo esté ordenado deben cumplirse <strong>tres condiciones a la vez</strong>:<ol><li>Que la mitad izquierda esté ordenada.</li><li>Que la mitad derecha esté ordenada.</li><li><strong>Condición de enganche en la frontera:</strong> que el último elemento de la mitad izquierda sea menor o igual al primer elemento de la mitad derecha (<code>A[medio] &lt;= A[medio + 1]</code>).</li></ol>
 </li></ul>
 <h4>2. Semi-Pseudocódigo Simplificado</h4>
@@ -576,11 +464,11 @@ Implementar, por división y conquista, una función que, dado un arreglo y su t
     // Ambas mitades deben estar ordenadas
     devolver EstaOrdenado(A, ini, medio) y EstaOrdenado(A, medio + 1, fin)
 </code></pre></div></div>
-<h4>3. Justificación de Complejidad Temporal</h4>
+<h4>3. Justificación de Complejidad (Para entregar en el parcial)</h4>
 <ul><li>En el peor caso (cuando el arreglo sí está ordenado), el algoritmo verifica las <strong>$a = 2$ mitades</strong> de tamaño $n/2$ (<strong>$b = 2$</strong>) y hace una sola comparación en el borde en tiempo <strong>$O(1)$</strong> (<strong>$c = 0$</strong>).</li><li>Recurrencia: $T(n) = 2 \cdot T(n/2) + O(1)$.</li><li>Por el <strong>Teorema Maestro</strong> ($\log_2 2 = 1 &gt; 0 = c$, <strong>Caso 1</strong>), el orden es <strong>$O(n)$</strong>.</li></ul>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-8" data-num="8" data-priority="imprescindible" data-paradigm="dyc" data-difficulty="2" data-title="encontrar el único número duplicado en arreglo ordenado" data-origin="guía v1.0 (curso echevarría), ejercicio 1.3 / guía 01, ejercicio 1"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 8</span><h3 class="exercise-title">Encontrar el Único Número Duplicado en Arreglo Ordenado</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★☆☆☆ (2/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.3 / Guía 01, Ejercicio 1">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.3</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="8" onchange="toggleMastered(8, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Se cuenta con un arreglo de enteros ordenado de manera ascendente, que contiene exactamente un número duplicado (es decir, todos los demás elementos son distintos, sin duplicados). Implementar una función que encuentre dicho número utilizando división y conquista. Indicar y justificar la complejidad del algoritmo, utilizando el Teorema Maestro.</p></div><details class="exercise-solution-drawer" id="solution-drawer-8"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-8" data-num="8" data-priority="imprescindible" data-paradigm="dyc" data-difficulty="2" data-parcial="false" data-title="encontrar el único número duplicado en arreglo ordenado" data-origin="guía v1.0 (curso echevarría), ejercicio 1.3 / guía 01, ejercicio 1"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 8</span><h3 class="exercise-title">Encontrar el Único Número Duplicado en Arreglo Ordenado</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★ (2/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.3 / Guía 01, Ejercicio 1">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.3</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="8" onchange="toggleMastered(8, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Se cuenta con un arreglo de enteros ordenado de manera ascendente, que contiene exactamente un número duplicado (es decir, todos los demás elementos son distintos, sin duplicados). Implementar una función que encuentre dicho número utilizando división y conquista. Indicar y justificar la complejidad del algoritmo, utilizando el Teorema Maestro.</p></div><details class="exercise-solution-drawer" id="solution-drawer-8"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
 <ul><li><em>(Nota de cátedra: En la versión clásica de FIUBA los elementos son consecutivos, o bien comparamos la diferencia de valores contra la diferencia de índices).</em></li><li><strong>Idea clave de los índices:</strong> Como el arreglo está ordenado de forma estrictamente creciente salvo por el único par duplicado, entre dos posiciones <code>ini</code> y <code>medio</code> sin duplicados los valores están obligados a crecer <strong>al menos tanto como la cantidad de pasos dados</strong>: <code>A[medio] - A[ini] &gt;= medio - ini</code> (o si son enteros consecutivos a partir de <code>A[0]</code>, antes del duplicado se cumple <code>A[i] == A[0] + i</code> y después del duplicado se atrasa en 1: <code>A[i] == A[0] + i - 1</code>).</li><li>Miramos el elemento del medio <code>m</code>:<ul><li>Si <code>A[m]</code> es igual a <code>A[m - 1]</code> o a <code>A[m + 1]</code>, ¡ya encontramos el duplicado!</li><li>Si en la mitad izquierda la diferencia de valores <code>A[m] - A[ini]</code> es <strong>menor</strong> que la cantidad de pasos <code>m - ini</code> (en elementos consecutivos), significa que hubo una repetición que "achicó" el crecimiento en la izquierda: buscamos en <code>[ini, m]</code>.</li><li>Si no, el duplicado está garantizadamente en la mitad derecha: buscamos en <code>[m + 1, fin]</code>.</li></ul>
 </li></ul>
 <h4>2. Semi-Pseudocódigo Simplificado</h4>
@@ -598,11 +486,11 @@ Se cuenta con un arreglo de enteros ordenado de manera ascendente, que contiene 
     sino:
         devolver EncontrarDuplicado(A, medio + 1, fin)
 </code></pre></div></div>
-<h4>3. Justificación de Complejidad Temporal</h4>
+<h4>3. Justificación de Complejidad (Para entregar en el parcial)</h4>
 <ul><li>En cada paso descartamos una mitad completa y hacemos <strong>$a = 1$ llamada recursiva</strong> de tamaño $n/2$ (<strong>$b = 2$</strong>) con comparaciones en tiempo constante <strong>$O(1)$</strong> (<strong>$c = 0$</strong>).</li><li>Ecuación de recurrencia: $T(n) = 1 \cdot T(n/2) + O(1)$.</li><li>Aplicando el <strong>Teorema Maestro</strong>: $\log_2 1 = 0 = c$ (<strong>Caso 2</strong>), por lo que la complejidad es <strong>$O(\log n)$</strong>.</li></ul>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-9" data-num="9" data-priority="importante" data-paradigm="dyc" data-difficulty="2" data-title="parte entera de la raíz cuadrada" data-origin="guía v1.0 (curso echevarría), ejercicio 1.5 / guía 01, ejercicio 3"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 9</span><h3 class="exercise-title">Parte Entera de la Raíz Cuadrada</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★☆☆☆ (2/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.5 / Guía 01, Ejercicio 3">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.5</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="9" onchange="toggleMastered(9, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Implementar un algoritmo que, por división y conquista, permita obtener la parte entera de la raíz cuadrada de un número $n$, en tiempo $O(\log n)$ <em>(nota: en la Guía v1.0 figura por errata tipográfica $O(\log \log n)$)</em>. Por ejemplo, para $n = 10$ debe devolver $3$, y para $n = 25$ debe devolver $5$.</p></div><details class="exercise-solution-drawer" id="solution-drawer-9"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-9" data-num="9" data-priority="importante" data-paradigm="dyc" data-difficulty="2" data-parcial="false" data-title="parte entera de la raíz cuadrada" data-origin="guía v1.0 (curso echevarría), ejercicio 1.5 / guía 01, ejercicio 3"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 9</span><h3 class="exercise-title">Parte Entera de la Raíz Cuadrada</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★ (2/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.5 / Guía 01, Ejercicio 3">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.5</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="9" onchange="toggleMastered(9, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Implementar un algoritmo que, por división y conquista, permita obtener la parte entera de la raíz cuadrada de un número $n$, en tiempo $O(\log n)$ <em>(nota: en la Guía v1.0 figura por errata tipográfica $O(\log \log n)$)</em>. Por ejemplo, para $n = 10$ debe devolver $3$, y para $n = 25$ debe devolver $5$.</p></div><details class="exercise-solution-drawer" id="solution-drawer-9"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
 <ul><li>Buscamos el mayor entero $m \in [0, n]$ tal que $m^2 \le n$ y $(m + 1)^2 &gt; n$.</li><li>Como la función $f(m) = m^2$ es estrictamente creciente para números positivos, podemos aplicar búsqueda binaria sobre el rango de candidatos <code>[ini, fin]</code> (inicialmente <code>[0, n]</code>):<ul><li>Probamos el valor central <code>m = (ini + fin) / 2</code>.</li><li>Si <code>m * m &lt;= n</code> y <code>(m + 1) * (m + 1) &gt; n</code>, entonces <code>m</code> es exactamente la parte entera de $\sqrt{n}$.</li><li>Si <code>m * m &gt; n</code>, nos pasamos: buscamos en la mitad menor <code>[ini, m - 1]</code>.</li><li>Si <code>m * m &lt;= n</code> pero <code>(m + 1)^2 &lt;= n</code>, todavía nos quedamos cortos: buscamos en la mitad mayor <code>[m + 1, fin]</code>.</li></ul>
 </li></ul>
 <h4>2. Semi-Pseudocódigo Simplificado</h4>
@@ -621,40 +509,172 @@ función BuscarRaiz(n, ini, fin):
     sino:
         devolver BuscarRaiz(n, medio + 1, fin)   // Falta crecer, probar más grandes
 </code></pre></div></div>
-<h4>3. Justificación de Complejidad Temporal</h4>
+<h4>3. Justificación de Complejidad (Para entregar en el parcial)</h4>
 <ul><li>El rango inicial tiene tamaño $n$, y en cada paso se realiza <strong>$a = 1$ llamada recursiva</strong> sobre la mitad del intervalo (<strong>$b = 2$</strong>), realizando multiplicaciones y comparaciones en tiempo <strong>$O(1)$</strong> (<strong>$c = 0$</strong>).</li><li>Por el <strong>Teorema Maestro</strong>, $T(n) = T(n/2) + O(1)$ tiene $\log_2 1 = 0 = c$ (<strong>Caso 2</strong>), resultando en tiempo <strong>$O(\log n)$</strong>.</li></ul>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-10" data-num="10" data-priority="importante" data-paradigm="dyc" data-difficulty="2" data-title="mergesort modificado (división en 3 y en k partes)" data-origin="guía v1.0 (curso echevarría), ejercicio 1.7"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 10</span><h3 class="exercise-title">MergeSort Modificado (División en 3 y en K Partes)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★☆☆☆ (2/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.7">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.7</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="10" onchange="toggleMastered(10, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+<article class="exercise-card" id="ej-10" data-num="10" data-priority="importante" data-paradigm="dyc" data-difficulty="2" data-parcial="false" data-title="mergesort modificado (división en 3 y en k partes)" data-origin="guía v1.0 (curso echevarría), ejercicio 1.7"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 10</span><h3 class="exercise-title">MergeSort Modificado (División en 3 y en K Partes)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★ (2/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.7">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.7</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="10" onchange="toggleMastered(10, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
 Se quiere implementar MergeSort pero, en vez de dividir en dos partes el arreglo, dividirlo en tres, llamando recursivamente al algoritmo para cada una de las partes y luego uniéndolas.
 a. Suponiendo que el merge de las tres partes se realiza en tiempo lineal, calcular el orden del algoritmo.
 b. Si en vez de dividir en tres partes, se dividiera el arreglo en $n$, siendo $n$ la cantidad de elementos del arreglo, ¿a qué otro algoritmo de ordenamiento se asemeja esta implementación? ¿Cuál es el orden de dicho algoritmo?
-c. Dado lo obtenido en los puntos anteriores, ¿tiene sentido implementar MergeSort con $k$ separaciones, para $k &gt; 2$?</p></div><details class="exercise-solution-drawer" id="solution-drawer-10"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Respuestas a, b y c)</h4>
-<ul><li><strong>Punto a (Dividir en 3 partes):</strong><ul><li>Llamamos recursivamente a <strong>$a = 3$ subproblemas</strong> de tamaño <strong>$n / 3$</strong> ($b = 3$) y los unimos en tiempo lineal <strong>$O(n)$</strong> ($c = 1$).</li><li>Recurrencia: $T(n) = 3 \cdot T(n/3) + O(n)$.</li><li>Por el <strong>Teorema Maestro</strong>, $\log_3 3 = 1 = c$ (<strong>Caso 2</strong>), por lo que el orden sigue siendo <strong>$O(n \log n)$</strong> (cambia únicamente la base del logaritmo de $\log_2 n$ a $\log_3 n$, que difiere solo en una constante multiplicativa).</li></ul>
-</li><li><strong>Punto b (Dividir en $n$ partes de tamaño 1):</strong><ul><li>Si partimos el arreglo directamente en $n$ pedacitos de $1$ elemento, las llamadas recursivas caen directo en el caso base sin hacer nada, y todo el trabajo ocurre en el <code>merge</code> de las $n$ partes de tamaño $1$.</li><li>Para hacer el merge de $n$ listas de 1 elemento, en cada paso debemos buscar el mínimo entre las $n$ listas (tarda $O(n)$), luego entre las $n - 1$ restantes, y así $n$ veces.</li><li>Esto equivale exactamente a <strong>Selection Sort</strong> (Ordenamiento por Selección), cuya complejidad es <strong>$O(n^2)$</strong>.</li></ul>
-</li><li><strong>Punto c (¿Tiene sentido usar $k &gt; 2$ en memoria principal?):</strong><ul><li><strong>No tiene sentido</strong> en memoria RAM estándar: al dividir en $k$ partes, la altura del árbol baja a $\log_k n$, pero en cada paso del <code>merge</code> hay que comparar entre $k$ candidatos para elegir el mínimo (haciendo $k - 1$ comparaciones por elemento, o $\log_2 k$ con un heap, lo que da $n \log_2 k \cdot \log_k n = n \log_2 n$ igual que con $k = 2$, pero con código más complejo y mayor sobrecarga de constantes). <em>(Solo tiene utilidad en ordenamiento externo en disco para reducir lecturas/escrituras).</em></li></ul>
+c. Dado lo obtenido en los puntos anteriores, ¿tiene sentido implementar MergeSort con $k$ separaciones, para $k &gt; 2$?</p></div><details class="exercise-solution-drawer" id="solution-drawer-10"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li><strong>Punto a (División en 3 partes):</strong><ul><li><strong>División y Conquista:</strong> El arreglo se fracciona en 3 subarreglos disjuntos de tamaño $n/3$, sobre los cuales se realizan <strong>$a = 3$ llamadas recursivas</strong> ($b = 3$).</li><li><strong>Combinación (<code>Merge3</code>):</strong> Se fusionan los 3 tercios ordenados comparando secuencialmente los elementos frontales mediante a lo sumo 2 comparaciones por elemento colocado. La fase de merge toma tiempo estrictamente lineal <strong>$f(n) = \Theta(n)$</strong> ($c = 1$).</li><li><strong>Recurrencia y Teorema Maestro:</strong> $T(n) = 3 \cdot T(n/3) + \Theta(n)$. Como $\log_b a = \log_3 3 = 1$ y $c = 1$, aplica el <strong>Caso 2</strong> (balance equitativo en cada nivel): <strong>$\Theta(n \log_3 n) = \Theta(n \log n)$</strong>. La complejidad asintótica se mantiene idéntica a MergeSort binario, cambiando solo la base logarítmica por una constante multiplicativa ($\log_3 n = \frac{\log_2 n}{\log_2 3}$).</li></ul>
+</li><li><strong>Punto b (División extrema en $k = n$ partes de tamaño 1):</strong><ul><li>Cada fragmento tiene tamaño 1, cayendo de inmediato en el caso base sin computación recursiva ($T(1) = \Theta(1)$).</li><li>Toda la carga algorítmica pasa a la combinación (<code>K-Merge</code> de $n$ listas de 1 elemento):</li><li>Extraer el 1° mínimo requiere buscar entre $n$ candidatos ($n - 1$ comparaciones).</li><li>Extraer el 2° mínimo requiere buscar entre $n - 1$ candidatos ($n - 2$ comparaciones).</li><li>Para los $n$ elementos se acumulan $\sum_{i=1}^{n-1} i = \frac{n(n-1)}{2} = \Theta(n^2)$ comparaciones.</li><li>Esto equivale conceptualmente a <strong>Selection Sort</strong> (Ordenamiento por Selección), cuya complejidad temporal es <strong>$\Theta(n^2)$</strong>.</li></ul>
+</li><li><strong>Punto c (¿Tiene sentido práctico implementar $k &gt; 2$?):</strong><ul><li><strong>En memoria principal (RAM): NO tiene sentido.</strong></li><li>Aunque la altura del árbol recursivo disminuye a $\log_k n$, el costo de fusionar $k$ vías en cada nivel se incrementa:</li><li>Con comparaciones secuenciales directas, seleccionar cada elemento insume $k - 1$ comparaciones $\implies$ costo de combinación por nivel $O(k \cdot n) \implies$ Total $O(k n \cdot \log_k n) = O\left(\frac{k}{\log_2 k} n \log_2 n\right)$, creciendo desfavorablemente para $k \ge 3$.</li><li>Con una cola de prioridad (Min-Heap) de tamaño $k$, cada extracción e inserción cuesta $O(\log_2 k) \implies$ costo de combinación por nivel $O(n \log_2 k) \implies$ Total $\log_k n \cdot O(n \log_2 k) = \frac{\log_2 n}{\log_2 k} \cdot O(n \log_2 k) = O(n \log_2 n)$.</li><li>La cota asintótica es idéntica a $k = 2$, pero $k &gt; 2$ introduce penalizaciones constantes severas: mayor consumo de memoria auxiliar para el heap, más operaciones de control de punteros y pérdida de localidad temporal/espacial en las líneas de caché de la CPU.</li><li><strong>En memoria secundaria (External Sort en Discos Magnéticos): SÍ tiene sentido.</strong></li><li>Cuando los datos no entran en RAM, el cuello de botella físico son los accesos de I/O a disco. En el ordenamiento externo (<em>$k$-way External MergeSort</em>), elegir un $k$ grande reduce directamente la cantidad de pasadas completas por disco ($\log_k n$), optimizando el factor más costoso del sistema.</li></ul>
+</li></ul>
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo MergeSort3(A, ini, fin):
+    // Caso Base: 0 o 1 elemento ya se encuentra ordenado
+    si ini &gt;= fin:
+        retornar
+
+    tercio = (fin - ini + 1) / 3
+    m1 = ini + tercio - 1
+    m2 = ini + 2 * tercio - 1
+
+    // 1. Conquista: 3 llamadas recursivas sobre tercios
+    MergeSort3(A, ini, m1)
+    MergeSort3(A, m1 + 1, m2)
+    MergeSort3(A, m2 + 1, fin)
+
+    // 2. Combinación: fusionar 3 sublistas ordenadas en tiempo lineal
+    Merge3(A, ini, m1, m2, fin)
+
+Algoritmo KMergeConHeap(sublistas, k):
+    // Entrada: k sublistas ordenadas de tamaño combinado n
+    // Salida: arreglo fusionado con los n elementos ordenados
+    heap = CrearMinHeap()
+    resultado = arreglo_vacio()
+
+    // 1. Cargar el primer elemento de cada sublista en el Min-Heap
+    para i desde 0 hasta k - 1:
+        si longitud(sublistas[i]) &gt; 0:
+            heap.insertar(valor: sublistas[i][0], id_lista: i, indice: 0)
+
+    // 2. Extraer sucesivamente el menor global y reponer con el siguiente
+    mientras no heap.esta_vacio():
+        (val, id, idx) = heap.extraer_minimo()
+        resultado.agregar(val)
+
+        si idx + 1 &lt; longitud(sublistas[id]):
+            heap.insertar(valor: sublistas[id][idx + 1], id_lista: id, indice: idx + 1)
+
+    retornar resultado
+</code></pre></div></div>
+<h4>3. Justificación de Complejidad (Para entregar en el parcial)</h4>
+<ul><li>
+<p><strong>Punto a ($k = 3$ partes):</strong></p>
+<ul><li>
+<p>Ecuación de recurrencia:
+$$T(n) = 3 \cdot T(n/3) + \Theta(n)$$</p>
+</li><li>
+<p>Parámetros: $a = 3$, $b = 3$, $f(n) = \Theta(n) \implies c = 1$.</p>
+</li><li>Comparación de exponentes: $\log_b a = \log_3 3 = 1$ y $c = 1$.</li><li>Como $\log_b a = c$, aplica el <strong>Caso 2 del Teorema Maestro</strong> (trabajo equitativo en cada nivel):
+$$T(n) = \Theta(n^c \log_3 n) = \Theta(n \log_3 n) = \mathbf{\Theta(n \log n)}$$</li></ul>
+</li><li>
+<p><strong>Punto b ($k = n$ partes de tamaño 1):</strong></p>
+<ul><li>Con partes de tamaño 1, no hay llamadas recursivas efectivas ($T(1) = \Theta(1)$).</li><li>
+<p>La combinación mediante comparaciones directas entre las listas restantes acumula:
+$$T(n) = \sum_{i=1}^{n-1} i = \frac{(n-1) \cdot n}{2} = \frac{n^2 - n}{2} = \mathbf{\Theta(n^2)}$$</p>
+</li><li>
+<p>Coincide exactamente con la complejidad de <strong>Selection Sort</strong>.</p>
+</li></ul>
+</li><li>
+<p><strong>Punto c ($k$ partes generalizado):</strong></p>
+<ul><li>Altura del árbol recursivo: $h = \log_k n$.</li><li>Utilizando un Min-Heap de tamaño $k$ para fusionar las $k$ vías en cada nivel:</li><li>En cada nivel se procesan los $n$ elementos totales.</li><li>Cada elemento requiere 1 extracción y 1 inserción en el heap de $k$ nodos: $O(\log_2 k)$ por elemento.</li><li>Costo de combinación por nivel: $\Theta(n \log_2 k)$.</li><li>
+<p>Recurrencia:
+$$T(n) = k \cdot T(n/k) + \Theta(n \log_2 k)$$</p>
+</li><li>
+<p>Resolviendo por árbol de recursión:
+$$T(n) = h \cdot \Theta(n \log_2 k) = \log_k n \cdot \Theta(n \log_2 k) = \frac{\log_2 n}{\log_2 k} \cdot \Theta(n \log_2 k) = \mathbf{\Theta(n \log_2 n)}$$</p>
+</li><li>
+<p>Asintóticamente es idéntico a $k = 2$. En memoria RAM convencional, la administración del heap y las constantes adicionales hacen que $k = 2$ sea superior en velocidad real. En almacenamiento secundario, en cambio, minimizar las pasadas de lectura/escritura en disco ($h = \log_k n$) vuelve indispensable el uso de $k &gt; 2$.</p>
+</li></ul>
 </li></ul>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-11" data-num="11" data-priority="importante" data-paradigm="dyc" data-difficulty="2" data-title="producto de matrices de la profesora manterola vs strassen" data-origin="guía v1.0 (curso echevarría), ejercicio 1.8"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 11</span><h3 class="exercise-title">Producto de Matrices de la Profesora Manterola vs Strassen</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★☆☆☆ (2/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.8">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.8</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="11" onchange="toggleMastered(11, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Un algoritmo sencillo para multiplicar matrices de $n \times n$ demora $O(n^3)$. El algoritmo de Strassen (que utiliza División y Conquista) lo hace en $O(n^{\log_2 7}) \approx O(n^{2.81})$. La profesora Manterola quiere implementar un algoritmo de División y Conquista que sea aún más veloz, donde divida al problema en $A$ subproblemas de tamaño de $n/4$, y que juntar las soluciones parciales sea $O(n^2)$. ¿Cuál es el máximo $A$ entero para que el orden del algoritmo sea menor que el del algoritmo de Strassen? Justificar.</p></div><details class="exercise-solution-drawer" id="solution-drawer-11"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-11" data-num="11" data-priority="importante" data-paradigm="dyc" data-difficulty="2" data-parcial="false" data-title="producto de matrices de la profesora manterola vs strassen" data-origin="guía v1.0 (curso echevarría), ejercicio 1.8"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 11</span><h3 class="exercise-title">Producto de Matrices de la Profesora Manterola vs Strassen</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★ (2/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.8">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.8</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="11" onchange="toggleMastered(11, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Un algoritmo sencillo para multiplicar matrices de $n \times n$ demora $O(n^3)$. El algoritmo de Strassen (que utiliza División y Conquista) lo hace en $O(n^{\log_2 7}) \approx O(n^{2.81})$. La profesora Manterola quiere implementar un algoritmo de División y Conquista que sea aún más veloz, donde divida al problema en $A$ subproblemas de tamaño de $n/4$, y que juntar las soluciones parciales sea $O(n^2)$. ¿Cuál es el máximo $A$ entero para que el orden del algoritmo sea menor que el del algoritmo de Strassen? Justificar.</p></div><details class="exercise-solution-drawer" id="solution-drawer-11"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
 <ul><li>
-<p>Planteamos la ecuación de recurrencia del algoritmo de la profesora Manterola:</p>
-<ul><li>Cantidad de subproblemas: <strong>$a = A$</strong>.</li><li>Tamaño de cada subproblema: $n / 4 \implies$ <strong>$b = 4$</strong>.</li><li>Costo de combinar soluciones: $O(n^2) \implies$ <strong>$c = 2$</strong>.
-$$T(n) = A \cdot T(n/4) + O(n^2)$$
-*Por el <strong>Teorema Maestro</strong>, como buscamos un orden que sea <strong>menor que el de Strassen</strong> (%%MATH<strong>LK_531</strong>), pero sabemos que es mayor a %%MATH<strong>LK_532%%, estamo</strong>en el <strong>Caso 1</strong> donde el orden del algoritmo está dado por el exponente de las hojas: <strong>$O(n^{\log_4 A})$</strong>.</li></ul>
+<p><strong>Ecuación de Recurrencia del Algoritmo Propuesto:</strong></p>
+<ul><li><strong>División:</strong> Las matrices de tamaño $n \times n$ se dividen en submatrices de tamaño $(n/4) \times (n/4)$, por lo que el factor de división es <strong>$b = 4$</strong>.</li><li><strong>Conquista:</strong> Se resuelven <strong>$a = A$ llamadas recursivas</strong> para multiplicar submatrices de tamaño $(n/4) \times (n/4)$.</li><li><strong>Combinación:</strong> Se combinan las soluciones parciales sumando y restando submatrices de tamaño $(n/4) \times (n/4)$, con un costo cuadrático $f(n) = O(n^2)$ (<strong>$c = 2$</strong>).</li><li>Recurrencia de Manterola:
+$$T(n) = A \cdot T(n/4) + O(n^2)$$</li></ul>
 </li><li>
-<p>Para que sea estrictamente más veloz que Strassen, necesitamos que su exponente sea menor que $\log_2 7$:
+<p><strong>Comparación con el Algoritmo de Strassen:</strong></p>
+<ul><li>El algoritmo de Strassen divide en mitades ($b = 2$), ejecuta $a = 7$ llamadas recursivas y combina en $O(n^2)$, resultando en $T_S(n) = \Theta(n^{\log_2 7})$ con $\log_2 7 \approx 2.80735$.</li><li>Para que el algoritmo de Manterola supere asintóticamente a Strassen, su exponente de complejidad debe ser estrictamente menor a $\log_2 7 \approx 2.807$.</li><li>Como el exponente buscado es mayor a 2, nos ubicamos en el <strong>Caso 1 del Teorema Maestro</strong> ($\log_4 A &gt; 2 \implies A &gt; 16$), donde el costo total está gobernado por las hojas: $T_M(n) = \Theta(n^{\log_4 A})$.</li><li>
+<p>Por lo tanto, planteamos la inecuación:
 $$\log_4 A &lt; \log_2 7$$</p>
 </li><li>
-<p>Cambiamos a base 2 sabiendo que $\log_4 A = \frac{\log_2 A}{\log_2 4} = \frac{\log_2 A}{2}$:
-$$\frac{\log_2 A}{2} &lt; \log_2 7 \implies \log_2 A &lt; 2 \cdot \log_2 7 = \log_2(7^2) = \log_2 49$$
+<p>Aplicando cambio de base logarítmica:
+$$\frac{\log_2 A}{\log_2 4} &lt; \log_2 7 \implies \frac{\log_2 A}{2} &lt; \log_2 7 \implies \log_2 A &lt; 2 \cdot \log_2 7 = \log_2(7^2) = \log_2 49$$
 $$A &lt; 49$$</p>
 </li><li>
-<p>Como $A$ es una cantidad entera de subproblemas recursivos, el <strong>máximo valor entero posible es $A = 48$</strong> (con $A = 48$, la complejidad queda $O(n^{\log_4 48}) \approx O(n^{2.792}) &lt; O(n^{2.807})$).</p>
+<p>Siendo $A$ la cantidad entera de subproblemas recursivos ($A \in \mathbb{Z}^+$), el <strong>máximo valor entero posible es $A = 48$</strong>.</p>
+</li></ul>
+</li></ul>
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo MultiplicarMatricesManterola(M1, M2, n, A):
+    // Caso base: para matrices pequeñas (n &lt;= 4), resolver por definición directa
+    si n &lt;= 4:
+        retornar MultiplicarDirecto(M1, M2) // O(1)
+
+    m = n / 4
+    // 1. División: Partir M1 y M2 en 16 submatrices de m x m en O(1) por índices
+    bloques_M1 = PartirEn16Bloques(M1, m)
+    bloques_M2 = PartirEn16Bloques(M2, m)
+
+    // 2. Conquista: Realizar A multiplicaciones recursivas de combinaciones lineales
+    productos = arreglo_de_tamanio(A)
+    para k desde 1 hasta A:
+        T1_k = CombinarLinealmente(bloques_M1) // Sumas/restas de bloques: O(m^2)
+        T2_k = CombinarLinealmente(bloques_M2) // Sumas/restas de bloques: O(m^2)
+        productos[k] = MultiplicarMatricesManterola(T1_k, T2_k, m, A)
+
+    // 3. Combinación: Reconstruir los 16 bloques de la matriz producto C mediante
+    //    sumas y restas de los A productos calculados: costo total O(n^2)
+    C = ReconstruirMatriz(productos, m)
+    retornar C
+
+Esquema Comparativo de Recurrencias:
+-----------------------------------------------------------------------------------
+Algoritmo       Ecuación de Recurrencia        a   b   c   Exponente Crítico
+-----------------------------------------------------------------------------------
+Tradicional     T(n) = 8·T(n/2) + O(n^2)       8   2   2   log_2(8) = 3.000
+Strassen        T(n) = 7·T(n/2) + O(n^2)       7   2   2   log_2(7) ≈ 2.807
+Manterola (A)   T(n) = A·T(n/4) + O(n^2)       A   4   2   log_4(A) = log_2(A)/2
+-----------------------------------------------------------------------------------
+Condición de Victoria: log_4(A) &lt; log_2(7) &lt;=&gt; log_2(A) &lt; log_2(49) &lt;=&gt; A &lt; 49
+</code></pre></div></div>
+<h4>3. Justificación de Complejidad (Para entregar en el parcial)</h4>
+<ul><li>
+<p><strong>Planteo de la Recurrencia:</strong>
+$$T(n) = A \cdot T(n/4) + \Theta(n^2)$$
+con $a = A$, $b = 4$, $f(n) = \Theta(n^2) \implies c = 2$.</p>
+</li><li>
+<p><strong>Análisis de Casos del Teorema Maestro en Función de $A$:</strong></p>
+<ol><li>Si $A &lt; 16 \implies \log_4 A &lt; 2 = c$: Aplica el Caso 3 $\implies T(n) = \Theta(n^2) &lt; \Theta(n^{2.807})$. (Cota teórica inalcanzable para multiplicación matricial y no maximiza $A$).</li><li>Si $A = 16 \implies \log_4 16 = 2 = c$: Aplica el Caso 2 $\implies T(n) = \Theta(n^2 \log n) &lt; \Theta(n^{2.807})$.</li><li>Si $A &gt; 16 \implies \log_4 A &gt; 2 = c$: Aplica el Caso 1 (dominio de las hojas) $\implies T(n) = \mathbf{\Theta(n^{\log_4 A})}$.</li></ol>
+</li><li>
+<p><strong>Deducción del Máximo Entero $A$:</strong>
+Queremos $\Theta(n^{\log_4 A}) &lt; \Theta(n^{\log_2 7})$:
+$$\log_4 A &lt; \log_2 7$$
+$$\frac{\log_2 A}{\log_2 4} &lt; \log_2 7 \implies \frac{\log_2 A}{2} &lt; \log_2 7 \implies \log_2 A &lt; 2 \cdot \log_2 7 = \log_2(7^2) = \log_2 49$$
+$$A &lt; 49$$</p>
+</li><li>
+<p>Como $A$ debe ser un número entero de llamadas recursivas ($A \in \mathbb{Z}^+$), el máximo entero que satisface estrictamente la desigualdad es <strong>$A = 48$</strong>.</p>
+</li><li>
+<p><strong>Verificación Numérica de Exponentes:</strong></p>
+<ul><li>
+<p>Cota de Strassen:
+$$\log_2 7 = \frac{\ln 7}{\ln 2} \approx \frac{1.945910}{0.693147} \approx 2.807355$$</p>
+</li><li>
+<p>Algoritmo de Manterola con $A = 48$:
+$$\log_4 48 = \frac{\ln 48}{\ln 4} \approx \frac{3.871201}{1.386294} \approx 2.792481$$</p>
+</li><li>
+<p>Con $A = 49$, el exponente empataría con Strassen: $\log_4 49 = \frac{\log_2 49}{2} = \log_2 7 \approx 2.807355$.</p>
+</li><li>Con $A = 48$, el orden es $T(n) = \Theta(n^{\log_4 48}) \approx \mathbf{\Theta(n^{2.792})}$, que resulta estrictamente menor a $\Theta(n^{2.807})$.</li><li>Por lo tanto, el máximo valor entero posible es <strong>$A = 48$</strong>.</li></ul>
 </li></ul>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-12" data-num="12" data-priority="imprescindible" data-paradigm="dyc" data-difficulty="3" data-title="elemento mayoritario (más de la mitad de las veces)" data-origin="guía v1.0 (curso echevarría), ejercicio 1.9 / guía 01, ejercicio 9"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 12</span><h3 class="exercise-title">Elemento Mayoritario (Más de la Mitad de las Veces)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.9 / Guía 01, Ejercicio 9">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.9</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="12" onchange="toggleMastered(12, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Implementar una función (que utilice división y conquista) de orden $O(n \log n)$ <em>(nota: en la Guía v1.0 figura por errata tipográfica $O(n \log \log n)$)</em> que, dado un arreglo de $n$ números enteros, devuelva <code>true</code> o <code>false</code> según si existe algún elemento que aparezca más de la mitad de las veces, sin ordenar el arreglo ni usar tabla de hash. Justificar el orden de la solución.</p></div><details class="exercise-solution-drawer" id="solution-drawer-12"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
-<ul><li><strong>Propiedad clave:</strong> Si un número aparece <strong>más de la mitad de las veces</strong> en todo el arreglo ($&gt; n/2$), entonces es matemáticamente imposible que aparezca la mitad o menos en ambas mitades a la vez. <strong>Obligatoriamente tiene que ser el elemento mayoritario en la mitad izquierda, o en la mitad derecha (o en ambas)</strong>.</li><li>Entonces creamos una función recursiva <code>CandidatoMayoritario(A, ini, fin)</code> que devuelve el elemento mayoritario del rango (o <code>nulo</code> si no hay):<ol><li>Si el rango tiene 1 solo elemento, ese elemento es el mayoritario de su rango.</li><li>Si tiene más, pedimos el candidato mayoritario de la mitad izquierda (<code>cand_izq</code>) y el de la mitad derecha (<code>cand_der</code>).</li><li>Si ambos coinciden, ese mismo es el ganador.</li><li>Si son distintos, <strong>contamos cuántas veces aparece cada uno</strong> en todo el rango actual <code>[ini, fin]</code> recorriéndolo con un ciclo lineal $O(n)$. Si alguno supera la mitad del tamaño del rango, lo devolvemos; si ninguno supera la mitad, devolvemos <code>nulo</code>.</li></ol>
+<article class="exercise-card" id="ej-12" data-num="12" data-priority="imprescindible" data-paradigm="dyc" data-difficulty="3" data-parcial="false" data-title="elemento mayoritario (más de la mitad de las veces)" data-origin="guía v1.0 (curso echevarría), ejercicio 1.9 / guía 01, ejercicio 9"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 12</span><h3 class="exercise-title">Elemento Mayoritario (Más de la Mitad de las Veces)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-dyc">División y Conquista</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 1.9 / Guía 01, Ejercicio 9">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 1.9</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="12" onchange="toggleMastered(12, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Implementar una función (que utilice división y conquista) de orden $O(n \log n)$ <em>(nota: en la Guía v1.0 figura por errata tipográfica $O(n \log \log n)$)</em> que, dado un arreglo de $n$ números enteros, devuelva <code>true</code> o <code>false</code> según si existe algún elemento que aparezca más de la mitad de las veces, sin ordenar el arreglo ni usar tabla de hash. Justificar el orden de la solución.</p></div><details class="exercise-solution-drawer" id="solution-drawer-12"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li><strong>Propiedad clave:</strong> Si un número aparece <strong>más de la mitad de las veces</strong> en todo el arreglo ($&gt; n/2$), entonces es matemáticamente imposible que aparezca la mitad o menos en ambas mitades a la vez. <strong>Obligatoriamente tiene que ser el elemento mayoritario en la mitad izquierda, o en la mitad derecha (o en ambas)</strong>.</li><li>Entonces creamos una función recursiva <code>BuscarMayoritario(A, ini, fin)</code> que devuelve el elemento mayoritario del rango (o <code>nulo</code> si no hay):<ol><li><strong>Caso Base:</strong> Si el rango tiene 1 solo elemento, ese elemento es el mayoritario de su rango.</li><li><strong>División y Conquista:</strong> Si tiene más, pedimos el candidato mayoritario de la mitad izquierda (<code>cand_izq</code>) y el de la mitad derecha (<code>cand_der</code>).</li><li><strong>Combinación:</strong> Si ambos coinciden, ese mismo es el ganador. Si son distintos, <strong>contamos cuántas veces aparece cada uno</strong> en todo el rango actual <code>[ini, fin]</code> recorriéndolo con un ciclo lineal $O(n)$. Si alguno supera la mitad del tamaño del rango, lo devolvemos; si ninguno supera la mitad, devolvemos <code>nulo</code>.</li></ol>
 </li></ul>
 <h4>2. Semi-Pseudocódigo Simplificado</h4>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo TieneMayoritario(A, n):
@@ -681,7 +701,7 @@ función BuscarMayoritario(A, ini, fin):
 
     devolver nulo
 </code></pre></div></div>
-<h4>3. Justificación de Complejidad Temporal</h4>
+<h4>3. Justificación de Complejidad (Para entregar en el parcial)</h4>
 <ul><li>Dividimos el problema en <strong>$a = 2$ llamadas recursivas</strong> de tamaño $n/2$ (<strong>$b = 2$</strong>).</li><li>En la etapa de combinación, contar cuántas veces aparecen <code>cand_izq</code> y <code>cand_der</code> en el subarreglo actual recorre sus elementos en tiempo lineal <strong>$f(n) = O(n)$</strong> (<strong>$c = 1$</strong>).</li><li>
 <p>Ecuación de recurrencia:
 $$T(n) = 2 \cdot T(n/2) + O(n)$$</p>

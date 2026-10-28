@@ -22,8 +22,6 @@ def get_paradigm_for_exercise(num):
     if 75 <= num <= 79:
         label = "Multi-Paradigma" if num in (78, 79) else "Integrador"
         return ("integradores", label, "badge-integrador")
-    if 80 <= num <= 83:
-        return ("tipo_parcial", "Tipo Parcial", "badge-tipo-parcial")
     return ("otro", "General", "badge-otro")
 
 SOLUTION_MARKERS = [
@@ -78,10 +76,11 @@ def format_exercise_card(num, title, body_html):
             diff_num = int(num_m.group(1))
         elif "★" in diff_raw:
             diff_num = max(1, min(5, diff_raw.count("★")))
-    stars_str = "★" * diff_num + "☆" * (5 - diff_num)
+    stars_str = "★" * diff_num
 
     origin_match = re.search(r"<strong>Origen:</strong>\s*(.*?)(?:</p>|<br\s*/?>|\n)", body_html, re.DOTALL)
     origin_text = origin_match.group(1).strip() if origin_match else "Parcial / Práctica FIUBA"
+    is_parcial = "parcial" in origin_text.lower()
 
     clean_body = re.sub(r"<p>\s*<strong>Clasificación:</strong>.*?</p>", "", body_html, flags=re.DOTALL)
     clean_body = re.sub(r"<p>\s*<strong>Dificultad:</strong>.*?</p>", "", clean_body, flags=re.DOTALL)
@@ -114,9 +113,10 @@ def format_exercise_card(num, title, body_html):
         )
 
     origin_short = html.escape(origin_text.split("/")[0].strip())
+    parcial_attr = "true" if is_parcial else "false"
     return (
         f'<article class="exercise-card" id="ej-{num}" data-num="{num}" data-priority="{priority_slug}" '
-        f'data-paradigm="{paradigm_key}" data-difficulty="{diff_num}" '
+        f'data-paradigm="{paradigm_key}" data-difficulty="{diff_num}" data-parcial="{parcial_attr}" '
         f'data-title="{html.escape(title.lower())}" data-origin="{html.escape(origin_text.lower())}">'
         f'<header class="card-header">'
         f'<div class="card-header-left"><span class="exercise-pill-number">EJ {num}</span><h3 class="exercise-title">{title}</h3></div>'
@@ -136,7 +136,7 @@ def format_exercise_card(num, title, body_html):
         f'<details class="exercise-solution-drawer" id="solution-drawer-{num}">'
         f'<summary class="solution-summary">'
         f'<span class="summary-toggle-icon">▶</span>'
-        f'<span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span>'
+        f'<span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span>'
         f'<span class="summary-badge">Active Recall</span>'
         f'</summary>'
         f'<div class="solution-inner-content">{solution_html}</div>'
@@ -149,7 +149,7 @@ def process_html_exercises(html_body):
     for i in range(1, len(parts), 2):
         header = parts[i]
         body = parts[i + 1]
-        num_m = re.search(r"Ejercicio (\d+) — (.*?)</h3>", header)
+        num_m = re.search(r"Ejercicio (\d+)\s*[:—\-–]\s*(.*?)</h3>", header)
         if not num_m:
             new_parts.extend([header, body])
             continue
@@ -227,7 +227,8 @@ def inject_interactive_widgets(html_body):
 
 def get_hud_and_drawer_html(active_paradigm="all"):
     pills_config = [
-        ("all", "index.html", "📚 Todos (83)"),
+        ("all", "index.html", "📚 Todos (79)"),
+        ("parciales", "parciales.html", "📝 Parciales (29)"),
         ("dyc", "dyc.html", "🔷 DyC (12)"),
         ("greedy", "greedy.html", "🔶 Greedy (26)"),
         ("backtracking", "backtracking.html", "🟣 Backtracking (14)"),
@@ -235,8 +236,7 @@ def get_hud_and_drawer_html(active_paradigm="all"):
         ("pl", "pl.html", "🔵 Prog. Lineal (6)"),
         ("flujo", "flujo.html", "🔴 Redes de Flujo (5)"),
         ("reducciones", "reducciones.html", "🟡 Reducciones NP (4)"),
-        ("integradores", "integradores.html", "⚡ Integradores (5)"),
-        ("tipo_parcial", "tipo_parcial.html", "📝 Tipo Parcial (4)")
+        ("integradores", "integradores.html", "⚡ Integradores (5)")
     ]
     rendered_pills = "".join(
         f'<a href="{href}" class="pill-btn{" active" if key == active_paradigm else ""}" data-paradigm="{key}">{label}</a>'
@@ -253,13 +253,13 @@ def get_hud_and_drawer_html(active_paradigm="all"):
       </div>
       <div class="hud-mode-selector" role="group" aria-label="Modo de Estudio">
         <button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')" title="Mostrar solo los ejercicios 🔴 IMPRESCINDIBLES de examen">
-          <span class="mode-icon">⚡</span><span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span><span class="mode-badge" id="badgeEmergencyCount">50</span>
+          <span class="mode-icon">⚡</span><span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span><span class="mode-badge" id="badgeEmergencyCount">48</span>
         </button>
         <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')" title="Mostrar ejercicios pendientes de dominar y casos 🟡 IMPORTANTES">
-          <span class="mode-icon">🎯</span><span class="mode-label"><span class="mode-label-long">Modo Táctico (Pendientes)</span><span class="mode-label-short">Táctico</span></span><span class="mode-badge" id="badgeTacticalCount">83</span>
+          <span class="mode-icon">🎯</span><span class="mode-label"><span class="mode-label-long">Modo Táctico (Pendientes)</span><span class="mode-label-short">Táctico</span></span><span class="mode-badge" id="badgeTacticalCount">79</span>
         </button>
         <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')" title="Mostrar todos los ejercicios de esta vista">
-          <span class="mode-icon">📚</span><span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span><span class="mode-badge" id="badgeAllCount">83</span>
+          <span class="mode-icon">📚</span><span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span><span class="mode-badge" id="badgeAllCount">79</span>
         </button>
       </div>
       <div class="hud-quick-tools">
@@ -273,7 +273,7 @@ def get_hud_and_drawer_html(active_paradigm="all"):
     </div>
     <div class="hud-row-secondary">
       <div class="hud-progress-wrap">
-        <div class="progress-info"><span class="progress-title">Progreso en vista activa:</span><span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">83</span> dominados (<span id="progPercent">0%</span>)</span></div>
+        <div class="progress-info"><span class="progress-title">Progreso en vista activa:</span><span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">79</span> dominados (<span id="progPercent">0%</span>)</span></div>
         <div class="progress-track"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
       </div>
       <div class="difficulty-filter-group d-flex align-items-center gap-1 flex-wrap" role="group" aria-label="Filtrar por dificultad">
@@ -389,7 +389,39 @@ def build_interactive_html(md_text, output_file, active_paradigm="all", page_tit
     md_text = normalize_markdown_lists(md_text)
     html_raw = convert_markdown_to_html(md_text)
     html_with_cards = process_html_exercises(html_raw)
-    html_with_widgets = inject_interactive_widgets(html_with_cards)
+
+    if active_paradigm == "parciales":
+        card_matches = list(re.finditer(r'(<article class="exercise-card"[^>]*data-parcial="true"[^>]*>[\s\S]*?</article>)', html_with_cards))
+        parcial_cards = []
+        for m in card_matches:
+            c_html = m.group(1)
+            diff_m = re.search(r'data-difficulty="(\d+)"', c_html)
+            num_m = re.search(r'data-num="(\d+)"', c_html)
+            diff_val = int(diff_m.group(1)) if diff_m else 3
+            num_val = int(num_m.group(1)) if num_m else 0
+            parcial_cards.append((diff_val, num_val, c_html))
+
+        parcial_cards.sort(key=lambda x: (x[0], x[1]))
+        sorted_cards_html = "\n\n".join(c[2] for c in parcial_cards)
+
+        checklist_match = re.search(r'(<h2>13\.\s+Catálogo[\s\S]*)$', html_with_cards)
+        checklist_html = checklist_match.group(1) if checklist_match else ""
+
+        intro_header = (
+            '<section class="parciales-intro-header py-4 mb-4">'
+            '<div class="card shadow-sm border-primary" style="background: var(--card-bg); border-left: 5px solid #2b6cb0;">'
+            '<div class="card-body p-4">'
+            '<div class="d-flex align-items-center gap-3">'
+            '<span style="font-size: 2.5rem;">📝</span>'
+            '<div>'
+            '<h2 class="h4 mb-1 text-primary fw-bold">Exámenes Parciales Oficiales (Todos los Paradigmas)</h2>'
+            f'<p class="mb-0 text-muted">Recopilación de los <strong>{len(parcial_cards)} ejercicios reales</strong> tomados en los exámenes parciales de Teoría de Algoritmos (2024–2026), ordenados en <strong>progresión ascendente por dificultad (1★ a 5★)</strong> con la redacción exacta requerida para la hoja del examen.</p>'
+            '</div></div></div></div></section>\n'
+        )
+        html_with_widgets = inject_interactive_widgets(intro_header + sorted_cards_html + "\n\n<hr class=\"my-5\">\n\n" + checklist_html)
+    else:
+        html_with_widgets = inject_interactive_widgets(html_with_cards)
+
     hud_and_drawer = get_hud_and_drawer_html(active_paradigm=active_paradigm)
 
     extra_bundle_script = ""
@@ -404,7 +436,7 @@ def build_interactive_html(md_text, output_file, active_paradigm="all", page_tit
             bundle_path = os.path.join(js_dir, "catalog-bundle.js")
             with open(bundle_path, "w", encoding="utf-8") as bf:
                 bf.write(
-                    "// Catálogo modular precompilado de los 83 ejercicios para index.html\n"
+                    "// Catálogo modular precompilado de los 79 ejercicios para index.html\n"
                     "(function(){\n"
                     "  var mount = document.getElementById('tdaCatalogMount');\n"
                     "  if (mount) { mount.innerHTML = " + json.dumps(catalog_part, ensure_ascii=False) + "; }\n"

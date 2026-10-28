@@ -753,16 +753,58 @@ Algoritmo CalcularCambioTrueque(valor_items, valor_pago):
 **Enunciado**  
 En el reino de Verdania tenían un sistema monetario con la propiedad de que el algoritmo greedy para calcular el vuelto devolvía **siempre** el vuelto más eficiente en cantidad de monedas para cualquier monto. Encontrar una base monetaria que tenga esta propiedad y demostrarlo.
 
-#### 1. Idea y Demostración en Lenguaje Natural
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-* **Base Monetaria Propuesta:** Tomamos las **potencias de 2** (o de cualquier base entera $b \ge 2$):
-  $$M = \{1, 2, 4, 8, 16, \dots, 2^k\}$$
-* **¿Por qué Greedy es SIEMPRE óptimo en esta base? (Demostración sencilla):**
-  1. En cualquier solución óptima $OPT$, para cada moneda $2^i$ con $i < k$, **nunca puede haber 2 o más monedas iguales de valor $2^i$**, porque si hubiera dos monedas de $2^i$, las podríamos cambiar por una sola moneda de $2^{i+1}$ (que vale el doble: $2^i + 2^i = 2^{i+1}$), usando una moneda menos, lo cual contradiría que $OPT$ era óptima.
-  2. Por lo tanto, cualquier solución óptima usa **a lo sumo 1 moneda** de cada valor $1, 2, 4, \dots, 2^{k-1}$.
-  3. La suma máxima que se puede juntar con a lo sumo una moneda de cada una de las más chicas es:
-     $$1 + 2 + 4 + \dots + 2^{k-1} = 2^k - 1 < 2^k$$
-  4. Esto demuestra que **es imposible formar el valor $2^k$ usando las monedas más chicas en una solución óptima**. Así que siempre que el vuelto sea $\ge 2^k$, cualquier solución óptima está **100% obligada a usar la moneda más grande $2^k$**, exactamente igual que hace el algoritmo Greedy (de hecho, para $v < 2^{k+1}$ equivale a la descomposición binaria única del número). $\blacksquare$
+* **Definición de Sistema Monetario Canónico (Base Voraz):** Un sistema de monedas $M = \{c_1, c_2, \dots, c_k\}$ (con $1 = c_1 < c_2 < \dots < c_k$) se denomina *canónico* si el algoritmo voraz convencional (entregar en cada paso la moneda de mayor denominación posible que no exceda el saldo pendiente) garantiza la mínima cantidad global de monedas para **todo** monto entero positivo $V \ge 1$.
+* **Base Monetaria Propuesta:** Adoptamos una base de **potencias de 2** (o en general de cualquier base entera $b \ge 2$):
+  $$M = \{2^0, 2^1, 2^2, \dots, 2^k\} = \{1, 2, 4, 8, 16, \dots, 2^k\}$$
+* **Demostración de Optimalidad Global (Argumento de Intercambio y Acotación de Sumas):**
+  1. Sea $OPT$ una solución óptima que cubre el vuelto de valor $V$ utilizando la mínima cantidad total de monedas.
+  2. **Lema de No Duplicidad:** Para cualquier denominación $2^i$ con $i < k$, la solución óptima $OPT$ **no puede contener 2 o más monedas de valor $2^i$**.
+     * *Demostración por contradicción:* Si $OPT$ contuviera 2 o más monedas de valor $2^i$, podríamos sustituir dos de ellas por una única moneda de denominación $2^{i+1}$ (dado que $2^i + 2^i = 2^{i+1}$). Esta sustitución mantiene exactamente la misma suma monetaria $V$, pero reduce la cantidad total de monedas en 1 ($2 - 1 = 1$), contradiciendo que $OPT$ sea óptima.
+  3. Por lo tanto, en cualquier solución óptima $OPT$, la cantidad de monedas de valor $2^i$ (para todo $i < k$) es **a lo sumo 1** (multiplicidad en $\{0, 1\}$).
+  4. **Cota Superior de las Monedas Inferiores:** La suma máxima alcanzable usando a lo sumo una moneda de cada denominación estrictamente menor que $2^j$ es la suma de una progresión geométrica:
+     $$\sum_{i=0}^{j-1} 2^i = 2^j - 1 < 2^j$$
+  5. **Obligatoriedad de la Elección Voraz:** Si el monto remanente satisface $V \ge 2^j$, todas las monedas menores juntas suman a lo sumo $2^j - 1$. Por lo tanto, **es físicamente imposible pagar $V$ de forma óptima sin incluir al menos una moneda de valor $\ge 2^j$**.
+  6. En consecuencia, toda solución óptima $OPT$ está **estrictamente obligada** a tomar la mayor denominación factible $2^j \le V$.
+  7. Al descontar $2^j$ del saldo a pagar ($V' = V - 2^j$), el subproblema resultante conserva intacta la misma propiedad por inducción. La solución generada por el algoritmo voraz coincide exactamente con la descomposición en base 2 (binaria) del número entero $V$, la cual es única y minimiza la cantidad de potencias sumadas. Por ende, la regla voraz es **siempre óptima**. $\blacksquare$
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo CambioMonedasVerdania(V, M):
+    // Entrada:
+    //   V: monto entero positivo a devolver
+    //   M: denominaciones de Verdania en orden decreciente [2^k, 2^(k-1), ..., 4, 2, 1]
+    // Salida: lista de pares (denominacion, cantidad) con la cantidad mínima de monedas
+
+    cambio = lista_vacia()
+
+    para cada moneda en M:
+        si V >= moneda:
+            cantidad = V div moneda        // Cantidad de monedas de esta denominación en O(1)
+            cambio.agregar((moneda, cantidad))
+            V = V mod moneda              // Remanente por pagar en O(1)
+
+        si V == 0:
+            terminar ciclo
+
+    retornar cambio
+```
+
+* **Justificación de la Regla Voraz:** En cada paso, la decisión es tomar de forma local, miope e irrevocable la mayor cantidad posible de la moneda más grande que no supere el saldo $V$. Como se probó en el Lema de no duplicidad, ninguna combinación de monedas menores puede igualar o superar a $2^j$ con igual o menor cantidad de monedas. Por consiguiente, la elección local coincide en todo momento con la decisión globalmente óptima.
+
+#### 3. Justificación de Complejidad
+
+* **Complejidad Temporal:**
+  - Sea $|M| = k + 1$ la cantidad de denominaciones disponibles en el sistema monetario de Verdania.
+  - El algoritmo efectúa una única pasada secuencial sobre la lista de denominaciones ya ordenadas.
+  - En cada paso se realiza una división entera y una operación de módulo en tiempo $O(1)$.
+  - Complejidad en función de las denominaciones: **$O(|M|)$**.
+  - Para cubrir un monto $V$, la máxima denominación necesaria satisface $2^k \le V < 2^{k+1}$, lo que implica $k = \lfloor \log_2 V \rfloor$.
+  - Por lo tanto, la complejidad temporal en función del monto es **$O(\log V)$** (o **$O(1)$** si el catálogo de monedas emitidas por el reino es fijo y acotado).
+* **Complejidad Espacial:**
+  - Requiere memoria auxiliar para almacenar la lista resultante de monedas devueltas, que contiene a lo sumo un par por cada denominación utilizada: **$O(|M|) = O(\log V)$** (o **$O(1)$** en un sistema monetario fijo).
 
 ---
 

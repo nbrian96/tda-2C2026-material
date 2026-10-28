@@ -383,24 +383,72 @@ Indicar, utilizando el Teorema Maestro, la complejidad de cada una de las siguie
 
 #### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-Para cualquier recurrencia $T(n) = a \cdot T(n/b) + \Theta(n^c)$, solo debemos comparar el exponente de las hojas **$\log_b a$** contra el exponente del trabajo exterior **$c$** (recordando que $\sqrt{n} = n^{0.5}$, por lo que $c = 0.5$):
-* Si **$\log_b a > c$** (ganan las hojas, Caso 1): el orden es **$O(n^{\log_b a})$**.
-* Si **$\log_b a = c$** (empatados, Caso 2): el orden es **$O(n^c \log n)$**.
-* Si **$\log_b a < c$** (gana el trabajo exterior, Caso 3): el orden es **$O(n^c)$**.
+* Para toda ecuación de recurrencia de la forma $T(n) = a \cdot T(n/b) + f(n)$ con $a \ge 1, b > 1$, donde el trabajo no recursivo de partición y combinación satisface $f(n) = \Theta(n^c)$ (con $c \ge 0$), el Teorema Maestro analiza la competencia asintótica entre dos fuerzas dentro del árbol de llamadas recursivas:
+  1. **El trabajo acumulado en las hojas:** en el nivel más profundo ($h = \log_b n$), la cantidad de hojas es $a^{\log_b n} = n^{\log_b a}$, cada una con costo $O(1)$. Por ende, el exponente crítico de las hojas es **$\log_b a$**.
+  2. **El trabajo en la raíz (división y combinación):** en el nivel superior, el trabajo exterior está gobernado por el exponente **$c$** de $f(n) = \Theta(n^c)$. En particular: $\sqrt{n} = n^{0.5}$ ($c = 0.5$), $n = n^1$ ($c = 1$), y $n^2$ ($c = 2$).
+* La regla de decisión sistemática consiste en contrastar $\log_b a$ contra $c$:
+  * **Caso 1 ($\log_b a > c$): Dominan las hojas.** El costo del nivel base supera al trabajo de combinación. El orden es **$\Theta(n^{\log_b a})$**.
+  * **Caso 2 ($\log_b a = c$): Trabajo balanceado.** Cada uno de los $\log_b n$ niveles del árbol realiza el mismo orden de trabajo $\Theta(n^c)$. El orden es **$\Theta(n^c \log n)$**.
+  * **Caso 3 ($\log_b a < c$): Domina la raíz.** El trabajo en la cima supera la suma geométrica de los niveles inferiores. Si se cumple la condición de regularidad ($a \cdot f(n/b) \le k \cdot f(n)$ para alguna constante $k < 1$), el orden es **$\Theta(n^c)$**.
 
-#### 2. Resolución Completa de las 9 Ecuaciones
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo EvaluarTeoremaMaestro(a, b, c):
+    // Entrada:
+    //   a: cantidad de subproblemas recursivos (a >= 1)
+    //   b: factor de división del tamaño de entrada (b > 1)
+    //   c: exponente del costo de partición/combinación f(n) = Theta(n^c)
+    // Salida: Cota asintótica de T(n) = a * T(n/b) + Theta(n^c)
+
+    exponente_hojas = log(a) / log(b)   // log_b(a)
+
+    si exponente_hojas > c:
+        // Caso 1: La suma geométrica crece hacia las hojas (n^(log_b a) hojas)
+        devolver "Theta(n^" + exponente_hojas + ")"
+
+    sino si exponente_hojas == c:
+        // Caso 2: Cada uno de los log_b(n) niveles aporta Theta(n^c) de costo
+        devolver "Theta(n^" + c + " * log n)"
+
+    sino: // exponente_hojas < c
+        // Caso 3: La suma decrece geométricamente; domina el costo de la raíz f(n)
+        // Condición de regularidad: a * (n/b)^c = (a / b^c) * n^c <= k * n^c con k = a / b^c < 1
+        devolver "Theta(n^" + c + ")"
+```
+
+#### 3. Justificación de Complejidad (Para entregar en el parcial)
+
+Deducción formal agrupando las 9 recurrencias por su estructura de ramificación $(a, b)$:
+
+* **Familia 1: $a = 2, b = 4 \implies \log_b a = \log_4 2 = 0.5$**
+  - **$A(n) = 2A(n/4) + \sqrt{n}$:** Aquí $f(n) = n^{0.5} \implies c = 0.5$. Como $\log_4 2 = 0.5 = c$, aplica el **Caso 2** (balance equitativo): **$\Theta(\sqrt{n} \log n)$**.
+  - **$B(n) = 2B(n/4) + n$:** Aquí $f(n) = n^1 \implies c = 1$. Como $\log_4 2 = 0.5 < 1 = c$, aplica el **Caso 3** (domina la raíz, regularidad $2(n/4) = n/2 \le \frac{1}{2} n$): **$\Theta(n)$**.
+  - **$C(n) = 2C(n/4) + n^2$:** Aquí $f(n) = n^2 \implies c = 2$. Como $\log_4 2 = 0.5 < 2 = c$, aplica el **Caso 3** (domina la raíz, regularidad $2(n/4)^2 = n^2/8 \le \frac{1}{8} n^2$): **$\Theta(n^2)$**.
+
+* **Familia 2: $a = 3, b = 3 \implies \log_b a = \log_3 3 = 1$**
+  - **$D(n) = 3D(n/3) + \sqrt{n}$:** Aquí $f(n) = n^{0.5} \implies c = 0.5$. Como $\log_3 3 = 1 > 0.5 = c$, aplica el **Caso 1** (dominan las $n^1$ hojas): **$\Theta(n)$**.
+  - **$E(n) = 3E(n/3) + n$:** Aquí $f(n) = n^1 \implies c = 1$. Como $\log_3 3 = 1 = c$, aplica el **Caso 2** (balance equitativo en cada nivel): **$\Theta(n \log n)$**.
+  - **$F(n) = 3F(n/3) + n^2$:** Aquí $f(n) = n^2 \implies c = 2$. Como $\log_3 3 = 1 < 2 = c$, aplica el **Caso 3** (domina la raíz, regularidad $3(n/3)^2 = n^2/3 \le \frac{1}{3} n^2$): **$\Theta(n^2)$**.
+
+* **Familia 3: $a = 4, b = 2 \implies \log_b a = \log_2 4 = 2$**
+  - **$G(n) = 4G(n/2) + \sqrt{n}$:** Aquí $f(n) = n^{0.5} \implies c = 0.5$. Como $\log_2 4 = 2 > 0.5 = c$, aplica el **Caso 1** (dominan las $n^2$ hojas): **$\Theta(n^2)$**.
+  - **$H(n) = 4H(n/2) + n$:** Aquí $f(n) = n^1 \implies c = 1$. Como $\log_2 4 = 2 > 1 = c$, aplica el **Caso 1** (dominan las $n^2$ hojas): **$\Theta(n^2)$**.
+  - **$I(n) = 4I(n/2) + n^2$:** Aquí $f(n) = n^2 \implies c = 2$. Como $\log_2 4 = 2 = c$, aplica el **Caso 2** (balance equitativo): **$\Theta(n^2 \log n)$**.
+
+##### Tabla Resumen de las 9 Recurrencias
 
 | Recurrencia | $a$ | $b$ | $\log_b a$ | $f(n) = n^c$ | Comparación ($\log_b a$ vs $c$) | Caso TM | Complejidad Final |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| **$A(n) = 2A(n/4) + \sqrt{n}$** | $2$ | $4$ | $\log_4 2 = 0.5$ | $n^{0.5}$ ($c=0.5$) | $0.5 = 0.5$ | Caso 2 | **$O(\sqrt{n} \log n)$** |
-| **$B(n) = 2B(n/4) + n$** | $2$ | $4$ | $\log_4 2 = 0.5$ | $n^1$ ($c=1$) | $0.5 < 1$ | Caso 3 | **$O(n)$** |
-| **$C(n) = 2C(n/4) + n^2$** | $2$ | $4$ | $\log_4 2 = 0.5$ | $n^2$ ($c=2$) | $0.5 < 2$ | Caso 3 | **$O(n^2)$** |
-| **$D(n) = 3D(n/3) + \sqrt{n}$** | $3$ | $3$ | $\log_3 3 = 1$ | $n^{0.5}$ ($c=0.5$) | $1 > 0.5$ | Caso 1 | **$O(n)$** |
-| **$E(n) = 3E(n/3) + n$** | $3$ | $3$ | $\log_3 3 = 1$ | $n^1$ ($c=1$) | $1 = 1$ | Caso 2 | **$O(n \log n)$** |
-| **$F(n) = 3F(n/3) + n^2$** | $3$ | $3$ | $\log_3 3 = 1$ | $n^2$ ($c=2$) | $1 < 2$ | Caso 3 | **$O(n^2)$** |
-| **$G(n) = 4G(n/2) + \sqrt{n}$** | $4$ | $2$ | $\log_2 4 = 2$ | $n^{0.5}$ ($c=0.5$) | $2 > 0.5$ | Caso 1 | **$O(n^2)$** |
-| **$H(n) = 4H(n/2) + n$** | $4$ | $2$ | $\log_2 4 = 2$ | $n^1$ ($c=1$) | $2 > 1$ | Caso 1 | **$O(n^2)$** |
-| **$I(n) = 4I(n/2) + n^2$** | $4$ | $2$ | $\log_2 4 = 2$ | $n^2$ ($c=2$) | $2 = 2$ | Caso 2 | **$O(n^2 \log n)$** |
+| **$A(n) = 2A(n/4) + \sqrt{n}$** | $2$ | $4$ | $\log_4 2 = 0.5$ | $n^{0.5}$ ($c=0.5$) | $0.5 = 0.5$ | Caso 2 | **$\Theta(\sqrt{n} \log n)$** |
+| **$B(n) = 2B(n/4) + n$** | $2$ | $4$ | $\log_4 2 = 0.5$ | $n^1$ ($c=1$) | $0.5 < 1$ | Caso 3 | **$\Theta(n)$** |
+| **$C(n) = 2C(n/4) + n^2$** | $2$ | $4$ | $\log_4 2 = 0.5$ | $n^2$ ($c=2$) | $0.5 < 2$ | Caso 3 | **$\Theta(n^2)$** |
+| **$D(n) = 3D(n/3) + \sqrt{n}$** | $3$ | $3$ | $\log_3 3 = 1$ | $n^{0.5}$ ($c=0.5$) | $1 > 0.5$ | Caso 1 | **$\Theta(n)$** |
+| **$E(n) = 3E(n/3) + n$** | $3$ | $3$ | $\log_3 3 = 1$ | $n^1$ ($c=1$) | $1 = 1$ | Caso 2 | **$\Theta(n \log n)$** |
+| **$F(n) = 3F(n/3) + n^2$** | $3$ | $3$ | $\log_3 3 = 1$ | $n^2$ ($c=2$) | $1 < 2$ | Caso 3 | **$\Theta(n^2)$** |
+| **$G(n) = 4G(n/2) + \sqrt{n}$** | $4$ | $2$ | $\log_2 4 = 2$ | $n^{0.5}$ ($c=0.5$) | $2 > 0.5$ | Caso 1 | **$\Theta(n^2)$** |
+| **$H(n) = 4H(n/2) + n$** | $4$ | $2$ | $\log_2 4 = 2$ | $n^1$ ($c=1$) | $2 > 1$ | Caso 1 | **$\Theta(n^2)$** |
+| **$I(n) = 4I(n/2) + n^2$** | $4$ | $2$ | $\log_2 4 = 2$ | $n^2$ ($c=2$) | $2 = 2$ | Caso 2 | **$\Theta(n^2 \log n)$** |
 
 ---
 
@@ -549,16 +597,95 @@ c. Dado lo obtenido en los puntos anteriores, ¿tiene sentido implementar MergeS
 
 #### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-* **Punto a (Dividir en 3 partes):**
-  - Llamamos recursivamente a **$a = 3$ subproblemas** de tamaño **$n / 3$** ($b = 3$) y los unimos en tiempo lineal **$O(n)$** ($c = 1$).
-  - Recurrencia: $T(n) = 3 \cdot T(n/3) + O(n)$.
-  - Por el **Teorema Maestro**, $\log_3 3 = 1 = c$ (**Caso 2**), por lo que el orden sigue siendo **$O(n \log n)$** (cambia únicamente la base del logaritmo de $\log_2 n$ a $\log_3 n$, que difiere solo en una constante multiplicativa).
-* **Punto b (Dividir en $n$ partes de tamaño 1):**
-  - Si partimos el arreglo directamente en $n$ pedacitos de $1$ elemento, las llamadas recursivas caen directo en el caso base sin hacer nada, y todo el trabajo ocurre en el `merge` de las $n$ partes de tamaño $1$.
-  - Para hacer el merge de $n$ listas de 1 elemento, en cada paso debemos buscar el mínimo entre las $n$ listas (tarda $O(n)$), luego entre las $n - 1$ restantes, y así $n$ veces.
-  - Esto equivale exactamente a **Selection Sort** (Ordenamiento por Selección), cuya complejidad es **$O(n^2)$**.
-* **Punto c (¿Tiene sentido usar $k > 2$ en memoria principal?):**
-  - **No tiene sentido** en memoria RAM estándar: al dividir en $k$ partes, la altura del árbol baja a $\log_k n$, pero en cada paso del `merge` hay que comparar entre $k$ candidatos para elegir el mínimo (haciendo $k - 1$ comparaciones por elemento, o $\log_2 k$ con un heap, lo que da $n \log_2 k \cdot \log_k n = n \log_2 n$ igual que con $k = 2$, pero con código más complejo y mayor sobrecarga de constantes). *(Solo tiene utilidad en ordenamiento externo en disco para reducir lecturas/escrituras).*
+* **Punto a (División en 3 partes):**
+  - **División y Conquista:** El arreglo se fracciona en 3 subarreglos disjuntos de tamaño $n/3$, sobre los cuales se realizan **$a = 3$ llamadas recursivas** ($b = 3$).
+  - **Combinación (`Merge3`):** Se fusionan los 3 tercios ordenados comparando secuencialmente los elementos frontales mediante a lo sumo 2 comparaciones por elemento colocado. La fase de merge toma tiempo estrictamente lineal **$f(n) = \Theta(n)$** ($c = 1$).
+  - **Recurrencia y Teorema Maestro:** $T(n) = 3 \cdot T(n/3) + \Theta(n)$. Como $\log_b a = \log_3 3 = 1$ y $c = 1$, aplica el **Caso 2** (balance equitativo en cada nivel): **$\Theta(n \log_3 n) = \Theta(n \log n)$**. La complejidad asintótica se mantiene idéntica a MergeSort binario, cambiando solo la base logarítmica por una constante multiplicativa ($\log_3 n = \frac{\log_2 n}{\log_2 3}$).
+* **Punto b (División extrema en $k = n$ partes de tamaño 1):**
+  - Cada fragmento tiene tamaño 1, cayendo de inmediato en el caso base sin computación recursiva ($T(1) = \Theta(1)$).
+  - Toda la carga algorítmica pasa a la combinación (`K-Merge` de $n$ listas de 1 elemento):
+    - Extraer el 1° mínimo requiere buscar entre $n$ candidatos ($n - 1$ comparaciones).
+    - Extraer el 2° mínimo requiere buscar entre $n - 1$ candidatos ($n - 2$ comparaciones).
+    - Para los $n$ elementos se acumulan $\sum_{i=1}^{n-1} i = \frac{n(n-1)}{2} = \Theta(n^2)$ comparaciones.
+  - Esto equivale conceptualmente a **Selection Sort** (Ordenamiento por Selección), cuya complejidad temporal es **$\Theta(n^2)$**.
+* **Punto c (¿Tiene sentido práctico implementar $k > 2$?):**
+  - **En memoria principal (RAM): NO tiene sentido.**
+    - Aunque la altura del árbol recursivo disminuye a $\log_k n$, el costo de fusionar $k$ vías en cada nivel se incrementa:
+      * Con comparaciones secuenciales directas, seleccionar cada elemento insume $k - 1$ comparaciones $\implies$ costo de combinación por nivel $O(k \cdot n) \implies$ Total $O(k n \cdot \log_k n) = O\left(\frac{k}{\log_2 k} n \log_2 n\right)$, creciendo desfavorablemente para $k \ge 3$.
+      * Con una cola de prioridad (Min-Heap) de tamaño $k$, cada extracción e inserción cuesta $O(\log_2 k) \implies$ costo de combinación por nivel $O(n \log_2 k) \implies$ Total $\log_k n \cdot O(n \log_2 k) = \frac{\log_2 n}{\log_2 k} \cdot O(n \log_2 k) = O(n \log_2 n)$.
+    - La cota asintótica es idéntica a $k = 2$, pero $k > 2$ introduce penalizaciones constantes severas: mayor consumo de memoria auxiliar para el heap, más operaciones de control de punteros y pérdida de localidad temporal/espacial en las líneas de caché de la CPU.
+  - **En memoria secundaria (External Sort en Discos Magnéticos): SÍ tiene sentido.**
+    - Cuando los datos no entran en RAM, el cuello de botella físico son los accesos de I/O a disco. En el ordenamiento externo (*$k$-way External MergeSort*), elegir un $k$ grande reduce directamente la cantidad de pasadas completas por disco ($\log_k n$), optimizando el factor más costoso del sistema.
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo MergeSort3(A, ini, fin):
+    // Caso Base: 0 o 1 elemento ya se encuentra ordenado
+    si ini >= fin:
+        retornar
+
+    tercio = (fin - ini + 1) / 3
+    m1 = ini + tercio - 1
+    m2 = ini + 2 * tercio - 1
+
+    // 1. Conquista: 3 llamadas recursivas sobre tercios
+    MergeSort3(A, ini, m1)
+    MergeSort3(A, m1 + 1, m2)
+    MergeSort3(A, m2 + 1, fin)
+
+    // 2. Combinación: fusionar 3 sublistas ordenadas en tiempo lineal
+    Merge3(A, ini, m1, m2, fin)
+
+Algoritmo KMergeConHeap(sublistas, k):
+    // Entrada: k sublistas ordenadas de tamaño combinado n
+    // Salida: arreglo fusionado con los n elementos ordenados
+    heap = CrearMinHeap()
+    resultado = arreglo_vacio()
+
+    // 1. Cargar el primer elemento de cada sublista en el Min-Heap
+    para i desde 0 hasta k - 1:
+        si longitud(sublistas[i]) > 0:
+            heap.insertar(valor: sublistas[i][0], id_lista: i, indice: 0)
+
+    // 2. Extraer sucesivamente el menor global y reponer con el siguiente
+    mientras no heap.esta_vacio():
+        (val, id, idx) = heap.extraer_minimo()
+        resultado.agregar(val)
+
+        si idx + 1 < longitud(sublistas[id]):
+            heap.insertar(valor: sublistas[id][idx + 1], id_lista: id, indice: idx + 1)
+
+    retornar resultado
+```
+
+#### 3. Justificación de Complejidad (Para entregar en el parcial)
+
+* **Punto a ($k = 3$ partes):**
+  - Ecuación de recurrencia:
+    $$T(n) = 3 \cdot T(n/3) + \Theta(n)$$
+  - Parámetros: $a = 3$, $b = 3$, $f(n) = \Theta(n) \implies c = 1$.
+  - Comparación de exponentes: $\log_b a = \log_3 3 = 1$ y $c = 1$.
+  - Como $\log_b a = c$, aplica el **Caso 2 del Teorema Maestro** (trabajo equitativo en cada nivel):
+    $$T(n) = \Theta(n^c \log_3 n) = \Theta(n \log_3 n) = \mathbf{\Theta(n \log n)}$$
+
+* **Punto b ($k = n$ partes de tamaño 1):**
+  - Con partes de tamaño 1, no hay llamadas recursivas efectivas ($T(1) = \Theta(1)$).
+  - La combinación mediante comparaciones directas entre las listas restantes acumula:
+    $$T(n) = \sum_{i=1}^{n-1} i = \frac{(n-1) \cdot n}{2} = \frac{n^2 - n}{2} = \mathbf{\Theta(n^2)}$$
+  - Coincide exactamente con la complejidad de **Selection Sort**.
+
+* **Punto c ($k$ partes generalizado):**
+  - Altura del árbol recursivo: $h = \log_k n$.
+  - Utilizando un Min-Heap de tamaño $k$ para fusionar las $k$ vías en cada nivel:
+    - En cada nivel se procesan los $n$ elementos totales.
+    - Cada elemento requiere 1 extracción y 1 inserción en el heap de $k$ nodos: $O(\log_2 k)$ por elemento.
+    - Costo de combinación por nivel: $\Theta(n \log_2 k)$.
+  - Recurrencia:
+    $$T(n) = k \cdot T(n/k) + \Theta(n \log_2 k)$$
+  - Resolviendo por árbol de recursión:
+    $$T(n) = h \cdot \Theta(n \log_2 k) = \log_k n \cdot \Theta(n \log_2 k) = \frac{\log_2 n}{\log_2 k} \cdot \Theta(n \log_2 k) = \mathbf{\Theta(n \log_2 n)}$$
+  - Asintóticamente es idéntico a $k = 2$. En memoria RAM convencional, la administración del heap y las constantes adicionales hacen que $k = 2$ sea superior en velocidad real. En almacenamiento secundario, en cambio, minimizar las pasadas de lectura/escritura en disco ($h = \log_k n$) vuelve indispensable el uso de $k > 2$.
 
 ---
 
@@ -573,18 +700,82 @@ Un algoritmo sencillo para multiplicar matrices de $n \times n$ demora $O(n^3)$.
 
 #### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-* Planteamos la ecuación de recurrencia del algoritmo de la profesora Manterola:
-  - Cantidad de subproblemas: **$a = A$**.
-  - Tamaño de cada subproblema: $n / 4 \implies$ **$b = 4$**.
-  - Costo de combinar soluciones: $O(n^2) \implies$ **$c = 2$**.
-  $$T(n) = A \cdot T(n/4) + O(n^2)$$
-* Por el **Teorema Maestro**, como buscamos un orden que sea **menor que el de Strassen** ($\log_2 7 \approx 2.807$), pero sabemos que es mayor a $2$, estamos en el **Caso 1** donde el orden del algoritmo está dado por el exponente de las hojas: **$O(n^{\log_4 A})$**.
-* Para que sea estrictamente más veloz que Strassen, necesitamos que su exponente sea menor que $\log_2 7$:
+* **Ecuación de Recurrencia del Algoritmo Propuesto:**
+  - **División:** Las matrices de tamaño $n \times n$ se dividen en submatrices de tamaño $(n/4) \times (n/4)$, por lo que el factor de división es **$b = 4$**.
+  - **Conquista:** Se resuelven **$a = A$ llamadas recursivas** para multiplicar submatrices de tamaño $(n/4) \times (n/4)$.
+  - **Combinación:** Se combinan las soluciones parciales sumando y restando submatrices de tamaño $(n/4) \times (n/4)$, con un costo cuadrático $f(n) = O(n^2)$ (**$c = 2$**).
+  - Recurrencia de Manterola:
+    $$T(n) = A \cdot T(n/4) + O(n^2)$$
+* **Comparación con el Algoritmo de Strassen:**
+  - El algoritmo de Strassen divide en mitades ($b = 2$), ejecuta $a = 7$ llamadas recursivas y combina en $O(n^2)$, resultando en $T_S(n) = \Theta(n^{\log_2 7})$ con $\log_2 7 \approx 2.80735$.
+  - Para que el algoritmo de Manterola supere asintóticamente a Strassen, su exponente de complejidad debe ser estrictamente menor a $\log_2 7 \approx 2.807$.
+  - Como el exponente buscado es mayor a 2, nos ubicamos en el **Caso 1 del Teorema Maestro** ($\log_4 A > 2 \implies A > 16$), donde el costo total está gobernado por las hojas: $T_M(n) = \Theta(n^{\log_4 A})$.
+  - Por lo tanto, planteamos la inecuación:
+    $$\log_4 A < \log_2 7$$
+  - Aplicando cambio de base logarítmica:
+    $$\frac{\log_2 A}{\log_2 4} < \log_2 7 \implies \frac{\log_2 A}{2} < \log_2 7 \implies \log_2 A < 2 \cdot \log_2 7 = \log_2(7^2) = \log_2 49$$
+    $$A < 49$$
+  - Siendo $A$ la cantidad entera de subproblemas recursivos ($A \in \mathbb{Z}^+$), el **máximo valor entero posible es $A = 48$**.
+
+#### 2. Semi-Pseudocódigo Simplificado
+
+```text
+Algoritmo MultiplicarMatricesManterola(M1, M2, n, A):
+    // Caso base: para matrices pequeñas (n <= 4), resolver por definición directa
+    si n <= 4:
+        retornar MultiplicarDirecto(M1, M2) // O(1)
+
+    m = n / 4
+    // 1. División: Partir M1 y M2 en 16 submatrices de m x m en O(1) por índices
+    bloques_M1 = PartirEn16Bloques(M1, m)
+    bloques_M2 = PartirEn16Bloques(M2, m)
+
+    // 2. Conquista: Realizar A multiplicaciones recursivas de combinaciones lineales
+    productos = arreglo_de_tamanio(A)
+    para k desde 1 hasta A:
+        T1_k = CombinarLinealmente(bloques_M1) // Sumas/restas de bloques: O(m^2)
+        T2_k = CombinarLinealmente(bloques_M2) // Sumas/restas de bloques: O(m^2)
+        productos[k] = MultiplicarMatricesManterola(T1_k, T2_k, m, A)
+
+    // 3. Combinación: Reconstruir los 16 bloques de la matriz producto C mediante
+    //    sumas y restas de los A productos calculados: costo total O(n^2)
+    C = ReconstruirMatriz(productos, m)
+    retornar C
+
+Esquema Comparativo de Recurrencias:
+-----------------------------------------------------------------------------------
+Algoritmo       Ecuación de Recurrencia        a   b   c   Exponente Crítico
+-----------------------------------------------------------------------------------
+Tradicional     T(n) = 8·T(n/2) + O(n^2)       8   2   2   log_2(8) = 3.000
+Strassen        T(n) = 7·T(n/2) + O(n^2)       7   2   2   log_2(7) ≈ 2.807
+Manterola (A)   T(n) = A·T(n/4) + O(n^2)       A   4   2   log_4(A) = log_2(A)/2
+-----------------------------------------------------------------------------------
+Condición de Victoria: log_4(A) < log_2(7) <=> log_2(A) < log_2(49) <=> A < 49
+```
+
+#### 3. Justificación de Complejidad (Para entregar en el parcial)
+
+* **Planteo de la Recurrencia:**
+  $$T(n) = A \cdot T(n/4) + \Theta(n^2)$$
+  con $a = A$, $b = 4$, $f(n) = \Theta(n^2) \implies c = 2$.
+* **Análisis de Casos del Teorema Maestro en Función de $A$:**
+  1. Si $A < 16 \implies \log_4 A < 2 = c$: Aplica el Caso 3 $\implies T(n) = \Theta(n^2) < \Theta(n^{2.807})$. (Cota teórica inalcanzable para multiplicación matricial y no maximiza $A$).
+  2. Si $A = 16 \implies \log_4 16 = 2 = c$: Aplica el Caso 2 $\implies T(n) = \Theta(n^2 \log n) < \Theta(n^{2.807})$.
+  3. Si $A > 16 \implies \log_4 A > 2 = c$: Aplica el Caso 1 (dominio de las hojas) $\implies T(n) = \mathbf{\Theta(n^{\log_4 A})}$.
+* **Deducción del Máximo Entero $A$:**
+  Queremos $\Theta(n^{\log_4 A}) < \Theta(n^{\log_2 7})$:
   $$\log_4 A < \log_2 7$$
-* Cambiamos a base 2 sabiendo que $\log_4 A = \frac{\log_2 A}{\log_2 4} = \frac{\log_2 A}{2}$:
-  $$\frac{\log_2 A}{2} < \log_2 7 \implies \log_2 A < 2 \cdot \log_2 7 = \log_2(7^2) = \log_2 49$$
+  $$\frac{\log_2 A}{\log_2 4} < \log_2 7 \implies \frac{\log_2 A}{2} < \log_2 7 \implies \log_2 A < 2 \cdot \log_2 7 = \log_2(7^2) = \log_2 49$$
   $$A < 49$$
-* Como $A$ es una cantidad entera de subproblemas recursivos, el **máximo valor entero posible es $A = 48$** (con $A = 48$, la complejidad queda $O(n^{\log_4 48}) \approx O(n^{2.792}) < O(n^{2.807})$).
+* Como $A$ debe ser un número entero de llamadas recursivas ($A \in \mathbb{Z}^+$), el máximo entero que satisface estrictamente la desigualdad es **$A = 48$**.
+* **Verificación Numérica de Exponentes:**
+  - Cota de Strassen:
+    $$\log_2 7 = \frac{\ln 7}{\ln 2} \approx \frac{1.945910}{0.693147} \approx 2.807355$$
+  - Algoritmo de Manterola con $A = 48$:
+    $$\log_4 48 = \frac{\ln 48}{\ln 4} \approx \frac{3.871201}{1.386294} \approx 2.792481$$
+  - Con $A = 49$, el exponente empataría con Strassen: $\log_4 49 = \frac{\log_2 49}{2} = \log_2 7 \approx 2.807355$.
+  - Con $A = 48$, el orden es $T(n) = \Theta(n^{\log_4 48}) \approx \mathbf{\Theta(n^{2.792})}$, que resulta estrictamente menor a $\Theta(n^{2.807})$.
+* Por lo tanto, el máximo valor entero posible es **$A = 48$**.
 
 ---
 

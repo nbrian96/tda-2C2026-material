@@ -18,23 +18,23 @@
 <span class="hud-logo-icon">🚀</span><div><h1 class="hud-title">TDA — Guía Interactiva de Parciales</h1><span class="hud-subtitle">Edición Intensiva: Salvando el Cuatrimestre (2024–2026)</span></div>
 </a></div>
 <div class="hud-mode-selector" role="group" aria-label="Modo de Estudio"><button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')" title="Mostrar solo los ejercicios 🔴 IMPRESCINDIBLES de examen">
-<span class="mode-icon">⚡</span><span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span><span class="mode-badge" id="badgeEmergencyCount">50</span></button>
+<span class="mode-icon">⚡</span><span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span><span class="mode-badge" id="badgeEmergencyCount">48</span></button>
 <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')" title="Mostrar ejercicios pendientes de dominar y casos 🟡 IMPORTANTES">
-<span class="mode-icon">🎯</span><span class="mode-label"><span class="mode-label-long">Modo Táctico (Pendientes)</span><span class="mode-label-short">Táctico</span></span><span class="mode-badge" id="badgeTacticalCount">83</span></button>
+<span class="mode-icon">🎯</span><span class="mode-label"><span class="mode-label-long">Modo Táctico (Pendientes)</span><span class="mode-label-short">Táctico</span></span><span class="mode-badge" id="badgeTacticalCount">79</span></button>
 <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')" title="Mostrar todos los ejercicios de esta vista">
-<span class="mode-icon">📚</span><span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span><span class="mode-badge" id="badgeAllCount">83</span></button>
+<span class="mode-icon">📚</span><span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span><span class="mode-badge" id="badgeAllCount">79</span></button>
 </div>
 <div class="hud-quick-tools"><button class="tool-btn highlight-tool" onclick="scrollToExercise(78)" title="Ver La Mochila resuelta en todos los paradigmas"><span class="tool-icon">🎒</span> <span class="tool-text">Mochila Multi-P</span></button><button class="tool-btn highlight-tool" onclick="scrollToExercise(79)" title="Ver El Viajante (TSP) resuelto en todos los paradigmas"><span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span></button><button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)"><span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span></button><button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro"><span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span></button><button class="tool-btn" onclick="scrollToTrainer()" title="Ir al simulador de reconocimiento en 30 segundos"><span class="tool-icon">⚡</span> <span class="tool-text">Simulador 30s</span></button><button class="tool-btn" onclick="toggleDarkMode()" id="btnDarkMode" title="Cambiar modo claro / oscuro"><span class="tool-icon" id="darkModeIcon">🌙</span></button></div>
 </div>
 <div class="hud-row-secondary"><div class="hud-progress-wrap">
-<div class="progress-info"><span class="progress-title">Progreso en vista activa:</span><span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">83</span> dominados (<span id="progPercent">0%</span>)</span></div>
+<div class="progress-info"><span class="progress-title">Progreso en vista activa:</span><span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">79</span> dominados (<span id="progPercent">0%</span>)</span></div>
 <div class="progress-track"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
 </div>
 <div class="difficulty-filter-group d-flex align-items-center gap-1 flex-wrap" role="group" aria-label="Filtrar por dificultad"><span class="diff-filter-label small text-muted fw-semibold me-1">Dificultad:</span><button type="button" class="diff-btn active" data-diff="all" onclick="setDifficultyFilter('all')">Todas</button><button type="button" class="diff-btn" data-diff="1" onclick="setDifficultyFilter('1')" title="Nivel 1/5">1★</button><button type="button" class="diff-btn" data-diff="2" onclick="setDifficultyFilter('2')" title="Nivel 2/5">2★</button><button type="button" class="diff-btn" data-diff="3" onclick="setDifficultyFilter('3')" title="Nivel 3/5">3★</button><button type="button" class="diff-btn" data-diff="4" onclick="setDifficultyFilter('4')" title="Nivel 4/5">4★</button><button type="button" class="diff-btn" data-diff="5" onclick="setDifficultyFilter('5')" title="Nivel 5/5">5★</button></div>
 <div class="hud-search-box"><span class="search-icon">🔍</span><input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (tecla /): mochila, tsp, held-karp, arnook, invap..." oninput="handleSearch(this.value)">
 <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display: none;" title="Limpiar búsqueda">✕</button></div>
 </div>
-<div class="hud-row-pills"><div class="filter-pills-scroll" id="paradigmPills"><a href="index.html" class="pill-btn" data-paradigm="all">📚 Todos (83)</a><a href="dyc.html" class="pill-btn" data-paradigm="dyc">🔷 DyC (12)</a><a href="greedy.html" class="pill-btn" data-paradigm="greedy">🔶 Greedy (26)</a><a href="backtracking.html" class="pill-btn" data-paradigm="backtracking">🟣 Backtracking (14)</a><a href="dp.html" class="pill-btn" data-paradigm="dp">🟢 Prog. Dinámica (7)</a><a href="pl.html" class="pill-btn" data-paradigm="pl">🔵 Prog. Lineal (6)</a><a href="flujo.html" class="pill-btn" data-paradigm="flujo">🔴 Redes de Flujo (5)</a><a href="reducciones.html" class="pill-btn active" data-paradigm="reducciones">🟡 Reducciones NP (4)</a><a href="integradores.html" class="pill-btn" data-paradigm="integradores">⚡ Integradores (5)</a><a href="tipo_parcial.html" class="pill-btn" data-paradigm="tipo_parcial">📝 Tipo Parcial (4)</a></div></div>
+<div class="hud-row-pills"><div class="filter-pills-scroll" id="paradigmPills"><a href="index.html" class="pill-btn" data-paradigm="all">📚 Todos (79)</a><a href="parciales.html" class="pill-btn" data-paradigm="parciales">📝 Parciales (29)</a><a href="dyc.html" class="pill-btn" data-paradigm="dyc">🔷 DyC (12)</a><a href="greedy.html" class="pill-btn" data-paradigm="greedy">🔶 Greedy (26)</a><a href="backtracking.html" class="pill-btn" data-paradigm="backtracking">🟣 Backtracking (14)</a><a href="dp.html" class="pill-btn" data-paradigm="dp">🟢 Prog. Dinámica (7)</a><a href="pl.html" class="pill-btn" data-paradigm="pl">🔵 Prog. Lineal (6)</a><a href="flujo.html" class="pill-btn" data-paradigm="flujo">🔴 Redes de Flujo (5)</a><a href="reducciones.html" class="pill-btn active" data-paradigm="reducciones">🟡 Reducciones NP (4)</a><a href="integradores.html" class="pill-btn" data-paradigm="integradores">⚡ Integradores (5)</a></div></div>
 </div>
 <div class="emergency-banner" id="emergencyBanner"><div class="banner-inner"><span class="banner-icon">⚡</span><span><strong>Modo Emergencia (48–72h):</strong> Mostrando los <strong id="emergencyBannerCount">50</strong> ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de exámenes reales en esta vista.</span><button class="banner-dismiss" onclick="dismissBanner()" title="Ocultar aviso">✕</button></div>
 </div>
@@ -82,29 +82,20 @@ Explicar paso a paso cómo convertir cualquier entrada del problema conocido A e
 <h3>Patrón de Ejercicio 7.1: Reducciones sobre Grafos con Gadgets de Aristas</h3>
 <p>Aparece de forma reiterada en los parciales de FIUBA (2024 y 2025). Requiere transformar cobertura de aristas en dominancia de vértices mediante <em>gadgets</em>.</p>
 <hr />
-<article class="exercise-card" id="ej-71" data-num="71" data-priority="imprescindible" data-paradigm="reducciones" data-difficulty="4" data-title="demostración de np-completitud de dominating set (desde vertex cover)" data-origin="parcial 2024-2-2 (ej 5) y parcial 2024-2-3 (ej 5) / guía 07 ejercicio 2 y 14"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 71</span><h3 class="exercise-title">Demostración de NP-Completitud de Dominating Set (desde Vertex Cover)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-4" title="Dificultad 4 de 5">★★★★☆ (4/5)</span><span class="badge badge-paradigm badge-reducciones">Reducciones NP</span><span class="badge badge-origin" title="Parcial 2024-2-2 (Ej 5) y Parcial 2024-2-3 (Ej 5) / Guía 07 Ejercicio 2 y 14">🏛️ Parcial 2024-2-2 (Ej 5) y Parcial 2024-2-3 (Ej 5)</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="71" onchange="toggleMastered(71, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><h4>1. Enunciado Completo</h4>
-<p>Un conjunto dominante (<em>Dominating Set</em>) en un grafo no dirigido $G = (V, E)$ es un subconjunto de vértices $D \subseteq V$ tal que todo vértice $v \in V$ pertenece a $D$ o es adyacente a al menos un vértice en $D$.<br />
+<article class="exercise-card" id="ej-71" data-num="71" data-priority="imprescindible" data-paradigm="reducciones" data-difficulty="4" data-parcial="true" data-title="demostración de np-completitud de dominating set (desde vertex cover)" data-origin="parcial 2024-2-2 (ej 5) y parcial 2024-2-3 (ej 5) / guía 07 ejercicio 2 y 14"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 71</span><h3 class="exercise-title">Demostración de NP-Completitud de Dominating Set (desde Vertex Cover)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-4" title="Dificultad 4 de 5">★★★★ (4/5)</span><span class="badge badge-paradigm badge-reducciones">Reducciones NP</span><span class="badge badge-origin" title="Parcial 2024-2-2 (Ej 5) y Parcial 2024-2-3 (Ej 5) / Guía 07 Ejercicio 2 y 14">🏛️ Parcial 2024-2-2 (Ej 5) y Parcial 2024-2-3 (Ej 5)</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="71" onchange="toggleMastered(71, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Un conjunto dominante (<em>Dominating Set</em>) en un grafo no dirigido $G = (V, E)$ es un subconjunto de vértices $D \subseteq V$ tal que todo vértice $v \in V$ pertenece a $D$ o es adyacente a al menos un vértice en $D$.<br />
 El problema de decisión de Dominating Set plantea: dado un grafo $G = (V, E)$ y un entero positivo $k \le |V|$, ¿existe un conjunto dominante $D$ tal que $|D| \le k$?<br />
-Demostrar formalmente que <strong>Dominating Set es NP-Completo</strong>, reduciendo desde <strong>Vertex Cover</strong>.</p></div><details class="exercise-solution-drawer" id="solution-drawer-71"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>2. Demostración Directa (Lista para Hoja de Examen)</h4>
-<h5>Paso 1: Dominating Set está en NP</h5>
-<p>Si alguien nos entrega un subconjunto de vértices <code>certificado_D</code> como posible solución, podemos verificar si es válido en tiempo polinomial:</p>
-<ol><li>Chequeamos que <code>certificado_D</code> tenga a lo sumo <code>k</code> vértices.</li><li>Recorremos cada vértice de <code>certificado_D</code> y marcamos como "dominados" a él mismo y a todos sus vecinos directos.</li><li>Al terminar, nos fijamos si la cantidad de vértices marcados es igual al total de vértices del grafo.</li></ol>
-<p>Como solo recorremos los vértices y sus aristas una vez, el verificador tarda <code>O(V + E)</code> (polinomial). Por lo tanto, <strong>Dominating Set pertenece a NP</strong>.</p>
-<h5>Paso 2 y 3: Reducción Polinomial desde Vertex Cover (<code>Vertex Cover &lt;=p Dominating Set</code>)</h5>
-<p>Sabemos que <strong>Vertex Cover (VC)</strong> es NP-Completo (¿existen a lo sumo <code>k</code> vértices que toquen todas las aristas de <code>G</code>?).<br />
-Dada una instancia <code>(G, k)</code> de Vertex Cover:</p>
-<ol><li><strong>Vértices aislados:</strong> Asumimos sin pérdida de generalidad que <code>G</code> no tiene vértices aislados (sin aristas), ya que en Vertex Cover no sirven para cubrir ninguna arista y se pueden eliminar antes de empezar en <code>O(V)</code>.</li><li><strong>Construcción del grafo <code>G'</code>:</strong></li><li>Copiamos todos los vértices y aristas originales de <code>G</code>.</li><li><strong>Por cada arista <code>(u, v)</code> de <code>G</code>, agregamos un vértice auxiliar nuevo <code>w_uv</code> y lo conectamos tanto a <code>u</code> como a <code>v</code></strong> (formando un triángulo entre <code>u</code>, <code>v</code> y <code>w_uv</code>).</li><li><strong>Cota:</strong> Mantenemos el mismo límite <strong><code>k' = k</code></strong>.</li></ol>
-<p><em>Complejidad de la transformación:</em> Solo agregamos un vértice y dos aristas por cada arista original, lo que toma tiempo <code>O(V + E)</code> (polinomial).</p>
-<h4>3. Demostración de Equivalencia (Ida y Vuelta)</h4>
-<h5>($\implies$) Ida: Si <code>G</code> tiene un Vertex Cover de tamaño <code>&lt;= k</code>, entonces <code>G'</code> tiene un Dominating Set de tamaño <code>&lt;= k</code></h5>
-<p>Elegimos exactamente los mismos vértices del Vertex Cover como nuestro conjunto dominante <code>D</code> en <code>G'</code>.</p>
-<ul><li><strong>Los vértices nuevos <code>w_uv</code> quedan dominados:</strong> Como el Vertex Cover cubría todas las aristas de <code>G</code>, para cada arista <code>(u, v)</code> al menos uno de sus extremos (<code>u</code> o <code>v</code>) está en <code>D</code>. Como <code>w_uv</code> es vecino de ambos, queda dominado.</li><li><strong>Los vértices originales de <code>G</code> quedan dominados:</strong> Como no hay vértices aislados, todo vértice <code>u</code> tiene al menos una arista <code>(u, v)</code>. Si <code>u</code> fue elegido en <code>D</code>, se domina a sí mismo; si no fue elegido, obligatoriamente su vecino <code>v</code> está en <code>D</code> (para cubrir esa arista) y lo domina.
-Por lo tanto, <code>D</code> domina todo <code>G'</code> usando a lo sumo <code>k</code> vértices.</li></ul>
-<h5>($\impliedby$) Vuelta: Si <code>G'</code> tiene un Dominating Set de tamaño <code>&lt;= k</code>, entonces <code>G</code> tiene un Vertex Cover de tamaño <code>&lt;= k</code></h5>
-<p>Tomamos el conjunto dominante de <code>G'</code>.</p>
-<ul><li><strong>Reemplazo de vértices nuevos:</strong> Si el conjunto dominante incluye algún vértice auxiliar <code>w_uv</code>, lo cambiamos por <code>u</code> (o por <code>v</code>). Hacer este cambio <strong>no aumenta la cantidad de vértices</strong> y no pierde cobertura, porque <code>w_uv</code> solo tenía como vecinos a <code>u</code> y <code>v</code> (y <code>u</code> también los cubre a ambos, además de cubrir a otros posibles vecinos).</li><li>Tras reemplazar todos los vértices auxiliares, nos queda un conjunto de a lo sumo <code>k</code> vértices formado <strong>únicamente por vértices originales de <code>G</code></strong>.</li><li><strong>Por qué es un Vertex Cover:</strong> Para cada arista <code>(u, v)</code> de <code>G</code>, su vértice auxiliar <code>w_uv</code> está dominado. Como ningún <code>w_uv</code> quedó dentro del conjunto elegido, sí o sí tiene que estar elegido al menos uno de sus únicos dos vecinos (<code>u</code> o <code>v</code>). Esto garantiza que toda arista <code>(u, v)</code> de <code>G</code> tiene al menos un extremo elegido.</li></ul>
-<p><strong>Conclusión Final:</strong> Como Dominating Set está en NP y transformamos Vertex Cover en Dominating Set en tiempo polinomial probando la equivalencia de ida y vuelta, <strong>Dominating Set es NP-Completo</strong>.</p>
-<h4>4. Diagrama Visual del Gadget Triangular</h4>
+Demostrar formalmente que <strong>Dominating Set es NP-Completo</strong>, reduciendo desde <strong>Vertex Cover</strong>.</p></div><details class="exercise-solution-drawer" id="solution-drawer-71"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Los 4 Pasos para la Hoja del Parcial)</h4>
+<ol><li><strong>Paso 1 (Pertenece a NP — Verificador):</strong></li><li><strong>Certificado:</strong> Un subconjunto de vértices $D \subseteq V$ propuesto como solución.</li><li><strong>Verificación en tiempo polinomial:</strong> Chequeamos primero que $|D| \le k$ en $\mathcal{O}(1)$. Luego recorremos cada vértice $u \in D$ y marcamos como "dominados" a $u$ y a todos sus vecinos directos en $G$. Al finalizar, verificamos si quedaron marcados los $|V|$ vértices del grafo. Como recorremos vértices y aristas una sola vez, el verificador tarda <strong>$\mathcal{O}(|V| + |E|)$</strong> (polinomial) $\implies \text{Dominating Set} \in \text{NP}$.</li><li><strong>Paso 2 y 3 (Reducción desde problema conocido $\text{Vertex Cover} \le_P \text{Dominating Set}$):</strong></li><li>Partimos de una instancia $(G = (V, E), k)$ de <strong>Vertex Cover</strong> (sabemos que es NP-Completo: ¿existen $\le k$ vértices que toquen todas las aristas de $G$?).</li><li><strong>Transformación en lenguaje natural:</strong><ol><li>Eliminamos de $G$ los vértices aislados (sin aristas), ya que en Vertex Cover no cubren ninguna arista y en Dominating Set obligarían a gastar vértices extra.</li><li>Copiamos todos los vértices y aristas restantes de $G$ a un nuevo grafo $G&#x27;$.</li><li><strong>Por cada arista $(u, v) \in E$, creamos un vértice nuevo $w_{uv}$ y lo conectamos a $u$ y a $v$</strong> (armando un triángulo entre $u$, $v$ y $w_{uv}$).</li><li>Mantenemos el mismo límite <strong>$k&#x27; = k$</strong>.</li></ol>
+</li><li><strong>Cuánto tarda:</strong> Agregamos $|E|$ vértices nuevos y $2|E|$ aristas en tiempo <strong>$\mathcal{O}(|V| + |E|)$</strong> (polinomial).</li><li><strong>Paso 4 (Ida y Vuelta $\iff$):</strong></li><li>
+<p><strong>($\implies$) Ida (Si hay Vertex Cover de tamaño $\le k$ en $G \implies$ hay Dominating Set de tamaño $\le k$ en $G&#x27;$):</strong>
+Tomamos el mismo conjunto $D$ del Vertex Cover. Como cubría todas las aristas $(u, v)$ de $G$, al menos uno entre $u$ y $v$ está en $D$: ese vértice domina al nodo nuevo $w_{uv}$ y también a los extremos de la arista (como no hay vértices aislados, todo vértice original tiene al menos una arista cubierta y queda dominado). Así, $D$ domina todo $G&#x27;$ con $|D| \le k$.</p>
+</li><li>
+<p><strong>($\impliedby$) Vuelta (Si hay Dominating Set de tamaño $\le k$ en $G&#x27; \implies$ hay Vertex Cover de tamaño $\le k$ en $G$):</strong>
+Si el conjunto dominante $D$ de $G&#x27;$ eligió algún vértice auxiliar $w_{uv}$, <strong>lo reemplazamos por $u$</strong> (o por $v$). Esto no aumenta el tamaño de $D$ ni pierde dominancia (porque $w_{uv}$ solo tocaba a $u$ y $v$, y $u$ también los cubre). Ahora $D$ solo tiene vértices originales de $G$, y como cada $w_{uv}$ está dominado sin pertenecer a $D$, sí o sí al menos uno de sus dos únicos vecinos ($u$ o $v$) está en $D$, cubriendo todas las aristas de $G$.</p>
+</li><li>
+<p><strong>Conclusión:</strong> $\text{Dominating Set} \in \text{NP-Completo}$.</p>
+</li></ol>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
     subgraph AristaG [Arista uv en G]
         u1["Vertice u"] --- v1["Vertice v"]
@@ -115,72 +106,54 @@ Por lo tanto, <code>D</code> domina todo <code>G'</code> usando a lo sumo <code>
         v2 --- we
     end
 </pre></div>
-<h4>5. Ejemplo Numérico y Traza</h4>
-<p>Consideremos un grafo simple $G$ con 3 vértices en línea: $1 - 2 - 3$.</p>
-<ul><li>Aristas: $e_1 = (1, 2)$ y $e_2 = (2, 3)$.</li><li>Vertex Cover óptimo en $G$: $S = \{2\}$ de tamaño $k = 1$ (el nodo 2 cubre ambas aristas).</li><li>Construcción de $G&#x27;$:<ul><li>Vértices: $V&#x27; = \{1, 2, 3, w_{e1}, w_{e2}\}$.</li><li>Aristas de $w_{e1}$: $(1, w_{e1})$ y $(2, w_{e1})$.</li><li>Aristas de $w_{e2}$: $(2, w_{e2})$ y $(3, w_{e2})$.</li><li>Aristas originales: $(1, 2)$ y $(2, 3)$.</li></ul>
-</li><li>Evaluemos $D = \{2\}$ en $G&#x27;$ ($k&#x27;=1$):<ul><li>Nodo 2 se domina a sí mismo.</li><li>Nodos 1 y 3 son adyacentes a 2 $\implies$ dominados.</li><li>Nodos $w_{e1}$ y $w_{e2}$ son adyacentes a 2 $\implies$ dominados.</li></ul>
-</li><li>¡Todos los 5 vértices de $G&#x27;$ quedan dominados con un único nodo $D = \{2\}$!</li></ul>
-<h4>6. Pseudocódigo del Verificador y Reducción (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo VerificadorDominatingSet(G = (V, E), k, certificado_D):
-    // 1. Verificar tamaño de la cota en O(1)
-    si tamaño(certificado_D) &gt; k:
-        devolver Falso
+<h4>2. Semi-Pseudocódigo Simplificado del Verificador y la Transformación</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION VerificadorDominatingSet(G = (V, E), k, certificado_D):
+    SI tamaño(certificado_D) &gt; k:
+        RETORNAR FALSO
 
-    // 2. Construir conjunto de vértices dominados en O(V + E)
-    dominados = conjunto_vacío()
-    para cada u in certificado_D:
-        agregar u a dominados             // Se domina a sí mismo
-        para cada vecino v in G.adyacentes(u):
-            agregar v a dominados         // Domina a sus vecinos
+    dominados &lt;- conjunto_vacio()
+    PARA CADA u EN certificado_D:
+        agregar u a dominados
+        PARA CADA v EN Vecinos(G, u):
+            agregar v a dominados
 
-    // 3. Verificar cobertura total
-    si tamaño(dominados) == cantidad(V):
-        devolver Verdadero  // Certificado válido en tiempo polinomial O(V + E)
-    sino:
-        devolver Falso
+    RETORNAR (tamaño(dominados) == tamaño(V)) // Tiempo O(|V| + |E|)
 
-Algoritmo TransformarVCaDominatingSet(G = (V, E), k):
-    // Construir G' = (V', E') en tiempo O(V + E)
-    V' = copiar(V)
-    E' = copiar(E)
+FUNCION TransformarVCaDominatingSet(G = (V, E), k):
+    G_sin_aislados &lt;- eliminar vértices de grado 0 en G
+    G' &lt;- copiar(G_sin_aislados)
 
-    para cada arista e = (u, v) in E:
-        crear nuevo vértice auxiliar w_e
-        agregar w_e a V'
-        agregar aristas (u, w_e) y (v, w_e) a E'
+    PARA CADA arista (u, v) EN Aristas(G_sin_aislados):
+        crear vértice nuevo w_uv en G'
+        agregar_arista(G', u, w_uv)
+        agregar_arista(G', v, w_uv)
 
-    k' = k
-    devolver (G', k')
+    RETORNAR (G', k' = k) // Transformación en O(|V| + |E|)
 </code></pre></div></div>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
 <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
-<ul><li><strong>Reducir al revés ($DominatingSet \le_P VertexCover$):</strong> Reducir el problema nuevo al problema conocido demuestra que el nuevo es fácil, pero **no prueba que sea NP-Hard**. La reducción debe partir obligatoriamente desde el problema conocido.</li><li><strong>Olvidar reemplazar los vértices auxiliares en la vuelta:</strong> Si un conjunto dominante contiene $w_e$, no es un subconjunto de los vértices originales. Es obligatorio explicar por qué $w_e$ puede sustituirse por $u$ sin aumentar el tamaño ni perder dominancia.</li></ul>
+<ul><li><strong>Reducir al revés ($DominatingSet \le_P VertexCover$):</strong> Reducir el problema nuevo al problema conocido demuestra que el nuevo es fácil, pero <strong>no prueba que sea NP-Hard</strong>. La reducción debe partir obligatoriamente desde el problema conocido.</li><li><strong>Olvidar reemplazar los vértices auxiliares en la vuelta:</strong> Si un conjunto dominante contiene $w_{uv}$, no es un subconjunto de los vértices originales. Es obligatorio explicar por qué $w_{uv}$ puede sustituirse por $u$ sin aumentar el tamaño ni perder dominancia.</li></ul>
 </div></div></details></div></article>
 <hr />
 <h3>Patrón de Ejercicio 7.2: Reducciones de Caminos y Ciclos (El Dilema de Marco el Cadete)</h3>
 <p>Reducción polinomial estricta desde Ciclo Hamiltoniano hacia el Problema del Viajante de Comercio (TSP) en grafos ponderados completos.</p>
 <hr />
-<article class="exercise-card" id="ej-72" data-num="72" data-priority="imprescindible" data-paradigm="reducciones" data-difficulty="4" data-title="el dilema de marco el cadete: reducción de ciclo hamiltoniano a tsp" data-origin="parcial 2025-1-1 (27 de mayo de 2025), ejercicio 5"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 72</span><h3 class="exercise-title">El Dilema de Marco el Cadete: Reducción de Ciclo Hamiltoniano a TSP</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-4" title="Dificultad 4 de 5">★★★★☆ (4/5)</span><span class="badge badge-paradigm badge-reducciones">Reducciones NP</span><span class="badge badge-origin" title="Parcial 2025-1-1 (27 de mayo de 2025), Ejercicio 5">🏛️ Parcial 2025-1-1 (27 de mayo de 2025), Ejercicio 5</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="72" onchange="toggleMastered(72, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><h4>1. Enunciado Completo</h4>
-<p>Marco, el cadete administrativo de una empresa de logística, compró un costoso paquete de software para resolver el <strong>Problema del Viajante de Comercio</strong> (TSP en su versión de decisión), cuando la gerencia le había solicitado explícitamente un módulo para resolver <strong>Ciclo Hamiltoniano</strong>. El vendedor del software le aseguró a Marco:<br />
+<article class="exercise-card" id="ej-72" data-num="72" data-priority="imprescindible" data-paradigm="reducciones" data-difficulty="4" data-parcial="true" data-title="el dilema de marco el cadete: reducción de ciclo hamiltoniano a tsp" data-origin="parcial 2025-1-1 (27 de mayo de 2025), ejercicio 5"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 72</span><h3 class="exercise-title">El Dilema de Marco el Cadete: Reducción de Ciclo Hamiltoniano a TSP</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-4" title="Dificultad 4 de 5">★★★★ (4/5)</span><span class="badge badge-paradigm badge-reducciones">Reducciones NP</span><span class="badge badge-origin" title="Parcial 2025-1-1 (27 de mayo de 2025), Ejercicio 5">🏛️ Parcial 2025-1-1 (27 de mayo de 2025), Ejercicio 5</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="72" onchange="toggleMastered(72, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Marco, el cadete administrativo de una empresa de logística, compró un costoso paquete de software para resolver el <strong>Problema del Viajante de Comercio</strong> (TSP en su versión de decisión), cuando la gerencia le había solicitado explícitamente un módulo para resolver <strong>Ciclo Hamiltoniano</strong>. El vendedor del software le aseguró a Marco:<br />
 <em>"Si puedes resolver TSP de decisión en un grafo completo ponderado, puedes resolver exactamente Ciclo Hamiltoniano en cualquier grafo en el mismo orden de tiempo"</em>.<br />
 Definiciones formales:</p>
 <ul><li><strong>Ciclo Hamiltoniano (HC):</strong> Dado un grafo no dirigido $G = (V, E)$, determinar si existe un ciclo simple que visite todos los vértices de $V$ exactamente una vez y retorne al origen.</li><li><strong>TSP (Decisión):</strong> Dado un grafo completo $G&#x27; = (V&#x27;, E&#x27;)$ con pesos enteros $w(e) \ge 0$ en las aristas y un entero $k$, determinar si existe un tour cerrado que visite cada vértice una única vez con costo total $\le k$.
-Determinar con fundamento formal si el vendedor tiene razón o si hay que despedir a Marco. Desarrollar la reducción polinomial completa con demostración de equivalencia.</li></ul></div><details class="exercise-solution-drawer" id="solution-drawer-72"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>2. Demostración Directa (Lista para Hoja de Examen)</h4>
-<p><strong>El vendedor tiene razón.</strong> Demostraremos que podemos transformar cualquier problema de <strong>Ciclo Hamiltoniano</strong> en uno de <strong>TSP (Decisión)</strong> en tiempo polinomial (<code>Ciclo Hamiltoniano &lt;=p TSP</code>), por lo que el software de TSP sirve para resolver Ciclo Hamiltoniano.</p>
-<h5>1. Transformación Polinomial (<code>O(V^2)</code>)</h5>
-<p>Dado el grafo <code>G</code> de Ciclo Hamiltoniano con <code>n</code> vértices:</p>
-<ol><li>Creamos un <strong>grafo completo <code>G'</code></strong> con las mismas <code>n</code> ciudades (conectamos todos contra todos).</li><li>Asignamos los pesos de las aristas en <code>G'</code> con esta regla simple:</li><li><strong>Peso <code>1</code></strong> si la arista <strong>existía</strong> en el grafo original <code>G</code>.</li><li><strong>Peso <code>2</code></strong> si la arista <strong>no existía</strong> en <code>G</code> (arista agregada con penalización).</li><li>Fijamos el límite de costo máximo del tour en <strong><code>k = n</code></strong>.</li></ol>
-<p><em>Complejidad:</em> Armar la matriz de <code>n x n</code> consultando si cada arista existía o no en <code>G</code> toma tiempo <code>O(n^2)</code> (polinomial).</p>
-<h5>2. Demostración de Equivalencia (Ida y Vuelta)</h5>
-<ul><li>
-<p><strong>($\implies$) Ida: Si <code>G</code> tiene un Ciclo Hamiltoniano $\to$ <code>G'</code> tiene un tour TSP de costo <code>&lt;= n</code>:</strong></p>
-<ul><li>El Ciclo Hamiltoniano pasa por las <code>n</code> ciudades y vuelve al inicio usando exactamente <code>n</code> aristas que sí existen en <code>G</code>.</li><li>En <code>G'</code>, todas esas aristas tienen peso <code>1</code>.</li><li>Por lo tanto, ese mismo recorrido es un tour válido de TSP con costo total <code>n * 1 = n &lt;= k</code>.</li></ul>
+Determinar con fundamento formal si el vendedor tiene razón o si hay que despedir a Marco. Desarrollar la reducción polinomial completa con demostración de equivalencia.</li></ul></div><details class="exercise-solution-drawer" id="solution-drawer-72"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Los 4 Pasos para la Hoja del Parcial)</h4>
+<p><strong>Veredicto inicial:</strong> <strong>El vendedor tiene razón y no hay que despedir a Marco</strong>, porque podemos reducir <strong>$\text{Ciclo Hamiltoniano} \le_P \text{TSP (Decisión)}$</strong> en tiempo polinomial.</p>
+<ol><li><strong>Paso 1 (Pertenece a NP — Verificador de TSP):</strong></li><li><strong>Certificado:</strong> Una secuencia ordenada de vértices $(v_1, v_2, \dots, v_n, v_1)$ propuesta como tour.</li><li><strong>Verificación en tiempo polinomial:</strong> Revisamos en $\mathcal{O}(n)$ que aparezcan las $n = |V|$ ciudades sin repetidos, que empiece y termine en la misma ciudad y que la suma de los pesos de las $n$ aristas consecutivas sea $\le k$. Como tarda <strong>$\mathcal{O}(n)$</strong>, $\text{TSP} \in \text{NP}$.</li><li><strong>Paso 2 y 3 (Reducción desde problema conocido $\text{Ciclo Hamiltoniano} \le_P \text{TSP}$):</strong></li><li>Dada una instancia $G = (V, E)$ de <strong>Ciclo Hamiltoniano</strong> con $n = |V|$ vértices:</li><li><strong>Transformación en lenguaje natural:</strong><ol><li>Creamos un <strong>grafo completo $G&#x27;$</strong> con las mismas $n$ ciudades (conectamos todos los pares de vértices entre sí).</li><li>Asignamos el peso de cada arista $(u, v)$ en $G&#x27;$ así:<ul><li><strong>Peso $1$</strong> si la arista $(u, v)$ <strong>existía</strong> en el grafo original $G$.</li><li><strong>Peso $2$</strong> si la arista $(u, v)$ <strong>no existía</strong> en $G$ (arista agregada con penalización).</li></ul>
+</li><li>Fijamos el presupuesto máximo del tour en <strong>$k = n$</strong>.</li></ol>
+</li><li><strong>Cuánto tarda:</strong> Armar la matriz de costos de $n \times n$ consultando las aristas de $G$ toma tiempo <strong>$\mathcal{O}(n^2)$</strong> (polinomial).</li><li><strong>Paso 4 (Ida y Vuelta $\iff$):</strong></li><li>
+<p><strong>($\implies$) Ida (Si $G$ tiene Ciclo Hamiltoniano $\implies G&#x27;$ tiene tour TSP de costo $\le n$):</strong>
+El Ciclo Hamiltoniano recorre los $n$ vértices y vuelve al origen usando exactamente $n$ aristas originales de $G$. En $G&#x27;$ todas esas aristas pesan $1$, por lo que ese mismo ciclo es un tour válido de TSP con costo total $n \times 1 = n \le k$.</p>
 </li><li>
-<p><strong>($\impliedby$) Vuelta: Si <code>G'</code> tiene un tour TSP de costo <code>&lt;= n</code> $\to$ <code>G</code> tiene un Ciclo Hamiltoniano:</strong></p>
-<ul><li>Todo tour de TSP que recorre las <code>n</code> ciudades y vuelve al origen usa exactamente <code>n</code> aristas.</li><li>Como todas las aristas de <code>G'</code> cuestan <code>1</code> o <code>2</code>, <strong>es imposible que el tour haya usado siquiera una arista de peso <code>2</code></strong>: si usara aunque sea una de peso <code>2</code>, como las otras <code>n - 1</code> cuestan al menos <code>1</code>, el costo total sería como mínimo <code>2 + (n - 1) = n + 1</code>, superando el límite <code>n</code>.</li><li>Entonces, las <code>n</code> aristas usadas tienen sí o sí <strong>peso <code>1</code></strong>, lo que significa que todas existían en el grafo original <code>G</code> y forman un Ciclo Hamiltoniano válido.</li></ul>
-</li></ul>
-<p><strong>Conclusión:</strong> Marco puede cargar la matriz con pesos <code>1</code> y <code>2</code> y tope <code>k = n</code> en el software de TSP. Si el software responde que sí existe tour, hay Ciclo Hamiltoniano; si responde que no, no existe. <strong>El vendedor tenía razón y Marco conserva su empleo.</strong></p>
-<h4>3. Diagrama Visual del Gadget de Penalización</h4>
+<p><strong>($\impliedby$) Vuelta (Si $G&#x27;$ tiene tour TSP de costo $\le n \implies G$ tiene Ciclo Hamiltoniano):</strong>
+Cualquier tour cerrado que visite las $n$ ciudades usa exactamente $n$ aristas, y cada arista en $G&#x27;$ cuesta al menos $1$. Si el tour hubiera usado aunque sea <strong>una sola arista de peso $2$</strong>, su costo total sería como mínimo $2 + (n - 1) \times 1 = n + 1 &gt; n$, lo cual es imposible. Por lo tanto, las $n$ aristas del tour tienen <strong>todas peso $1$</strong>, existen en $G$ y forman un Ciclo Hamiltoniano.</p>
+</li></ol>
 <div class="mermaid-wrapper"><pre class="mermaid">graph LR
     subgraph GrafoOriginalG [Grafo G con 4 vertices]
         A["Nodo A"] -->|Existe en E| B["Nodo B"]
@@ -197,21 +170,29 @@ Determinar con fundamento formal si el vendedor tiene razón o si hay que desped
         B2 -. Penalizacion peso 2 .-> D2
     end
 </pre></div>
-<h4>4. Pseudocódigo de la Reducción Polinomial (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo ReducirCicloHamiltonianoATSP(G = (V, E)):
-    n = cantidad(V)
-    Crear grafo completo G' = (V, E') con pesos en aristas:
+<h4>2. Semi-Pseudocódigo Simplificado del Verificador y la Transformación</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION VerificadorTSP(G', k, certificado_tour):
+    SI tamaño(certificado_tour) != tamaño(V(G')) O tiene vértices repetidos:
+        RETORNAR FALSO
+    costo_total &lt;- 0
+    PARA i &lt;- 0 HASTA n - 1:
+        u &lt;- certificado_tour[i]
+        v &lt;- certificado_tour[(i + 1) mod n]
+        costo_total &lt;- costo_total + peso(G', u, v)
+    RETORNAR (costo_total &lt;= k) // Tiempo O(n)
 
-    para cada par de vértices u, v in V con u != v:
-        si (u, v) in E:
-            peso(u, v) = 1    // Arista original presente
-        sino:
-            peso(u, v) = 2    // Arista penalizada inexistente en G
+FUNCION TransformarCicloHamiltonianoATSP(G = (V, E)):
+    n &lt;- tamaño(V)
+    Crear grafo completo G' con los mismos n vértices de V
 
-    cota_k = n  // Cota de costo del tour
+    PARA CADA par (u, v) EN V x V con u != v:
+        SI (u, v) PERTENECE A E:
+            peso(G', u, v) &lt;- 1   // Arista real de G
+        SINO:
+            peso(G', u, v) &lt;- 2   // Arista ficticia penalizada
 
-    // Se entrega la instancia (G', cota_k) al resolvedor de decisión de TSP
-    devolver (G', cota_k)
+    k &lt;- n
+    RETORNAR OraculoTSP(G', k) // Transformación en O(n^2)
 </code></pre></div></div>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
 <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
@@ -221,28 +202,47 @@ Determinar con fundamento formal si el vendedor tiene razón o si hay que desped
 <h3>Patrón de Ejercicio 7.3: Reducciones Numéricas (Cambio de Monedas a Subset Sum)</h3>
 <p>Demostración de que la versión de decisión del problema de cambio de monedas no es más difícil que Subset Sum y análisis de equivalencia en la clase NP-Completo.</p>
 <hr />
-<article class="exercise-card" id="ej-73" data-num="73" data-priority="imprescindible" data-paradigm="reducciones" data-difficulty="4" data-title="reducción de cambio de monedas a subset sum" data-origin="parcial 2024-2-1 (5 de noviembre de 2024), ejercicio 5"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 73</span><h3 class="exercise-title">Reducción de Cambio de Monedas a Subset Sum</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-4" title="Dificultad 4 de 5">★★★★☆ (4/5)</span><span class="badge badge-paradigm badge-reducciones">Reducciones NP</span><span class="badge badge-origin" title="Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 5">🏛️ Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 5</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="73" onchange="toggleMastered(73, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><h4>1. Enunciado Completo</h4>
-<p>Demostrar formalmente que el problema del <strong>Cambio de Monedas</strong> (en su versión de decisión: dadas denominaciones enteras $D = \{d_1, \dots, d_m\}$, un entero objetivo $V$ y una cota $k$, ¿es posible dar cambio de valor exacto $V$ utilizando a lo sumo $k$ monedas?) <strong>no es más difícil</strong> que el problema de la <strong>Suma de Subconjuntos (Subset Sum)</strong>.<br />
-¿Es posible demostrar la reducción en sentido inverso? Fundamentar en base a las clases de complejidad teóricas.</p></div><details class="exercise-solution-drawer" id="solution-drawer-73"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>2. Demostración Directa (Lista para Hoja de Examen)</h4>
-<p><strong>¿Qué significa "no es más difícil"?</strong><br />
-Decir que <em>Cambio de Monedas</em> no es más difícil que <em>Subset Sum</em> significa que podemos reducir <code>Cambio de Monedas &lt;=p Subset Sum</code> en tiempo polinomial.</p>
-<h5>1. Transformación Polinomial (<code>O(m * k)</code>)</h5>
-<p>La diferencia entre ambos problemas es que en <em>Cambio de Monedas</em> podemos repetir una misma denominación y tenemos un tope de <code>k</code> monedas, mientras que en <em>Subset Sum</em> cada número de la lista se puede elegir una sola vez.</p>
-<ol><li><strong>Expandir en copias:</strong> Como en total se usan a lo sumo <code>k</code> monedas, ninguna denominación puede usarse más de <code>k</code> veces. Creamos una lista <code>L</code> repitiendo <code>k</code> veces cada denominación disponible (total: <code>m * k</code> números).</li><li><strong>Controlar el límite de <code>k</code> monedas:</strong> Para que Subset Sum controle al mismo tiempo que el valor sume <code>V</code> y que no se elijan más de <code>k</code> elementos, desplazamos los números multiplicando por <code>M = k + 1</code> y sumando <code>1</code>:</li><li>Cada moneda de valor <code>d</code> pasa a valer <strong><code>d * (k + 1) + 1</code></strong> (el <code>+1</code> final actúa como contador de monedas).</li><li>Buscamos si existe un subconjunto que sume <strong><code>W = V * (k + 1) + k'</code></strong> (para alguna cantidad <code>k'</code> de <code>1</code> a <code>k</code> monedas).</li><li><em>Complejidad:</em> Generar los <code>m * k</code> números toma tiempo <code>O(m * k)</code> (polinomial respecto a <code>m</code> y <code>k</code>).</li></ol>
-<h5>2. Equivalencia (Ida y Vuelta)</h5>
-<ul><li><strong>($\implies$) Ida:</strong> Si se puede formar el monto <code>V</code> usando <code>k'</code> monedas (<code>k' &lt;= k</code>), eligiendo esas mismas <code>k'</code> copias en la lista <code>L</code> la parte alta suma <code>V * (k + 1)</code> y los <code>+1</code> suman <code>k'</code>, alcanzando exactamente <code>W</code>.</li><li><strong>($\impliedby$) Vuelta:</strong> Si un subconjunto de la lista <code>L</code> suma <code>W</code>, como cada elemento elegido aporta <code>+1</code> y <code>k' &lt; k + 1</code> no puede producir acarreo hacia el monto, obligatoriamente se eligieron <code>k' &lt;= k</code> monedas cuyos valores suman exactamente <code>V</code>.</li></ul>
-<h5>3. ¿Se puede demostrar al revés (<code>Subset Sum &lt;=p Cambio de Monedas</code>)?</h5>
-<p><strong>SÍ, totalmente.</strong>  </p>
-<ul><li><em>Justificación directa:</em> <em>Subset Sum</em> está en <strong>NP</strong> y la versión de decisión de <em>Cambio de Monedas</em> (con valores en binario) es <strong>NP-Completa</strong>. Por definición de NP-Completitud, <strong>cualquier problema de la clase NP se puede reducir en tiempo polinomial a un problema NP-Completo</strong>, por lo que ambos problemas tienen la misma dificultad teórica.</li></ul>
-<h4>3. Diagrama Visual del Gadget de Réplicas y Base $M = k + 1$</h4>
+<article class="exercise-card" id="ej-73" data-num="73" data-priority="imprescindible" data-paradigm="reducciones" data-difficulty="4" data-parcial="true" data-title="reducción de cambio de monedas a subset sum" data-origin="parcial 2024-2-1 (5 de noviembre de 2024), ejercicio 5"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 73</span><h3 class="exercise-title">Reducción de Cambio de Monedas a Subset Sum</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-4" title="Dificultad 4 de 5">★★★★ (4/5)</span><span class="badge badge-paradigm badge-reducciones">Reducciones NP</span><span class="badge badge-origin" title="Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 5">🏛️ Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 5</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="73" onchange="toggleMastered(73, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Demostrar formalmente que el problema del <strong>Cambio de Monedas</strong> (en su versión de decisión: dadas denominaciones enteras $D = \{d_1, \dots, d_m\}$, un entero objetivo $V$ y una cota $k$, ¿es posible dar cambio de valor exacto $V$ utilizando a lo sumo $k$ monedas?) <strong>no es más difícil</strong> que el problema de la <strong>Suma de Subconjuntos (Subset Sum)</strong>.<br />
+¿Es posible demostrar la reducción en sentido inverso? Fundamentar en base a las clases de complejidad teóricas.</p></div><details class="exercise-solution-drawer" id="solution-drawer-73"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Los 4 Pasos para la Hoja del Parcial)</h4>
+<p><strong>Qué significa "no es más difícil":</strong> Significa probar que <strong>$\text{Cambio de Monedas} \le_P \text{Subset Sum}$</strong>.</p>
+<ol><li><strong>Paso 1 (Pertenece a NP — Verificador):</strong></li><li><strong>Certificado:</strong> Una lista de monedas elegidas (o un subconjunto de números en Subset Sum).</li><li><strong>Verificación en tiempo polinomial:</strong> Chequeamos que la cantidad de monedas sea $\le k$, que cada moneda pertenezca al conjunto $D$ y que la suma de sus valores sea exactamente $V$. Sumar lleva tiempo lineal en la cantidad de elementos y bits $\implies$ ambos pertenecen a <strong>NP</strong>.</li><li><strong>Paso 2 y 3 (Reducción $\text{Cambio de Monedas} \le_P \text{Subset Sum}$):</strong></li><li>En <em>Cambio de Monedas</em> podemos repetir denominaciones y usar a lo sumo $k$ monedas en total; en <em>Subset Sum</em> cada elemento de la lista se puede usar a lo sumo $1$ vez y no hay tope de cantidad de elementos.</li><li><strong>Transformación en lenguaje natural:</strong><ol><li>Como en total se usan a lo sumo $k$ monedas, creamos una lista $L$ <strong>repitiendo $k$ veces cada denominación $d_i$</strong> (obtenemos $m \cdot k$ elementos).</li><li>Para obligar a que <em>Subset Sum</em> elija exactamente $k&#x27; \le k$ monedas que sumen $V$, codificamos cada moneda en base $M = k + 1$: reemplazamos cada copia de $d_i$ por el número <strong>$e_i = d_i \cdot (k + 1) + 1$</strong> (el $+1$ cuenta cuántas monedas se usan sin generar acarreo porque $k&#x27; &lt; k + 1$).</li><li>Consultamos si existe un subconjunto de $L$ que sume <strong>$W = V \cdot (k + 1) + k&#x27;$</strong> (para algún $k&#x27; \in \{1, \dots, k\}$, o agregando $k$ elementos comodín de valor $1$ y pidiendo suma exacta $W = V \cdot (k + 1) + k$).</li></ol>
+</li><li><strong>Cuánto tarda:</strong> Generar los $m \cdot k$ elementos de la lista $L$ toma tiempo <strong>$\mathcal{O}(m \cdot k)$</strong>.</li><li><strong>Paso 4 (Ida y Vuelta $\iff$ y Reducción Inversa):</strong></li><li><strong>($\implies$) Ida:</strong> Si existen $k&#x27; \le k$ monedas que suman $V$, tomamos esas $k&#x27;$ copias en $L$ (más $k - k&#x27;$ comodines de valor $1$); su suma en la parte alta da $V \cdot (k + 1)$ y en las unidades da $k&#x27; + (k - k&#x27;) = k$, sumando exactamente $W$.</li><li><strong>($\impliedby$) Vuelta:</strong> Si un subconjunto de $L$ suma $W = V \cdot (k + 1) + k$, como la suma de los $+1$ no puede superar $k &lt; k + 1$ (no hay acarreo hacia el múltiplo de $k + 1$), obligatoriamente se eligieron a lo sumo $k$ monedas cuyos valores originales suman exactamente $V$.</li><li><strong>¿Se puede reducir en sentido inverso ($\text{Subset Sum} \le_P \text{Cambio de Monedas}$)? SÍ:</strong> Porque <em>Subset Sum</em> pertenece a <strong>NP</strong> y <em>Cambio de Monedas</em> (con valores en binario) es <strong>NP-Completo</strong>; por definición, todo problema en NP se reduce polinomialmente a cualquier problema NP-Completo.</li></ol>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
     I["Instancia Cambio de Monedas:<br/>D = {d₁..dₘ}, monto V, cota k"]:::src --> R["Expansión en k copias:<br/>L tiene m · k elementos"]:::step
-    R --> G["Gadget Base M = k + 1:<br/>eᵢ⁽ʳ⁾ = dᵢ · M + 1<br/>Objetivo W = V · M + k'"]:::step
-    G --> SS(["Oráculo Subset Sum:<br/>¿Existe subconjunto que sume W?"]):::opt
+    R --> G["Gadget Base M = k + 1:<br/>eᵢ = dᵢ · (k+1) + 1<br/>+ k comodines de valor 1"]:::step
+    G --> SS(["Oráculo Subset Sum:<br/>¿Suma exacta W = V·(k+1) + k?"]):::opt
     classDef src fill:#1e40af,stroke:#1e3a8a,stroke-width:2px,color:#fff
     classDef step fill:#334155,stroke:#1e293b,stroke-width:1px,color:#fff
     classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
 </pre></div>
+<h4>2. Semi-Pseudocódigo Simplificado del Verificador y la Transformación</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION VerificadorCambioMonedas(D, V, k, certificado_monedas):
+    SI tamaño(certificado_monedas) &gt; k:
+        RETORNAR FALSO
+    suma &lt;- 0
+    PARA CADA m EN certificado_monedas:
+        SI m NO PERTENECE A D:
+            RETORNAR FALSO
+        suma &lt;- suma + m
+    RETORNAR (suma == V)
+
+FUNCION TransformarCambioMonedasASubsetSum(D, V, k):
+    M &lt;- k + 1
+    L &lt;- lista_vacia()
+
+    // 1. Agregar k copias de cada moneda desplazadas en base M = k + 1
+    PARA CADA d_i EN D:
+        PARA r &lt;- 1 HASTA k:
+            agregar (d_i * M + 1) a L
+
+    // 2. Agregar k elementos comodín de valor 1 (para completar exactamente k unidades)
+    PARA r &lt;- 1 HASTA k:
+        agregar 1 a L
+
+    W_objetivo &lt;- V * M + k
+    RETORNAR OraculoSubsetSum(L, W_objetivo)
+</code></pre></div></div>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
 <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
 <ul><li><strong>Confundir tiempo pseudo-polinomial con polinomial:</strong> Afirmar que como ambos se resuelven con programación dinámica en $O(n V)$ están en P. No están en P bajo codificación binaria porque el tamaño de la entrada es $O(\log V)$, haciendo que $O(V)$ sea exponencial respecto a la longitud en bits.</li><li><strong>Decir que no se puede reducir en sentido inverso:</strong> Creer erróneamente que porque uno parece más general no puede reducirse al otro. Dos problemas NP-Completos cualesquiera siempre admiten reducción mutua bidireccional.</li></ul>
@@ -251,30 +251,37 @@ Decir que <em>Cambio de Monedas</em> no es más difícil que <em>Subset Sum</em>
 <h3>Patrón de Ejercicio 7.4: La Reducción Dual Canónica (Independent Set a Vertex Cover)</h3>
 <p>Reducción estructural basada en el Teorema del Complemento de Gallai en grafos no dirigidos.</p>
 <hr />
-<article class="exercise-card" id="ej-74" data-num="74" data-priority="importante" data-paradigm="reducciones" data-difficulty="4" data-title="reducción dual: independent set a vertex cover" data-origin="guía de ejercicios 07, ejercicio 3"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 74</span><h3 class="exercise-title">Reducción Dual: Independent Set a Vertex Cover</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-4" title="Dificultad 4 de 5">★★★★☆ (4/5)</span><span class="badge badge-paradigm badge-reducciones">Reducciones NP</span><span class="badge badge-origin" title="Guía de Ejercicios 07, Ejercicio 3">🏛️ Guía de Ejercicios 07, Ejercicio 3</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="74" onchange="toggleMastered(74, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><h4>1. Enunciado Completo</h4>
-<p>Dados los problemas de decisión de <strong>Independent Set</strong> (¿existe un subconjunto de vértices $I \subseteq V$ de tamaño $|I| \ge k$ tal que no existan aristas entre vértices de $I$?) y <strong>Vertex Cover</strong> (¿existe un subconjunto $S \subseteq V$ de tamaño $|S| \le k&#x27;$ que cubra todas las aristas de $E$?):</p>
-<ol><li>Diseñar una reducción polinomial formal de <strong>Independent Set a Vertex Cover</strong>.</li><li>Demostrar rigurosamente la equivalencia lógica fundamentando el teorema del complemento en teoría de grafos.</li></ol></div><details class="exercise-solution-drawer" id="solution-drawer-74"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>2. Demostración Directa de la Propiedad del Complemento</h4>
-<p><strong>Propiedad Clave:</strong><br />
-En cualquier grafo <code>G</code>, un grupo de vértices <code>S</code> es un <strong>Independent Set</strong> (ninguna arista une dos vértices de <code>S</code>) si y solo si los vértices restantes <strong><code>V - S</code></strong> forman un <strong>Vertex Cover</strong> (toda arista toca al menos un vértice de <code>V - S</code>).</p>
-<ul><li>
-<p><strong>($\implies$) Si <code>S</code> es un Independent Set $\to$ el resto <code>V - S</code> es un Vertex Cover:</strong></p>
-<ul><li>Tomemos cualquier arista <code>(u, v)</code> del grafo.</li><li>Como en <code>S</code> no puede haber dos vértices conectados entre sí, es imposible que tanto <code>u</code> como <code>v</code> estén ambos dentro de <code>S</code>.</li><li>Por lo tanto, al menos uno de los dos (<code>u</code> o <code>v</code>) quedó afuera de <code>S</code>, es decir, está en <code>V - S</code>.</li><li>Como esto pasa para todas las aristas, <code>V - S</code> cubre todas las aristas del grafo.</li></ul>
+<article class="exercise-card" id="ej-74" data-num="74" data-priority="importante" data-paradigm="reducciones" data-difficulty="4" data-parcial="false" data-title="reducción dual: independent set a vertex cover" data-origin="guía de ejercicios 07, ejercicio 3"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 74</span><h3 class="exercise-title">Reducción Dual: Independent Set a Vertex Cover</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-4" title="Dificultad 4 de 5">★★★★ (4/5)</span><span class="badge badge-paradigm badge-reducciones">Reducciones NP</span><span class="badge badge-origin" title="Guía de Ejercicios 07, Ejercicio 3">🏛️ Guía de Ejercicios 07, Ejercicio 3</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="74" onchange="toggleMastered(74, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Dados los problemas de decisión de <strong>Independent Set</strong> (¿existe un subconjunto de vértices $I \subseteq V$ de tamaño $|I| \ge k$ tal que no existan aristas entre vértices de $I$?) y <strong>Vertex Cover</strong> (¿existe un subconjunto $S \subseteq V$ de tamaño $|S| \le k&#x27;$ que cubra todas las aristas de $E$?):</p>
+<ol><li>Diseñar una reducción polinomial formal de <strong>Independent Set a Vertex Cover</strong>.</li><li>Demostrar rigurosamente la equivalencia lógica fundamentando el teorema del complemento en teoría de grafos.</li></ol></div><details class="exercise-solution-drawer" id="solution-drawer-74"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Los 4 Pasos para la Hoja del Parcial)</h4>
+<ol><li><strong>Paso 1 (Pertenece a NP — Verificador de Vertex Cover):</strong></li><li><strong>Certificado:</strong> Un subconjunto de vértices $S \subseteq V$.</li><li><strong>Verificación en tiempo polinomial:</strong> Chequeamos que $|S| \le k&#x27;$ y recorremos todas las aristas $(u, v) \in E$ verificando que para cada una se cumpla $u \in S$ o $v \in S$. Esto tarda <strong>$\mathcal{O}(|V| + |E|)$</strong> (polinomial) $\implies \text{Vertex Cover} \in \text{NP}$.</li><li><strong>Paso 2 y 3 (Reducción desde problema conocido $\text{Independent Set} \le_P \text{Vertex Cover}$):</strong></li><li>Dada una instancia $(G = (V, E), k)$ de <strong>Independent Set</strong> (sabemos que es NP-Completo):</li><li><strong>Transformación en lenguaje natural:</strong><ol><li>Mantenemos <strong>exactamente el mismo grafo $G&#x27; = G$</strong>.</li><li>Fijamos la cota máxima del Vertex Cover como <strong>$k&#x27; = |V| - k$</strong>.</li></ol>
+</li><li><strong>Cuánto tarda:</strong> Es una simple resta aritmética sobre el mismo grafo, por lo que tarda <strong>$\mathcal{O}(1)$</strong> (o $\mathcal{O}(|V| + |E|)$ si se copia el grafo).</li><li><strong>Paso 4 (Ida y Vuelta $\iff$ por el Teorema del Complemento):</strong></li><li><strong>Propiedad clave:</strong> Un conjunto $I \subseteq V$ es un <em>Independent Set</em> en $G$ si y solo si su complemento $S = V \setminus I$ es un <em>Vertex Cover</em> en $G$.</li><li>
+<p><strong>($\implies$) Ida (Si $G$ tiene Independent Set $I$ de tamaño $\ge k \implies G&#x27;$ tiene Vertex Cover de tamaño $\le |V| - k$):</strong>
+Tomamos $S = V \setminus I$. Su tamaño es $|S| = |V| - |I| \le |V| - k = k&#x27;$. Además, para cualquier arista $(u, v) \in E$, como $I$ es independiente no pueden estar $u$ y $v$ ambos en $I$; por lo tanto, al menos uno de los dos está afuera de $I$, es decir, pertenece a $S = V \setminus I$. Así, $S$ cubre todas las aristas.</p>
 </li><li>
-<p><strong>($\impliedby$) Si <code>V - S</code> es un Vertex Cover $\to$ <code>S</code> es un Independent Set:</strong></p>
-<ul><li>Como <code>V - S</code> cubre todas las aristas del grafo, toda arista tiene al menos un extremo en <code>V - S</code>.</li><li>Eso significa que ninguna arista puede tener sus dos extremos dentro de <code>S</code>.</li><li>Por lo tanto, no hay aristas entre vértices de <code>S</code>, así que <code>S</code> es un conjunto independiente válido.</li></ul>
-</li></ul>
-<h4>3. Transformación Polinomial (<code>O(1)</code>)</h4>
-<p>Dada una instancia <code>(G, k)</code> de Independent Set:</p>
-<ol><li>Dejamos exactamente el mismo grafo: <strong><code>G' = G</code></strong>.</li><li>Fijamos el límite de tamaño para Vertex Cover como <strong><code>k' = |V| - k</code></strong>.</li><li><em>Complejidad:</em> Solo hacemos una resta en tiempo <code>O(1)</code> (polinomial).</li></ol>
-<h4>4. Equivalencia (Ida y Vuelta)</h4>
-<ul><li><strong>Ida:</strong> Si <code>G</code> tiene un Independent Set <code>S</code> de tamaño <strong>al menos <code>k</code></strong>, entonces los vértices restantes <code>V - S</code> son un Vertex Cover de tamaño <strong>a lo sumo <code>|V| - k = k'</code></strong>.</li><li><strong>Vuelta:</strong> Si <code>G</code> tiene un Vertex Cover <code>C</code> de tamaño <strong>a lo sumo <code>k' = |V| - k</code></strong>, entonces los vértices restantes <code>V - C</code> son un Independent Set de tamaño <strong>al menos <code>|V| - (|V| - k) = k</code></strong>.</li></ul>
-<h4>5. Diagrama Visual de la Dualidad</h4>
+<p><strong>($\impliedby$) Vuelta (Si $G&#x27;$ tiene Vertex Cover $S$ de tamaño $\le k&#x27; = |V| - k \implies G$ tiene Independent Set de tamaño $\ge k$):</strong>
+Tomamos $I = V \setminus S$. Su tamaño es $|I| = |V| - |S| \ge |V| - (|V| - k) = k$. Como toda arista $(u, v) \in E$ tiene al menos un extremo en $S$, ninguna arista puede tener sus dos extremos en $V \setminus S = I$. Por ende, $I$ es un conjunto independiente válido de tamaño $\ge k$.</p>
+</li></ol>
 <div class="mermaid-wrapper"><pre class="mermaid">flowchart LR
-    IS["Independent Set S: tamano al menos k"] ---|Complemento Exacto en V| VC["Vertex Cover: V sin S, tamano a lo sumo V-k"]
+    IS["Independent Set I: tamaño |I| ≥ k"] ---|Complemento Exacto S = V \ I| VC["Vertex Cover S: tamaño |S| ≤ |V| - k"]
 </pre></div>
+<h4>2. Semi-Pseudocódigo Simplificado del Verificador y la Transformación</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">FUNCION VerificadorVertexCover(G = (V, E), k_prima, certificado_S):
+    SI tamaño(certificado_S) &gt; k_prima:
+        RETORNAR FALSO
+    PARA CADA arista (u, v) EN E:
+        SI u NO PERTENECE A certificado_S Y v NO PERTENECE A certificado_S:
+            RETORNAR FALSO
+    RETORNAR VERDADERO // Tiempo O(|V| + |E|)
+
+FUNCION TransformarISaVertexCover(G = (V, E), k):
+    G_prima &lt;- G
+    k_prima &lt;- tamaño(V) - k
+    RETORNAR (G_prima, k_prima) // Transformación en O(1)
+</code></pre></div></div>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
 <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
-<ul><li><strong>Invertir el sentido de las desigualdades:</strong> Olvidar que Independent Set es un problema de **maximización** ($|S| \ge k$) mientras que Vertex Cover es de **minimización** ($|C| \le k&#x27;$). Al restar del total $|V|$, la desigualdad se invierte automáticamente ($|S| \ge k \iff |V| - |S| \le |V| - k$).</li></ul>
+<ul><li><strong>Invertir el sentido de las desigualdades:</strong> Olvidar que Independent Set es un problema de <strong>maximización</strong> ($|I| \ge k$) mientras que Vertex Cover es de <strong>minimización</strong> ($|S| \le k&#x27;$). Al restar del total $|V|$, la desigualdad se invierte automáticamente ($|I| \ge k \iff |V| - |I| \le |V| - k$).</li></ul>
 </div></div></details></div></article>
 <hr />
 <h3>Errores Fatales en Exámenes sobre Reducciones NP</h3>

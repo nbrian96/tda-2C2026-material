@@ -21,95 +21,67 @@ El INVAP debe transportar una carga de alta seguridad desde Ezeiza hasta Bariloc
 
 ---
 
-#### 1. Paradigma Greedy — Idea en Lenguaje Natural, Contraejemplo y Semi-Pseudocódigo
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-* **Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja):**
-  * **Regla Voraz:** Estando en la ciudad actual $u$ (comenzando en Ezeiza), elegir siempre ir a la ciudad siguiente $v$ de la próxima etapa que tenga el **menor costo de seguro inmediato $C_{uv}$**.
-  * **Por qué NO es óptimo (Contraejemplo para la hoja):**
-    Consideremos Ezeiza ($E$) con dos paradas posibles en el Día 1: Ciudad $A$ con costo $C_{EA} = 10$ y Ciudad $B$ con costo $C_{EB} = 20$. En el Día 2, ir de $A$ a Bariloche ($T$) cuesta $C_{AT} = 100$, mientras que ir de $B$ a Bariloche cuesta $C_{BT} = 5$.
-    * **Greedy:** Elige $E \to A$ por ser más barato al inicio ($10 < 20$) y queda obligado a pagar $A \to T$ ($100$), con **costo total $= 110$**.
-    * **Óptimo:** Va por $E \to B \to T$ con **costo total $= 20 + 5 = 25 < 110$**. Queda refutada la optimalidad.
+Para transportar la carga desde Ezeiza ($s$) hasta Bariloche ($t$) a través del grafo dirigido por etapas con costo $C_{uv} > 0$, comparamos las 3 alternativas solicitadas:
 
-```mermaid
-flowchart LR
-    E(["Ezeiza (Origen)"]) -->|"C = 10 (Elige Greedy)"| A["Ciudad A (Etapa 1)"]:::bad
-    E -->|"C = 20 (Ruta Óptima)"| B["Ciudad B (Etapa 1)"]:::opt
-    A -->|"C = 100 (Trampa: Total 110)"| T(["Bariloche (Destino)"])
-    B -->|"C = 5 (Óptimo: Total 25)"| T
-    classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
-    classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:2px,color:#fff
-```
+1. **Alternativa 1 — Greedy (Algoritmo Voraz):**
+   * *Regla Voraz:* Estando en la ciudad actual $u$, elegir avanzar a la ciudad $v$ de la siguiente etapa que tenga el **mínimo costo de seguro inmediato $C_{uv}$**.
+   * *Por qué NO es óptimo (Contraejemplo formal):*
+     Sea Ezeiza ($E$) con dos ciudades posibles en la Etapa 1: Ciudad $A$ con $C_{EA} = 10$ y Ciudad $B$ con $C_{EB} = 20$. En la Etapa 2, de $A$ a Bariloche ($T$) el costo es $C_{AT} = 100$, mientras que de $B$ a $T$ es $C_{BT} = 5$.
+     - **Greedy:** Elige $E \to A$ por ser más barato en el primer paso ($10 < 20$), quedando forzado a pagar $A \to T$ ($100$), con **costo total $= 110$**.
+     - **Óptimo:** Toma la ruta $E \to B \to T$ con **costo total $= 20 + 5 = 25 < 110$**.
+     - *Conclusión:* La decisión voraz miope no garantiza la solución óptima porque ignora los costos posteriores.
 
-* **Semi-Pseudocódigo Simplificado (Greedy):**
+2. **Alternativa 2 — Programación Dinámica (Óptimo en DAG):**
+   * *Subestructura Óptima y DAG:* Como los camiones avanzan etapa por etapa (días de viaje) sin retroceder, el grafo es un **Grafo Dirigido Acíclico (DAG)**. Cualquier subcamino de un camino de costo mínimo es a su vez un camino de costo mínimo hacia el nodo intermedio.
+   * *Definición del Estado:* $OPT(v) =$ mínimo costo acumulado para viajar desde Ezeiza hasta la ciudad $v$.
+   * *Ecuación de Recurrencia:*
+     $$OPT(v) = \min_{u \in \text{Predecesores}(v)} \Big\{ OPT(u) + C_{uv} \Big\}$$
+   * *Caso Base:* $OPT(\text{Ezeiza}) = 0$, y para todo otro nodo $OPT(v) = +\infty$.
+   * *Orden de Llenado:* Por etapas en orden topológico estricto (Día 1, Día 2, $\dots$). **Garantiza optimalidad**.
 
-```text
-FUNCION InvapCaminoGreedy(grafo_etapas, ezeiza, bariloche):
-    actual <- ezeiza
-    ruta <- [ezeiza]
-    costo_total <- 0
+3. **Alternativa 3 — Programación Lineal (PL Continua / Entera):**
+   * *Idea:* Se formula como el envío de **$1$ unidad de flujo de costo mínimo** desde Ezeiza ($+1$) hacia Bariloche ($-1$), con balance $0$ en cada ciudad intermedia.
+   * *Variables de Decisión:* $x_{uv} \in [0, 1]$ para cada tramo $(u, v) \in E$ ($1$ si se transita por el tramo, $0$ si no).
+   * *Función Objetivo (Minimizar costo total):* $\min Z = \sum_{(u, v) \in E} C_{uv} \cdot x_{uv}$.
+   * *Restricciones de Conservación (una por cada vértice $v \in V$):*
+     $$\sum_{w: (v, w) \in E} x_{vw} - \sum_{u: (u, v) \in E} x_{uv} = \begin{cases} +1 & \text{si } v = \text{Ezeiza} \\ -1 & \text{si } v = \text{Bariloche} \\ 0 & \forall v \in V \setminus \{\text{Ezeiza}, \text{Bariloche}\} \end{cases}$$
+   * *Garantía de Optimalidad:* Es **óptimo**. Por la propiedad de **Unimodularidad Total** de la matriz de incidencia de redes, resolver la relajación lineal continua produce automáticamente variables enteras $x_{uv} \in \{0, 1\}$ sin requerir Branch & Bound exponencial.
 
-    MIENTRAS actual != bariloche:
-        // Elegir vecino v de la siguiente etapa con mínimo costo C(actual, v)
-        siguiente <- argmin_{v en Vecinos(actual)} { C[actual, v] }
-        costo_total <- costo_total + C[actual, siguiente]
-        agregar siguiente a ruta
-        actual <- siguiente
-
-    RETORNAR (costo_total, ruta) // Complejidad O(|V| + |E|), NO garantiza óptimo
-```
-
----
-
-#### 2. Paradigma Programación Dinámica — Idea en Lenguaje Natural y Semi-Pseudocódigo
-
-* **Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja):**
-  * Como el viaje avanza día por día hacia adelante sin retroceder, el grafo por etapas es un **DAG (Grafo Dirigido Acíclico)** y cumple la subestructura óptima.
-  * **Definición del Estado:** $OPT(v) =$ mínimo costo de seguro acumulado para llegar desde Ezeiza hasta la ciudad $v$.
-  * **Caso Base:** $OPT(\text{Ezeiza}) = 0$, e inicializamos $OPT(v) = +\infty$ para toda otra ciudad.
-  * **Ecuación de Recurrencia:** Para llegar a $v$ en la etapa $k$, probamos venir desde todas las ciudades predecesoras $u$ de la etapa $k-1$ que tienen ruta hacia $v$:
-    $$OPT(v) = \min_{u \in \text{Predecesores}(v)} \Big\{ OPT(u) + C_{uv} \Big\}$$
-  * **Orden de Llenado:** Por etapas en orden topológico (Día $1, 2, \dots$ hasta Bariloche).
-
-* **Semi-Pseudocódigo Simplificado (Programación Dinámica):**
+#### 2. Semi-Pseudocódigo Simplificado
 
 ```text
-FUNCION InvapCaminoOptimoPD(grafo_etapas, ezeiza, bariloche):
-    Inicializar OPT[v] <- INFINITO y padre[v] <- NULO para todo nodo v
-    OPT[ezeiza] <- 0
+// 1. Programación Dinámica (Óptimo en DAG)
+Algoritmo TransporteOptimoDP(etapas, ezeiza, bariloche):
+    OPT = mapa con valor INFINITO para todo nodo; padre = mapa con NULO
+    OPT[ezeiza] = 0
 
-    // Llenado en orden topológico (etapa por etapa)
-    PARA etapa k <- 1 HASTA TotalEtapas:
-        PARA CADA ciudad v EN Etapa(k):
-            PARA CADA arista entrante (u -> v) con costo C_uv:
-                SI OPT[u] + C_uv < OPT[v]:
-                    OPT[v] <- OPT[u] + C_uv
-                    padre[v] <- u
+    para k desde 1 hasta total_etapas:
+        para cada ciudad v en etapas[k]:
+            para cada u en Predecesores(v):
+                si OPT[u] + C[u][v] < OPT[v]:
+                    OPT[v] = OPT[u] + C[u][v]
+                    padre[v] = u
 
-    // Reconstrucción del camino óptimo hacia atrás desde Bariloche
-    ruta <- []
-    actual <- bariloche
-    MIENTRAS actual != NULO:
+    // Reconstrucción del camino óptimo
+    ruta = []; actual = bariloche
+    mientras actual != NULO:
         insertar actual al inicio de ruta
-        actual <- padre[actual]
+        actual = padre[actual]
+    devolver (OPT[bariloche], ruta)
 
-    RETORNAR (OPT[bariloche], ruta)
+// 2. Greedy (No óptimo): En cada etapa actual, siguiente = argmin_{v} { C[actual][v] }
+// 3. Modelo PL: Min sum C_uv * x_uv  sujeto a sum x_vw - sum x_uv = balance(v)
 ```
 
-* **Justificación de Complejidad:** Cada ciudad $v$ y cada tramo $(u, v)$ se inspecciona una única vez en el bucle por etapas. **Tiempo: $\mathcal{O}(|V| + |E|)$**. **Espacio: $\mathcal{O}(|V|)$** para los arreglos `OPT` y `padre`.
+#### 3. Justificación de Complejidad
 
----
-
-#### 3. Paradigma Programación Lineal — Idea en Lenguaje Natural y Modelo para la Hoja
-
-* **Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja):**
-  * Modelamos el camino más corto como el envío de **$1$ unidad de flujo** desde Ezeiza ($+1$) hasta Bariloche ($-1$). En toda ciudad intermedia, si entramos por un tramo estamos obligados a salir por otro tramo ($\text{flujo que sale} - \text{flujo que entra} = 0$).
-* **Modelo Matemático Completo para escribir en la hoja:**
-  * **Variables de decisión:** $x_{uv} \in \{0, 1\}$ para cada tramo dirigido $(u, v) \in E$ ($1$ si el camión viaja por el tramo $u \to v$, $0$ si no). *(Nota: por Unimodularidad Total puede relajarse a $x_{uv} \ge 0$).*
-  * **Función Objetivo (Minimizar seguro total):**
-    $$\min Z = \sum_{(u, v) \in E} C_{uv} \cdot x_{uv}$$
-  * **Restricciones de Conservación de Camino (una por cada nodo $v \in V$):**
-    $$\sum_{w: (v, w) \in E} x_{vw} - \sum_{u: (u, v) \in E} x_{uv} = \begin{cases} +1 & \text{si } v = \text{Ezeiza (sale 1 vez)} \\ -1 & \text{si } v = \text{Bariloche (entra 1 vez)} \\ 0 & \forall v \in V \setminus \{\text{Ezeiza}, \text{Bariloche}\} \text{ (lo que entra = lo que sale)} \end{cases}$$
-  * **Conteo Exacto:** **$|E|$ variables** de decisión y **$|V|$ restricciones** lineales de conservación.
+* **Comparativa de Complejidades Temporales y Espaciales:**
+  - **Greedy:** En cada una de las $K$ etapas solo inspecciona las aristas salientes del nodo elegido. Tiempo $\mathcal{O}(|V| + |E|)$ (o $\mathcal{O}(K \cdot \Delta)$), Espacio $\mathcal{O}(|V|)$. Es el más veloz pero **carece de garantía de optimalidad**.
+  - **Programación Dinámica:** Al estar estructurado en etapas (DAG), recorre los vértices y cada arista entrante $(u, v)$ una única vez en orden topológico. Tiempo: **$\Theta(|V| + |E|)$**, Espacio: **$\Theta(|V|)$** para las tablas `OPT` y `padre`. **Garantiza la solución óptima** en tiempo lineal respecto al tamaño del grafo.
+  - **Programación Lineal:** Formulación con $|E|$ variables y $|V|$ restricciones de conservación. Resuelto como flujo de costo mínimo con Simplex de redes en tiempo polinomial $\mathcal{O}(|V| \cdot |E|)$. **Garantiza la solución óptima**.
+* **Elección en Examen:** Si se busca la ruta óptima en un grafo por etapas (DAG), **Programación Dinámica** es la solución óptima y más eficiente de implementar.
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -135,61 +107,61 @@ Una empresa dispone de $N$ servidores y $M$ tareas. Cada tarea $j$ requiere una 
 
 ---
 
-#### 1. Caso Unitario ($R_j = 1$): Redes de Flujo
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-* **Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja):**
-  * Cuando cada tarea consume exactamente $R_j = 1$ unidad de memoria, el problema es un **Matching Bipartito con Capacidades** y se resuelve de forma óptima y polinomial con **Redes de Flujo**:
+* **1. Caso Unitario ($R_j = 1$ para toda tarea $j$) — Redes de Flujo (Polinomial):**
+  - Cuando cada tarea consume exactamente $1$ unidad de capacidad, el problema es un **Matching Bipartito con Capacidades** y se resuelve óptimamente con **Redes de Flujo**:
     1. Creamos una **Super-Fuente $s$** y un **Super-Sumidero $t$**.
-    2. Conectamos $s \to \text{Tarea } j$ con **capacidad $1$** (cada tarea se asigna a lo sumo una vez).
-    3. Conectamos $\text{Tarea } j \to \text{Servidor } i$ con **capacidad $1$** para cada par compatible.
-    4. Conectamos $\text{Servidor } i \to t$ con **capacidad $C_i$** (máximo de tareas unitarias que soporta la memoria del servidor $i$).
-  * Por el **Teorema de Integralidad**, como las capacidades son enteras, Edmonds-Karp halla un flujo entero donde ninguna tarea se parte a la mitad en tiempo **$\mathcal{O}(|V| \cdot |E|^2)$**.
+    2. Aristas $s \to \text{Tarea } j$ con **capacidad $1$** (cada tarea se procesa a lo sumo una vez).
+    3. Aristas $\text{Tarea } j \to \text{Servidor } i$ con **capacidad $1$** para cada par compatible.
+    4. Aristas $\text{Servidor } i \to t$ con **capacidad $C_i$** (máximo de tareas unitarias que admite el servidor $i$).
+  - Por el **Teorema de Integralidad de Ford-Fulkerson**, al ser todas las capacidades enteras, el flujo máximo calculado por Edmonds-Karp es estrictamente entero ($f(e) \in \{0, 1\}$ en las tareas), garantizando asignaciones completas en tiempo polinomial.
+* **2. Caso Heterogéneo ($R_j$ arbitrarios indivisibles) — Por qué falla Flujo y Modelo PLI:**
+  - **Por qué falla Redes de Flujo:** El flujo es un fluido continuo que satisface conservación escalar ($\sum f_{in} = \sum f_{out}$). Si una tarea $j$ requiere $R_j = 5$ GB y ponemos capacidad $5$ en $s \to j$, la red puede **bifurcar el caudal**: enviar $3$ GB al Servidor 1 y $2$ GB al Servidor 2. Flujo satura los $5$ GB requeridos, pero **la tarea se ejecutó partida en dos servidores**, violando la restricción física de indivisibilidad. El problema equivale al *Multiple Knapsack Problem*, que es NP-Hard.
+  - **Modelo Formal en Programación Lineal Entera (PLI):**
+    - **Variables de decisión:** $x_{ji} \in \{0, 1\}$ para cada tarea $j \in \{1, \dots, M\}$ y servidor compatible $i \in \{1, \dots, N\}$ ($1$ si la tarea $j$ se asigna completa al servidor $i$, $0$ si no).
+    - **Función Objetivo (Maximizar tareas asignadas):**
+      $$\max Z = \sum_{j=1}^M \sum_{i=1}^N x_{ji}$$
+    - **Restricción 1 — A lo sumo 1 servidor por tarea ($M$ restricciones):**
+      $$\sum_{i=1}^N x_{ji} \le 1 \qquad \forall j \in \{1, \dots, M\}$$
+    - **Restricción 2 — Capacidad máxima de memoria por servidor ($N$ restricciones):**
+      $$\sum_{j=1}^M R_j \cdot x_{ji} \le C_i \qquad \forall i \in \{1, \dots, N\}$$
+    - **Conteo exacto:** $M \cdot N$ variables binarias y $M + N$ restricciones lineales.
 
-* **Semi-Pseudocódigo Simplificado (Caso Unitario con Flujo):**
+#### 2. Semi-Pseudocódigo Simplificado
 
 ```text
-FUNCION AsignarTareasUnitariasFlujo(Tareas, Servidores, CapServidor, Compatibles):
-    Crear red de flujo G con Super-Fuente s y Super-Sumidero t
+// Caso Unitario (R_j = 1): Redes de Flujo con Edmonds-Karp
+Algoritmo AsignarTareasUnitarias(Tareas, Servidores, Cap, Compatibles):
+    G = crearRedFlujo(fuente=s, sumidero=t)
+    para cada j en Tareas:
+        agregarArista(G, s, j, cap=1)
+        para cada i en Compatibles[j]:
+            agregarArista(G, j, i, cap=1)
+    para cada i en Servidores:
+        agregarArista(G, i, t, cap=Cap[i])
 
-    PARA CADA tarea j EN Tareas:
-        agregar_arista(G, s, j, cap = 1)
-        PARA CADA servidor i EN Compatibles[j]:
-            agregar_arista(G, j, i, cap = 1)
+    (max_tareas, flujo) = EdmondsKarp(G, s, t)
+    asignaciones = [ (j, i) para cada (j, i) con flujo[j][i] == 1 ]
+    devolver (max_tareas, asignaciones)
 
-    PARA CADA servidor i EN Servidores:
-        agregar_arista(G, i, t, cap = CapServidor[i])
-
-    (max_tareas, flujo) <- EdmondsKarp(G, s, t)
-    RETORNAR (max_tareas, aristas (j -> i) con flujo(j, i) == 1)
+// Caso Heterogéneo (R_j arbitrario): Modelo PLI Indivisible
+// Variables: x[j][i] in {0, 1} para j in 1..M, i in 1..N
+// Maximizar: sum_{j, i} x[j][i]
+// Sujeto a:  sum_i x[j][i] <= 1   (para todo j en 1..M)
+//            sum_j R[j] * x[j][i] <= C[i]  (para todo i en 1..N)
 ```
 
----
+#### 3. Justificación de Complejidad
 
-#### 2. Caso Heterogéneo ($R_j$ arbitrarios): Por qué falla Flujo y Modelo en PLI
-
-* **Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja):**
-  * **Por qué falla Redes de Flujo:** Si una tarea $j$ requiere $R_j = 5\text{ GB}$ indivisibles y ponemos capacidad $5$ en la arista $s \to j$, la red de flujo puede **bifurcar el caudal** en el nodo de la tarea, mandando por ejemplo $3\text{ GB}$ al Servidor $1$ y $2\text{ GB}$ al Servidor $2$. Las redes de flujo conservan la suma continua, pero **no pueden obligar a que todo el bloque de $R_j\text{ GB}$ vaya entero a un único servidor** (*Multiple Knapsack*, que es NP-Hard).
-  * **Solución mediante Programación Lineal Entera (PLI):** Definimos una variable binaria $x_{ji} \in \{0, 1\}$ que vale $1$ si la tarea $j$ se ejecuta **completa** en el servidor $i$, impidiendo cualquier partición.
-
-* **Modelo de PLI Simplificado para escribir en la hoja:**
-  * **Variables de decisión:** $x_{ji} \in \{0, 1\}$ para cada tarea $j \in \{1, \dots, M\}$ y servidor $i \in \{1, \dots, N\}$ ($x_{ji} = 0$ si no son compatibles).
-  * **Función Objetivo (Maximizar cantidad de tareas asignadas):**
-    $$\max Z = \sum_{j=1}^M \sum_{i=1}^N x_{ji}$$
-  * **Restricciones:**
-    1. **Cada tarea va a lo sumo a $1$ servidor ($M$ restricciones):**
-       $$\sum_{i=1}^N x_{ji} \le 1 \qquad \forall j \in \{1, \dots, M\}$$
-    2. **No superar la memoria $C_i$ de cada servidor ($N$ restricciones):**
-       $$\sum_{j=1}^M R_j \cdot x_{ji} \le C_i \qquad \forall i \in \{1, \dots, N\}$$
-  * **Conteo Exacto:** $M \cdot N$ variables binarias y $M + N$ restricciones estructurales.
-
-```mermaid
-flowchart TD
-    Q(["Asignar M Tareas (demanda R_j) a N Servidores (capacidad C_i)"]) --> COND{"¿Cómo son las demandas R_j?"}
-    COND -->|"Unitarias: R_j = 1 ∀j"| FL["🔴 REDES DE FLUJO (Edmonds-Karp)<br/>Polinomial O(V·E²) por Teorema de Integralidad"]:::fl
-    COND -->|"Heterogéneas indivisibles: R_j > 1"| PLI["🔵 PROGRAMACIÓN LINEAL ENTERA (PLI)<br/>NP-Hard (Multiple Knapsack): Variables binarias x_{ji} ∈ {0, 1}"]:::pli
-    classDef fl fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
-    classDef pli fill:#1d4ed8,stroke:#1e40af,stroke-width:2px,color:#fff
-```
+* **Complejidad en Caso Unitario (Redes de Flujo):**
+  - Tamaño de la red: $|V| = M + N + 2$ vértices, y $|E| \le M + M \cdot N + N$ aristas.
+  - Con el algoritmo de Edmonds-Karp (caminos aumentantes por BFS), la complejidad temporal es **$\mathcal{O}(|V| \cdot |E|^2) = \mathcal{O}((M + N) \cdot (M \cdot N)^2)$**.
+  - Complejidad espacial: $\mathcal{O}(|V| + |E|)$ para la red residual y listas de adyacencia. Es estrictamente **polinomial**.
+* **Complejidad en Caso Heterogéneo (PLI):**
+  - Al generalizar el problema de la mochila (*Multiple Knapsack*), es **NP-Hard**.
+  - Complejidad temporal en peor caso: exponencial **$\mathcal{O}(2^{M \cdot N})$** mediante algoritmos exactos de *Branch & Cut*.
+  - Complejidad espacial del modelo: $\mathcal{O}(M \cdot N)$ variables y $\mathcal{O}(M + N)$ restricciones (polinomial en representación matricial).
 
 <div class="trap-callout">
   <div class="trap-header">⚠️ Trampa Típica de Corrección</div>
@@ -309,299 +281,77 @@ Resolver y contrastar el problema a través de todos los paradigmas algorítmico
 
 ---
 
-#### Mapa Visual de Decisión para el Problema de la Mochila
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-```mermaid
-flowchart TD
-    K(["🎒 PROBLEMA DE LA MOCHILA (n ítems, capacidad W)"]) --> FRAC{"¿Los objetos se pueden fraccionar?"}
-    FRAC -->|"SÍ (x_i ∈ [0, 1])"| GR_OPT["🔶 GREEDY FRACCIONARIO<br/>Ordenar por v_i / w_i decreciente<br/>✅ Óptimo en Θ(n log n)"]:::gr
-    FRAC -->|"NO (Indivisibles 0-1)"| TIPO{"¿Se exige solución exacta o aproximación rápida?"}
-    TIPO -->|"Aproximación Polinomial"| GR_APX["🔶 GREEDY 1/2-APROXIMADO<br/>max(V_greedy, v_crítico)<br/>⚡ Tiempo Θ(n log n) | Cota ≥ 1/2 OPT"]:::gr
-    TIPO -->|"Exacta Óptima"| CAP{"¿Magnitud de W vs n?"}
-    CAP -->|"W moderado (W ≤ 10⁶)"| DP_01["🟢 PROGRAMACIÓN DINÁMICA<br/>Tabla (n+1)×(W+1): OPT(i, w)<br/>✅ Exacto en Θ(n·W) pseudo-polinomial"]:::dp
-    CAP -->|"W astronómico (W > 10⁹), n ≤ 40"| BB_01["🟣 BACKTRACKING + BRANCH & BOUND<br/>Cota superior con Relajación Fraccionaria<br/>✅ Exacto en O(2ⁿ) con podas masivas"]:::bt
-    CAP -->|"Múltiples restricciones acopladas"| PLI_01["🔵 PROGRAMACIÓN LINEAL ENTERA<br/>Variables x_i ∈ {0, 1}, Σ w_i x_i ≤ W<br/>✅ Solver Branch & Cut"]:::pl
+El problema de la mochila dispone de $n$ elementos con pesos $w_i > 0$, valores $v_i > 0$ y una capacidad máxima $W$. Se resuelve en los 4 paradigmas principales según la variante:
 
-    classDef gr fill:#d97706,stroke:#b45309,stroke-width:2px,color:#fff
-    classDef dp fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
-    classDef bt fill:#7c3aed,stroke:#6d28d9,stroke-width:2px,color:#fff
-    classDef pl fill:#2563eb,stroke:#1d4ed8,stroke-width:2px,color:#fff
-```
+1. **Paradigma Greedy (Mochila Fraccionaria vs Mochila 0-1):**
+   * **Mochila Fraccionaria ($x_i \in [0, 1]$):** Se ordenan los elementos por densidad de valor decreciente $r_i = v_i / w_i$ tal que $r_1 \ge r_2 \ge \dots \ge r_n$. Se toman ítems completos con mayor $r_i$; el último ítem que excede la capacidad se fracciona tomando $x_k = \text{capacidad\_remanente} / w_k$. **Es estrictamente óptimo** en $\Theta(n \log n)$ (demostrable por técnica de intercambio: reemplazar masa de menor densidad por masa de mayor densidad nunca reduce el valor acumulado).
+   * **Por qué falla en Mochila 0-1 (Indivisible):** Un ítem de alta densidad pero peso ineficiente puede bloquear la entrada de combinaciones de menor densidad pero mayor beneficio total. *Contraejemplo:* $W = 50$, Ítem 1 ($w=10, v=60, r=6$), Ítem 2 ($w=20, v=100, r=5$), Ítem 3 ($w=30, v=120, r=4$). Greedy toma ítems 1 y 2 (peso 30, valor 160). El óptimo toma ítems 2 y 3 (peso 50, valor $220 > 160$).
 
----
+2. **Paradigma Programación Dinámica (Mochila 0-1 Indivisible):**
+   * **Subestructura Óptima y Definición del Estado:** Para decidir si incluir o no el ítem $i$, solo importa cuánta capacidad remanente $w$ queda disponible. Definimos:
+     $$OPT(i, w) = \text{máximo valor alcanzable considerando los primeros } i \text{ elementos con capacidad } w$$
+   * **Ecuación de Recurrencia:**
+     $$OPT(i, w) = \begin{cases} OPT(i-1, w) & \text{si } w_i > w \text{ (el ítem } i \text{ no cabe)} \\ \max\Big(OPT(i-1, w), \; OPT(i-1, w - w_i) + v_i\Big) & \text{si } w_i \le w \text{ (excluir vs incluir)} \end{cases}$$
+   * **Casos Base:** $OPT(0, w) = 0$ para todo $w \in [0, W]$ y $OPT(i, 0) = 0$.
+   * **Orden de Llenado:** Tabla $(n+1) \times (W+1)$ iterando $i$ de $1$ a $n$ y $w$ de $0$ a $W$. Puede optimizarse a un vector unidimensional de tamaño $W+1$ recorriendo $w$ en sentido descendente.
 
-#### 1. Paradigma Greedy (Algoritmos Voraces)
+3. **Paradigma Backtracking y Branch & Bound (Mochila 0-1 con W Astronómico):**
+   * **Árbol Binario de Decisiones:** Ordenamos previamente los ítems por $v_i / w_i$ decreciente. En cada nivel $i$, ramificamos en: (a) Incluir ítem $i$, (b) Excluir ítem $i$.
+   * **Poda por Factibilidad:** Si $\text{peso\_actual} + w_i > W$, se descarta de inmediato la rama de inclusión.
+   * **Poda por Optimalidad (Branch and Bound con Relajación Continua):** En el nodo $(i, \text{peso}, \text{valor})$, calculamos la cota superior del subárbol resolviendo la mochila fraccionaria con los ítems restantes $i \dots n$. Si $\text{valor} + \text{cota\_fraccionaria} \le \text{mejor\_valor}$, se poda todo el subárbol.
 
-##### A. Mochila Fraccionaria (Continuous Knapsack) — Solución Óptima en O(n log n)
-En la versión fraccionaria se permite tomar una fracción $x_i \in [0, 1]$ de cada elemento $i$. El beneficio aportado es $x_i \cdot v_i$ y el peso consumido es $x_i \cdot w_i$.
+4. **Paradigma Programación Lineal Entera (PLI 0-1):**
+   * **Variables de Decisión:** $x_i \in \{0, 1\}$ para $i \in \{1, \dots, n\}$ ($1$ si se empaca el ítem $i$, $0$ si no).
+   * **Función Objetivo:** Maximizar el valor total: $\max Z = \sum_{i=1}^n v_i \cdot x_i$.
+   * **Restricción de Capacidad (1 restricción):** $\sum_{i=1}^n w_i \cdot x_i \le W$.
+   * **Relación con Relajación:** Relajar $x_i \in [0, 1]$ equivale a la Mochila Fraccionaria, cuya solución óptima es la cota superior utilizada por el solver en cada nodo del árbol de Branch & Cut.
 
-* **Regla Voraz:** Ordenar los elementos de forma decreciente según su **densidad de valor por unidad de peso**:
-  $$r_i = \frac{v_i}{w_i} \quad \text{tal que } r_1 \ge r_2 \ge \dots \ge r_n$$
-* **Estrategia:** Tomar la mayor cantidad posible del elemento con mayor densidad disponible. Si el elemento cabe entero ($w_i \le \text{capacidad remanente}$), se toma completo ($x_i = 1$). Si no cabe entero, se toma exactamente la fracción que satura la mochila ($x_i = \frac{\text{capacidad remanente}}{w_i}$) y se finaliza el proceso.
-
-**Pseudocódigo de la Mochila Fraccionaria**
+#### 2. Semi-Pseudocódigo Simplificado
 
 ```text
-FUNCION MochilaFraccionariaGreedy(pesos, valores, n, W):
-    // 1. Calcular densidades y ordenar en O(n log n)
-    INICIALIZAR items como lista de tuplas (id=i, peso=pesos[i], valor=valores[i], ratio=valores[i]/pesos[i])
-    ORDENAR items DECRECIENTE por campo ratio
+// 1. Programación Dinámica (Mochila 0/1 con arreglo O(W))
+Algoritmo Mochila01DP(pesos, valores, n, W):
+    DP = arreglo de tamaño (W + 1) inicializado en 0
+    para i desde 0 hasta n - 1:
+        para w desde W bajando hasta pesos[i]:
+            DP[w] = max(DP[w], DP[w - pesos[i]] + valores[i])
+    devolver DP[W]
 
-    cap_restante <- W
-    valor_total <- 0.0
-    INICIALIZAR fraccion como arreglo de tamaño n en 0.0
+// 2. Backtracking con Branch & Bound (Cota Fraccionaria)
+función MochilaBT(i, peso_act, val_act, ref mejor_val, pesos, valores, n, W):
+    si val_act > mejor_val:
+        mejor_val = val_act
+    si i == n o peso_act == W:
+        devolver
 
-    // 2. Selección voraz
-    PARA i <- 0 HASTA n - 1:
-        SI cap_restante = 0:
-            ROMPER
+    // Poda Branch & Bound: cota superior fraccionaria con ítems restantes
+    si val_act + CotaFraccionaria(i, W - peso_act, pesos, valores, n) <= mejor_val:
+        devolver
 
-        item_actual <- items[i]
-        id <- item_actual.id
+    // Rama 1: Incluir ítem i (poda de factibilidad si no entra)
+    si peso_act + pesos[i] <= W:
+        MochilaBT(i + 1, peso_act + pesos[i], val_act + valores[i], mejor_val, pesos, valores, n, W)
 
-        SI item_actual.peso <= cap_restante:
-            fraccion[id] <- 1.0
-            valor_total <- valor_total + item_actual.valor
-            cap_restante <- cap_restante - item_actual.peso
-        SINO:
-            // Tomamos la fracción que satura exactamente la mochila
-            f <- cap_restante / item_actual.peso
-            fraccion[id] <- f
-            valor_total <- valor_total + f * item_actual.valor
-            cap_restante <- 0
-
-    RETORNAR (valor_total, fraccion)
+    // Rama 2: Excluir ítem i
+    MochilaBT(i + 1, peso_act, val_act, mejor_val, pesos, valores, n, W)
 ```
 
-**Demostración Directa de Optimalidad (Argumento de Intercambio):**
-1. Supongamos que una solución óptima dejó afuera parte de un objeto $k$ que nuestro Greedy sí metió, y en su lugar llenó ese peso $\Delta w$ con pedazos de otros objetos $j$ que estaban más atrás en la lista.
-2. Como la lista está ordenada por valor por kilo decreciente, el objeto $k$ rinde más (o igual) por cada kilo que cualquier objeto $j$ posterior ($r_k \ge r_j$).
-3. Si en la solución óptima sacamos $\Delta w$ kilos del objeto $j$ y los cambiamos por $\Delta w$ kilos del objeto $k$, el peso total no cambia y el valor total sube o se mantiene igual.
-4. Repitiendo este cambio, cualquier solución óptima se transforma en la solución de Greedy sin perder valor. Por lo tanto, **Greedy es óptimo**.
-* **Complejidad:** Tiempo $O(n \log n)$ por el ordenamiento inicial; Espacio $O(n)$.
+#### 3. Justificación de Complejidad
 
----
-
-##### B. Mochila 0-1: Por qué Greedy Falla y Algoritmo 1/2-Aproximado
-En la mochila 0-1 los objetos son indivisibles ($x_i \in \{0, 1\}$).
-
-* **Contraejemplo Minimal de No-Optimalidad para Greedy por Densidad:**
-  * Capacidad $W = 100$.
-  * Ítem 1: peso $w_1 = 1$, valor $v_1 = 2 \implies r_1 = 2.0$.
-  * Ítem 2: peso $w_2 = 100$, valor $v_2 = 100 \implies r_2 = 1.0$.
-  * *Resultado Greedy:* Toma el ítem 1 (densidad $2.0$). Capacidad restante: $99$. El ítem 2 no cabe. **Valor Greedy = 2**.
-  * *Solución Óptima:* Tomar únicamente el ítem 2. Peso $= 100 \le 100$. **Valor Óptimo = 100**.
-  * La solución voraz logra un valor arbitrariamente alejado del óptimo (el ratio puede tender a $0$ si $v_2 \to \infty$).
-
-* **Algoritmo Greedy 1/2-Aproximado para Mochila 0-1:**
-  1. Ejecutar la regla voraz por densidad tomando ítems completos hasta el primer ítem $k$ que no quepa entero (ítem de corte). Sea $V_{\text{greedy}}$ el valor de los ítems tomados.
-  2. Hallar el ítem individual más valioso que quepa en la mochila: $v_{\max} = \max \{ v_i : w_i \le W \}$.
-  3. Retornar la mejor de las dos opciones:
-     $$V_{\text{aprox}} = \max(V_{\text{greedy}}, \; v_{\max})$$
-
-**Demostración Directa de la Garantía 1/2:**
-1. La mochila fraccionaria siempre gana o empata contra la mochila 0-1 óptima (`OPT_01 <= V_frac`).
-2. La mochila fraccionaria mete todos los objetos enteros que metió Greedy (`V_greedy`) más una fracción del primer objeto `k` que ya no entró entero (cuyo valor `v_k` es a lo sumo `v_max`).
-3. Por lo tanto, el óptimo entero es menor que la suma de esas dos cosas: `OPT_01 < V_greedy + v_max`.
-4. Como nuestro algoritmo se queda con el mayor entre `V_greedy` y `v_max`, ese mayor vale **al menos la mitad de la suma de ambos**, garantizando al menos el **50% del óptimo** (`V_aprox >= OPT_01 / 2`) en tiempo `O(n log n)`.
-
----
-
-#### 2. Paradigma Programación Dinámica (Dynamic Programming)
-
-##### A. Mochila 0-1 Estándar — Solución Óptima Exacta
-
-* **Definición del Subproblema:**
-  > **$OPT(i, w)$:** Beneficio máximo acumulable eligiendo un subconjunto de los primeros $i$ elementos ($1 \le i \le n$) tal que la suma de sus pesos no exceda la capacidad disponible $w$ ($0 \le w \le W$).
-* **Casos Base:**
-  * $OPT(0, w) = 0$ para todo $w \in [0, W]$ (sin elementos disponibles, beneficio 0).
-  * $OPT(i, 0) = 0$ para todo $i \in [0, n]$ (con capacidad 0, no se puede cargar peso positivo).
-* **Ecuación de Recurrencia:**
-  Para el elemento $i$ con peso $w_i$ y valor $v_i$:
-  1. Si $w_i > w$: el elemento $i$ no cabe con la capacidad actual.
-     $$OPT(i, w) = OPT(i - 1, w)$$
-  2. Si $w_i \le w$: se elige el máximo entre excluir el elemento o incluirlo:
-     $$OPT(i, w) = \max \Big( OPT(i - 1, w), \; OPT(i - 1, w - w_i) + v_i \Big)$$
-* **Orden de Llenado:** Celdas calculadas fila por fila ($i$ de $1$ a $n$), y para cada fila capacidad $w$ de $0$ a $W$.
-
-**Pseudocódigo de Programación Dinámica con Reconstrucción**
-
-```text
-FUNCION Mochila01ProgramacionDinamica(pesos, valores, n, W):
-    // Crear matriz de dimensiones (n + 1) x (W + 1) inicializada en 0
-    INICIALIZAR DP como matriz de tamaño (n + 1) x (W + 1) en 0
-
-    // Llenado de la tabla Bottom-Up
-    PARA i <- 1 HASTA n:
-        w_i <- pesos[i - 1]
-        v_i <- valores[i - 1]
-        PARA w <- 0 HASTA W:
-            SI w_i > w:
-                DP[i][w] <- DP[i - 1][w]
-            SINO:
-                excluir <- DP[i - 1][w]
-                incluir <- DP[i - 1][w - w_i] + v_i
-                SI incluir > excluir:
-                    DP[i][w] <- incluir
-                SINO:
-                    DP[i][w] <- excluir
-
-    // Reconstrucción exacta de los ítems elegidos
-    INICIALIZAR seleccionados como lista vacía
-    cap_actual <- W
-    PARA i <- n BAJANDO HASTA 1:
-        // Si el valor cambió respecto a la fila anterior, el elemento i fue incluido
-        SI DP[i][cap_actual] != DP[i - 1][cap_actual]:
-            INSERTAR (i - 1) AL INICIO DE seleccionados
-            cap_actual <- cap_actual - pesos[i - 1]
-
-    RETORNAR (DP[n][W], seleccionados)
-```
-
-**Optimización de Memoria Espacial a O(W):**
-Como la fila $i$ solo depende estrictamente de la fila inmediata anterior $i - 1$, podemos utilizar un **único vector 1D** de tamaño $W + 1$.  
-*Condición crítica de examen:* La capacidad $w$ debe recorrerse en **orden decreciente (de $W$ bajando hasta $w_i$)** para evitar que el mismo ítem se contabilice múltiples veces en la misma fila:
-
-```text
-FUNCION Mochila01EspacioOptimizado(pesos, valores, n, W):
-    INICIALIZAR DP como arreglo de tamaño (W + 1) en 0
-    PARA i <- 0 HASTA n - 1:
-        w_i <- pesos[i]
-        v_i <- valores[i]
-        PARA w <- W BAJANDO HASTA w_i:
-            DP[w] <- MAXIMO(DP[w], DP[w - w_i] + v_i)
-    RETORNAR DP[W]
-```
-
-* **Complejidad:**
-  * **Tiempo:** $O(n \cdot W)$ operaciones aritméticas elementales.
-  * **Espacio:** $O(n \cdot W)$ con matriz para reconstrucción, o $O(W)$ con vector unidimensional.
-  * **Análisis de Pseudo-Polinomialidad:** La longitud de la entrada en bits para representar el número $W$ es $L = \lceil \log_2 W \rceil$. Por ende, $W = 2^L$. La complejidad en función del tamaño de entrada es $O(n \cdot 2^L)$, lo cual es **exponencial en el tamaño de representación de $W$**. Si $W$ es astronómico ($W = 10^{12}$), DP es impracticable por tiempo y memoria.
-
----
-
-##### B. Mochila No Acotada (Unbounded Knapsack) — Repetición Ilimitada
-Si se dispone de cantidad ilimitada de cada ítem, el estado depende únicamente de la capacidad $w$:
-* **Subproblema:** $OPT(w) =$ beneficio máximo que se puede obtener con capacidad exacta $w$.
-* **Recurrencia:**
-  $$OPT(w) = \max_{i: w_i \le w} \{ OPT(w - w_i) + v_i \}, \quad \text{con } OPT(0) = 0$$
-* En este caso, el recorrido del vector 1D se realiza **de izquierda a derecha (creciente de $w_i$ a $W$)**, permitiendo explícitamente reutilizar el mismo ítem múltiples veces. Tiempo: $O(n \cdot W)$, Espacio: $O(W)$.
-
----
-
-#### 3. Paradigma Backtracking y Branch & Bound (Búsqueda Exacta con Podas)
-
-Cuando $W$ es gigantesco pero $n$ es moderado ($n \le 40$), la Programación Dinámica colapsa por memoria pero **Backtracking con Branch & Bound** resuelve en milisegundos.
-
-* **Estructura del Árbol de Búsqueda:**
-  Árbol binario de profundidad $n$. En el nivel $i$, decidimos si incluimos o no el elemento $i$ ($x_i \in \{0, 1\}$).
-* **Las Dos Clases de Podas Obligatorias en Parcial:**
-  1. **Poda por Factibilidad (Feasibility):**
-     Si $\text{peso actual} + w_i > W$, podar la rama de inclusión de $i$.
-  2. **Poda por Optimalidad (Branch and Bound con Relajación Continua Fraccionaria):**
-     Para el estado actual en el elemento $i$, calculamos una **cota superior (Upper Bound)** del máximo valor que podría obtenerse en el subárbol:
-     $$\text{CotaSuperior} = \text{valor actual} + \text{MochilaFraccionaria}(\text{elementos restantes desde } i+1, \; W - \text{peso actual})$$
-     Si $\text{CotaSuperior} \le \text{mejor valor global}$, es matemáticamente imposible que este subárbol supere el récord actual ya hallado $\implies$ **podar inmediatamente toda la rama**.
-
-**Pseudocódigo de Backtracking con Branch & Bound**
-
-```text
-FUNCION MochilaBranchAndBound(pesos, valores, n, W):
-    // Preordenar elementos por densidad decreciente maximiza la efectividad de las podas
-    ORDENAR pesos y valores DECRECIENTE según (valores[i] / pesos[i])
-    
-    mejor_valor <- 0
-    INICIALIZAR mejor_solucion como arreglo de tamaño n en 0
-    INICIALIZAR solucion_actual como arreglo de tamaño n en 0
-
-    (mejor_valor, mejor_solucion) <- MochilaBT(0, 0, 0, solucion_actual, mejor_solucion, mejor_valor, pesos, valores, n, W)
-    RETORNAR (mejor_valor, mejor_solucion)
-
-FUNCION MochilaBT(idx, peso_act, valor_act, sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W):
-    // Caso base: se evaluaron los n elementos
-    SI idx = n:
-        SI valor_act > MEJOR_VAL:
-            MEJOR_VAL <- valor_act
-            MEJOR_SOL <- COPIAR(sol_act)
-        RETORNAR (MEJOR_VAL, MEJOR_SOL)
-
-    // 1. Poda por Branch and Bound: Cota superior con relajación fraccionaria
-    cota_sup <- valor_act + CalcularCotaFraccionaria(idx, W - peso_act, pesos, valores, n)
-    SI cota_sup <= MEJOR_VAL:
-        RETORNAR (MEJOR_VAL, MEJOR_SOL) // Poda: imposible mejorar la mejor solución registrada
-
-    // Rama 1: Intentar INCLUIR el elemento idx (si cabe: poda por factibilidad)
-    SI peso_act + pesos[idx] <= W:
-        sol_act[idx] <- 1
-        (MEJOR_VAL, MEJOR_SOL) <- MochilaBT(idx + 1, peso_act + pesos[idx], valor_act + valores[idx], 
-                                            sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
-        sol_act[idx] <- 0 // Backtrack: restaurar estado
-
-    // Rama 2: EXCLUIR el elemento idx
-    sol_act[idx] <- 0
-    (MEJOR_VAL, MEJOR_SOL) <- MochilaBT(idx + 1, peso_act, valor_act, 
-                                        sol_act, MEJOR_SOL, MEJOR_VAL, pesos, valores, n, W)
-
-    RETORNAR (MEJOR_VAL, MEJOR_SOL)
-
-FUNCION CalcularCotaFraccionaria(inicio, cap_disponible, pesos, valores, n):
-    cota <- 0.0
-    cap <- cap_disponible
-    PARA j <- inicio HASTA n - 1:
-        SI cap = 0:
-            ROMPER
-        SI pesos[j] <= cap:
-            cota <- cota + valores[j]
-            cap <- cap - pesos[j]
-        SINO:
-            cota <- cota + valores[j] * (cap / pesos[j])
-            cap <- 0
-    RETORNAR cota
-```
-
-* **Complejidad:** Peor caso asintótico $O(2^n)$ (árbol binario exhaustivo). En la práctica, con la cota fraccionaria y ordenamiento previo por densidad, las podas eliminan más del $99\%$ de las ramas para $n \le 50$. Memoria: $O(n)$ en la pila de recursión.
-
----
-
-#### 4. Paradigma Programación Lineal Entera (PLI)
-
-* **Variables de Decisión:**
-  $$x_i \in \{0, 1\} \quad \forall i \in \{1, \dots, n\}$$
-  donde $x_i = 1$ si el elemento $i$ se introduce en la mochila, y $0$ en caso contrario.
-* **Función Objetivo:**
-  $$\text{MAXIMIZAR } Z = \sum_{i=1}^n v_i \cdot x_i$$
-* **Restricción de Capacidad:**
-  $$\sum_{i=1}^n w_i \cdot x_i \le W$$
-* **Restricciones de Dominio:**
-  $$x_i \in \{0, 1\} \quad \forall i \in \{1, \dots, n\}$$
-* **Recuento Riguroso para Examen:**
-  * **Variables:** Exactamente $n$ variables binarias.
-  * **Restricciones:** Exactamente 1 restricción lineal de capacidad $+ n$ cotas de dominio binario.
-* **Vínculo con la Relajación Lineal (LP Relaxation):**
-  Si reemplazamos $x_i \in \{0, 1\}$ por $0 \le x_i \le 1$ (variables continuas), el problema de PL continuo resultante se resuelve en tiempo polinomial y **su solución óptima es idéntica a la Mochila Fraccionaria Greedy**.
-
----
-
-#### 5. Por qué Falla División y Conquista (DyC) Puro en la Mochila
-
-* En **División y Conquista** (como MergeSort o multiplicación de Strassen), el problema se divide en subproblemas **disjuntos e independientes** cuyas soluciones se combinan sin solapamiento.
-* En la Mochila 0-1, si partiéramos el conjunto de $n$ elementos en dos mitades de tamaño $n/2$, no sabemos a priori **cuánta capacidad $W_1$ y $W_2$ asignar a cada mitad** tal que $W_1 + W_2 = W$.
-* Para encontrar la partición óptima de capacidad, habría que probar todos los posibles valores de $w \in [0, W]$, generando subproblemas repetidos de forma masiva. Intentar resolverlo recursivamente sin memorización conduce a un árbol de llamadas de costo $O(2^n)$.
-* La presencia de **subestructura óptima con superposición masiva de subproblemas** es precisamente la condición teórica que invalida DyC e impone **Programación Dinámica**.
-
----
-
-#### 6. Tabla Comparativa Maestra: La Mochila en los 5 Paradigmas
+* **Análisis Comparativo de Complejidad:**
+  - **Greedy Fraccionario:** Ordenamiento inicial en $\Theta(n \log n)$ y barrido voraz en $\Theta(n)$. Tiempo total: **$\Theta(n \log n)$**, Espacio auxiliar: $\mathcal{O}(1)$. Es óptimo para la versión continua; en 0-1 no garantiza solución óptima.
+  - **Programación Dinámica 0-1:** Tiempo: **$\Theta(n \cdot W)$**. Espacio: $\Theta(W)$ (con vector optimizado) u $\Theta(n \cdot W)$ (con matriz para reconstrucción de ítems). Es una complejidad **pseudo-polinomial**: es polinomial respecto a la magnitud numérica de $W$, pero exponencial respecto a la cantidad de bits de la entrada $B = \log_2 W$ (dado que $W = 2^B$). Si $W$ es del orden de $10^{12}$, DP colapsa por memoria y tiempo.
+  - **Backtracking con Branch & Bound:** Peor caso asintótico: **$O(2^n)$** tiempo, $\mathcal{O}(n)$ espacio en pila. Sin embargo, gracias a la cota fraccionaria estricta, las podas cortan grandes regiones del árbol. Es la estrategia superior cuando $W \gg 10^9$ pero $n$ es moderado ($n \le 40$).
+  - **Programación Lineal Entera (PLI):** Problema NP-Hard en peor caso ($O(2^n)$), pero con solo $n$ variables binarias y 1 restricción lineal, resuelto eficazmente por solvers modernos con Branch & Cut.
 
 | Paradigma | Variante | Complejidad Temporal | Complejidad Espacial | ¿Garantiza Óptimo? | Cuándo Usarlo en Parcial |
 | :--- | :--- | :--- | :--- | :---: | :--- |
-| **Greedy (Voraz)** | Fraccionaria | **$O(n \log n)$** | **$O(1) / O(n)$** | ✅ **SÍ (Óptimo)** | Cuando el enunciado permite fraccionar bienes (harina, combustible, tiempo). |
-| **Greedy Aprox** | 0-1 (Indivisible) | **$O(n \log n)$** | **$O(n)$** | ❌ 1/2-Aprox ($V \ge \frac{1}{2}OPT$) | Cuando piden algoritmo rápido polinomial con garantía de calidad mínima. |
-| **Prog. Dinámica** | 0-1 (Indivisible) | **$O(n \cdot W)$** | **$O(W) / O(n \cdot W)$** | ✅ **SÍ (Exacto)** | Cuando $W$ es razonable ($W \le 10^6$) y se exige el óptimo absoluto. |
-| **Prog. Dinámica** | No Acotada | **$O(n \cdot W)$** | **$O(W)$** | ✅ **SÍ (Exacto)** | Cuando hay stock infinito de cada ítem (cambio de monedas, cortes de varilla). |
-| **Backtracking (B&B)**| 0-1 (Indivisible) | **$O(2^n)$** peor caso | **$O(n)$** | ✅ **SÍ (Exacto)** | Cuando $W$ es astronómico ($W > 10^9$) pero $n$ es moderado ($n \le 40$). |
-| **Prog. Lineal (PLI)**| 0-1 Multidimensional| Exponencial (peor caso) | Polinomial en modelo | ✅ **SÍ (Exacto)** | Cuando hay múltiples recursos acoplados (peso, volumen, costo, exclusiones). |
-| **División y Conquista**| 0-1 | $O(2^n)$ (inviable) | $O(n)$ | ❌ Inadecuado | Demostrar en examen por qué subproblemas no disjuntos invalidan DyC. |
+| **Greedy (Voraz)** | Fraccionaria | **$\Theta(n \log n)$** | **$\mathcal{O}(1)$** | ✅ **SÍ (Óptimo)** | Cuando los objetos admiten división continua (combustible, polvos). |
+| **Prog. Dinámica** | 0-1 (Indivisible) | **$\Theta(n \cdot W)$** | **$\Theta(W)$** | ✅ **SÍ (Exacto)** | Cuando $W$ es moderado ($W \le 10^6$) y se exige el óptimo entero. |
+| **Backtracking (B&B)**| 0-1 (Indivisible) | **$\mathcal{O}(2^n)$** peor caso | **$\mathcal{O}(n)$** | ✅ **SÍ (Exacto)** | Cuando $W$ es astronómico ($W > 10^9$) y $n \le 40$. |
+| **Prog. Lineal (PLI)**| 0-1 (Indivisible) | Exponencial peor caso | $\mathcal{O}(n)$ variables | ✅ **SÍ (Exacto)** | Cuando hay múltiples recursos acoplados (peso, volumen, costo). |
 
 ---
 
@@ -630,280 +380,77 @@ Resolver y comparar este problema a través de todos los paradigmas algorítmico
 
 ---
 
-#### Mapa Visual de Abordaje para el Problema del Viajante (TSP)
+#### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-```mermaid
-flowchart TD
-    TSP(["🚗 PROBLEMA DEL VIAJANTE (TSP en n ciudades)"]) --> OBJ{"¿Qué solicita la consigna del examen?"}
-    OBJ -->|"Demostrar NP-Completitud"| RED["🟡 REDUCCIÓN DESDE CICLO HAMILTONIANO<br/>Grafo completo con pesos w=1 (arista en E) y w=2 (no en E), cota K=n"]:::npc
-    OBJ -->|"Aproximación en tiempo polinomial (Métrico)"| APX["🔶 2-APROXIMACIÓN CON MST + PREORDEN<br/>Prim/Kruskal + DFS con atajos: Costo(T) ≤ 2·Costo(MST) ≤ 2·OPT en O(n²)"]:::gr
-    OBJ -->|"Modelo Matemático PLI"| MTZ["🔵 PLI CON ELIMINACIÓN DE SUBTOURS (MTZ)<br/>Variables x_{ij} ∈ {0,1} + orden u_i: u_i - u_j + n·x_{ij} ≤ n-1"]:::pl
-    OBJ -->|"Algoritmo Exacto"| EX{"¿Enfoque combinatorio o tabular?"}
-    EX -->|"Subproblemas superpuestos (n ≤ 23)"| HK["🟢 PROGRAMACIÓN DINÁMICA (Held-Karp)<br/>Estado C(S, j): Reduce O(n!) a Θ(n²·2ⁿ)"]:::dp
-    EX -->|"Árbol de búsqueda con podas"| BB["🟣 BACKTRACKING + BRANCH & BOUND<br/>Cota inferior con MST de no visitados en O(n!)"]:::bt
+El problema del viajante (TSP) consiste en encontrar un circuito simple de costo mínimo que visite exactamente una vez las $n$ ciudades y regrese al punto de partida. Se sintetizan los 4 paradigmas fundamentales solicitados:
 
-    classDef npc fill:#ca8a04,stroke:#a16207,stroke-width:2px,color:#fff
-    classDef gr fill:#d97706,stroke:#b45309,stroke-width:2px,color:#fff
-    classDef pl fill:#2563eb,stroke:#1d4ed8,stroke-width:2px,color:#fff
-    classDef dp fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
-    classDef bt fill:#7c3aed,stroke:#6d28d9,stroke-width:2px,color:#fff
-```
+1. **Fuerza Bruta y Backtracking con Branch & Bound (Búsqueda Exacta):**
+   * **Espacio de Búsqueda:** Fijamos la ciudad inicial en $1$ para romper la simetría cíclica, explorando las permutaciones de las restantes $n-1$ ciudades (espacio $(n-1)! / 2$).
+   * **Poda por Factibilidad:** Si no existe arista entre la ciudad actual y la candidata ($c_{uv} = \infty$) o la candidata ya fue visitada en la ruta actual, se descarta.
+   * **Poda por Cota Superior:** Si $\text{costo\_acumulado} \ge \text{mejor\_costo}$, se poda de inmediato la rama.
+   * **Poda por Cota Inferior (Branch & Bound con MST / 1-Tree):** Para el conjunto de ciudades restantes no visitadas $V_{\text{no\_vis}}$, cualquier tour válido debe conectarlas formando al menos un árbol generador más 2 aristas de enlace. Cota inferior:
+     $$\text{Cota} = \text{costo\_acum} + \text{CostoMST}(V_{\text{no\_vis}}) + \min_{r \in V_{\text{no\_vis}}} c_{\text{actual}, r} + \min_{r \in V_{\text{no\_vis}}} c_{r, 1}$$
+     Si $\text{Cota} \ge \text{mejor\_costo}$, se poda el subárbol completo.
 
----
+2. **Programación Dinámica (Algoritmo de Bellman-Held-Karp):**
+   * **Subestructura Óptima:** Para continuar el recorrido desde la ciudad actual $j$, no importa el orden en que se visitaron las ciudades anteriores; solo importa **cuál es la ciudad actual $j$ y cuál es el subconjunto $S \subseteq \{2, \dots, n\}$ de ciudades ya visitadas**.
+   * **Definición del Subproblema:** $C(S, j) =$ costo mínimo de un camino simple que inicia en 1, visita exactamente todas las ciudades de $S$ y finaliza en $j \in S$.
+   * **Casos Base:** $C(\{j\}, j) = c_{1j}$ para todo $j \in \{2, \dots, n\}$.
+   * **Ecuación de Recurrencia:**
+     $$C(S, j) = \min_{k \in S \setminus \{j\}} \Big\{ C(S \setminus \{j\}, k) + c_{kj} \Big\}$$
+   * **Cierre Óptimo:** $\min_{j \in \{2, \dots, n\}} \{ C(\{2, \dots, n\}, j) + c_{j1} \}$. Reduce la complejidad factorial a exponencial $\Theta(n^2 2^n)$.
 
-#### 1. Paradigma Backtracking y Branch & Bound (Exacto con Podas)
+3. **Programación Lineal Entera (PLI con Restricciones MTZ):**
+   * **Variables:** $x_{ij} \in \{0, 1\}$ ($1$ si se viaja directo de $i$ a $j$) y variables continuas auxiliares $u_i \in \mathbb{R}$ para $i \in \{2, \dots, n\}$ que representan el orden de visita.
+   * **Función Objetivo:** Minimizar $Z = \sum_{i \ne j} c_{ij} \cdot x_{ij}$.
+   * **Restricciones de Asignación:** Salir exactamente una vez de cada ciudad ($\sum_{j} x_{ij} = 1$) y llegar exactamente una vez a cada una ($\sum_{i} x_{ij} = 1$).
+   * **Restricciones de Eliminación de Subtours (Miller-Tucker-Zemlin / MTZ):**
+     $$u_i - u_j + n \cdot x_{ij} \le n - 1 \qquad \forall i \ne j \in \{2, \dots, n\}$$
+   * *Por qué MTZ elimina los subtours:* Si $x_{ij} = 1$, la desigualdad fuerza $u_j \ge u_i + 1$. Un subtour cerrado desconectado que no contenga al nodo $1$ exigiría que las variables de orden $u$ aumenten en cada paso a lo largo del ciclo, generando la contradicción $u_k > u_k$. Esto elimina subtours con solo $O(n^2)$ restricciones (evitando las $O(2^n)$ de la formulación DFJ).
 
-* **Espacio de Búsqueda:**
-  Cualquier solución factible es una permutación de las $n$ ciudades que comienza y termina en la ciudad 1. Sin podas, el espacio tiene tamaño $(n - 1)! / 2$ (fijando el origen y evitando simetrías de sentido inverso).
-* **Podas Esenciales en Parcial:**
-  1. **Poda por Factibilidad:** Si entre la ciudad actual $u$ y la candidata $v$ no existe arista conectiva ($c_{uv} = \infty$), descartar $v$.
-  2. **Poda por Cota Superior:** Mantener el mejor costo de tour cerrado completo hallado hasta el momento (`mejor_costo`). Si en el camino parcial actual:
-     $$\text{costo parcial} \ge \text{mejor costo}$$
-     podar inmediatamente la rama (ningún costo de arista es negativo).
-  3. **Poda por Cota Inferior (Branch & Bound con MST / 1-Tree):**
-     Para el conjunto de ciudades restantes aún no visitadas $V_{\text{restantes}}$, cualquier tour válido debe conectar estas ciudades formando al menos un árbol. Por ende:
-     $$\text{CotaInferior} = \text{costo parcial} + \text{CostoMST}(V_{\text{restantes}}) + \min_{r \in V_{\text{restantes}}} c_{\text{actual}, r} + \min_{r \in V_{\text{restantes}}} c_{r, 1}$$
-     Si $\text{CotaInferior} \ge \text{mejor costo} \implies$ podar toda la rama.
+4. **Heurística Greedy y Búsqueda Local (2-Opt / 2-Aprox):**
+   * **Greedy (Vecino más Cercano):** Viajar iterativamente a la ciudad más cercana no visitada. No garantiza cota constante en grafos generales (una última arista de retorno forzada puede tener costo arbitrariamente alto).
+   * **Búsqueda Local 2-Opt:** Partiendo de un tour factible, examina pares de aristas no consecutivas $(u, v)$ y $(w, z)$. Si eliminarlas y reconectar $(u, w)$ y $(v, z)$ revirtiendo el subcamino intermedio reduce el costo ($c_{uw} + c_{vz} < c_{uv} + c_{wz}$), se adopta el cambio. Se itera hasta alcanzar un óptimo local donde ninguna reconexión 2-opt mejore el recorrido.
+   * *(Caso Métrico 2-Aproximado):* Si se cumple la desigualdad triangular, construir el MST, duplicar aristas y recorrer en preorden DFS con atajos garantiza $\text{Costo}(\text{Tour}) \le 2 \cdot OPT$ en $O(n^2)$.
 
-**Pseudocódigo de TSP por Backtracking con Branch and Bound**
+#### 2. Semi-Pseudocódigo Simplificado
 
 ```text
-FUNCION TSP_BranchAndBound(ciudades, matriz_costos, n):
-    INICIALIZAR visitado como arreglo booleano de tamaño n en FALSO
-    INICIALIZAR ruta_actual como arreglo de tamaño n en 0
-    INICIALIZAR mejor_ruta como arreglo de tamaño n en 0
-    mejor_costo <- INFINITO
+// 1. Programación Dinámica (Held-Karp) en O(n^2 * 2^n)
+Algoritmo TSP_HeldKarp(C, n):
+    DP = tabla indexada por (mascara_S, ciudad_j) en INFINITO
+    para j desde 1 hasta n - 1:
+        DP[1 << (j - 1)][j] = C[0][j]  // Casos base desde origen 0
 
-    // Fijamos la ciudad de partida en el nodo 0 para romper simetrías de rotación
-    ruta_actual[0] <- 0
-    visitado[0] <- VERDADERO
+    para tam desde 2 hasta n - 1:
+        para cada mascara de tamaño tam:
+            para cada j en mascara:
+                prev_mask = mascara sin bit j
+                para cada k en prev_mask:
+                    DP[mascara][j] = min(DP[mascara][j], DP[prev_mask][k] + C[k][j])
 
-    (mejor_costo, mejor_ruta) <- TSP_BT(1, 0, 0, ruta_actual, mejor_ruta, mejor_costo, visitado, matriz_costos, n)
-    RETORNAR (mejor_costo, mejor_ruta)
+    // Cerrar tour retornando al origen 0
+    full_mask = (1 << (n - 1)) - 1
+    devolver min_{j} (DP[full_mask][j] + C[j][0])
 
-FUNCION TSP_BT(paso, actual, costo_acum, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n):
-    // Caso base: visitamos las n ciudades, cerramos el tour retornando al origen (nodo 0)
-    SI paso = n:
-        costo_cierre <- C[actual][0]
-        SI costo_cierre != INFINITO:
-            costo_total <- costo_acum + costo_cierre
-            SI costo_total < MEJOR_COSTO:
-                MEJOR_COSTO <- costo_total
-                MEJOR_RUTA <- COPIAR(ruta_act)
-        RETORNAR (MEJOR_COSTO, MEJOR_RUTA)
-
-    // Poda por cota superior básica
-    SI costo_acum >= MEJOR_COSTO:
-        RETORNAR (MEJOR_COSTO, MEJOR_RUTA)
-
-    // Probar cada ciudad candidata no visitada
-    PARA candidata <- 1 HASTA n - 1:
-        SI NO visitado[candidata] Y C[actual][candidata] != INFINITO:
-            nuevo_costo <- costo_acum + C[actual][candidata]
-
-            // Poda Branch & Bound: si con el costo directo ya superamos el récord
-            SI nuevo_costo < MEJOR_COSTO:
-                visitado[candidata] <- VERDADERO
-                ruta_act[paso] <- candidata
-
-                (MEJOR_COSTO, MEJOR_RUTA) <- TSP_BT(paso + 1, candidata, nuevo_costo, ruta_act, MEJOR_RUTA, MEJOR_COSTO, visitado, C, n)
-
-                // Backtrack: desmarcar estado
-                visitado[candidata] <- FALSO
-                ruta_act[paso] <- 0
-
-    RETORNAR (MEJOR_COSTO, MEJOR_RUTA)
+// 2. Modelo PLI con Restricciones MTZ:
+// Min sum c_ij * x_ij  sujeto a sum_j x_ij = 1, sum_i x_ij = 1
+// y restricción de orden MTZ: u_i - u_j + n * x_ij <= n - 1 (para i != j >= 1)
 ```
 
-* **Complejidad:** Peor caso asintótico $O(n!)$, pero con podas de cota inferior resuelve óptimamente instancias de hasta $n \approx 25$ ciudades. Espacio: $O(n)$ en pila de llamadas.
+#### 3. Justificación de Complejidad
 
----
-
-#### 2. Paradigma Programación Dinámica (Algoritmo de Bellman-Held-Karp)
-
-* **Principio de Subestructura Óptima:**
-  Para completar el tour desde la ciudad actual $j$, no importa el orden exacto en que se visitaron las ciudades anteriores; **solo importa qué ciudad es la actual y cuál es el subconjunto de ciudades ya visitadas**.
-* **Definición Formal del Subproblema:**
-  > **$C(S, j)$:** Longitud mínima de un camino simple que comienza en la ciudad 1, visita **exactamente** todas las ciudades del subconjunto $S \subseteq \{2, 3, \dots, n\}$ y finaliza en la ciudad $j \in S$.
-* **Casos Base:**
-  Para subconjuntos de tamaño 1 ($S = \{j\}$):
-  $$C(\{j\}, j) = c_{1, j} \quad \forall j \in \{2, \dots, n\}$$
-* **Ecuación de Recurrencia:**
-  Para cualquier subconjunto $S$ de tamaño $|S| \ge 2$ y cualquier ciudad de llegada $j \in S$:
-  $$C(S, j) = \min_{k \in S \setminus \{j\}} \left[ C(S \setminus \{j\}, k) + c_{kj} \right]$$
-* **Cálculo del Tour Cerrado Óptimo:**
-  Una vez calculada la tabla para el conjunto completo $V' = \{2, 3, \dots, n\}$:
-  $$OPT = \min_{j \in \{2, \dots, n\}} \left[ C(\{2, \dots, n\}, j) + c_{j, 1} \right]$$
-
-**Pseudocódigo de Held-Karp**
-
-```text
-FUNCION TSP_HeldKarp(C, n):
-    // Hay 2^(n-1) subconjuntos posibles de ciudades intermedias {2, ..., n}
-    INICIALIZAR DP como tabla indexada por (subconjunto_bits, ciudad_destino) con INFINITO
-    INICIALIZAR padre como tabla para reconstrucción
-
-    // Casos base: caminos de longitud 1 desde ciudad 1 a ciudad j
-    PARA j <- 1 HASTA n - 1: // Índice base 0: ciudad 0 es el nodo 1
-        mascara_unitaria <- 1 << (j - 1)
-        DP[mascara_unitaria][j] <- C[0][j]
-
-    // Iteramos por tamaño de subconjunto: s = 2, 3, ..., n - 1
-    PARA tam <- 2 HASTA n - 1:
-        PARA CADA mascara DE TAMAÑO tam EN SubconjuntosDeBits(n - 1):
-            PARA CADA j EN ElementosDe(mascara):
-                mascara_previa <- mascara SIN EL BIT DE j
-                PARA CADA k EN ElementosDe(mascara_previa):
-                    costo_cand <- DP[mascara_previa][k] + C[k][j]
-                    SI costo_cand < DP[mascara][j]:
-                        DP[mascara][j] <- costo_cand
-                        padre[mascara][j] <- k
-
-    // Cierre del tour hacia el origen 0
-    mascara_completa <- (1 << (n - 1)) - 1
-    optimo <- INFINITO
-    ultimo_nodo <- -1
-
-    PARA j <- 1 HASTA n - 1:
-        costo_total <- DP[mascara_completa][j] + C[j][0]
-        SI costo_total < optimo:
-            optimo <- costo_total
-            ultimo_nodo <- j
-
-    // Reconstrucción hacia atrás
-    INICIALIZAR tour como lista
-    curr_mascara <- mascara_completa
-    curr_nodo <- ultimo_nodo
-    MIENTRAS curr_nodo != -1:
-        INSERTAR curr_nodo AL INICIO DE tour
-        prev_nodo <- padre[curr_mascara][curr_nodo]
-        curr_mascara <- curr_mascara SIN EL BIT DE curr_nodo
-        curr_nodo <- prev_nodo
-    INSERTAR 0 AL INICIO DE tour
-    AGREGAR 0 AL FINAL DE tour
-
-    RETORNAR (optimo, tour)
-```
-
-* **Complejidad:**
-  * **Tiempo:** Hay $\binom{n-1}{k}$ subconjuntos de tamaño $k$. Para cada par $(S, j)$, hay $k$ transiciones posibles. El tiempo total es:
-    $$\sum_{k=1}^{n-1} k \binom{n-1}{k} (n-1) = O(n^2 2^n)$$
-  * **Espacio:** $O(n \cdot 2^n)$ para almacenar los estados de la tabla DP.
-  * **Comparativa con Fuerza Bruta:** Para $n = 20$:
-    * $n! = 20! \approx 2.43 \times 10^{18}$ operaciones (imposible en milenios).
-    * $n^2 2^n = 20^2 \cdot 2^{20} \approx 4.19 \times 10^8$ operaciones (corre en **menos de 1 segundo** en una PC moderna).
-
----
-
-#### 3. Paradigma Greedy y Heurísticas de Aproximación
-
-##### A. Heurística Voraz del Vecino más Cercano (Nearest Neighbor)
-* **Regla:** Comenzar en una ciudad inicial y en cada paso viajar a la **ciudad no visitada más cercana**. Al visitar las $n$ ciudades, regresar al inicio.
-* **Complejidad:** $O(n^2)$ en tiempo y $O(n)$ en espacio.
-* **Contraejemplo de Falla Catastrófica (No es óptimo ni acotado en general):**
-  * Consideremos 4 ciudades en línea: $A, B, C, D$ con distancias: $\text{dist}(A, B) = 1$, $\text{dist}(B, C) = 2$, $\text{dist}(C, D) = 4$, y $\text{dist}(A, D) = 100$.
-  * Iniciando en $B$:
-    * El vecino más cercano es $A$ (costo 1).
-    * Desde $A$, las no visitadas son $C$ y $D$. La más cercana es $C$ (costo $\text{dist}(A, C) = 3$).
-    * Desde $C$, la única no visitada es $D$ (costo 4).
-    * Finalmente, desde $D$ debe regresar a $B$ (costo $\text{dist}(D, B) = 6$ o arista de retorno forzosa).
-    * Si la última arista de retorno cuesta $M = 10.000$, la voracidad inicial queda atrapada en un costo astronómico.
-  * *Conclusión:* En grafos generales, ninguna heurística voraz puede garantizar una cota de aproximación constante a menos que $P = NP$.
-
----
-
-##### B. Algoritmo 2-Aproximado para TSP Métrico (con Desigualdad Triangular)
-Cuando las distancias cumplen la **desigualdad triangular** ($c_{uw} \le c_{uv} + c_{vw}$ para todo $u, v, w$), existe un algoritmo polinomial que garantiza que el costo del tour es a lo sumo **el doble del óptimo ($\text{Tour} \le 2 \cdot OPT$)**.
-
-* **Pasos del Algoritmo:**
-  1. **Árbol Generador Mínimo (MST):** Construir un MST del grafo completo usando Kruskal o Prim en $O(n^2)$.
-  2. **Duplicación de Aristas:** Duplicar cada arista del MST. El grafo resultante es euleriano (todos los vértices tienen grado par).
-  3. **Recorrido en Preorden con Atajos (*Shortcuts*):** Realizar un recorrido DFS en preorden sobre el MST. Si un nodo ya fue visitado previamente, **se saltea tomando un atajo directo** hacia la siguiente ciudad no visitada, regresando finalmente al origen.
-
-**Pseudocódigo del Algoritmo 2-Aproximado**
-
-```text
-FUNCION TSP_Metrico2Aproximado(grafo_completo_con_pesos, n):
-    // 1. Árbol Generador Mínimo con Prim en O(n^2)
-    mst <- PrimMST(grafo_completo_con_pesos, nodo_origen=0)
-
-    // 2. Recorrido DFS en preorden para generar el tour con atajos
-    INICIALIZAR visitado como arreglo booleano de tamaño n en FALSO
-    INICIALIZAR tour como lista vacía
-
-    DFS_Preorden(mst, 0, visitado, tour)
-
-    // 3. Cerrar el tour regresando al nodo inicial
-    AGREGAR 0 AL FINAL DE tour
-    RETORNAR tour
-
-PROCEDIMIENTO DFS_Preorden(mst, u, visitado, tour):
-    visitado[u] <- VERDADERO
-    AGREGAR u AL FINAL DE tour
-    PARA CADA v EN VecinosEnMST(mst, u):
-        SI NO visitado[v]:
-            DFS_Preorden(mst, v, visitado, tour)
-```
-
-**Demostración Directa de la Garantía de Aproximación 2:**
-1. **El MST cuesta menos que el tour óptimo (`Costo(MST) <= OPT`):** Si al tour óptimo de TSP le borramos una arista cualquiera, nos queda un árbol que conecta todas las ciudades. Como el Árbol Generador Mínimo (MST) es el más barato de todos los árboles posibles, seguro cuesta menos o igual que el tour óptimo.
-2. **Ida y vuelta por el MST cuesta el doble (`2 * Costo(MST) <= 2 * OPT`):** Recorrer el árbol con DFS pasando dos veces por cada arista (una de ida y otra de vuelta) cuesta exactamente `2 * Costo(MST)`.
-3. **Los atajos no encarecen el recorrido:** Cuando el DFS está por repetir una ciudad ya visitada y toma el atajo directo a la siguiente ciudad nueva, por desigualdad triangular ir directo cuesta menos o igual que dar el rodeo. Por lo tanto, el tour final cuesta **`<= 2 * OPT`**.
-
----
-
-#### 4. Paradigma Programación Lineal Entera (PLI) — Formulación MTZ
-
-Para formular TSP en PLI, no basta con exigir que cada nodo tenga grado de entrada 1 y grado de salida 1 (eso admitiría **subtours desconectados**, por ejemplo dos triángulos aislados de 3 nodos en vez de un ciclo de 6). Se utiliza la **formulación de Miller-Tucker-Zemlin (MTZ)**:
-
-* **Variables de Decisión:**
-  * $x_{ij} \in \{0, 1\}$ para todo $i, j \in \{1, \dots, n\}$ con $i \neq j$ (1 si se viaja directamente de la ciudad $i$ a la $j$, 0 si no).
-  * $u_i \in \mathbb{R}$ para $i \in \{2, \dots, n\}$: variable continua auxiliar que representa el **orden de visita** de la ciudad $i$ a lo largo del tour.
-* **Función Objetivo:**
-  $$\text{MINIMIZAR } Z = \sum_{i=1}^n \sum_{j=1, j \neq i}^n c_{ij} \cdot x_{ij}$$
-* **Restricciones de Grado (Asignación):**
-  1. Salir exactamente una vez de cada ciudad:
-     $$\sum_{j=1, j \neq i}^n x_{ij} = 1 \quad \forall i \in \{1, \dots, n\}$$
-  2. Llegar exactamente una vez a cada ciudad:
-     $$\sum_{i=1, i \neq j}^n x_{ij} = 1 \quad \forall j \in \{1, \dots, n\}$$
-* **Restricciones de Eliminación de Subtours (MTZ):**
-  Para cada par de ciudades $i, j \in \{2, \dots, n\}$ con $i \neq j$:
-  $$u_i - u_j + n \cdot x_{ij} \le n - 1$$
-* **Por qué MTZ elimina los subtours (Explicación directa):**
-  * Cada vez que viajamos de `i` a `j` (`x_{ij} = 1`), la restricción obliga a que el número de orden suba (`u_j >= u_i + 1`).
-  * Si hubiera un ciclo cerrado aparte que no pasa por la ciudad inicial `1`, los números de orden `u` tendrían que subir en cada paso alrededor del ciclo hasta que una ciudad tendría que tener un orden mayor a sí misma (imposible). Así solo puede existir un único tour conectado que sale y vuelve a la ciudad `1`.
-* **Recuento Riguroso para Examen:**
-  * **Variables:** $n(n - 1)$ variables binarias $x_{ij} + (n - 1)$ variables continuas $u_i$. Total: $n^2 - 1$ variables.
-  * **Restricciones:** $n$ de salida $+ n$ de entrada $+ (n - 1)(n - 2)$ restricciones MTZ. Total: $2n + n^2 - 3n + 2 = n^2 - n + 2$ restricciones (orden $O(n^2)$, frente a las $O(2^n)$ de la formulación DFJ).
-
----
-
-#### 5. Reducciones Polinomiales y Complejidad NP-Completa
-
-* **Problema de Decisión de TSP:**
-  Dado un grafo ponderado $G = (V, E)$, matriz de costos $C = [c_{uv}]$ y un entero $K$, ¿existe un tour cerrado que visite cada ciudad exactamente una vez con costo total $\le K$?
-* **Paso 1: TSP está en NP:**
-  * Si nos dan una lista ordenada de ciudades como certificado, chequeamos en `O(n)` que estén todas las ciudades sin repetir y que la suma de los costos de las aristas sea `<= K`. Como verifica en tiempo polinomial, **TSP pertenece a NP**.
-* **Paso 2 y 3: Reducción desde Ciclo Hamiltoniano (`HC <=p TSP`):**
-  Dado un grafo `G = (V, E)` de Ciclo Hamiltoniano:
-  1. Creamos un grafo completo `G'` con las mismas ciudades.
-  2. Le ponemos **peso `1`** a las aristas que existían en `G` y **peso `2`** a las que no existían.
-  3. Fijamos el costo máximo en **`K = |V|`**. Construir `G'` tarda `O(V^2)` (polinomial).
-* **Paso 4: Equivalencia (Ida y Vuelta):**
-  * **($\implies$) Ida:** Si `G` tiene un Ciclo Hamiltoniano, usa `|V|` aristas originales (todas de peso `1`), por lo que en `G'` forma un tour de TSP de costo `|V| * 1 = |V| <= K`.
-  * **($\impliedby$) Vuelta:** Si `G'` tiene un tour de TSP de costo `<= |V|`, como el tour tiene `|V|` aristas y ninguna cuesta menos de `1`, no pudo haber usado ninguna arista de peso `2` (si usara una de peso `2`, costaría al menos `|V| + 1`). Por lo tanto, todas sus aristas son de peso `1`, existen en `G` y forman un Ciclo Hamiltoniano.
-* **Conclusión:** TSP es **NP-Completo**.
-
----
-
-#### 6. Tabla Comparativa Maestra: El Viajante de Comercio en los 5 Paradigmas
+* **Comparativa de Complejidades Temporales y Espaciales:**
+  - **Fuerza Bruta / Backtracking con B&B:** Peor caso asintótico: **$O(n!)$** tiempo, $\mathcal{O}(n)$ espacio. Con cotas inferiores fuertes de MST resuelve instancias de hasta $n \approx 20-25$.
+  - **Programación Dinámica (Held-Karp):** Hay $\binom{n-1}{k}$ subconjuntos de tamaño $k$, y para cada par $(S, j)$ se evalúan $k$ transiciones. Complejidad temporal: **$\Theta(n^2 2^n)$**, Espacio: $\Theta(n \cdot 2^n)$. Para $n = 20$, reduce de $20! \approx 2.43 \times 10^{18}$ operaciones a $20^2 \cdot 2^{20} \approx 4.19 \times 10^8$ operaciones (de milenios a menos de 1 segundo).
+  - **Programación Lineal Entera (PLI con MTZ):** Peor caso exponencial $O(2^{n^2})$. El modelo utiliza $n^2 - 1$ variables y $n^2 - n + 2 = O(n^2)$ restricciones (polinomial en especificación).
+  - **Greedy / 2-Opt:** Vecino más cercano corre en $\mathcal{O}(n^2)$. Cada pasada de 2-opt evalúa $\mathcal{O}(n^2)$ parejas de aristas en tiempo polinomial hacia un óptimo local.
 
 | Paradigma | Enfoque / Algoritmo | Complejidad Temporal | Complejidad Espacial | ¿Garantiza Óptimo? | Cuándo Usarlo en Parcial |
 | :--- | :--- | :--- | :--- | :---: | :--- |
 | **Backtracking (B&B)**| Búsqueda con cota MST | **$O(n!)$** peor caso | **$O(n)$** | ✅ **SÍ (Exacto)** | Cuando $n \le 20$ y piden algoritmo exacto combinatorio con poda de árbol. |
 | **Prog. Dinámica** | Bellman-Held-Karp | **$O(n^2 \cdot 2^n)$** | **$O(n \cdot 2^n)$** | ✅ **SÍ (Exacto)** | Cuando $n \le 23$ y se exige el óptimo reduciendo factorial a exponencial. |
 | **Greedy Heurístico** | Vecino más Cercano | **$O(n^2)$** | **$O(n)$** | ❌ Sin garantía general | Para mostrar por qué una decisión voraz miope puede ser catastrófica. |
-| **Algoritmo Aprox** | 2-Aproximación por MST | **$O(n^2)$** | **$O(n)$** | ❌ Cota: $\text{Tour} \le 2 \cdot OPT$ | En grafos métricos (con desigualdad triangular) para tiempo polinomial. |
+| **Búsqueda Local** | Heurística 2-Opt | **$O(n^2)$** por pasada | **$O(n)$** | ❌ Óptimo Local | Para mejorar tours rápidamente en la práctica industrial. |
 | **Prog. Lineal (PLI)**| Formulación MTZ | Exponencial (peor caso) | $O(n^2)$ variables | ✅ **SÍ (Exacto)** | Para solvers de optimización matemática con eliminación de subtours. |
-| **Reducciones NP-C** | De Ciclo Hamiltoniano | Reducción en **$O(V^2)$** | $O(V^2)$ | Demostración formal | Cuando piden probar que TSP de decisión es NP-Completo. |
 """

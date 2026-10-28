@@ -18,23 +18,23 @@
 <span class="hud-logo-icon">🚀</span><div><h1 class="hud-title">TDA — Guía Interactiva de Parciales</h1><span class="hud-subtitle">Edición Intensiva: Salvando el Cuatrimestre (2024–2026)</span></div>
 </a></div>
 <div class="hud-mode-selector" role="group" aria-label="Modo de Estudio"><button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')" title="Mostrar solo los ejercicios 🔴 IMPRESCINDIBLES de examen">
-<span class="mode-icon">⚡</span><span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span><span class="mode-badge" id="badgeEmergencyCount">50</span></button>
+<span class="mode-icon">⚡</span><span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span><span class="mode-badge" id="badgeEmergencyCount">48</span></button>
 <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')" title="Mostrar ejercicios pendientes de dominar y casos 🟡 IMPORTANTES">
-<span class="mode-icon">🎯</span><span class="mode-label"><span class="mode-label-long">Modo Táctico (Pendientes)</span><span class="mode-label-short">Táctico</span></span><span class="mode-badge" id="badgeTacticalCount">83</span></button>
+<span class="mode-icon">🎯</span><span class="mode-label"><span class="mode-label-long">Modo Táctico (Pendientes)</span><span class="mode-label-short">Táctico</span></span><span class="mode-badge" id="badgeTacticalCount">79</span></button>
 <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')" title="Mostrar todos los ejercicios de esta vista">
-<span class="mode-icon">📚</span><span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span><span class="mode-badge" id="badgeAllCount">83</span></button>
+<span class="mode-icon">📚</span><span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span><span class="mode-badge" id="badgeAllCount">79</span></button>
 </div>
 <div class="hud-quick-tools"><button class="tool-btn highlight-tool" onclick="scrollToExercise(78)" title="Ver La Mochila resuelta en todos los paradigmas"><span class="tool-icon">🎒</span> <span class="tool-text">Mochila Multi-P</span></button><button class="tool-btn highlight-tool" onclick="scrollToExercise(79)" title="Ver El Viajante (TSP) resuelto en todos los paradigmas"><span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span></button><button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)"><span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span></button><button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro"><span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span></button><button class="tool-btn" onclick="scrollToTrainer()" title="Ir al simulador de reconocimiento en 30 segundos"><span class="tool-icon">⚡</span> <span class="tool-text">Simulador 30s</span></button><button class="tool-btn" onclick="toggleDarkMode()" id="btnDarkMode" title="Cambiar modo claro / oscuro"><span class="tool-icon" id="darkModeIcon">🌙</span></button></div>
 </div>
 <div class="hud-row-secondary"><div class="hud-progress-wrap">
-<div class="progress-info"><span class="progress-title">Progreso en vista activa:</span><span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">83</span> dominados (<span id="progPercent">0%</span>)</span></div>
+<div class="progress-info"><span class="progress-title">Progreso en vista activa:</span><span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">79</span> dominados (<span id="progPercent">0%</span>)</span></div>
 <div class="progress-track"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
 </div>
 <div class="difficulty-filter-group d-flex align-items-center gap-1 flex-wrap" role="group" aria-label="Filtrar por dificultad"><span class="diff-filter-label small text-muted fw-semibold me-1">Dificultad:</span><button type="button" class="diff-btn active" data-diff="all" onclick="setDifficultyFilter('all')">Todas</button><button type="button" class="diff-btn" data-diff="1" onclick="setDifficultyFilter('1')" title="Nivel 1/5">1★</button><button type="button" class="diff-btn" data-diff="2" onclick="setDifficultyFilter('2')" title="Nivel 2/5">2★</button><button type="button" class="diff-btn" data-diff="3" onclick="setDifficultyFilter('3')" title="Nivel 3/5">3★</button><button type="button" class="diff-btn" data-diff="4" onclick="setDifficultyFilter('4')" title="Nivel 4/5">4★</button><button type="button" class="diff-btn" data-diff="5" onclick="setDifficultyFilter('5')" title="Nivel 5/5">5★</button></div>
 <div class="hud-search-box"><span class="search-icon">🔍</span><input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (tecla /): mochila, tsp, held-karp, arnook, invap..." oninput="handleSearch(this.value)">
 <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display: none;" title="Limpiar búsqueda">✕</button></div>
 </div>
-<div class="hud-row-pills"><div class="filter-pills-scroll" id="paradigmPills"><a href="index.html" class="pill-btn" data-paradigm="all">📚 Todos (83)</a><a href="dyc.html" class="pill-btn" data-paradigm="dyc">🔷 DyC (12)</a><a href="greedy.html" class="pill-btn" data-paradigm="greedy">🔶 Greedy (26)</a><a href="backtracking.html" class="pill-btn active" data-paradigm="backtracking">🟣 Backtracking (14)</a><a href="dp.html" class="pill-btn" data-paradigm="dp">🟢 Prog. Dinámica (7)</a><a href="pl.html" class="pill-btn" data-paradigm="pl">🔵 Prog. Lineal (6)</a><a href="flujo.html" class="pill-btn" data-paradigm="flujo">🔴 Redes de Flujo (5)</a><a href="reducciones.html" class="pill-btn" data-paradigm="reducciones">🟡 Reducciones NP (4)</a><a href="integradores.html" class="pill-btn" data-paradigm="integradores">⚡ Integradores (5)</a><a href="tipo_parcial.html" class="pill-btn" data-paradigm="tipo_parcial">📝 Tipo Parcial (4)</a></div></div>
+<div class="hud-row-pills"><div class="filter-pills-scroll" id="paradigmPills"><a href="index.html" class="pill-btn" data-paradigm="all">📚 Todos (79)</a><a href="parciales.html" class="pill-btn" data-paradigm="parciales">📝 Parciales (29)</a><a href="dyc.html" class="pill-btn" data-paradigm="dyc">🔷 DyC (12)</a><a href="greedy.html" class="pill-btn" data-paradigm="greedy">🔶 Greedy (26)</a><a href="backtracking.html" class="pill-btn active" data-paradigm="backtracking">🟣 Backtracking (14)</a><a href="dp.html" class="pill-btn" data-paradigm="dp">🟢 Prog. Dinámica (7)</a><a href="pl.html" class="pill-btn" data-paradigm="pl">🔵 Prog. Lineal (6)</a><a href="flujo.html" class="pill-btn" data-paradigm="flujo">🔴 Redes de Flujo (5)</a><a href="reducciones.html" class="pill-btn" data-paradigm="reducciones">🟡 Reducciones NP (4)</a><a href="integradores.html" class="pill-btn" data-paradigm="integradores">⚡ Integradores (5)</a></div></div>
 </div>
 <div class="emergency-banner" id="emergencyBanner"><div class="banner-inner"><span class="banner-icon">⚡</span><span><strong>Modo Emergencia (48–72h):</strong> Mostrando los <strong id="emergencyBannerCount">50</strong> ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de exámenes reales en esta vista.</span><button class="banner-dismiss" onclick="dismissBanner()" title="Ocultar aviso">✕</button></div>
 </div>
@@ -72,116 +72,51 @@ Aunque las podas reducen drásticamente el tiempo de ejecución empírico, la co
 <h3>Patrón de Ejercicio 3.1: Posicionamiento en Tableros con Estructuras O(1)</h3>
 <p>Aparece en enunciados de colocación de piezas (reinas, caballos, torres) donde se exige explicitar las estructuras de datos que garantizan validaciones en tiempo constante.</p>
 <hr />
-<article class="exercise-card" id="ej-39" data-num="39" data-priority="imprescindible" data-paradigm="backtracking" data-difficulty="3" data-title="problema de las n reinas con control de conflictos en o(1)" data-origin="parcial 2025-1-2 (17 de junio de 2025), ejercicio 4 / guía v1.0 (curso echevarría), ejercicio 3.3"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 39</span><h3 class="exercise-title">Problema de las N Reinas con Control de Conflictos en O(1)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 4 / Guía v1.0 (Curso Echevarría), Ejercicio 3.3">🏛️ Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 4</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="39" onchange="toggleMastered(39, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+<article class="exercise-card" id="ej-39" data-num="39" data-priority="imprescindible" data-paradigm="backtracking" data-difficulty="3" data-parcial="true" data-title="problema de las n reinas con control de conflictos en o(1)" data-origin="parcial 2025-1-2 (17 de junio de 2025), ejercicio 4 / guía v1.0 (curso echevarría), ejercicio 3.3"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 39</span><h3 class="exercise-title">Problema de las N Reinas con Control de Conflictos en O(1)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 4 / Guía v1.0 (Curso Echevarría), Ejercicio 3.3">🏛️ Parcial 2025-1-2 (17 de junio de 2025), Ejercicio 4</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="39" onchange="toggleMastered(39, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
 Realizar un algoritmo que resuelva el problema de las 8 reinas mediante backtracking. El problema consiste en ubicar 8 reinas en un tablero de ajedrez de $8 \times 8$ de manera que no haya dos reinas en la misma fila, columna o diagonal. Indicar detalladamente las estructuras de datos utilizadas para representar el problema y la solución, garantizando que el chequeo de amenazas se realice en $O(1)$. Justificar la complejidad temporal y espacial.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
-Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos de acceso directo para columnas y diagonales directas/inversas en $O(1)$, y gestión simétrica del estado (<em>hacer decisión $\to$ recursión $\to$ deshacer decisión</em>).</p></div><details class="exercise-solution-drawer" id="solution-drawer-39"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Deducción Metodológica Formal (Los 5 Pasos de Backtracking)</h4>
-<ol><li>
-<p><strong>Paso 1: Definición del Estado y Vector Solución:</strong>
-Colocamos exactamente una reina por fila, avanzando fila por fila desde $fila = 0$ hasta $fila = 7$. Esto elimina automáticamente la posibilidad de conflictos de fila.
-El vector solución es un arreglo unidimensional <code>solucion</code> de longitud 8, donde <code>solucion[i] = col</code> indica que en la fila $i$ la reina fue colocada en la columna <code>col</code>.</p>
+Construcción de un árbol de búsqueda fila por fila, uso de vectores booleanos de acceso directo para columnas y diagonales directas/inversas en $O(1)$, y gestión simétrica del estado (<em>hacer decisión $\to$ recursión $\to$ deshacer decisión</em>).</p></div><details class="exercise-solution-drawer" id="solution-drawer-39"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li><strong>Espacio de Búsqueda y Representación del Estado:</strong><ul><li>Colocamos exactamente una reina por fila avanzando secuencialmente ($fila = 0, \dots, n-1$). Esto descarta automáticamente cualquier conflicto entre filas y reduce el espacio de búsqueda de $n^n$ a las $n!$ permutaciones de columnas.</li><li>El estado se representa con un arreglo unidimensional <code>solucion</code> de tamaño $n$, donde <code>solucion[i] = col</code> indica que en la fila $i$ la reina se ubica en la columna <code>col</code>.</li></ul>
 </li><li>
-<p><strong>Paso 2: Deducción Matemática del Mapeo de Diagonales en $O(1)$:</strong></p>
-</li><li><strong>Columnas:</strong> Arreglo booleano <code>col_ocupada[8]</code>. Si la columna $c$ tiene una reina, <code>col_ocupada[c] = True</code>.</li><li>
-<p><strong>Diagonal Principal ($\setminus$):</strong> Para todas las celdas $(f, c)$ que comparten una misma diagonal principal descendente, la diferencia $f - c$ es una constante invariante:
-$$-7 \le f - c \le 7$$
-Para mapear este rango de 15 valores a índices válidos de arreglo $[0, 14]$, aplicamos un desplazamiento de $+7$:
-$$\text{clave}_{\text{prin}}(f, c) = f - c + 7$$
-Estructura: arreglo booleano <code>diag_prin[15]</code>.</p>
-</li><li>
-<p><strong>Diagonal Secundaria ($/$):</strong> Para todas las celdas $(f, c)$ que comparten una misma diagonal ascendente, la suma $f + c$ es una constante invariante:
-$$0 \le f + c \le 14$$
-Directamente mapea al rango $[0, 14]$:
-$$\text{clave}_{\text{sec}}(f, c) = f + c$$
-Estructura: arreglo booleano <code>diag_sec[15]</code>.</p>
-</li><li>
-<p><strong>Paso 3: Poda por Factibilidad en $O(1)$:</strong>
-Una reina puede situarse en $(fila, col)$ si y solo si:
-$$\neg \, col\_ocupada[col] \quad \land \quad \neg \, diag\_prin[fila - col + 7] \quad \land \quad \neg \, diag\_sec[fila + col]$$
-Esta consulta involucra exactamente 3 accesos indexados a memoria en tiempo $O(1)$.</p>
-</li><li>
-<p><strong>Paso 4: Mecanismo de Backtracking (Restauración de Estado):</strong>
-Al probar una columna factible, se marcan en <code>True</code> las 3 estructuras booleanas y se almacena <code>solucion[fila] = col</code>. Al retornar de la llamada recursiva (si esa rama no alcanzó solución), es <strong>estrictamente obligatorio</strong> restablecer los booleanos a <code>False</code> y <code>solucion[fila] = -1</code> antes de probar la siguiente columna.</p>
-</li><li>
-<p><strong>Paso 5: Complejidad:</strong></p>
-</li><li><strong>Tiempo:</strong> En el peor caso teórico sin podas el espacio sería $8^8 \approx 16.7$ millones de hojas. Al colocar una reina por fila y descartar columnas usadas, el árbol se reduce a $8! = 40.320$ permutaciones. Con las podas diagonales en tiempo real, el algoritmo explora apenas unos 876 nodos para hallar la primera solución. Complejidad asintótica: $O(N!)$ en el peor caso.</li><li><strong>Espacio Auxiliar:</strong> $O(N)$ para la pila de recursión (profundidad 8) más $8 + 15 + 15 = 38$ booleanos de control.</li></ol>
-<h4>2. Explicación Directa de por qué el Chequeo Diagonal es O(1)</h4>
-<ul><li><strong>Diagonal Principal ($\setminus$, baja de izquierda a derecha):</strong> Cuando nos movemos un casillero abajo y uno a la derecha (<code>fila + 1</code>, <code>col + 1</code>), la resta <code>fila - col</code> no cambia. Por lo tanto, todas las casillas de una misma diagonal principal tienen el mismo resultado en <code>fila - col</code>. Le sumamos <code>+ 7</code> solo para que el índice quede entre <code>0</code> y <code>14</code> y no dé negativo.</li><li><strong>Diagonal Secundaria ($/$, sube de izquierda a derecha):</strong> Cuando nos movemos un casillero arriba y uno a la derecha (<code>fila - 1</code>, <code>col + 1</code>), lo que se compensa y se mantiene siempre igual es la suma <code>fila + col</code> (entre <code>0</code> y <code>14</code>).</li><li>Gracias a esto, para saber si una casilla <code>(fila, col)</code> está amenazada no hace falta recorrer el tablero: alcanza con mirar 3 posiciones fijas en los arreglos booleanos (<code>col_ocupada[col]</code>, <code>diag_prin[fila - col + 7]</code> y <code>diag_sec[fila + col]</code>) en tiempo <code>O(1)</code>.</li></ul>
-<h4>3. Ejemplo Concreto y Tabla de Traza Paso a Paso (Primeras Filas)</h4>
-<p>Búsqueda de la primera solución sobre el tablero $8 \times 8$:</p>
-<table>
-<thead><tr>
-<th style="text-align: center;">Fila</th><th style="text-align: center;">Columna Probada</th><th style="text-align: center;">Clave Col ($c$)</th><th style="text-align: center;">Clave Diag Prin ($f - c + 7$)</th><th style="text-align: center;">Clave Diag Sec ($f + c$)</th><th style="text-align: center;">Estado de Booleanos</th><th style="text-align: left;">Decisión</th></tr>
-</thead>
-<tbody><tr>
-<td style="text-align: center;"><strong>0</strong></td><td style="text-align: center;">$0$</td><td style="text-align: center;">$0$</td><td style="text-align: center;">$0 - 0 + 7 = 7$</td><td style="text-align: center;">$0 + 0 = 0$</td><td style="text-align: center;">Libres</td><td style="text-align: left;"><strong>Colocar Reina en $(0, 0)$</strong>, marcar</td></tr>
-<tr><td style="text-align: center;"><strong>1</strong></td><td style="text-align: center;">$0$</td><td style="text-align: center;">$0$</td><td style="text-align: center;">$1 - 0 + 7 = 8$</td><td style="text-align: center;">$1 + 0 = 1$</td><td style="text-align: center;"><code>col[0]=True</code></td><td style="text-align: left;"><strong>PODA</strong> (conflicto columna 0)</td></tr>
-<tr><td style="text-align: center;"><strong>1</strong></td><td style="text-align: center;">$1$</td><td style="text-align: center;">$1$</td><td style="text-align: center;">$1 - 1 + 7 = 7$</td><td style="text-align: center;">$1 + 1 = 2$</td><td style="text-align: center;"><code>diag_prin[7]=True</code></td><td style="text-align: left;"><strong>PODA</strong> (conflicto diag prin con $(0,0)$)</td></tr>
-<tr><td style="text-align: center;"><strong>1</strong></td><td style="text-align: center;">$2$</td><td style="text-align: center;">$2$</td><td style="text-align: center;">$1 - 2 + 7 = 6$</td><td style="text-align: center;">$1 + 2 = 3$</td><td style="text-align: center;">Libres</td><td style="text-align: left;"><strong>Colocar Reina en $(1, 2)$</strong>, marcar</td></tr>
-<tr><td style="text-align: center;"><strong>2</strong></td><td style="text-align: center;">$0$</td><td style="text-align: center;">$0$</td><td style="text-align: center;">-</td><td style="text-align: center;">-</td><td style="text-align: center;"><code>col[0]=True</code></td><td style="text-align: left;"><strong>PODA</strong> (conflicto columna 0)</td></tr>
-<tr><td style="text-align: center;"><strong>2</strong></td><td style="text-align: center;">$1$</td><td style="text-align: center;">$1$</td><td style="text-align: center;">$2 - 1 + 7 = 8$</td><td style="text-align: center;">$2 + 1 = 3$</td><td style="text-align: center;"><code>diag_sec[3]=True</code></td><td style="text-align: left;"><strong>PODA</strong> (conflicto diag sec con $(1,2)$)</td></tr>
-<tr><td style="text-align: center;"><strong>2</strong></td><td style="text-align: center;">$2$</td><td style="text-align: center;">$2$</td><td style="text-align: center;">-</td><td style="text-align: center;">-</td><td style="text-align: center;"><code>col[2]=True</code></td><td style="text-align: left;"><strong>PODA</strong> (conflicto columna 2)</td></tr>
-<tr><td style="text-align: center;"><strong>2</strong></td><td style="text-align: center;">$3$</td><td style="text-align: center;">$3$</td><td style="text-align: center;">$2 - 3 + 7 = 6$</td><td style="text-align: center;">$2 + 3 = 5$</td><td style="text-align: center;"><code>diag_prin[6]=True</code></td><td style="text-align: left;"><strong>PODA</strong> (conflicto diag prin con $(1,2)$)</td></tr>
-<tr><td style="text-align: center;"><strong>2</strong></td><td style="text-align: center;">$4$</td><td style="text-align: center;">$4$</td><td style="text-align: center;">$2 - 4 + 7 = 5$</td><td style="text-align: center;">$2 + 4 = 6$</td><td style="text-align: center;">Libres</td><td style="text-align: left;"><strong>Colocar Reina en $(2, 4)$</strong>, marcar</td></tr>
-</tbody>
-</table>
-<p><em>Primera solución completa hallada:</em><code>solucion = [0, 4, 7, 5, 2, 6, 1, 3]</code> (columnas por fila de 0 a 7).</p>
-<h4>4. Diagrama del Árbol de Decisiones de Backtracking</h4>
-<div class="mermaid-wrapper"><pre class="mermaid">graph TD
-    R["Raíz: Fila 0"] --> C0["Reina (0,0)"]:::opt
-    C0 --> F1_0["(1,0): Colisión Col"]:::bad
-    C0 --> F1_1["(1,1): Colisión Diag Prin"]:::bad
-    C0 --> F1_2["Reina (1,2)"]:::opt
-    F1_2 --> F2_0["(2,0): Colisión Col"]:::bad
-    F1_2 --> F2_1["(2,1): Colisión Diag Sec"]:::bad
-    F1_2 --> F2_4["Reina (2,4)"]:::opt
-    F2_4 --> SOL["... Avanza hasta completar Fila 7"]:::done
-    classDef opt fill:#1d4ed8,stroke:#1e40af,stroke-width:2px,color:#fff
-    classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:1px,color:#fff
-    classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
-</pre></div>
-<h4>5. Pseudocódigo del Algoritmo (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo Resolver8Reinas():
-    n = 8
-    solucion = arreglo de tamaño n inicializado en -1
-    col_ocupada = arreglo de tamaño n en Falso
-    diag_prin = arreglo de tamaño (2n - 1) en Falso  // fila - col + (n - 1)
-    diag_sec = arreglo de tamaño (2n - 1) en Falso   // fila + col
-
-    si Resolver8ReinasBT(0, solucion, col_ocupada, diag_prin, diag_sec, n):
+<p><strong>Podas por Factibilidad con Verificación en $O(1)$:</strong>
+Para validar en tiempo constante si una casilla $(fila, col)$ está amenazada sin recorrer el tablero con bucles $O(n)$, empleamos 3 arreglos booleanos de acceso directo:</p>
+<ol><li><strong>Columnas (<code>col_ocupada[n]</code>):</strong> Si la columna <code>col</code> ya tiene una reina, no se puede usar.</li><li><strong>Diagonal Principal ($\setminus$, clave $fila - col + n - 1$):</strong> Al movernos en diagonal descendente ($\Delta f = +1, \Delta c = +1$), la diferencia $fila - col$ permanece invariante en el rango $[-(n-1), n-1]$. Desplazamos con $+(n-1)$ para mapear a índices válidos $[0, 2n-2]$ en un arreglo booleano <code>diag_prin[2n - 1]</code>.</li><li><strong>Diagonal Secundaria ($/$, clave $fila + col$):</strong> Al movernos en diagonal ascendente ($\Delta f = -1, \Delta c = +1$), la suma $fila + col$ es invariante en el rango $[0, 2n-2]$. Usamos el arreglo booleano <code>diag_sec[2n - 1]</code>.</li><li>La casilla $(fila, col)$ es factible si y solo si los tres booleanos están en <code>Falso</code> (3 accesos indexados en tiempo $O(1)$).</li><li><strong>Mecanismo de Backtracking (Restauración de Estado):</strong>
+Al probar una columna factible, marcamos los 3 booleanos en <code>Verdadero</code> y asignamos <code>solucion[fila] = col</code>. Si la llamada recursiva no encuentra solución, es <strong>estrictamente obligatorio</strong> desmarcar los 3 booleanos en <code>Falso</code> y restaurar <code>solucion[fila] = -1</code> antes de probar la columna siguiente.</li></ol>
+</li></ul>
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo NReinas(n):
+    solucion = arreglo[-1] * n
+    col_ocupada = arreglo[Falso] * n
+    diag_prin = arreglo[Falso] * (2*n - 1)  // clave: fila - col + (n - 1)
+    diag_sec = arreglo[Falso] * (2*n - 1)   // clave: fila + col
+    si NReinasBT(0, solucion, col_ocupada, diag_prin, diag_sec, n):
         devolver solucion
-    sino:
-        devolver &quot;Sin solución&quot;
+    devolver &quot;Sin solución&quot;
 
-función Resolver8ReinasBT(fila, solucion, col_ocupada, diag_prin, diag_sec, n):
-    // Caso Base: se ubicaron las 8 reinas sin conflictos
+función NReinasBT(fila, solucion, col_ocupada, diag_prin, diag_sec, n):
     si fila == n:
-        devolver Verdadero
+        devolver Verdadero  // Caso Base: se ubicaron las n reinas
 
     para col desde 0 hasta n - 1:
         dp = fila - col + (n - 1)
         ds = fila + col
-
-        // Poda por Factibilidad en O(1)
+        // Poda por factibilidad en O(1)
         si no col_ocupada[col] y no diag_prin[dp] y no diag_sec[ds]:
-            // 1. Marcar decisión
             solucion[fila] = col
-            col_ocupada[col] = Verdadero
-            diag_prin[dp] = Verdadero
-            diag_sec[ds] = Verdadero
-
-            // 2. Recursión a fila siguiente
-            si Resolver8ReinasBT(fila + 1, solucion, col_ocupada, diag_prin, diag_sec, n):
+            col_ocupada[col] = diag_prin[dp] = diag_sec[ds] = Verdadero
+            si NReinasBT(fila + 1, solucion, col_ocupada, diag_prin, diag_sec, n):
                 devolver Verdadero
-
-            // 3. Deshacer decisión (Backtrack)
             solucion[fila] = -1
-            col_ocupada[col] = Falso
-            diag_prin[dp] = Falso
-            diag_sec[ds] = Falso
+            col_ocupada[col] = diag_prin[dp] = diag_sec[ds] = Falso  // Backtrack
 
     devolver Falso
 </code></pre></div></div>
+<h4>3. Justificación de Complejidad</h4>
+<ul><li><strong>Árbol de Recursión y Estado:</strong><ul><li>El estado en cada llamada está determinado por la <code>fila</code> actual ($0 \le fila \le n$), con profundidad máxima $n$.</li><li>En la fila $0$ hay $n$ opciones; en la fila $1$, a lo sumo $n-1$ opciones libres; en la fila $k$, a lo sumo $n-k$ opciones.</li></ul>
+</li><li><strong>Complejidad Temporal en Peor Caso:</strong><ul><li>En el peor caso teórico (cuando no se poda o se buscan todas las soluciones), el árbol tiene a lo sumo $n!$ hojas. En cada nodo, las verificaciones y transiciones toman $O(1)$ gracias a los vectores booleanos. La cota superior asintótica en el peor caso es <strong>$O(n!)$</strong>.</li></ul>
+</li><li><strong>Comportamiento Promedio con Podas:</strong><ul><li>Las podas en $O(1)$ de las diagonales principales y secundarias descartan subárboles completos en los primeros niveles. Para $n = 8$, de las $8^8 \approx 16.7 \times 10^6$ configuraciones ingenuas y las $8! = 40.320$ permutaciones, el algoritmo evalúa apenas <strong>876 nodos</strong> para hallar la primera solución válida.</li></ul>
+</li><li><strong>Complejidad Espacial:</strong><ul><li><strong>$O(n)$</strong> auxiliar: la pila de llamadas tiene profundidad $n$, el vector de solución requiere tamaño $n$, y los arreglos booleanos ocupan $n + 2(2n-1) = 5n - 2 = O(n)$ memoria contigua.</li></ul>
+</li></ul>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
 <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
 <ul><li><strong>Olvidar desmarcar booleanos al retroceder:</strong> Si omites <code>col_ocupada[col] = False</code> tras retornar de la llamada recursiva, las ramas hermanas creerán que la columna continúa ocupada, causando que el algoritmo falle en encontrar soluciones válidas.</li><li><strong>Verificar colisiones recorriendo las filas anteriores con un bucle:</strong> Hacer un bucle <code>for f in range(fila): if solucion[f] == col or ...</code> dentro de cada nodo agrega un costo $O(n)$ por estado, degradando la complejidad de verificación a $O(n \cdot n!)$ en lugar de $O(n!)$ con chequeo $O(1)$.</li><li><strong>Error de signo en la diagonal principal:</strong> Olvidar el $+7$ en $f - col$ produce índices negativos (en Python mapea al final de la lista alterando otras diagonales; en C/Java arroja error de segmentación).</li></ul>
@@ -190,70 +125,27 @@ función Resolver8ReinasBT(fila, solucion, col_ocupada, diag_prin, diag_sec, n):
 <h3>Patrón de Ejercicio 3.2: Descomposición Numérica con Cotas (Lagrange)</h3>
 <p>Problemas donde se debe descomponer un número entero en sumas de componentes (cuadrados, primos, monedas) bajo un número fijo de términos.</p>
 <hr />
-<article class="exercise-card" id="ej-40" data-num="40" data-priority="imprescindible" data-paradigm="backtracking" data-difficulty="3" data-title="suma de cuatro cuadrados de lagrange con cotas y podas" data-origin="parcial 2024-2-1 (5 de noviembre de 2024), ejercicio 1 / guía v1.0 (curso echevarría), ejercicio 3.10"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 40</span><h3 class="exercise-title">Suma de Cuatro Cuadrados de Lagrange con Cotas y Podas</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 1 / Guía v1.0 (Curso Echevarría), Ejercicio 3.10">🏛️ Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="40" onchange="toggleMastered(40, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+<article class="exercise-card" id="ej-40" data-num="40" data-priority="imprescindible" data-paradigm="backtracking" data-difficulty="3" data-parcial="true" data-title="suma de cuatro cuadrados de lagrange con cotas y podas" data-origin="parcial 2024-2-1 (5 de noviembre de 2024), ejercicio 1 / guía v1.0 (curso echevarría), ejercicio 3.10"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 40</span><h3 class="exercise-title">Suma de Cuatro Cuadrados de Lagrange con Cotas y Podas</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 1 / Guía v1.0 (Curso Echevarría), Ejercicio 3.10">🏛️ Parcial 2024-2-1 (5 de noviembre de 2024), Ejercicio 1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="40" onchange="toggleMastered(40, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
 El teorema de los cuatro cuadrados de Lagrange especifica que cualquier número entero no negativo $n$ puede expresarse como la suma de cuatro cuadrados de enteros no negativos:
 $$n = w^2 + x^2 + y^2 + z^2$$</p>
 <p>Desarrollar un algoritmo que, dado el valor de $n$, indique cuáles son los cuatro enteros no negativos que lo componen. Justificar detalladamente el árbol de decisiones, las podas aplicadas y la complejidad del algoritmo.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
-Diseño de un árbol de backtracking acotado a profundidad 4, imposición de orden no creciente para eliminar ramas simétricas redundantes ($w \ge x \ge y \ge z$), poda por cota inferior y determinación analítica del último término en $O(1)$.</p></div><details class="exercise-solution-drawer" id="solution-drawer-40"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
-<ol><li>
-<p><strong>Paso 1: Eliminación de Simetrías por Orden No Creciente:</strong>
-Toda solución permutable representa la misma descomposición. Para evitar explorar las $4! = 24$ permutaciones repetidas de una misma tupla, forzamos la restricción de monotonía:
-$$w \ge x \ge y \ge z \ge 0$$</p>
-</li><li>
-<p><strong>Paso 2: Determinación Analítica en $O(1)$ del Cuarto Cuadrado:</strong>
-No es necesario iterar en el cuarto nivel. Si ya asignamos $w, x, y$, el remanente obligatorio es $R = n - (w^2 + x^2 + y^2)$. El algoritmo simplemente verifica en $O(1)$ si $R$ es un cuadrado perfecto ($z = \lfloor\sqrt{R}\rfloor$ y $z^2 = R$) y si respeta $z \le y$. Si se cumplen ambas condiciones, la solución se completa con éxito sin bifurcaciones adicionales.</p>
-</li><li>
-<p><strong>Paso 3: Poda por Cota Superior (Factibilidad):</strong>
-En el paso $k$ con remanente $R$, ningún valor $v$ puede superar $\lfloor\sqrt{R}\rfloor$, ni el valor asignado en el paso anterior $v_{\text{previo}}$:
-$$v \le \min(v_{\text{previo}}, \; \lfloor\sqrt{R}\rfloor)$$</p>
-</li><li>
-<p><strong>Paso 4: Poda por Cota Inferior (Optimalidad/Alcance):</strong>
-Quedan $(4 - paso)$ términos por asignar. Como los valores son no crecientes, cada uno de los términos restantes aportará a lo sumo $v^2$. Si la suma máxima potencial es estrictamente menor al remanente requerido:
-$$(4 - paso) \cdot v^2 &lt; R$$
-entonces es <strong>matemáticamente imposible</strong> alcanzar $R$ utilizando valores menores o iguales a $v$. Se interrumpe el bucle de prueba (<code>break</code>) podando todo el resto del subárbol de una sola vez.</p>
-</li><li>
-<p><strong>Paso 5: Complejidad:</strong></p>
-</li><li><strong>Tiempo:</strong> Sin podas, 4 bucles hasta $\sqrt{n}$ requerirían $O((\sqrt{n})^4) = O(n^2)$. Al resolver el cuarto término analíticamente en $O(1)$, la cota máxima cae a $O((\sqrt{n})^3) = O(n^{3/2})$. Con la poda de simetría ($w \ge x \ge y \ge z$) y la cota inferior $(4-k)v^2 &lt; R$, el número real de estados explorados es una pequeña fracción de $n^{3/2}$, resolviendo $n = 10^6$ en milisegundos.</li><li><strong>Espacio Auxiliar:</strong> $O(1)$ de memoria adicional fija más la pila de recursión de profundidad a lo sumo 4.</li></ol>
-<h4>2. Ejemplo Concreto y Traza Paso a Paso ($n = 31$)</h4>
-<p>Sea $n = 31$. Buscamos $w \ge x \ge y \ge z$ tales que $w^2 + x^2 + y^2 + z^2 = 31$.</p>
-<table>
-<thead><tr>
-<th style="text-align: center;">Nivel / Paso</th><th style="text-align: center;">Remanente ($R$)</th><th style="text-align: center;">Límite Superior ($v \le \min$)</th><th style="text-align: center;">Valor $v$ Probado</th><th style="text-align: center;">¿Poda $(4-k)v^2 &lt; R$?</th><th style="text-align: left;">Acción Siguiente</th></tr>
-</thead>
-<tbody><tr>
-<td style="text-align: center;"><strong>Paso 0 ($w$)</strong></td><td style="text-align: center;">$31$</td><td style="text-align: center;">$\lfloor\sqrt{31}\rfloor = 5$</td><td style="text-align: center;">$v = 5$</td><td style="text-align: center;">$4 \cdot 5^2 = 100 \ge 31$ (OK)</td><td style="text-align: left;">Asignar $w = 5$, nuevo $R = 31 - 25 = 6$</td></tr>
-<tr><td style="text-align: center;"><strong>Paso 1 ($x$)</strong></td><td style="text-align: center;">$6$</td><td style="text-align: center;">$\min(5, \lfloor\sqrt{6}\rfloor) = 2$</td><td style="text-align: center;">$v = 2$</td><td style="text-align: center;">$3 \cdot 2^2 = 12 \ge 6$ (OK)</td><td style="text-align: left;">Asignar $x = 2$, nuevo $R = 6 - 4 = 2$</td></tr>
-<tr><td style="text-align: center;"><strong>Paso 2 ($y$)</strong></td><td style="text-align: center;">$2$</td><td style="text-align: center;">$\min(2, \lfloor\sqrt{2}\rfloor) = 1$</td><td style="text-align: center;">$v = 1$</td><td style="text-align: center;">$2 \cdot 1^2 = 2 \ge 2$ (OK)</td><td style="text-align: left;">Asignar $y = 1$, nuevo $R = 2 - 1 = 1$</td></tr>
-<tr><td style="text-align: center;"><strong>Paso 3 ($z$)</strong></td><td style="text-align: center;">$1$</td><td style="text-align: center;">-</td><td style="text-align: center;">$z = \lfloor\sqrt{1}\rfloor = 1$</td><td style="text-align: center;">$1^2 = 1 == R$ y $1 \le 1$</td><td style="text-align: left;"><strong>¡ÉXITO EN EL 4TO TÉRMINO!</strong></td></tr>
-</tbody>
-</table>
-<p><em>Solución obtenida:</em> $(w, x, y, z) = (5, 2, 1, 1)$.
-<em>Verificación:</em> $5^2 + 2^2 + 1^2 + 1^2 = 25 + 4 + 1 + 1 = 31$.
-<em>Eficiencia:</em> Se halló la solución en exactamente 4 evaluaciones directas sin retrocesos.</p>
-<h4>3. Diagrama Visual del Árbol de Lagrange</h4>
-<div class="mermaid-wrapper"><pre class="mermaid">graph TD
-    R["n = 31 | Términos restantes: 4"] --> W5["w = 5 | R = 6"]:::opt
-    W5 --> X2["x = 2 | R = 2"]:::opt
-    W5 --> X1["x = 1 - cota inferior 3 menor que 6 - PODA INFERIOR"]:::bad
-    X2 --> Y1["y = 1 | R = 1"]:::opt
-    Y1 --> Z1["z = sqrt(1) = 1 | SOLUCIÓN: (5, 2, 1, 1)"]:::done
-    classDef opt fill:#1d4ed8,stroke:#1e40af,stroke-width:2px,color:#fff
-    classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:1px,color:#fff
-    classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
-</pre></div>
-<h4>4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)</h4>
+Diseño de un árbol de backtracking acotado a profundidad 4, imposición de orden no creciente para eliminar ramas simétricas redundantes ($w \ge x \ge y \ge z$), poda por cota inferior y determinación analítica del último término en $O(1)$.</p></div><details class="exercise-solution-drawer" id="solution-drawer-40"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li><strong>Espacio de Búsqueda y Definición del Estado:</strong><ul><li>Se busca descomponer un entero $n \ge 0$ en la suma de 4 cuadrados no negativos: $n = w^2 + x^2 + y^2 + z^2$.</li><li>El árbol de búsqueda tiene profundidad fija de 4 niveles ($paso = 0, 1, 2, 3$). El estado en cada llamada se define por <code>(paso, remanente, max_limite)</code>.</li></ul>
+</li><li><strong>Poda de Simetrías por Orden No Creciente:</strong><ul><li>Para no evaluar las $4! = 24$ permutaciones equivalentes de la misma descomposición, imponemos la restricción monótona $w \ge x \ge y \ge z \ge 0$. Cada término $v$ a probar no puede superar el valor asignado en el paso anterior (<code>max_limite</code>).</li></ul>
+</li><li><strong>Poda por Factibilidad (Cota Superior):</strong><ul><li>Ningún término $v$ puede superar la raíz cuadrada entera del remanente actual $R$: $v \le \min(max\_limite, \lfloor\sqrt{R}\rfloor)$.</li></ul>
+</li><li><strong>Poda por Cota Inferior (Optimalidad / Alcance):</strong><ul><li>Quedan $terminos\_restantes = 4 - paso$ términos por asignar. Como los valores son no crecientes, cada uno aportará a lo sumo $v^2$. Si $(4 - paso) \cdot v^2 &lt; R$, es matemáticamente imposible cubrir $R$ con valores menores o iguales a $v$. Se interrumpe el bucle de prueba (<code>break</code>), podando todo el subárbol inferior.</li></ul>
+</li><li><strong>Poda Analítica del 4° Término en $O(1)$:</strong><ul><li>Al llegar a $paso = 3$, no se itera. Se calcula en $O(1)$ si el remanente $R$ es un cuadrado perfecto: $z = \lfloor\sqrt{R}\rfloor$. Si $z^2 == R$ y $z \le max\_limite$, se asigna $solucion[3] = z$ y se retorna con éxito directamente.</li></ul>
+</li></ul>
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo CuatroCuadradosLagrange(n):
     solucion = arreglo [0, 0, 0, 0]
-    limite_inicial = entero(raiz(n))
-
-    si CuatroCuadradosBT(0, n, limite_inicial, solucion):
+    si LagrangeBT(0, n, entero(raiz(n)), solucion):
         devolver solucion
-    sino:
-        devolver &quot;Sin solución&quot;
+    devolver &quot;Sin solución&quot;
 
-función CuatroCuadradosBT(paso, remanente, max_limite, solucion):
-    // En el 4to término, se calcula directamente por raíz exacta en O(1)
+función LagrangeBT(paso, remanente, max_limite, solucion):
+    // 4to término resuelto analíticamente en O(1)
     si paso == 3:
         z = entero(raiz(remanente))
         si z * z == remanente y z &lt;= max_limite:
@@ -262,19 +154,23 @@ función CuatroCuadradosBT(paso, remanente, max_limite, solucion):
         devolver Falso
 
     limite_sup = min(max_limite, entero(raiz(remanente)))
-
     para v desde limite_sup bajando hasta 0:
-        // Poda por cota inferior: ni usando v en todos los restantes alcanzamos remanente
-        terminos_restantes = 4 - paso
-        si terminos_restantes * (v * v) &lt; remanente:
+        // Poda por cota inferior: ni usando v en los términos restantes alcanzamos remanente
+        si (4 - paso) * (v * v) &lt; remanente:
             romper bucle // Ningún valor menor podrá alcanzarlo
 
         solucion[paso] = v
-        si CuatroCuadradosBT(paso + 1, remanente - v * v, v, solucion):
+        si LagrangeBT(paso + 1, remanente - v * v, v, solucion):
             devolver Verdadero
 
     devolver Falso
 </code></pre></div></div>
+<h4>3. Justificación de Complejidad</h4>
+<ul><li><strong>Árbol de Recursión y Estado:</strong><ul><li>El árbol posee una profundidad constante de a lo sumo 4 niveles ($paso \in \{0, 1, 2, 3\}$).</li><li>En cada nivel $k$, la variable $v$ toma valores entre $0$ y $\lfloor\sqrt{n}\rfloor$.</li></ul>
+</li><li><strong>Complejidad Temporal en Peor Caso:</strong><ul><li>Sin optimizaciones, 4 bucles anidados hasta $\sqrt{n}$ requerirían $O((\sqrt{n})^4) = O(n^2)$.</li><li>Al resolver el último término analíticamente en $O(1)$ mediante raíz entera, el árbol se reduce a 3 niveles libres, acotando el peor caso teórico a <strong>$O(n^{3/2})$</strong>.</li></ul>
+</li><li><strong>Comportamiento Promedio con Podas:</strong><ul><li>La restricción de orden monótono $w \ge x \ge y \ge z$ divide el espacio de búsqueda por $4! = 24$.</li><li>La poda por cota inferior $(4 - paso) \cdot v^2 &lt; R$ trunca de raíz las ramas infértiles, provocando que la búsqueda encuentre descomposiciones válidas casi de forma directa.</li></ul>
+</li><li><strong>Complejidad Espacial:</strong><ul><li><strong>$O(1)$</strong> auxiliar: la pila recursiva tiene profundidad fija de 4 marcos y el arreglo de solución tiene 4 posiciones constantes.</li></ul>
+</li></ul>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
 <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
 <ul><li><strong>Iterar el 4to cuadrado en un bucle:</strong> Si el alumno escribe 4 bucles anidados en lugar de resolver el último término con <code>isqrt(remanente)</code> en $O(1)$, la cátedra descuenta puntos por falta de optimización algorítmica.</li><li><strong>No imponer $w \ge x \ge y \ge z$:</strong> Permitir que los valores crezcan nuevamente en niveles inferiores provoca que el algoritmo evalúe las 24 permutaciones de la misma suma, multiplicando innecesariamente el tiempo de cómputo.</li></ul>
@@ -283,98 +179,50 @@ función CuatroCuadradosBT(paso, remanente, max_limite, solucion):
 <h3>Patrón de Ejercicio 3.3: Cobertura en Grafos con Branch and Bound (Vertex Cover)</h3>
 <p>Aparece cuando se solicita un algoritmo exacto para un problema NP-Hard sobre grafos no dirigidos.</p>
 <hr />
-<article class="exercise-card" id="ej-41" data-num="41" data-priority="imprescindible" data-paradigm="backtracking" data-difficulty="3" data-title="vertex cover mínimo por branch and bound" data-origin="parcial 2024-2-2 (26 de noviembre de 2024), ejercicio 1 / guía 03 ejercicio 13"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 41</span><h3 class="exercise-title">Vertex Cover Mínimo por Branch and Bound</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 1 / Guía 03 Ejercicio 13">🏛️ Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="41" onchange="toggleMastered(41, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+<article class="exercise-card" id="ej-41" data-num="41" data-priority="imprescindible" data-paradigm="backtracking" data-difficulty="3" data-parcial="true" data-title="vertex cover mínimo por branch and bound" data-origin="parcial 2024-2-2 (26 de noviembre de 2024), ejercicio 1 / guía 03 ejercicio 13"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 41</span><h3 class="exercise-title">Vertex Cover Mínimo por Branch and Bound</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 1 / Guía 03 Ejercicio 13">🏛️ Parcial 2024-2-2 (26 de noviembre de 2024), Ejercicio 1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="41" onchange="toggleMastered(41, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
 Implementar un algoritmo que dado un grafo no dirigido $G = (V, E)$ devuelva un conjunto de vértices que represente un mínimo Vertex Cover del mismo. Explicar el árbol de decisiones, las podas aplicadas y la complejidad.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
-Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos extremos debe pertenecer a la cobertura), poda por cota superior (<em>Branch and Bound</em>) descartando ramas que alcancen o superen el mejor tamaño ya hallado.</p></div><details class="exercise-solution-drawer" id="solution-drawer-41"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
-<ol><li>
-<p><strong>Paso 1: Definición de Vertex Cover:</strong>
-Un conjunto $C \subseteq V$ es un Vertex Cover de $G = (V, E)$ si para toda arista $(u, v) \in E$, se cumple que $u \in C \lor v \in C$. Buscamos minimizar $|C|$.</p>
-</li><li>
-<p><strong>Paso 2: Ramificación por Arista No Cubierta (Factor de Branching 2):</strong>
-En lugar de ramificar vértice por vértice ($2^{|V|}$ hojas), buscamos una arista arbitraria $(u, v)$ que <strong>aún no esté cubierta</strong> por el conjunto actual $C$:</p>
-</li><li>
-<p><strong>Rama 1:</strong> Incluir el vértice $u$ en $C$ y continuar la búsqueda.</p>
-</li><li>
-<p><strong>Rama 2:</strong> Incluir el vértice $v$ en $C$ y continuar la búsqueda.
-Esto garantiza que cada bifurcación cubre al menos una arista nueva y acota la profundidad del árbol al tamaño del Vertex Cover mínimo $k$.</p>
-</li><li>
-<p><strong>Paso 3: Poda por Cota Superior (Branch and Bound):</strong>
-Mantenemos el tamaño de la mejor cobertura factible hallada hasta el momento: <code>mejor_tamano = len(mejor_solucion)</code> (inicializada trivialmente en $|V|$).
-Si en cualquier nodo del árbol el tamaño de la cobertura actual satisface:
-$$|C_{\text{actual}}| \ge \text{mejor tamaño}$$
-se poda inmediatamente la rama. Ninguna extensión de $C_{\text{actual}}$ puede mejorar el récord actual.</p>
-</li><li>
-<p><strong>Paso 4: Caso Base y Actualización del Récord:</strong>
-Si no quedan aristas sin cubrir, el conjunto actual $C_{\text{actual}}$ es un Vertex Cover válido y su tamaño es estrictamente menor a <code>mejor_tamano</code>. Se actualiza la mejor solución con una copia profunda de $C_{\text{actual}}$.</p>
-</li><li>
-<p><strong>Paso 5: Complejidad:</strong></p>
-</li><li><strong>Tiempo:</strong> $O(2^k \cdot |E|)$ en el peor caso, donde $k$ es el tamaño del Vertex Cover óptimo. Esto es exponencialmente superior al algoritmo ingenuo $O(2^{|V|} \cdot |E|)$, especialmente cuando $k \ll |V|$.</li><li><strong>Espacio Auxiliar:</strong> $O(|V|)$ para almacenar el conjunto actual y la pila de recursión.</li></ol>
-<h4>2. Ejemplo Concreto y Traza Paso a Paso</h4>
-<p>Sea el grafo con 4 vértices $V = \{1, 2, 3, 4\}$ y aristas $E = \{(1, 2), (2, 3), (3, 4)\}$ (camino de 4 vértices).</p>
-<table>
-<thead><tr>
-<th style="text-align: center;">Paso / Rama</th><th style="text-align: center;">Cobertura Actual ($C$)</th><th style="text-align: center;">Cota Actual ($|C|$)</th><th style="text-align: center;">Arista No Cubierta Elegida</th><th style="text-align: left;">Decisión / Poda</th></tr>
-</thead>
-<tbody><tr>
-<td style="text-align: center;"><strong>Inicio</strong></td><td style="text-align: center;">$\emptyset$</td><td style="text-align: center;">$0$</td><td style="text-align: center;">$(1, 2)$</td><td style="text-align: left;">Mejor récord inicial: $|V| = 4$</td></tr>
-<tr><td style="text-align: center;"><strong>Rama 1 (incluir 1)</strong></td><td style="text-align: center;">$\{1\}$</td><td style="text-align: center;">$1 &lt; 4$</td><td style="text-align: center;">$(2, 3)$</td><td style="text-align: left;">Ramificar con arista $(2, 3)$</td></tr>
-<tr><td style="text-align: center;"><strong>Rama 1.1 (incluir 2)</strong></td><td style="text-align: center;">$\{1, 2\}$</td><td style="text-align: center;">$2 &lt; 4$</td><td style="text-align: center;">$(3, 4)$</td><td style="text-align: left;">Ramificar con arista $(3, 4)$</td></tr>
-<tr><td style="text-align: center;"><strong>Rama 1.1.1 (incluir 3)</strong></td><td style="text-align: center;">$\{1, 2, 3\}$</td><td style="text-align: center;">$3 &lt; 4$</td><td style="text-align: center;">Ninguna</td><td style="text-align: left;"><strong>Cobertura válida hallada! Récord = 3</strong> ($\{1, 2, 3\}$)</td></tr>
-<tr><td style="text-align: center;"><strong>Rama 1.1.2 (incluir 4)</strong></td><td style="text-align: center;">$\{1, 2, 4\}$</td><td style="text-align: center;">$3 \ge 3$</td><td style="text-align: center;">-</td><td style="text-align: left;"><strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 3$)</td></tr>
-<tr><td style="text-align: center;"><strong>Rama 1.2 (incluir 3)</strong></td><td style="text-align: center;">$\{1, 3\}$</td><td style="text-align: center;">$2 &lt; 3$</td><td style="text-align: center;">$(3, 4)$ cubierta! Aristas libres: Ninguna!</td><td style="text-align: left;"><strong>¡Nuevo Récord Óptimo = 2!</strong> ($\{1, 3\}$)</td></tr>
-<tr><td style="text-align: center;"><strong>Rama 2 (incluir 2)</strong></td><td style="text-align: center;">$\{2\}$</td><td style="text-align: center;">$1 &lt; 2$</td><td style="text-align: center;">$(3, 4)$</td><td style="text-align: left;">Ramificar con arista $(3, 4)$</td></tr>
-<tr><td style="text-align: center;"><strong>Rama 2.1 (incluir 3)</strong></td><td style="text-align: center;">$\{2, 3\}$</td><td style="text-align: center;">$2 \ge 2$</td><td style="text-align: center;">-</td><td style="text-align: left;"><strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 2$)</td></tr>
-<tr><td style="text-align: center;"><strong>Rama 2.2 (incluir 4)</strong></td><td style="text-align: center;">$\{2, 4\}$</td><td style="text-align: center;">$2 \ge 2$</td><td style="text-align: center;">-</td><td style="text-align: left;"><strong>PODA BRANCH &amp; BOUND</strong> ($|C| \ge 2$)</td></tr>
-</tbody>
-</table>
-<p><em>Resultado óptimo final:</em> Vertex Cover de tamaño mínimo <strong>$k = 2$</strong> (por ejemplo $\{1, 3\}$ o $\{2, 3\}$).</p>
-<h4>3. Diagrama Visual del Árbol de Branch &amp; Bound</h4>
-<div class="mermaid-wrapper"><pre class="mermaid">graph TD
-    R["Raíz: C = {} | Récord = 4"] --> N1["Rama u=1: C = {1}"]:::opt
-    R --> N2["Rama v=2: C = {2}"]
-    N1 --> N1_2["Rama u=2: C = {1, 2}"]
-    N1 --> N1_3["Rama v=3: C = {1, 3} | RÉCORD = 2"]:::done
-    N1_2 --> N1_2_3["C = {1, 2, 3} | Récord = 3"]
-    N1_2 --> N1_2_4["C = (1, 2, 4) - PODA (tamano al menos 3)"]:::bad
-    N2 --> N2_3["C = (2, 3) - PODA (tamano al menos 2)"]:::bad
-    N2 --> N2_4["C = (2, 4) - PODA (tamano al menos 2)"]:::bad
-    classDef opt fill:#1d4ed8,stroke:#1e40af,stroke-width:2px,color:#fff
-    classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:1px,color:#fff
-    classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
-</pre></div>
-<h4>4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)</h4>
+Estrategia de ramificación sobre aristas no cubiertas (al menos uno de los dos extremos debe pertenecer a la cobertura), poda por cota superior (<em>Branch and Bound</em>) descartando ramas que alcancen o superen el mejor tamaño ya hallado.</p></div><details class="exercise-solution-drawer" id="solution-drawer-41"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li><strong>Espacio de Búsqueda y Definición del Problema:</strong><ul><li>Un Vertex Cover es un conjunto $C \subseteq V$ tal que toda arista $(u, v) \in E$ tiene al menos un extremo en $C$ ($u \in C \lor v \in C$). Buscamos minimizar $|C|$.</li><li>El espacio de búsqueda combinatorio de todos los subconjuntos tiene tamaño $2^{|V|}$.</li></ul>
+</li><li><strong>Estrategia de Ramificación por Arista No Cubierta (Factor de Ramificación 2):</strong><ul><li>En lugar de ramificar vértice por vértice, buscamos una arista $(u, v) \in E$ que aún no esté cubierta por la selección actual ($u \notin C \land v \notin C$).</li><li>Como obligatoriamente toda arista debe ser cubierta por una solución factible, al menos uno de sus dos extremos debe estar en $C$. Por ende, bifurcamos en exactamente dos ramas:</li><li><strong>Rama 1:</strong> Incluir el vértice $u$ en $C$ y continuar la búsqueda.</li><li><strong>Rama 2:</strong> Incluir el vértice $v$ en $C$ y continuar la búsqueda.</li></ul>
+</li><li><strong>Poda por Optimalidad (Branch and Bound):</strong><ul><li>Mantenemos la mejor cobertura factible encontrada hasta el momento (<code>mejor_solucion</code>), inicializada con $V$ (tamaño $|V|$).</li><li>Si en cualquier nodo del árbol $|C_{\text{actual}}| \ge |mejor\_solucion|$, <strong>podamos la rama de inmediato</strong>. Como los costos son no negativos, ninguna extensión de $C_{\text{actual}}$ podrá mejorar el récord actual.</li></ul>
+</li><li><strong>Caso Base:</strong><ul><li>Si no quedan aristas sin cubrir y $|C_{\text{actual}}| &lt; |mejor\_solucion|$, se halló una cobertura válida estrictamente menor: se actualiza <code>mejor_solucion</code> con una copia profunda de $C_{\text{actual}}$.</li></ul>
+</li></ul>
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo MinimoVertexCover(V, E):
-    mejor_cobertura = copiar(V)  // Cota superior inicial (todos los vértices)
-    actual = conjunto_vacío()
+    mejor_sol = copiar(V)  // Cota superior inicial
+    actual = conjunto_vacio()
+    VertexCoverBT(actual, mejor_sol, E)
+    devolver mejor_sol
 
-    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
-    devolver mejor_cobertura
-
-función MinimoVertexCoverBT(actual, mejor_cobertura, E):
-    // Poda Branch &amp; Bound: si el tamaño actual ya iguala o supera al mejor récord
-    si tamaño(actual) &gt;= tamaño(mejor_cobertura):
-        devolver mejor_cobertura
+función VertexCoverBT(actual, ref mejor_sol, E):
+    // Poda por optimalidad (Branch &amp; Bound)
+    si tamaño(actual) &gt;= tamaño(mejor_sol):
+        devolver
 
     arista = BuscarAristaNoCubierta(E, actual)
-    si arista es nulo:
-        // Todas las aristas cubiertas con un tamaño estrictamente menor
-        devolver copiar(actual)
+    si arista es nulo:  // Caso Base: todas las aristas cubiertas con menor tamaño
+        mejor_sol = copiar(actual)
+        devolver
 
     (u, v) = arista
 
     // Rama 1: Incluir u
     agregar u a actual
-    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
-    quitar u de actual  // Deshacer (Backtrack)
+    VertexCoverBT(actual, mejor_sol, E)
+    quitar u de actual  // Backtrack
 
     // Rama 2: Incluir v
     agregar v a actual
-    mejor_cobertura = MinimoVertexCoverBT(actual, mejor_cobertura, E)
-    quitar v de actual  // Deshacer (Backtrack)
-
-    devolver mejor_cobertura
+    VertexCoverBT(actual, mejor_sol, E)
+    quitar v de actual  // Backtrack
 </code></pre></div></div>
+<h4>3. Justificación de Complejidad</h4>
+<ul><li><strong>Árbol de Recursión y Estado:</strong><ul><li>El estado está definido por el conjunto <code>actual</code> de vértices seleccionados.</li><li>El árbol es binario (factor de ramificación 2). Cada bifurcación cubre al menos una arista nueva, por lo que la profundidad máxima del árbol está acotada por el tamaño del Vertex Cover óptimo $k = |C^*| \le |V|$.</li></ul>
+</li><li><strong>Complejidad Temporal en Peor Caso:</strong><ul><li>La cantidad de nodos del árbol es a lo sumo $2^{k+1} - 1$. En cada nodo se inspecciona el conjunto de aristas para hallar una no cubierta en $O(|E|)$.</li><li>Por lo tanto, la complejidad en el peor caso es <strong>$O(2^k \cdot |E|)$</strong> (algoritmo FPT - <em>Fixed Parameter Tractable</em>), exponencialmente superior al enfoque ingenuo de subconjuntos $O(2^{|V|} \cdot |E|)$ cuando $k \ll |V|$.</li></ul>
+</li><li><strong>Comportamiento Promedio con Podas:</strong><ul><li>La poda de Branch &amp; Bound $|actual| \ge |mejor\_sol|$ elimina ramas completas en cuanto se iguala la cota. Inicializar la cota con una heurística rápida reduce todavía más los nodos evaluados.</li></ul>
+</li><li><strong>Complejidad Espacial:</strong><ul><li><strong>$O(|V| + |E|)$</strong>: $O(|V|)$ para almacenar el conjunto actual y la mejor solución en la pila de recursión (profundidad $\le k \le |V|$), más el almacenamiento del grafo $G$.</li></ul>
+</li></ul>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
 <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
 <ul><li><strong>Podar con <code>&gt;</code> en vez de <code>&gt;=</code>:</strong> La poda debe ser <code>len(actual) &gt;= len(mejor_cobertura)</code>. Si usas <code>&gt;</code>, el algoritmo continuará explorando ramas de tamaño igual al récord que jamás podrán mejorarlo, duplicando el tiempo de ejecución.</li><li><strong>No copiar la solución óptima:</strong> Escribir <code>mejor_cobertura = actual</code> guarda una referencia al conjunto mutable. Al hacer backtracking, <code>mejor_cobertura</code> se vacía junto con <code>actual</code>. Se debe hacer siempre copia profunda con <code>set(actual)</code>.</li></ul>
@@ -383,100 +231,59 @@ función MinimoVertexCoverBT(actual, mejor_cobertura, E):
 <h3>Patrón de Ejercicio 3.4: Suma de Subconjuntos (Subset Sum) con Podas</h3>
 <p>Exploración binaria de inclusión/exclusión de elementos para alcanzar un valor objetivo exacto.</p>
 <hr />
-<article class="exercise-card" id="ej-42" data-num="42" data-priority="importante" data-paradigm="backtracking" data-difficulty="2" data-title="suma de subconjuntos con podas tempranas" data-origin="guía de ejercicios 03, ejercicio 11 / práctica"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 42</span><h3 class="exercise-title">Suma de Subconjuntos con Podas Tempranas</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★☆☆☆ (2/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía de Ejercicios 03, Ejercicio 11 / Práctica">🏛️ Guía de Ejercicios 03, Ejercicio 11</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="42" onchange="toggleMastered(42, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+<article class="exercise-card" id="ej-42" data-num="42" data-priority="importante" data-paradigm="backtracking" data-difficulty="2" data-parcial="false" data-title="suma de subconjuntos con podas tempranas" data-origin="guía de ejercicios 03, ejercicio 11 / práctica"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 42</span><h3 class="exercise-title">Suma de Subconjuntos con Podas Tempranas</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★ (2/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía de Ejercicios 03, Ejercicio 11 / Práctica">🏛️ Guía de Ejercicios 03, Ejercicio 11</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="42" onchange="toggleMastered(42, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
 Dada una lista de enteros positivos $L$ y un entero objetivo $S$, implementar un algoritmo por backtracking que determine si existe un subconjunto de $L$ cuya suma sea exactamente $S$, y en caso afirmativo devuelva dicho subconjunto. Indicar y justificar las podas de factibilidad aplicadas y la complejidad.</p>
 <p><strong>Qué está evaluando la cátedra</strong><br />
-Árbol binario de inclusión/exclusión, poda temprana por exceso de suma y optimización del espacio de búsqueda mediante ordenamiento previo de los elementos.</p></div><details class="exercise-solution-drawer" id="solution-drawer-42"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Deducción Metodológica Formal (Los 5 Pasos)</h4>
-<ol><li>
-<p><strong>Paso 1: Ordenamiento Previo para Poda en Bloque:</strong>
-Se ordena la lista $L$ de forma ascendente: $L[0] \le L[1] \le \dots \le L[n-1]$ en $O(n \log n)$.</p>
-</li><li>
-<p><strong>Paso 2: Árbol Binario de Decisiones:</strong>
-En cada nivel $i$ correspondiente al elemento $L[i]$ con remanente $R$ ($R = S - \text{suma acumulada}$):</p>
-</li><li>
-<p><strong>Rama Inclusión:</strong> Tomar $L[i]$, reducir el remanente a $R - L[i]$ y avanzar al nivel $i+1$.</p>
-</li><li><strong>Rama Exclusión:</strong> Omitir $L[i]$, mantener el remanente $R$ y avanzar al nivel $i+1$.</li><li>
-<p><strong>Paso 3: Poda por Ordenamiento (Corte Temprano):</strong>
-Si en el índice actual $L[i] &gt; R$, como la lista está ordenada ascendentemente, todos los elementos posteriores $L[j] \ge L[i] &gt; R$ para $j &gt; i$. Por ende, <strong>ningún elemento posterior podrá ser incluido sin exceder $S$</strong>. Se corta la búsqueda de inmediato retornando <code>False</code>.</p>
-</li><li>
-<p><strong>Paso 4: Caso Base:</strong></p>
-</li><li>Si $R = 0$: Se alcanzó la suma exacta $S$. Se retorna <code>True</code> inmediatamente con la solución acumulada.</li><li>Si $i \ge n$ o $R &lt; 0$: Se agotaron los elementos sin llegar a la suma. Retorna <code>False</code>.</li><li><strong>Paso 5: Complejidad:</strong></li><li><strong>Tiempo:</strong> $O(2^n)$ en el peor caso teórico (cuando ningún subconjunto suma $S$ y las podas no pueden actuar hasta el final). Sin embargo, con $L$ ordenado, la poda temprana $L[i] &gt; R$ reduce el espacio a una pequeña fracción.</li><li><strong>Espacio Auxiliar:</strong> $O(n)$ para la pila recursiva y el arreglo de la solución.</li></ol>
-<h4>2. Ejemplo Concreto y Tabla de Traza Paso a Paso</h4>
-<p>Sea $L = [2, 3, 5, 7, 10]$ y objetivo $S = 14$.</p>
-<table>
-<thead><tr>
-<th style="text-align: center;">Nivel ($i$)</th><th style="text-align: center;">Elemento ($L[i]$)</th><th style="text-align: center;">Remanente ($R$)</th><th style="text-align: center;">Condición $L[i] &gt; R$</th><th style="text-align: center;">Decisión</th><th style="text-align: left;">Solución Parcial</th></tr>
-</thead>
-<tbody><tr>
-<td style="text-align: center;"><strong>0</strong></td><td style="text-align: center;">$2$</td><td style="text-align: center;">$14$</td><td style="text-align: center;">$2 &gt; 14$ (No)</td><td style="text-align: center;"><strong>Incluir 2</strong> $\implies R = 12$</td><td style="text-align: left;">$\{2\}$</td></tr>
-<tr><td style="text-align: center;"><strong>1</strong></td><td style="text-align: center;">$3$</td><td style="text-align: center;">$12$</td><td style="text-align: center;">$3 &gt; 12$ (No)</td><td style="text-align: center;"><strong>Incluir 3</strong> $\implies R = 9$</td><td style="text-align: left;">$\{2, 3\}$</td></tr>
-<tr><td style="text-align: center;"><strong>2</strong></td><td style="text-align: center;">$5$</td><td style="text-align: center;">$9$</td><td style="text-align: center;">$5 &gt; 9$ (No)</td><td style="text-align: center;"><strong>Incluir 5</strong> $\implies R = 4$</td><td style="text-align: left;">$\{2, 3, 5\}$</td></tr>
-<tr><td style="text-align: center;"><strong>3</strong></td><td style="text-align: center;">$7$</td><td style="text-align: center;">$4$</td><td style="text-align: center;">$7 &gt; 4$ (Sí)</td><td style="text-align: center;"><strong>PODA TEMPRANA</strong> ($7 &gt; 4$)</td><td style="text-align: left;">Backtrack: Quitar 5</td></tr>
-<tr><td style="text-align: center;"><strong>2</strong></td><td style="text-align: center;">$5$ (excluir)</td><td style="text-align: center;">$9$</td><td style="text-align: center;">-</td><td style="text-align: center;"><strong>Excluir 5</strong> $\implies R = 9$</td><td style="text-align: left;">$\{2, 3\}$</td></tr>
-<tr><td style="text-align: center;"><strong>3</strong></td><td style="text-align: center;">$7$</td><td style="text-align: center;">$9$</td><td style="text-align: center;">$7 &gt; 9$ (No)</td><td style="text-align: center;"><strong>Incluir 7</strong> $\implies R = 2$</td><td style="text-align: left;">$\{2, 3, 7\}$</td></tr>
-<tr><td style="text-align: center;"><strong>4</strong></td><td style="text-align: center;">$10$</td><td style="text-align: center;">$2$</td><td style="text-align: center;">$10 &gt; 2$ (Sí)</td><td style="text-align: center;"><strong>PODA TEMPRANA</strong> ($10 &gt; 2$)</td><td style="text-align: left;">Backtrack: Quitar 7</td></tr>
-<tr><td style="text-align: center;"><strong>3</strong></td><td style="text-align: center;">$7$ (excluir)</td><td style="text-align: center;">$9$</td><td style="text-align: center;">-</td><td style="text-align: center;"><strong>Excluir 7</strong> $\implies R = 9$</td><td style="text-align: left;">$\{2, 3\}$</td></tr>
-<tr><td style="text-align: center;"><strong>4</strong></td><td style="text-align: center;">$10$</td><td style="text-align: center;">$9$</td><td style="text-align: center;">$10 &gt; 9$ (Sí)</td><td style="text-align: center;"><strong>PODA TEMPRANA</strong> ($10 &gt; 9$)</td><td style="text-align: left;">Backtrack: Quitar 3</td></tr>
-<tr><td style="text-align: center;"><strong>1</strong></td><td style="text-align: center;">$3$ (excluir)</td><td style="text-align: center;">$12$</td><td style="text-align: center;">-</td><td style="text-align: center;"><strong>Excluir 3</strong> $\implies R = 12$</td><td style="text-align: left;">$\{2\}$</td></tr>
-<tr><td style="text-align: center;"><strong>2</strong></td><td style="text-align: center;">$5$</td><td style="text-align: center;">$12$</td><td style="text-align: center;">$5 &gt; 12$ (No)</td><td style="text-align: center;"><strong>Incluir 5</strong> $\implies R = 7$</td><td style="text-align: left;">$\{2, 5\}$</td></tr>
-<tr><td style="text-align: center;"><strong>3</strong></td><td style="text-align: center;">$7$</td><td style="text-align: center;">$7$</td><td style="text-align: center;">$7 &gt; 7$ (No)</td><td style="text-align: center;"><strong>Incluir 7</strong> $\implies R = 0$</td><td style="text-align: left;"><strong>¡ÉXITO: $R = 0$! Solución: $\{2, 5, 7\}$</strong></td></tr>
-</tbody>
-</table>
-<p><em>Verificación:</em> $2 + 5 + 7 = 14 = S$.</p>
-<h4>3. Diagrama Visual del Árbol de Inclusión/Exclusión</h4>
-<div class="mermaid-wrapper"><pre class="mermaid">graph TD
-    R["R = 14"] --> I2["Incluir 2: R=12"]:::opt
-    I2 --> I3["Incluir 3: R=9"]
-    I3 --> I5["Incluir 5: R=4"]
-    I5 --> P7["Probar 7: 7 supera a 4 - PODA TEMPRANA"]:::bad
-    I2 --> E3["Excluir 3: R=12"]:::opt
-    E3 --> I5_2["Incluir 5: R=7"]:::opt
-    I5_2 --> I7_2["Incluir 7: R=0 | SOLUCIÓN {2, 5, 7}"]:::done
-    classDef opt fill:#1d4ed8,stroke:#1e40af,stroke-width:2px,color:#fff
-    classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:1px,color:#fff
-    classDef done fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
-</pre></div>
-<h4>4. Pseudocódigo del Algoritmo (Estilo Examen Presencial)</h4>
-<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo SubsetSumBacktracking(nums, target):
-    // 1. Ordenar crecientemente para habilitar podas tempranas en O(n log n)
-    ordenar nums de menor a mayor
+Árbol binario de inclusión/exclusión, poda temprana por exceso de suma y optimización del espacio de búsqueda mediante ordenamiento previo de los elementos.</p></div><details class="exercise-solution-drawer" id="solution-drawer-42"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li><strong>Espacio de Búsqueda y Definición del Estado:</strong><ul><li>Dada una lista $L$ de $n$ enteros positivos y un entero objetivo $S$, se busca encontrar un subconjunto cuya suma sea exactamente $S$.</li><li>Árbol de decisiones binario de inclusión/exclusión: para cada elemento $L[i]$ se decide si formará parte del subconjunto o no. El estado se define por <code>(i, remanente)</code>.</li></ul>
+</li><li><strong>Optimización Previa (Ordenamiento Ascendente):</strong><ul><li>Se ordena la lista $L$ de menor a mayor en $O(n \log n)$. Esto garantiza que para todo $j &gt; i$, $L[j] \ge L[i]$.</li></ul>
+</li><li><strong>Poda por Factibilidad (Corte Temprano por Ordenamiento):</strong><ul><li>Si en el índice actual $L[i] &gt; remanente$, como la lista está ordenada crecientemente, todos los elementos posteriores satisfacen $L[j] \ge L[i] &gt; remanente$. Por lo tanto, <strong>ningún elemento posterior podrá ser incluido sin exceder la suma</strong>. Se corta la búsqueda de inmediato retornando <code>Falso</code>, podando el subárbol completo.</li></ul>
+</li><li><strong>Casos Base:</strong><ul><li>Éxito: si $remanente == 0$, se alcanzó la suma exacta $S$; se devuelve <code>Verdadero</code>.</li><li>Fallo: si $i == \text{longitud}(L)$ (se agotaron los elementos) o $remanente &lt; 0$, se devuelve <code>Falso</code>.</li></ul>
+</li></ul>
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo SubsetSum(L, S):
+    ordenar L de menor a mayor  // Habilita poda temprana en O(n log n)
     solucion = []
-
-    si SubsetSumBT(0, target, nums, solucion):
+    si SubsetSumBT(0, S, L, solucion):
         devolver solucion
-    sino:
-        devolver nulo
+    devolver &quot;Sin solución&quot;
 
-función SubsetSumBT(indice, remanente, nums, solucion):
+función SubsetSumBT(i, remanente, L, solucion):
     si remanente == 0:
         devolver Verdadero
-    si indice &gt;= longitud(nums) o remanente &lt; 0:
+    si i == longitud(L) o remanente &lt; 0:
         devolver Falso
 
     // Poda temprana: al estar ordenado, ningún elemento posterior entrará
-    si nums[indice] &gt; remanente:
+    si L[i] &gt; remanente:
         devolver Falso
 
-    // Rama 1: Incluir nums[indice]
-    agregar nums[indice] a solucion
-    si SubsetSumBT(indice + 1, remanente - nums[indice], nums, solucion):
+    // Rama 1: Incluir L[i]
+    agregar L[i] a solucion
+    si SubsetSumBT(i + 1, remanente - L[i], L, solucion):
         devolver Verdadero
-    quitar_ultimo(solucion)  // Deshacer (Backtrack)
+    quitar_ultimo(solucion)  // Backtrack
 
-    // Rama 2: Excluir nums[indice]
-    si SubsetSumBT(indice + 1, remanente, nums, solucion):
+    // Rama 2: Excluir L[i]
+    si SubsetSumBT(i + 1, remanente, L, solucion):
         devolver Verdadero
 
     devolver Falso
 </code></pre></div></div>
+<h4>3. Justificación de Complejidad</h4>
+<ul><li><strong>Árbol de Recursión y Estado:</strong><ul><li>El estado en cada llamada está determinado por el índice $i$ ($0 \le i \le n$) y el $remanente \ge 0$.</li><li>El árbol tiene altura $n$ y factor de ramificación 2 (inclusión y exclusión).</li></ul>
+</li><li><strong>Complejidad Temporal en Peor Caso:</strong><ul><li>En el peor caso teórico (cuando no existe solución y los elementos son muy pequeños, impidiendo que actúe la poda temprana hasta el final), el árbol genera a lo sumo $2^{n+1} - 1$ nodos.</li><li>Ordenar $L$ cuesta $O(n \log n)$, por lo que la cota asintótica en el peor caso es <strong>$O(2^n)$</strong>.</li></ul>
+</li><li><strong>Comportamiento Promedio con Podas:</strong><ul><li>Gracias al ordenamiento previo, la condición $L[i] &gt; remanente$ actúa a niveles altos del árbol, eliminando ramas completas antes de llegar a las hojas y reduciendo drásticamente los nodos evaluados en instancias reales.</li></ul>
+</li><li><strong>Complejidad Espacial:</strong><ul><li><strong>$O(n)$</strong> auxiliar: la pila recursiva alcanza una profundidad máxima de $n$ niveles y el vector <code>solucion</code> almacena a lo sumo $n$ elementos.</li></ul>
+</li></ul>
 <div class="trap-callout"><div class="trap-header">⚠️ Trampa Típica de Corrección</div>
 <p><strong>Puntos donde restan puntaje los docentes de FIUBA:</strong></p>
 <ul><li><strong>Aplicar la poda <code>L[i] &gt; remanente</code> sin ordenar:</strong> La poda por exceso solo es válida si la lista está previamente ordenada. Si la lista contiene números desordenados (por ejemplo $[10, 2]$ con $R = 5$), descartar por $10 &gt; 5$ omitiría erróneamente al $2$.</li><li><strong>Números negativos o nulos:</strong> Esta poda asume que todos los elementos son positivos ($L[i] &gt; 0$). Si hubiera números negativos, sumar un elemento posterior podría reducir la suma actual y permitir alcanzar el objetivo.</li></ul>
 </div>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-43" data-num="43" data-priority="imprescindible" data-paradigm="backtracking" data-difficulty="3" data-title="explorador en el laberinto (camino al tesoro y camino más corto)" data-origin="parcial 2026-2-1 (enunciados), ejercicio 2"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 43</span><h3 class="exercise-title">Explorador en el Laberinto (Camino al Tesoro y Camino Más Corto)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Parcial 2026-2-1 (Enunciados), Ejercicio 2">🏛️ Parcial 2026-2-1 (Enunciados), Ejercicio 2</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="43" onchange="toggleMastered(43, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+<article class="exercise-card" id="ej-43" data-num="43" data-priority="imprescindible" data-paradigm="backtracking" data-difficulty="3" data-parcial="true" data-title="explorador en el laberinto (camino al tesoro y camino más corto)" data-origin="parcial 2026-2-1 (enunciados), ejercicio 2"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 43</span><h3 class="exercise-title">Explorador en el Laberinto (Camino al Tesoro y Camino Más Corto)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Parcial 2026-2-1 (Enunciados), Ejercicio 2">🏛️ Parcial 2026-2-1 (Enunciados), Ejercicio 2</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="43" onchange="toggleMastered(43, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
 Un explorador se encuentra en un laberinto representado por una matriz de $N \times M$. Debe encontrar un camino desde la Entrada hasta el tesoro. La matriz está codificada con <code>0</code> (casilla transitable), <code>1</code> (pared, intransitable), <code>E</code> (Entrada) y <code>T</code> (Tesoro). Puede moverse hacia arriba, abajo, izquierda o derecha, sin atravesar paredes ni visitar dos veces una misma casilla en el mismo camino.</p>
-<ol><li>Diseñar un algoritmo de backtracking que encuentre y devuelva un camino desde la entrada hasta el tesoro.</li><li>Indicar la complejidad del algoritmo.</li><li>Indicar cómo cambiarías el algoritmo si se pide <strong>EL CAMINO MÁS CORTO</strong> hasta el tesoro.</li></ol></div><details class="exercise-solution-drawer" id="solution-drawer-43"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<ol><li>Diseñar un algoritmo de backtracking que encuentre y devuelva un camino desde la entrada hasta el tesoro.</li><li>Indicar la complejidad del algoritmo.</li><li>Indicar cómo cambiarías el algoritmo si se pide <strong>EL CAMINO MÁS CORTO</strong> hasta el tesoro.</li></ol></div><details class="exercise-solution-drawer" id="solution-drawer-43"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
 <ul><li><strong>1. Para encontrar UN camino cualquiera:</strong><ul><li>Desde la posición actual <code>(f, c)</code>, si estamos parados sobre <code>'T'</code> (el Tesoro), ¡éxito! Devolvemos <code>Verdadero</code>.</li><li>Si no, probamos movernos a cada una de las 4 casillas vecinas <code>(nf, nc)</code> (arriba, abajo, izquierda, derecha).</li><li><strong>Poda por Factibilidad:</strong> Solo avanzamos a <code>(nf, nc)</code> si está dentro de los límites de la matriz, no es pared (<code>!= 1</code>) y no fue visitada todavía en el camino actual (<code>no visitado[nf][nc]</code>).</li><li>Marcamos la casilla como visitada, la agregamos al camino y llamamos recursivamente. Si esa llamada encuentra el tesoro, cortamos y devolvemos el camino; si no tiene salida, <strong>desmarcamos la casilla (<code>visitado[nf][nc] = Falso</code>) y la sacamos del camino</strong> (backtrack) para probar otra dirección.</li></ul>
 </li><li><strong>2. Complejidad Temporal:</strong><ul><li>En cada casilla tenemos hasta 4 direcciones posibles (3 reales porque no volvemos hacia la casilla de la que acabamos de venir), y la longitud máxima de un camino sin repetir casillas es $N \cdot M$. Por lo tanto, en el peor caso explora <strong>$O(4^{N \cdot M})$</strong> (o más ajustado <strong>$O(3^{N \cdot M})$</strong>) estados, con espacio auxiliar $O(N \cdot M)$.</li></ul>
 </li><li><strong>3. ¿Cómo cambiaríamos el algoritmo si se pide EL CAMINO MÁS CORTO?</strong><ul><li><strong>Con Backtracking (Branch &amp; Bound):</strong></li><li>En vez de frenar y devolver <code>Verdadero</code> al encontrar el primer camino a <code>'T'</code>, <strong>guardamos ese camino como <code>mejor_camino</code></strong> (si es más corto que el <code>mejor_camino</code> registrado hasta ahora) y <strong>seguimos explorando</strong> el resto de las ramas.</li><li><strong>Agregamos Poda por Optimalidad (Branch &amp; Bound):</strong> Si en cualquier momento el largo de nuestro <code>camino_actual</code> (más la distancia Manhattan hasta <code>T</code>) ya es <strong>mayor o igual</strong> al largo del <code>mejor_camino</code> que ya tenemos guardado (<code>longitud(camino_actual) &gt;= longitud(mejor_camino)</code>), <strong>podamos la rama inmediatamente</strong> sin seguir avanzando.</li><li><em>(Nota adicional para sumar puntos en el parcial: Como todas las aristas pesan 1 paso, el camino más corto en una grilla sin pesos también se puede resolver de forma óptima en tiempo polinomial $O(N \cdot M)$ cambiando la búsqueda a <strong>BFS — Búsqueda a lo Ancho</strong> con una cola).</em></li></ul>
@@ -519,8 +326,8 @@ función ExplorarBT(M, f, c, visitado, camino):
     devolver Falso
 </code></pre></div></div>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-44" data-num="44" data-priority="importante" data-paradigm="backtracking" data-difficulty="2" data-title="suma de dados (todas las tiradas que suman s)" data-origin="guía v1.0 (curso echevarría), ejercicio 3.1"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 44</span><h3 class="exercise-title">Suma de Dados (Todas las Tiradas que Suman S)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★☆☆☆ (2/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.1">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="44" onchange="toggleMastered(44, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Implementar un algoritmo de backtracking que reciba una cantidad de dados $n$ y una suma $s$, y devuelva todas las tiradas posibles de $n$ dados (caras del 1 al 6) cuya suma sea exactamente $s$.</p></div><details class="exercise-solution-drawer" id="solution-drawer-44"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-44" data-num="44" data-priority="importante" data-paradigm="backtracking" data-difficulty="2" data-parcial="false" data-title="suma de dados (todas las tiradas que suman s)" data-origin="guía v1.0 (curso echevarría), ejercicio 3.1"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 44</span><h3 class="exercise-title">Suma de Dados (Todas las Tiradas que Suman S)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★ (2/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.1">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.1</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="44" onchange="toggleMastered(44, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Implementar un algoritmo de backtracking que reciba una cantidad de dados $n$ y una suma $s$, y devuelva todas las tiradas posibles de $n$ dados (caras del 1 al 6) cuya suma sea exactamente $s$.</p></div><details class="exercise-solution-drawer" id="solution-drawer-44"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
 <ul><li>En cada nivel decidimos qué valor (del 1 al 6) salió en el dado actual, restándolo de la suma que nos falta (<code>faltante</code>).</li><li>
 <p><strong>Podas claves para no explorar ramas inútiles:</strong>
 If nos quedan <code>dados_restantes</code> por tirar:</p>
@@ -550,8 +357,8 @@ función DadosBT(dados_restantes, faltante, actual, resultados):
         quitar_ultimo(actual)   // Backtrack
 </code></pre></div></div>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-45" data-num="45" data-priority="importante" data-paradigm="backtracking" data-difficulty="2" data-title="maximizar sumatoria sin superar n" data-origin="guía v1.0 (curso echevarría), ejercicio 3.2"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 45</span><h3 class="exercise-title">Maximizar Sumatoria sin Superar N</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★☆☆☆ (2/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.2">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.2</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="45" onchange="toggleMastered(45, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Dada una lista de enteros positivos $L$ y un entero $n$, implementar un algoritmo de backtracking que devuelva un subconjunto de $L$ que sume exactamente $n$, o, en caso de no existir, que devuelva el subconjunto de suma máxima sin superar el valor de $n$.</p></div><details class="exercise-solution-drawer" id="solution-drawer-45"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-45" data-num="45" data-priority="importante" data-paradigm="backtracking" data-difficulty="2" data-parcial="false" data-title="maximizar sumatoria sin superar n" data-origin="guía v1.0 (curso echevarría), ejercicio 3.2"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 45</span><h3 class="exercise-title">Maximizar Sumatoria sin Superar N</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★ (2/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.2">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.2</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="45" onchange="toggleMastered(45, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Dada una lista de enteros positivos $L$ y un entero $n$, implementar un algoritmo de backtracking que devuelva un subconjunto de $L$ que sume exactamente $n$, o, en caso de no existir, que devuelva el subconjunto de suma máxima sin superar el valor de $n$.</p></div><details class="exercise-solution-drawer" id="solution-drawer-45"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
 <ul><li>Es una versión de <strong>Branch &amp; Bound</strong> de <em>Subset Sum</em>: llevamos registro de la <code>mejor_solucion</code> y su <code>mejor_suma</code> (inicialmente <code>0</code>) que nunca supere $n$.</li><li>En cada elemento <code>L[i]</code> probamos incluirlo (si <code>suma_actual + L[i] &lt;= n</code>) o excluirlo.</li><li><strong>Podas:</strong><ol><li><strong>Corte inmediato por óptimo exacto:</strong> Si <code>mejor_suma == n</code>, ya encontramos un subconjunto que suma exactamente $n$, así que cortamos todas las llamadas pendientes de inmediato.</li><li><strong>Poda por cota superior (sufijo restante):</strong> Si sumando <code>suma_actual</code> más todos los números que quedan de <code>i</code> en adelante (<code>suma_restante</code>) no superamos a <code>mejor_suma</code> (<code>suma_actual + suma_restante &lt;= mejor_suma</code>), podamos la rama porque es imposible mejorar el récord.</li></ol>
 </li></ul>
 <h4>2. Semi-Pseudocódigo Simplificado</h4>
@@ -582,8 +389,8 @@ función MaxSumaBT(L, i, n, suma_act, resto_disp, actual, ref mejor_sol, ref mej
         MaxSumaBT(L, i + 1, n, suma_act, resto_disp - L[i], actual, mejor_sol, mejor_suma)
 </code></pre></div></div>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-46" data-num="46" data-priority="importante" data-paradigm="backtracking" data-difficulty="3" data-title="resolución de sudoku por backtracking" data-origin="guía v1.0 (curso echevarría), ejercicio 3.4"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 46</span><h3 class="exercise-title">Resolución de Sudoku por Backtracking</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.4">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.4</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="46" onchange="toggleMastered(46, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Dada una matriz de $9 \times 9$ parcialmente completada (con <code>0</code> en las casillas vacías), implementar un algoritmo de backtracking que llene la matriz con números del 1 al 9 sin repetir número en cada fila, columna ni subgrupo de $3 \times 3$.</p></div><details class="exercise-solution-drawer" id="solution-drawer-46"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-46" data-num="46" data-priority="importante" data-paradigm="backtracking" data-difficulty="3" data-parcial="false" data-title="resolución de sudoku por backtracking" data-origin="guía v1.0 (curso echevarría), ejercicio 3.4"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 46</span><h3 class="exercise-title">Resolución de Sudoku por Backtracking</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.4">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.4</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="46" onchange="toggleMastered(46, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Dada una matriz de $9 \times 9$ parcialmente completada (con <code>0</code> en las casillas vacías), implementar un algoritmo de backtracking que llene la matriz con números del 1 al 9 sin repetir número en cada fila, columna ni subgrupo de $3 \times 3$.</p></div><details class="exercise-solution-drawer" id="solution-drawer-46"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
 <ul><li>Buscamos la primera celda vacía <code>(f, c)</code> del tablero (si no queda ninguna vacía, ¡el Sudoku ya está resuelto!).</li><li>Probamos colocar cada número <code>num</code> del <code>1</code> al <code>9</code> en esa celda:<ul><li><strong>Poda por Factibilidad:</strong> Solo colocamos <code>num</code> si todavía no aparece en la fila <code>f</code>, ni en la columna <code>c</code>, ni en su bloque de $3 \times 3$ (cuyo inicio es <code>(f // 3) * 3</code> y <code>(c // 3) * 3</code>).</li><li>Lo escribimos y llamamos recursivamente. Si la recursión devuelve <code>Verdadero</code>, terminamos; si no, <strong>borramos el número volviendo a poner <code>0</code></strong> (backtrack) y probamos el siguiente.</li></ul>
 </li></ul>
 <h4>2. Semi-Pseudocódigo Simplificado</h4>
@@ -607,8 +414,8 @@ función esValidoSudoku(tablero, f, c, num):
     devolver (num no está en fila f) y (num no está en col c) y (num no está en bloque 3x3 de (f, c))
 </code></pre></div></div>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-47" data-num="47" data-priority="importante" data-paradigm="backtracking" data-difficulty="3" data-title="recorrido del caballo (knight tour)" data-origin="guía v1.0 (curso echevarría), ejercicio 3.5"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 47</span><h3 class="exercise-title">Recorrido del Caballo (Knight Tour)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.5">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.5</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="47" onchange="toggleMastered(47, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Implementar un algoritmo de backtracking que, dado un caballo en un tablero de ajedrez de $8 \times 8$, determine la secuencia de movimientos en forma de $L$ para que el caballo pase por los 64 casilleros del tablero una única vez.</p></div><details class="exercise-solution-drawer" id="solution-drawer-47"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-47" data-num="47" data-priority="importante" data-paradigm="backtracking" data-difficulty="3" data-parcial="false" data-title="recorrido del caballo (knight tour)" data-origin="guía v1.0 (curso echevarría), ejercicio 3.5"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 47</span><h3 class="exercise-title">Recorrido del Caballo (Knight Tour)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.5">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.5</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="47" onchange="toggleMastered(47, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Implementar un algoritmo de backtracking que, dado un caballo en un tablero de ajedrez de $8 \times 8$, determine la secuencia de movimientos en forma de $L$ para que el caballo pase por los 64 casilleros del tablero una única vez.</p></div><details class="exercise-solution-drawer" id="solution-drawer-47"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
 <ul><li>Llevamos en la matriz <code>tablero[8][8]</code> el número de paso en que visitamos cada casilla (de <code>1</code> a <code>64</code>, y <code>0</code> si está libre).</li><li>Si <code>paso == 64</code>, ya visitamos las 64 casillas y terminamos.</li><li>Si no, desde la posición actual <code>(f, c)</code> probamos los <strong>8 saltos posibles en forma de L</strong> del caballo (<code>(±2, ±1)</code> y <code>(±1, ±2)</code>).</li><li><strong>Poda de factibilidad:</strong> Que la nueva casilla <code>(nf, nc)</code> esté dentro del tablero $8 \times 8$ y no haya sido visitada aún (<code>tablero[nf][nc] == 0</code>).</li></ul>
 <h4>2. Semi-Pseudocódigo Simplificado</h4>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo KnightTour(f_ini, c_ini):
@@ -636,8 +443,8 @@ función CaballoBT(tablero, f, c, paso):
     devolver Falso
 </code></pre></div></div>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-48" data-num="48" data-priority="imprescindible" data-paradigm="backtracking" data-difficulty="2" data-title="coloreo de grafos con n colores" data-origin="guía v1.0 (curso echevarría), ejercicio 3.6 / guía 03, ejercicio 2"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 48</span><h3 class="exercise-title">Coloreo de Grafos con N Colores</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★☆☆☆ (2/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.6 / Guía 03, Ejercicio 2">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.6</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="48" onchange="toggleMastered(48, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Implementar un algoritmo que reciba un grafo y un número $n$ que, utilizando backtracking, indique si es posible pintar cada vértice con $n$ colores de tal forma que no haya dos vértices adyacentes con el mismo color.</p></div><details class="exercise-solution-drawer" id="solution-drawer-48"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-48" data-num="48" data-priority="imprescindible" data-paradigm="backtracking" data-difficulty="2" data-parcial="false" data-title="coloreo de grafos con n colores" data-origin="guía v1.0 (curso echevarría), ejercicio 3.6 / guía 03, ejercicio 2"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 48</span><h3 class="exercise-title">Coloreo de Grafos con N Colores</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-2" title="Dificultad 2 de 5">★★ (2/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.6 / Guía 03, Ejercicio 2">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.6</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="48" onchange="toggleMastered(48, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Implementar un algoritmo que reciba un grafo y un número $n$ que, utilizando backtracking, indique si es posible pintar cada vértice con $n$ colores de tal forma que no haya dos vértices adyacentes con el mismo color.</p></div><details class="exercise-solution-drawer" id="solution-drawer-48"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
 <ul><li>Numeramos los vértices de <code>0</code> a <code>V - 1</code> y vamos pintando <strong>un vértice por nivel recursivo</strong>.</li><li>Al estar en el vértice <code>v</code>, probamos asignarle cada color <code>c</code> desde <code>1</code> hasta <code>n</code>:<ul><li><strong>Poda por Factibilidad:</strong> Miramos a los vecinos de <code>v</code> en el grafo; si ningún vecino tiene puesto el color <code>c</code>, se lo asignamos a <code>v</code> y pasamos recursivamente al vértice <code>v + 1</code>.</li><li>Si la llamada falla, despintamos a <code>v</code> (<code>color[v] = 0</code>) y probamos el siguiente color.</li></ul>
 </li><li>Complejidad en peor caso: <strong>$O(n^{|V|})$</strong>.</li></ul>
 <h4>2. Semi-Pseudocódigo Simplificado</h4>
@@ -663,8 +470,8 @@ función ColorearBT(G, vertices, idx, n_colores, color):
     devolver Falso
 </code></pre></div></div>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-49" data-num="49" data-priority="importante" data-paradigm="backtracking" data-difficulty="3" data-title="camino hamiltoniano por backtracking" data-origin="guía v1.0 (curso echevarría), ejercicio 3.7"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 49</span><h3 class="exercise-title">Camino Hamiltoniano por Backtracking</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.7">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.7</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="49" onchange="toggleMastered(49, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Un camino hamiltoniano es un camino de un grafo que visita todos los vértices del grafo una sola vez. Implementar un algoritmo de backtracking que encuentre un camino hamiltoniano de un grafo dado.</p></div><details class="exercise-solution-drawer" id="solution-drawer-49"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-49" data-num="49" data-priority="importante" data-paradigm="backtracking" data-difficulty="3" data-parcial="false" data-title="camino hamiltoniano por backtracking" data-origin="guía v1.0 (curso echevarría), ejercicio 3.7"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 49</span><h3 class="exercise-title">Camino Hamiltoniano por Backtracking</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.7">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.7</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="49" onchange="toggleMastered(49, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Un camino hamiltoniano es un camino de un grafo que visita todos los vértices del grafo una sola vez. Implementar un algoritmo de backtracking que encuentre un camino hamiltoniano de un grafo dado.</p></div><details class="exercise-solution-drawer" id="solution-drawer-49"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
 <ul><li>Probamos iniciar el camino desde cada vértice <code>v</code> del grafo.</li><li>En cada paso recursivo, si la lista <code>camino</code> ya tiene longitud <code>|V|</code>, visitamos todos los vértices una sola vez y devolvemos <code>Verdadero</code>.</li><li>Si no, miramos los adyacentes del último vértice agregado (<code>actual</code>): para cada vecino <code>w</code> que <strong>todavía no esté en <code>visitados</code></strong> (poda de factibilidad en $O(1)$ usando un set/arreglo booleano), lo marcamos como visitado, lo agregamos al camino y llamamos recursivamente. Si no llega a solución, lo sacamos y desmarcamos. Complejidad en peor caso: <strong>$O(|V|!)$</strong>.</li></ul>
 <h4>2. Semi-Pseudocódigo Simplificado</h4>
 <div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo CaminoHamiltoniano(G):
@@ -693,8 +500,8 @@ función HamiltonianoBT(G, actual, camino, visitados):
     devolver Falso
 </code></pre></div></div>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-50" data-num="50" data-priority="imprescindible" data-paradigm="backtracking" data-difficulty="3" data-title="maximum independent set (conjunto independiente máximo)" data-origin="guía v1.0 (curso echevarría), ejercicio 3.8 / guía 03, ejercicio 4"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 50</span><h3 class="exercise-title">Maximum Independent Set (Conjunto Independiente Máximo)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.8 / Guía 03, Ejercicio 4">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.8</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="50" onchange="toggleMastered(50, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Implementar un algoritmo que, dado un grafo no dirigido, devuelva un conjunto de vértices que represente un Maximum Independent Set del mismo (el subconjunto más grande posible de vértices donde ningún par sea adyacente entre sí).</p></div><details class="exercise-solution-drawer" id="solution-drawer-50"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-50" data-num="50" data-priority="imprescindible" data-paradigm="backtracking" data-difficulty="3" data-parcial="false" data-title="maximum independent set (conjunto independiente máximo)" data-origin="guía v1.0 (curso echevarría), ejercicio 3.8 / guía 03, ejercicio 4"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 50</span><h3 class="exercise-title">Maximum Independent Set (Conjunto Independiente Máximo)</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.8 / Guía 03, Ejercicio 4">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.8</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="50" onchange="toggleMastered(50, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Implementar un algoritmo que, dado un grafo no dirigido, devuelva un conjunto de vértices que represente un Maximum Independent Set del mismo (el subconjunto más grande posible de vértices donde ningún par sea adyacente entre sí).</p></div><details class="exercise-solution-drawer" id="solution-drawer-50"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
 <ul><li>Es un problema de optimización (<strong>Branch &amp; Bound</strong>): mantenemos el <code>mejor_conjunto</code> encontrado hasta el momento.</li><li>En el vértice <code>idx</code> tenemos dos ramas:<ol><li><strong>Incluir el vértice <code>v</code></strong> en el conjunto actual, <strong>solo si no es adyacente a ninguno de los ya incluidos</strong> (Poda por Factibilidad).</li><li><strong>Excluir el vértice <code>v</code></strong>.</li></ol>
 </li><li><strong>Poda por Optimalidad (Branch &amp; Bound):</strong> Si el tamaño de nuestro conjunto <code>actual</code> más la cantidad de vértices que todavía quedan por evaluar (<code>restantes = |V| - idx</code>) <strong>no supera al tamaño del <code>mejor_conjunto</code></strong> (<code>tamaño(actual) + restantes &lt;= tamaño(mejor_conjunto)</code>), podamos la rama inmediatamente porque ni metiendo todos los vértices que quedan lograríamos superar el récord.</li></ul>
 <h4>2. Semi-Pseudocódigo Simplificado</h4>
@@ -726,8 +533,8 @@ función MisBT(G, vertices, idx, actual, ref mejor):
     MisBT(G, vertices, idx + 1, actual, mejor)
 </code></pre></div></div>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-51" data-num="51" data-priority="importante" data-paradigm="backtracking" data-difficulty="4" data-title="isomorfismo de grafos por backtracking" data-origin="guía v1.0 (curso echevarría), ejercicio 3.9"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 51</span><h3 class="exercise-title">Isomorfismo de Grafos por Backtracking</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-4" title="Dificultad 4 de 5">★★★★☆ (4/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.9">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.9</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="51" onchange="toggleMastered(51, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Implementar un algoritmo de backtracking que, dados dos grafos $G_1$ y $G_2$, determine si existe un Isomorfismo entre ambos (una correspondencia biyectiva entre sus vértices que preserve las adyacencias).</p></div><details class="exercise-solution-drawer" id="solution-drawer-51"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
+<article class="exercise-card" id="ej-51" data-num="51" data-priority="importante" data-paradigm="backtracking" data-difficulty="4" data-parcial="false" data-title="isomorfismo de grafos por backtracking" data-origin="guía v1.0 (curso echevarría), ejercicio 3.9"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 51</span><h3 class="exercise-title">Isomorfismo de Grafos por Backtracking</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-importante">🟡 IMPORTANTE</span><span class="badge badge-difficulty diff-4" title="Dificultad 4 de 5">★★★★ (4/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.9">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.9</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="51" onchange="toggleMastered(51, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Implementar un algoritmo de backtracking que, dados dos grafos $G_1$ y $G_2$, determine si existe un Isomorfismo entre ambos (una correspondencia biyectiva entre sus vértices que preserve las adyacencias).</p></div><details class="exercise-solution-drawer" id="solution-drawer-51"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural</h4>
 <ul><li>Antes de empezar el backtracking aplicamos <strong>filtros rápidos iniciales</strong>: si $G_1$ y $G_2$ tienen distinta cantidad de vértices, distinta cantidad de aristas o distinta secuencia de grados ordenada, devolvemos <code>Falso</code> en el acto.</li><li>Luego buscamos armar un diccionario <code>mapeo[u] = v</code> que asigne a cada vértice $u \in G_1$ un vértice $v \in G_2$ no usado aún:<ul><li><strong>Poda por Grado:</strong> Solo probamos mapear $u \to v$ si ambos tienen exactamente el <strong>mismo grado</strong> (<code>grado(G1, u) == grado(G2, v)</code>).</li><li><strong>Poda por Consistencia de Adyacencias:</strong> Para todo vecino $u&#x27;$ de $u$ en $G_1$ que <strong>ya haya sido mapeado</strong>, su pareja <code>mapeo[u']</code> debe ser obligatoriamente vecina de $v$ en $G_2$ (y viceversa). Si falla, descartamos ese emparejamiento en el acto.</li></ul>
 </li></ul>
 <h4>2. Semi-Pseudocódigo Simplificado</h4>
@@ -763,24 +570,57 @@ función IsomorfismoBT(G1, G2, V1, V2, idx, mapeo, usados_G2):
     devolver Falso
 </code></pre></div></div>
 <hr /></div></details></div></article>
-<article class="exercise-card" id="ej-52" data-num="52" data-priority="imprescindible" data-paradigm="backtracking" data-difficulty="3" data-title="podas para criptoaritmética: send + more = money" data-origin="guía v1.0 (curso echevarría), ejercicio 3.11"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 52</span><h3 class="exercise-title">Podas para Criptoaritmética: SEND + MORE = MONEY</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★☆☆ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.11">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.11</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="52" onchange="toggleMastered(52, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
-Para el problema de fuerza bruta <code>"SEND + MORE = MONEY"</code> (asignar un dígito distinto de 0 a 9 a cada una de las 8 letras <code>S, E, N, D, M, O, R, Y</code> para que la suma sea válida), indicar <strong>qué podas realizarías para agilizar su resolución por backtracking</strong>. <em>(No se pide pseudocódigo, sólo explicar las podas).</em></p></div><details class="exercise-solution-drawer" id="solution-drawer-52"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">💡 Solución Completa, Pseudocódigo y Análisis Formal</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Explicación de las Podas en Lenguaje Natural</h4>
-<p>En lugar de asignar las 8 letras a ciegas y recién verificar la cuenta al final ($10^8$ casos), aplicamos <strong>4 podas fundamentales</strong> que reducen la búsqueda a casi cero:</p>
-<ol><li>
-<p><strong>Poda por Dígitos No Repetidos (Alldifferent):</strong>
-Llevamos un arreglo booleano <code>digito_usado[10]</code>. Si un dígito ya fue asignado a una letra anterior, no se prueba en ninguna otra letra (baja de $10^8$ a $10! / 2! = 1.814.400$ estados).</p>
+<article class="exercise-card" id="ej-52" data-num="52" data-priority="imprescindible" data-paradigm="backtracking" data-difficulty="3" data-parcial="false" data-title="podas para criptoaritmética: send + more = money" data-origin="guía v1.0 (curso echevarría), ejercicio 3.11"><header class="card-header"><div class="card-header-left"><span class="exercise-pill-number">EJ 52</span><h3 class="exercise-title">Podas para Criptoaritmética: SEND + MORE = MONEY</h3></div><div class="card-header-meta"><span class="badge badge-priority badge-priority-imprescindible">🔴 IMPRESCINDIBLE</span><span class="badge badge-difficulty diff-3" title="Dificultad 3 de 5">★★★ (3/5)</span><span class="badge badge-paradigm badge-backtracking">Backtracking</span><span class="badge badge-origin" title="Guía v1.0 (Curso Echevarría), Ejercicio 3.11">🏛️ Guía v1.0 (Curso Echevarría), Ejercicio 3.11</span></div><div class="card-header-actions"><label class="mastered-label" title="Marcar como dominado (se guarda automáticamente)"><input type="checkbox" class="mastered-checkbox" data-ej-num="52" onchange="toggleMastered(52, this.checked)"><span class="checkbox-custom"></span><span class="label-text">Dominado</span></label></div></header><div class="card-body"><div class="exercise-statement-box"><p><strong>Enunciado</strong><br />
+Para el problema de fuerza bruta <code>"SEND + MORE = MONEY"</code> (asignar un dígito distinto de 0 a 9 a cada una de las 8 letras <code>S, E, N, D, M, O, R, Y</code> para que la suma sea válida), indicar <strong>qué podas realizarías para agilizar su resolución por backtracking</strong>. <em>(No se pide pseudocódigo, sólo explicar las podas).</em></p></div><details class="exercise-solution-drawer" id="solution-drawer-52"><summary class="solution-summary"><span class="summary-toggle-icon">▶</span><span class="summary-title">📝 Respuesta para la Hoja del Parcial (Idea en Lenguaje Natural y Semi-Pseudocódigo)</span><span class="summary-badge">Active Recall</span></summary><div class="solution-inner-content"><h4>1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)</h4>
+<ul><li><strong>Espacio de Búsqueda y Naturaleza del Problema:</strong><ul><li>Asignar un dígito único $\{0, \dots, 9\}$ a cada una de las 8 letras $\{S, E, N, D, M, O, R, Y\}$ de modo que $SEND + MORE = MONEY$.</li><li>Una búsqueda exhaustiva ingenua sin podas evalúa $10^8 = 100.000.000$ asignaciones, o $P(10, 8) = 1.814.400$ permutaciones si se exige que no se repitan dígitos.</li></ul>
 </li><li>
-<p><strong>Poda de Ceros a la Izquierda (Restricción de Dominio Inicial):</strong>
-Por regla matemática, ninguna palabra puede empezar con <code>0</code>. Por lo tanto, restringimos desde el inicio <strong><code>S != 0</code></strong> y <strong><code>M != 0</code></strong>.</p>
+<p><strong>Podas Esenciales de Factibilidad y Dominio:</strong></p>
+<ol><li><strong>Poda por Dígitos Únicos (Alldifferent en $O(1)$):</strong> Arreglo booleano <code>usado[10]</code>. Ningún dígito puede asignarse a más de una letra.</li><li><strong>Poda de Ceros a la Izquierda:</strong> Como ningún número puede comenzar con cero, restringimos los dominios iniciales: $S \ne 0$ y $M \ne 0$.</li><li><strong>Poda Analítica de Acarreo ($M = 1$ y $O = 0$):</strong> Sumar dos números de 4 dígitos produce a lo sumo $9999 + 9999 = 19998$. La quinta cifra $M$ es el acarreo de los miles y debe ser <strong>estrictamente $M = 1$</strong>. Además, para que la columna de miles genere acarreo ($S + 1 + c_3 \ge 10$) con $S \le 9$, la letra resultante $O$ solo puede ser $0$ o $1$; como $M = 1$, forzosamente <strong>$O = 0$</strong> y $S \in \{8, 9\}$.</li><li>
+<p><strong>Poda Columna por Columna (Verificación Incremental de Derecha a Izquierda):</strong>
+En lugar de asignar todas las letras y sumar al final, procesamos por columnas desde las unidades hacia los miles:</p>
 </li><li>
-<p><strong>Poda Analítica del Acarreo Más Significativo (<code>M = 1</code>):</strong>
-Como sumamos dos números de 4 cifras (<code>SEND + MORE</code>) y el resultado <code>MONEY</code> tiene <strong>5 cifras</strong>, la letra <code>M</code> es el acarreo de la columna de los miles. Pero la suma máxima de dos dígitos más un acarreo previo ($9 + 9 + 1 = 19$) jamás puede dar un acarreo de 2. Por lo tanto, <strong>fijamos directamente <code>M = 1</code></strong> antes de empezar ( y además deducimos que <code>S</code> debe ser <code>8</code> o <code>9</code> y <code>O</code> debe ser <code>0</code> o <code>1</code>).</p>
-</li><li>
-<p><strong>Poda Columna por Columna (Evaluación Incremental de Derecha a Izquierda):</strong>
-En vez de elegir las letras en cualquier orden, las asignamos <strong>por columnas de derecha a izquierda</strong> (unidades $\to$ decenas $\to$ centenas $\to$ miles):</p>
-</li><li>
-<p>Primero asignamos <code>D</code>, <code>E</code> e <code>Y</code> y <strong>verificamos en el acto</strong> si <code>(D + E) % 10 == Y</code>. Si no coincide, <strong>podamos la rama inmediatamente</strong> sin siquiera tocar las otras 5 letras (y además podemos calcular directamente <code>Y = (D + E) % 10</code> y el acarreo <code>c1 = (D + E) // 10</code> sin hacer un ciclo para <code>Y</code>!).</p>
-</li><li>Luego en las decenas asignamos <code>N</code> y <code>R</code> y verificamos en el acto <code>(N + R + c1) % 10 == E</code>, y así sucesivamente en cada columna.</li></ol></div></details></div></article>
+<p><strong>Columna 0 (Unidades):</strong> Asignar $D, E$. El dígito de $Y$ queda fijado analíticamente por $(D + E) \pmod{10}$ con acarreo $c_1 = (D + E) // 10$. Si $Y$ ya está usado o no coincide con una asignación previa, se poda la rama inmediatamente sin explorar las 5 letras restantes.</p>
+</li><li><strong>Columnas 1, 2 y 3 (Decenas, Centenas, Miles):</strong> Se valida incrementalmente en cada columna $(L_1 + L_2 + c_{prev}) \pmod{10} == L_3$. Al primer fallo se descarta el subárbol completo.</li></ol>
+</li></ul>
+<h4>2. Semi-Pseudocódigo Simplificado</h4>
+<div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><div class="code-container"><button class="copy-code-btn" type="button" title="Copiar código al portapapeles" onclick="copyCodeBlock(this)">📋 Copiar</button><pre><code class="language-text">Algoritmo CriptoSendMoreMoney():
+    asignacion = mapa vacio  // letra -&gt; digito
+    usado = arreglo de 10 booleanos en Falso
+    // Fijaciones analíticas iniciales obligatorias
+    asignar('M', 1, asignacion, usado)
+    asignar('O', 0, asignacion, usado)
+    si CriptoBT(0, 0, asignacion, usado):
+        devolver asignacion
+    devolver &quot;Sin solución&quot;
+
+función CriptoBT(col, acarreo, asignacion, usado):
+    si col == 4:  // Caso Base: se validaron unidades, decenas, centenas y miles
+        devolver (acarreo == asignacion['M'])
+
+    (L1, L2, L3) = LetrasColumna(col)  // ej col 0: (D, E, Y)
+    para cada d1 en Candidatos(L1, asignacion, usado):
+        marcar(L1, d1, asignacion, usado)
+        para cada d2 en Candidatos(L2, asignacion, usado):
+            marcar(L2, d2, asignacion, usado)
+            suma = d1 + d2 + acarreo
+            d3, nuevo_ac = suma % 10, suma // 10
+            // Poda por factibilidad de columna en O(1)
+            si esValidoAsignar(L3, d3, asignacion, usado):
+                marcar(L3, d3, asignacion, usado)
+                si CriptoBT(col + 1, nuevo_ac, asignacion, usado):
+                    devolver Verdadero
+                desmarcar(L3, asignacion, usado)  // Backtrack
+            desmarcar(L2, asignacion, usado)
+        desmarcar(L1, asignacion, usado)
+
+    devolver Falso
+</code></pre></div></div>
+<h4>3. Justificación de Complejidad</h4>
+<ul><li><strong>Árbol de Recursión y Estado:</strong><ul><li>El estado se define por <code>(col, acarreo)</code>, con profundidad máxima acotada a las 4 columnas del problema.</li></ul>
+</li><li><strong>Complejidad Temporal en Peor Caso:</strong><ul><li>El espacio combinatorio sin podas es $P(10, 8) = \frac{10!}{2!} = 1.814.400$ permutaciones en el peor caso.</li></ul>
+</li><li><strong>Comportamiento Promedio con Podas:</strong><ul><li>Al fijar $M = 1$ y $O = 0$, reducir el dominio de $S \in \{8, 9\}$ y verificar la consistencia aritmética de cada columna de derecha a izquierda antes de ramificar, la gran mayoría de las combinaciones se descartan en el nivel 0 (unidades).</li><li>El número real de estados evaluados se reduce a menos de 50 llamadas recursivas, hallando la solución única $SEND = 9567, MORE = 1085, MONEY = 10652$ de forma prácticamente instantánea.</li></ul>
+</li><li><strong>Complejidad Espacial:</strong><ul><li><strong>$O(1)$</strong> auxiliar: los arreglos de control de dígitos usados y asignación tienen tamaño 10 constante, y la pila recursiva alcanza una profundidad máxima de 4 marcos.</li></ul>
+</li></ul></div></details></div></article>
 <hr />
 <h3>Errores Frecuentes en Exámenes sobre Backtracking</h3>
 <ol><li><strong>Olvidar desmarcar el estado en el retorno (Backtrack):</strong> Dejar variables modificadas al salir de una llamada arruina la exploración de las ramas hermanas.</li><li><strong>Validar restricciones recorriendo estructuras completas:</strong> Usar bucles en cada nodo en vez de booleanos de control $O(1)$.</li><li><strong>No justificar la complejidad en el peor caso:</strong> Afirmar que con podas el algoritmo pasa a ser polinomial. Las podas optimizan el caso promedio, pero el peor caso sigue siendo exponencial o factorial.</li><li><strong>No podar simetrías:</strong> Permitir explorar permutaciones del mismo conjunto en problemas de combinatoria.</li></ol><div class="search-empty-state" id="searchEmptyState" style="display: none;"><div class="empty-state-icon">🔍</div><h3 class="empty-state-title">No se encontraron ejercicios con los filtros actuales</h3><p class="empty-state-desc">Probá con otro término de búsqueda, cambiá la dificultad o seleccioná el modo <strong>Todos</strong>.</p><button class="btn btn-primary" type="button" onclick="resetAllFilters()">Restablecer filtros y mostrar todos</button></div>
