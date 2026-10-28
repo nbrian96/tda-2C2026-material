@@ -85,10 +85,10 @@ Algoritmo ConcederPermisosMafias(pedidos):
 ```mermaid
 flowchart LR
     subgraph Ruta [Secuencia de Evaluación Voraz por Fin más Temprano]
-        A["1º: Mafia A [1, 4]<br/>ACEPTADO (f_ult = 4)"]:::opt -->|s_B = 3 &lt; 4| B["2º: Mafia B [3, 5]<br/>RECHAZADO (Solapa)"]:::bad
-        B -->|s_C = 0 &lt; 4| C["3º: Mafia C [0, 6]<br/>RECHAZADO (Solapa)"]:::bad
-        C -->|s_D = 4 &ge; 4| D["4º: Mafia D [4, 7]<br/>ACEPTADO (f_ult = 7)"]:::opt
-        D -->|s_E = 6 &lt; 7| E["5º: Mafia E [6, 9]<br/>RECHAZADO (Solapa)"]:::bad
+        A["1º: Mafia A [1, 4]<br/>ACEPTADO (f_ult = 4)"]:::opt -->|"s_B = 3 &lt; 4"| B["2º: Mafia B [3, 5]<br/>RECHAZADO (Solapa)"]:::bad
+        B -->|"s_C = 0 &lt; 4"| C["3º: Mafia C [0, 6]<br/>RECHAZADO (Solapa)"]:::bad
+        C -->|"s_D = 4 &ge; 4"| D["4º: Mafia D [4, 7]<br/>ACEPTADO (f_ult = 7)"]:::opt
+        D -->|"s_E = 6 &lt; 7"| E["5º: Mafia E [6, 9]<br/>RECHAZADO (Solapa)"]:::bad
     end
     classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
     classDef bad fill:#991b1b,stroke:#7f1d1d,stroke-width:1px,color:#fff
@@ -425,16 +425,16 @@ Un transporte debe recorrer una ruta hasta su objetivo final pasando por $N$ est
 
 #### 1. Idea y Justificación en Lenguaje Natural (Qué escribir en la hoja)
 
-* **Regla Voraz:** Estando parados en la posición actual $i$ (empezando en el origen $i = 0$), miramos hasta 3 pasos adelante ($i+1, i+2, i+3$). Si el destino final ($N+1$) ya está a nuestro alcance ($i + 3 \ge N + 1$), saltamos directo al destino sin pagar nada más. Si no, **elegimos parar entre las estaciones alcanzables $\{i+1, i+2, i+3\}$ en aquella que tenga la menor tarifa inmediata** (y ante empate, en la más lejana).
+* **Regla Voraz:** Estando parados en la posición actual $i$ (empezando en el origen $i = 0$), miramos hasta 3 pasos adelante: $(i+1, \; i+2, \; i+3)$. Si el destino final $(N+1)$ ya está a nuestro alcance ($i + 3 \ge N + 1$), saltamos directo al destino sin pagar nada más. Si no, **elegimos parar entre las estaciones alcanzables $\{i+1, \; i+2, \; i+3\}$ en aquella que tenga la menor tarifa inmediata** (y ante empate, en la más lejana).
 * **¿Asegura la solución óptima? NO.** Porque elegir una estación apenas más barata hoy puede dejarnos cortos de alcance y obligarnos a pisar estaciones carísimas más adelante.
 * **Instancia donde SÍ obtiene la solución óptima:**
-  - Tarifas de 3 estaciones: `T = [10, 20, 5]`.
-  - Desde el inicio (0) alcanza las estaciones 1 (\$10), 2 (\$20) y 3 (\$5). Elige la más barata: **estación 3** (costo \$5), y desde la 3 llega directo al destino (4). Costo Greedy = **\$5**, que coincide con el óptimo global.
+  - Tarifas de 3 estaciones: $T = [10, 20, 5]$.
+  - Desde el inicio ($0$) alcanza las estaciones $1$ ($\$10$), $2$ ($\$20$) y $3$ ($\$5$). Elige la más barata: **estación 3** (costo $\$5$), y desde la estación $3$ llega directo al destino ($4$). **Costo Greedy = $\$5$**, que coincide con el óptimo global.
 * **Instancia donde NO obtiene la solución óptima (Contraejemplo):**
-  - Tarifas de 4 estaciones: `T = [5, 6, 100, 100]`.
-  - Desde el inicio (0) las alcanzables son 1 (\$5), 2 (\$6) y 3 (\$100). Greedy elige la más barata: **estación 1** (\$5).
-  - Pero desde la estación 1 solo alcanza hasta la 4 (estaciones 2, 3 y 4, con costos \$6, \$100 y \$100), viéndose obligado a parar de nuevo en la **estación 2** (\$6) para recién de ahí llegar al destino (5). **Costo Greedy = \$5 + \$6 = \$11**.
-  - **Solución Óptima:** Saltar directo del inicio a la **estación 2** (\$6) y de la estación 2 directo al destino (5) salteando la 3 y la 4. **Costo Óptimo = \$6 < \$11**.
+  - Tarifas de 4 estaciones: $T = [5, 6, 100, 100]$.
+  - Desde el inicio ($0$) las alcanzables son $1$ ($\$5$), $2$ ($\$6$) y $3$ ($\$100$). Greedy elige la más barata: **estación 1** ($\$5$).
+  - Pero desde la estación $1$ solo alcanza hasta la $4$ (estaciones $2$, $3$ y $4$, con costos $\$6$, $\$100$ y $\$100$), viéndose obligado a parar de nuevo en la **estación 2** ($\$6$) para recién de ahí llegar al destino ($5$). **Costo Greedy = $\$5 + \$6 = \$11$**.
+  - **Solución Óptima:** Saltar directo del inicio a la **estación 2** ($\$6$) y de la estación $2$ directo al destino ($5$) salteando la $3$ y la $4$. **Costo Óptimo = $\$6 < \$11$**.
 
 #### 2. Semi-Pseudocódigo Simplificado
 

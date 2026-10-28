@@ -66,4 +66,27 @@ for hf in sorted(html_files):
 assert "tipo_parcial.html" not in html_files, "tipo_parcial.html todavia existe"
 print("6. tipo_parcial.html eliminado y reemplazado por parciales.html: OK")
 
+# 7. Check KaTeX Math Delimiters and No Leaked Raw Escaped Dollars
+print("7. Verificación de Fórmulas Matemáticas y KaTeX:")
+total_math_blocks = 0
+for m in modules:
+    with open(m, "r", encoding="utf-8") as f:
+        content = f.read()
+    clean = re.sub(r"```[\s\S]*?```", "", content)
+    clean = re.sub(r"`[^`\n]+?`", "", clean)
+    clean_no_display = re.sub(r"\$\$[\s\S]*?\$\$", "", clean)
+
+    # Check balanced delimiters
+    unescaped = [match for match in re.finditer(r"(?<!\\)\$", clean_no_display)]
+    assert len(unescaped) % 2 == 0, f"Delimitadores '$' impares en {m}: {len(unescaped)}"
+
+    # Check no bare \$ outside math
+    clean_no_math = re.sub(r"(?<!\\)\$(?!\$)[^\n]+?(?<!\\)\$", "", clean_no_display)
+    bare_dollars = list(re.finditer(r"\\\$", clean_no_math))
+    assert len(bare_dollars) == 0, f"Signos '\\$' sueltos fuera de fórmulas en {m}: {len(bare_dollars)}"
+
+    total_math_blocks += len(unescaped) // 2
+
+print(f"   Fórmulas matemáticas validadas ({total_math_blocks} bloques inline, 0 fugas '\\$'): OK")
+
 print("\n>>> TODAS LAS VERIFICACIONES PASARON CON EXITO (100% OK) <<<")

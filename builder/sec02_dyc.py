@@ -163,9 +163,9 @@ Algoritmo PosicionPico(v, ini, fin):
 
 ```mermaid
 flowchart LR
-    A["Rango [0..6]: m=3<br/>A[3]=3 &lt; A[4]=5"]:::step -->|Descarta izq [0..3]| B["Rango [4..6]: m=5<br/>A[5]=6 &gt; A[6]=4"]:::step
-    B -->|Conserva m=5| C["Rango [4..5]: m=4<br/>A[4]=5 &lt; A[5]=6"]:::step
-    C -->|Descarta m=4| D["Rango [5..5]: ini=fin"]:::step
+    A["Rango [0..6]: m=3<br/>A[3]=3 &lt; A[4]=5"]:::step -->|"Descarta izq [0..3]"| B["Rango [4..6]: m=5<br/>A[5]=6 &gt; A[6]=4"]:::step
+    B -->|"Conserva m=5"| C["Rango [4..5]: m=4<br/>A[4]=5 &lt; A[5]=6"]:::step
+    C -->|"Descarta m=4"| D["Rango [5..5]: ini=fin"]:::step
     D --> E(["Pico Hallado: Índice 5 (A[5] = 6)"]):::opt
     classDef step fill:#1e40af,stroke:#1e3a8a,stroke-width:2px,color:#fff
     classDef opt fill:#15803d,stroke:#166534,stroke-width:2px,color:#fff
