@@ -1,0 +1,2493 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TDA — Paradigmas Avanzados: Aproximación y Randomizados (FIUBA)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script>
+    // Detección y aplicación inmediata de modo oscuro para evitar parpadeos
+    (function() {
+      const savedTheme = localStorage.getItem("tda_theme");
+      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+        document.documentElement.classList.add("dark-mode");
+        document.documentElement.setAttribute("data-bs-theme", "dark");
+      } else {
+        document.documentElement.classList.remove("dark-mode");
+        document.documentElement.setAttribute("data-bs-theme", "light");
+      }
+    })();
+  </script>
+  <style>
+    /* Estilos específicos y refinados para la vista de Paradigmas Avanzados */
+    .hero-banner {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e3a8a 100%);
+      color: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 36px 32px;
+      margin-bottom: 32px;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-banner::after {
+      content: "🎲 📏";
+      position: absolute;
+      right: 20px;
+      bottom: -15px;
+      font-size: 5rem;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .hero-title {
+      font-size: 2.1rem;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .hero-desc {
+      font-size: 1.05rem;
+      color: #cbd5e1;
+      max-width: 820px;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .hero-tag {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #f8fafc;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+    }
+    .nav-tabs-sticky {
+      position: sticky;
+      top: 54px;
+      z-index: 1020;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-color);
+      padding: 8px 0;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+    .badge-aprox-pill {
+      background: rgba(59, 130, 246, 0.15);
+      color: #2563eb;
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+    .badge-rand-pill {
+      background: rgba(16, 185, 129, 0.15);
+      color: #059669;
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+    body.dark-mode .badge-aprox-pill {
+      background: rgba(56, 189, 248, 0.2) !important;
+      color: #38bdf8 !important;
+      border: 1px solid rgba(56, 189, 248, 0.45) !important;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.15);
+    }
+    body.dark-mode .badge-rand-pill {
+      background: rgba(34, 197, 94, 0.2) !important;
+      color: #4ade80 !important;
+      border: 1px solid rgba(74, 222, 128, 0.45) !important;
+      box-shadow: 0 0 8px rgba(74, 222, 128, 0.15);
+    }
+    .nav-pills-custom {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: thin;
+    }
+    .nav-pill-custom {
+      white-space: nowrap;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      transition: all 0.2s ease;
+    }
+    .nav-pill-custom:hover {
+      color: var(--primary-light);
+      border-color: var(--accent-color);
+      transform: translateY(-1px);
+    }
+    .nav-pill-custom.active {
+      background: var(--accent-color);
+      color: #ffffff !important;
+      border-color: var(--accent-color);
+    }
+    .topic-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      margin-bottom: 32px;
+      box-shadow: var(--shadow-sm);
+      scroll-margin-top: 130px;
+    }
+    .topic-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 2px solid var(--accent-soft);
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+    .topic-badge {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+    .badge-aprox {
+      background: #e0f2fe;
+      color: #0369a1;
+      border: 1px solid #bae6fd;
+    }
+    body.dark-mode .badge-aprox {
+      background: rgba(56, 189, 248, 0.2);
+      color: #38bdf8;
+      border-color: rgba(56, 189, 248, 0.45);
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.15);
+    }
+    .badge-rand {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+    body.dark-mode .badge-rand {
+      background: rgba(251, 191, 36, 0.2);
+      color: #fbbf24;
+      border-color: rgba(251, 191, 36, 0.45);
+      box-shadow: 0 0 8px rgba(251, 191, 36, 0.15);
+    }
+    .badge-struct {
+      background: #ede9fe;
+      color: #6d28d9;
+      border: 1px solid #ddd6fe;
+    }
+    body.dark-mode .badge-struct {
+      background: rgba(192, 132, 252, 0.22);
+      color: #c084fc;
+      border-color: rgba(192, 132, 252, 0.45);
+      box-shadow: 0 0 8px rgba(192, 132, 252, 0.15);
+    }
+    .interactive-stepper {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .stepper-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .stepper-btn {
+      padding: 6px 16px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      border: 1px solid var(--border-color);
+      background: var(--bg-card);
+      color: var(--text-main);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .stepper-btn:hover:not(:disabled) {
+      background: var(--accent-color);
+      color: #ffffff;
+      border-color: var(--accent-color);
+    }
+    .stepper-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .stepper-progress-text {
+      font-weight: 700;
+      color: var(--primary-color);
+      font-size: 0.95rem;
+    }
+    .stepper-view {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      min-height: 220px;
+    }
+    .step-explain {
+      font-size: 0.92rem;
+      margin-bottom: 12px;
+      padding: 10px 14px;
+      border-left: 4px solid var(--accent-color);
+      background: var(--accent-soft);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    }
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 0.88rem;
+    }
+    .custom-table th, .custom-table td {
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      text-align: center;
+    }
+    .custom-table th {
+      background: var(--bg-main);
+      color: var(--text-main);
+      font-weight: 700;
+    }
+    .custom-table tr.highlight-row {
+      background: rgba(34, 197, 94, 0.15);
+      font-weight: 700;
+    }
+    .custom-table tr.struck-row {
+      opacity: 0.45;
+      text-decoration: line-through;
+    }
+    .graph-canvas-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 15px auto;
+      text-align: center;
+    }
+    .graph-svg {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 360 / 220;
+      max-height: 280px;
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+    }
+    .cota-card {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(147, 51, 234, 0.08) 100%);
+      border: 1px solid var(--accent-color);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      margin: 16px 0;
+    }
+    .cota-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .cota-math {
+      font-size: 1.15rem;
+      text-align: center;
+      margin: 10px 0;
+    }
+    .card-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+      margin: 16px 0;
+    }
+    .concept-box {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+    }
+    .concept-box h5 {
+      color: var(--primary-color);
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .interactive-simulator {
+      background: var(--bg-main);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      margin: 20px 0;
+    }
+    .sim-controls-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+    .sim-output-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      max-height: 240px;
+      overflow-y: auto;
+    }
+    
+    /* Refinamientos Específicos Dark Mode */
+    body.dark-mode .interactive-stepper {
+      background: #0f172a;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    body.dark-mode .stepper-view {
+      background: #151e2e;
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+    body.dark-mode .concept-box {
+      background: #111827;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    body.dark-mode .interactive-simulator {
+      background: #0f172a;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    body.dark-mode .sim-output-box {
+      background: #070b14;
+      border-color: rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.7);
+    }
+    body.dark-mode a[href="#aprox-fundamentos"].badge {
+      background: rgba(56, 189, 248, 0.2) !important;
+      color: #38bdf8 !important;
+      border: 1px solid rgba(56, 189, 248, 0.45) !important;
+      box-shadow: 0 0 8px rgba(56, 189, 248, 0.15);
+    }
+    body.dark-mode a[href="#rand-fundamentos"].badge {
+      background: rgba(34, 197, 94, 0.2) !important;
+      color: #4ade80 !important;
+      border: 1px solid rgba(74, 222, 128, 0.45) !important;
+      box-shadow: 0 0 8px rgba(74, 222, 128, 0.15);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar Global Unificado (54px) -->
+<header class="site-navbar" id="siteNavbar">
+  <div class="site-navbar-container">
+    <a href="index.html" class="site-brand">
+      <span style="font-size: 1.25rem;">🚀</span>
+      <span>TDA FIUBA</span>
+    </a>
+    
+    <nav>
+      <ul class="site-nav-links">
+        <li><a href="index.html" class="site-nav-link">🏠 Inicio</a></li>
+        <li><a href="parciales.html" class="site-nav-link">📝 Parciales (29)</a></li>
+        <li class="site-dropdown">
+          <a href="#" class="site-nav-link" onclick="event.preventDefault()">📂 Paradigmas ▾</a>
+          <div class="site-dropdown-menu">
+            <a href="dyc.html" class="site-dropdown-item">🔷 División y Conquista (12)</a>
+            <a href="greedy.html" class="site-dropdown-item">🔶 Greedy / Voraces (26)</a>
+            <a href="backtracking.html" class="site-dropdown-item">🟣 Backtracking &amp; B&amp;B (14)</a>
+            <a href="dp.html" class="site-dropdown-item">🟢 Prog. Dinámica (7)</a>
+            <a href="pl.html" class="site-dropdown-item">🔵 Prog. Lineal (6)</a>
+            <a href="flujo.html" class="site-dropdown-item">🔴 Redes de Flujo (5)</a>
+            <a href="reducciones.html" class="site-dropdown-item">🟡 Reducciones NP (4)</a>
+            <a href="integradores.html" class="site-dropdown-item">⚡ Integradores (5)</a>
+          </div>
+        </li>
+        <li><a href="teoria-avanzados.html" class="site-nav-link active">🎲 Paradigmas Avanzados</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-nav-actions">
+      <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y fórmulas"><span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span></button>
+      <button class="tool-btn" onclick="toggleDarkMode()" id="btnDarkMode" title="Cambiar tema claro / oscuro"><span class="tool-icon" id="darkModeIcon">🌙</span></button>
+    </div>
+  </div>
+</header>
+
+<!-- Drawer de Fórmulas y Recetas Rápidas -->
+<div class="drawer-backdrop" id="drawerBackdrop" onclick="closeCheatsheet()"></div>
+<aside class="cheatsheet-drawer" id="cheatsheetDrawer" aria-hidden="true">
+  <div class="drawer-header">
+    <div class="drawer-title-group"><span class="drawer-icon">📐</span><h2>Fórmulas y Recetas Rápidas de Parcial</h2></div>
+    <button class="drawer-close-btn" onclick="closeCheatsheet()" aria-label="Cerrar">✕</button>
+  </div>
+  <div class="drawer-content">
+    <section class="drawer-section">
+      <h3>1. Algoritmos de Aproximación</h3>
+      <div class="formula-card">
+        $$\max\left(\frac{\text{Aprox}}{\text{OPT}}, \; \frac{\text{OPT}}{\text{Aprox}}\right) \le \alpha$$
+        <ul>
+          <li><strong>Minimización:</strong> Cota inferior $L \le \text{OPT}$. Si $\text{Aprox} \le \alpha L \implies \text{Aprox} \le \alpha \text{OPT}$.</li>
+          <li><strong>Maximización:</strong> Cota superior $U \ge \text{OPT}$. Si $\text{Aprox} \ge \alpha U \implies \text{Aprox} \ge \alpha \text{OPT}$.</li>
+          <li><strong>Set Cover Voraz:</strong> Factor $H(d^*) = \sum_{i=1}^{d^*} 1/i \le \ln(d^*) + 1$.</li>
+          <li><strong>Vertex Cover LP:</strong> Relajación $x_v \in [0, 1]$, redondear $x_v \ge 0.5 \implies$ Factor $2$.</li>
+          <li><strong>Christofides TSP:</strong> $MST + \text{Matching Impar} \le 1 + 0.5 = 1.5 \implies$ Factor $3/2$.</li>
+        </ul>
+      </div>
+    </section>
+    <section class="drawer-section">
+      <h3>2. Algoritmos Randomizados</h3>
+      <div class="formula-card">
+        <ul>
+          <li><strong>Monte Carlo:</strong> Tiempo determinístico polinomial, respuesta correcta con probabilidad $1 - \delta$.</li>
+          <li><strong>Las Vegas:</strong> Respuesta siempre correcta, tiempo es variable aleatoria con $E[T] = O(n^k)$.</li>
+          <li><strong>Karger Min-Cut:</strong> $P(\text{éxito en 1 paso}) \ge \frac{2}{n(n-1)}$. En $\binom{n}{2} \ln n$ corridas: $P(\text{falla}) \le 1/n$.</li>
+          <li><strong>MAX 3-SAT:</strong> $E[\text{cláusulas sat}] = \frac{7}{8} m = 0.875 m$.</li>
+          <li><strong>Desigualdad de Markov:</strong> $P(X \ge a) \le \frac{E[X]}{a}$ para $X \ge 0, a > 0$.</li>
+        </ul>
+      </div>
+    </section>
+    <section class="drawer-section">
+      <h3>3. Teorema Maestro (División y Conquista)</h3>
+      <div class="formula-card">
+        $$T(n) = a \cdot T(n/b) + \Theta(n^c) \quad (a \ge 1, \; b > 1, \; c \ge 0)$$
+        <ul>
+          <li><strong>Caso 1 (Hojas dominan):</strong> Si $\log_b a > c \implies T(n) = \Theta(n^{\log_b a})$</li>
+          <li><strong>Caso 2 (Balance):</strong> Si $\log_b a = c \implies T(n) = \Theta(n^c \log n)$</li>
+          <li><strong>Caso 3 (Raíz domina):</strong> Si $\log_b a < c \implies T(n) = \Theta(n^c)$</li>
+        </ul>
+      </div>
+    </section>
+    <section class="drawer-section">
+      <h3>4. Esquema de 4 Pasos Obligatorios para NP-C</h3>
+      <ol class="steps-list">
+        <li><strong>Certificado y Verificador en NP:</strong> Definir certificado polinomial $C$ y verificador en $O(n^k)$.</li>
+        <li><strong>Problema conocido en NPC:</strong> Seleccionar problema base $A \in \text{NPC}$ y reducir $A \le_P B$.</li>
+        <li><strong>Transformación polinomial:</strong> Definir $f(I_A) \to I_B$ computable en tiempo polinomial.</li>
+        <li><strong>Demostración Bidireccional:</strong> Ida y Vuelta.</li>
+      </ol>
+    </section>
+  </div>
+</aside>
+
+<div class="floating-quick-btn" id="floatingQuickBtn">
+  <button class="fab-btn" onclick="openCheatsheet()" title="Fórmulas Rápidas">📐 Recetas</button>
+  <button class="fab-btn fab-secondary" onclick="scrollToTop()" title="Volver Arriba">⬆️</button>
+</div>
+
+<!-- Barra Temática Limpia y Contextual (Sticky 42px) -->
+<div class="nav-tabs-sticky">
+  <div class="container-xl d-flex justify-content-between align-items-center flex-wrap gap-2">
+    <div class="d-flex align-items-center gap-2">
+      <span class="fw-bold small text-muted">Bloque:</span>
+      <a href="#aprox-fundamentos" class="badge text-decoration-none px-3 py-2 rounded-pill badge-aprox-pill">
+        📏 1. Aproximación (Temas 1 a 7)
+      </a>
+      <a href="#rand-fundamentos" class="badge text-decoration-none px-3 py-2 rounded-pill badge-rand-pill">
+        🎲 2. Randomizados (Temas 8 a 16)
+      </a>
+    </div>
+    <div class="dropdown">
+      <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 0.82rem;">
+        📑 Saltar a Tema Específico...
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end shadow-sm" style="max-height: 380px; overflow-y: auto; font-size: 0.85rem;">
+        <li><h6 class="dropdown-header text-primary fw-bold">📏 Algoritmos de Aproximación</h6></li>
+        <li><a class="dropdown-item" href="#aprox-fundamentos">1. Fundamentos &amp; Factor &alpha;</a></li>
+        <li><a class="dropdown-item" href="#set-cover">2. Set Cover Voraz (H(d*))</a></li>
+        <li><a class="dropdown-item" href="#vc-lineal">3. Vertex Cover Relajación LP (2-Aprox)</a></li>
+        <li><a class="dropdown-item" href="#pricing-method">4. Pricing Method (Dual)</a></li>
+        <li><a class="dropdown-item" href="#mochila-aprox">5. Mochila Greedy 2.0 &amp; FPTAS</a></li>
+        <li><a class="dropdown-item" href="#balanceo-carga">6. Balanceo de Carga (Graham LPT)</a></li>
+        <li><a class="dropdown-item" href="#tsp-aprox">7. TSP Christofides (3/2) &amp; 2-Opt</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><h6 class="dropdown-header text-success fw-bold">🎲 Algoritmos Randomizados</h6></li>
+        <li><a class="dropdown-item" href="#rand-fundamentos">8. Monte Carlo vs Las Vegas</a></li>
+        <li><a class="dropdown-item" href="#colisiones-red">9. Rotura de Simetrías en Red</a></li>
+        <li><a class="dropdown-item" href="#karger-mincut">10. Karger Min-Cut Interactivo</a></li>
+        <li><a class="dropdown-item" href="#max-3sat">11. MAX 3-SAT (Cota 7/8)</a></li>
+        <li><a class="dropdown-item" href="#quickselect-mediana">12. QuickSelect O(n) Esperado</a></li>
+        <li><a class="dropdown-item" href="#estructuras-rand">13. Skip Lists &amp; Treaps</a></li>
+        <li><a class="dropdown-item" href="#streaming-conteo">14. Streaming Conteo Hamlet (m=100)</a></li>
+        <li><a class="dropdown-item" href="#hashing-universal">15. Hashing Universal 2-Universal</a></li>
+        <li><a class="dropdown-item" href="#ejercicios-clase">16. Ejercicios Resueltos de Examen</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<main class="main-content-wrapper container-xl" style="padding-top: 20px;">
+
+  <!-- Hero Banner -->
+  <div class="hero-banner">
+    <div class="hero-title">
+      <span>🎲 Paradigmas Avanzados</span>
+      <span style="font-weight: 400; font-size: 1.5rem; opacity: 0.9;">| Algoritmos de Aproximación &amp; Randomizados</span>
+    </div>
+    <p class="hero-desc">
+      Manual teórico-práctico interactivo basado en las clases oficiales de <strong>Teoría de Algoritmos (Curso Echevarría — FIUBA)</strong>.
+      Cuando los problemas son <strong>NP-Hard</strong> y la búsqueda exacta resulta impracticable, recurrimos a dos grandes paradigmas:
+      <strong>Aproximación</strong> (soluciones en tiempo polinomial con garantías matemáticas formales de calidad) y
+      <strong>Randomizados</strong> (aprovechar el azar para romper simetrías, evitar casos patológicos y acelerar el cómputo).
+    </p>
+    <div class="hero-tags">
+      <span class="hero-tag">📏 Factor de Aproximación \(\alpha\)</span>
+      <span class="hero-tag">🛡️ Set Cover &amp; Cota Armónica \(H(d^*)\)</span>
+      <span class="hero-tag">⚖️ Vertex Cover (Relajación Lineal &amp; Rounding)</span>
+      <span class="hero-tag">💰 Pricing Method (Primal-Dual)</span>
+      <span class="hero-tag">🎒 Mochila FPTAS &amp; Greedy 2.0</span>
+      <span class="hero-tag">⚙️ Balanceo de Carga (Graham vs LPT)</span>
+      <span class="hero-tag">🚗 TSP (Christofides 3/2 &amp; 2-Opt)</span>
+      <span class="hero-tag">🎰 Monte Carlo vs Las Vegas</span>
+      <span class="hero-tag">✂️ Karger Min-Cut (Contracción)</span>
+      <span class="hero-tag">🧩 MAX 3-SAT (Garantía \(7/8\))</span>
+      <span class="hero-tag">🎯 QuickSelect &amp; Elementos Centrales</span>
+      <span class="hero-tag">🪜 Skip Lists &amp; Treaps</span>
+      <span class="hero-tag">📖 Streaming Hamlet &amp; Hashing Universal</span>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 0: INTRODUCCIÓN GENERAL -->
+  <section class="topic-section" id="intro">
+    <div class="topic-header">
+      <span class="topic-badge badge-aprox">Visión Panorámica</span>
+      <h3 class="m-0">0. El Dilema de la Complejidad: ¿Qué hacer ante un Problema NP-Hard?</h3>
+    </div>
+    <p>
+      Hasta ahora vimos que ante problemas de optimización tratamos de hallar la solución óptima exacta mediante
+      <strong>Greedy</strong> (cuando se cumple subestructura óptima y elección voraz),
+      <strong>Programación Dinámica</strong> (subproblemas superpuestos),
+      <strong>Redes de Flujo</strong> (algoritmos polinomiales exactos),
+      o <strong>Backtracking / Branch &amp; Bound / Programación Lineal Entera (PLE)</strong> (que garantizan el óptimo pero con costo temporal exponencial en el peor caso).
+    </p>
+    <p>
+      <em>"En ocasiones, es preferible una buena solución rápida, que una solución óptima demasiado tarde."</em> (Clase oficial TDA).
+      Cuando el tamaño de entrada $N$ crece a miles o millones, un algoritmo de $O(2^N)$ o $O(N!)$ tardaría más que la edad del universo.
+    </p>
+
+    <div class="card-grid-2">
+      <div class="concept-box">
+        <h5>📏 Algoritmos de Aproximación</h5>
+        <p class="small text-muted mb-2"><strong>Garantía matemática determinista de calidad</strong></p>
+        <ul class="small mb-0">
+          <li>Corren en <strong>tiempo polinomial</strong> $O(n^k)$.</li>
+          <li>Devuelven una solución factible cuya distancia al óptimo desconocido está acotada por un factor $\alpha$.</li>
+          <li><strong>Minimización:</strong> $\text{Costo}(S) \le \alpha \cdot \text{OPT}$ con $\alpha \ge 1$ (ej: 2-aproximación).</li>
+          <li><strong>Maximización:</strong> $\text{Beneficio}(S) \ge \alpha \cdot \text{OPT}$ con $\alpha \le 1$ (ej: 0.5 o $7/8$).</li>
+        </ul>
+      </div>
+      <div class="concept-box">
+        <h5>🎲 Algoritmos Randomizados</h5>
+        <p class="small text-muted mb-2"><strong>El azar como recurso algorítmico deliberado</strong></p>
+        <ul class="small mb-0">
+          <li>El algoritmo toma decisiones basadas en <strong>generación de aleatoriedad</strong>.</li>
+          <li><strong>Monte Carlo:</strong> Tiempo de ejecución acotado/polinomial garantizado; respuesta correcta con alta probabilidad (error acotado $\le 1/n$).</li>
+          <li><strong>Las Vegas:</strong> Respuesta <em>siempre correcta</em> garantizada; tiempo de ejecución es una variable aleatoria con esperanza polinomial $E[T] = O(n)$.</li>
+          <li>Destruyen configuraciones adversarias (evitan el peor caso de algoritmos determinísticos).</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- BLOQUE 1: ALGORITMOS DE APROXIMACIÓN                                      -->
+  <!-- ========================================================================= -->
+
+  <!-- SECCIÓN 1: FUNDAMENTOS Y COTAS -->
+  <section class="topic-section" id="aprox-fundamentos">
+    <div class="topic-header">
+      <span class="topic-badge badge-aprox">Teoría Fundamental</span>
+      <h3 class="m-0">1. Fundamentos de Aproximación y el Problema de las Cotas</h3>
+    </div>
+    <p>
+      Para demostrar que un algoritmo entrega una $\alpha$-aproximación, debemos probar que para <em>toda</em> entrada factible:
+    </p>
+    <div class="cota-card">
+      <div class="cota-title">🎯 Razón de Aproximación (Approximation Ratio)</div>
+      <div class="cota-math">
+        $$\max\left( \frac{\text{Aprox}}{\text{OPT}}, \; \frac{\text{OPT}}{\text{Aprox}} \right) \le \alpha$$
+      </div>
+      <p class="small m-0 text-muted text-center">
+        Un algoritmo es una <strong>2-aproximación</strong> para minimización si nunca gasta más del doble del óptimo.
+      </p>
+    </div>
+
+    <div class="alert alert-warning" role="alert">
+      <strong>⚠️ El gran obstáculo pedagógico:</strong> No conocemos la solución óptima $\text{OPT}$ (calcularla requeriría resolver el problema NP-Hard en tiempo exponencial).
+      Por lo tanto, es <strong>obligatorio</strong> encontrar una <strong>cota o límite</strong> estructural o matemático:
+      <ul class="mb-0 mt-1">
+        <li><strong>En problemas de Minimización:</strong> Se busca una <em>cota inferior</em> $L \le \text{OPT}$. Si demostramos que $\text{Aprox} \le \alpha \cdot L$, como $L \le \text{OPT}$, automáticamente $\text{Aprox} \le \alpha \cdot \text{OPT}$.</li>
+        <li><strong>En problemas de Maximización:</strong> Se busca una <em>cota superior</em> $U \ge \text{OPT}$. Si probamos que $\text{Aprox} \ge \alpha \cdot U$, entonces $\text{Aprox} \ge \alpha \cdot \text{OPT}$.</li>
+      </ul>
+    </div>
+
+    <h5>Esquemas de Aproximación (PTAS y FPTAS)</h5>
+    <p>
+      Para ciertos problemas, podemos fijar un margen de error $\epsilon > 0$ deseado (por ejemplo, estar a menos del $1\%$ del óptimo):
+    </p>
+    <ul>
+      <li><strong>PTAS (Polynomial-Time Approximation Scheme):</strong> Para cualquier $\epsilon > 0$ fijo, corre en tiempo polinomial en $n$, pero la constante depende de $\epsilon$, por ejemplo $O(n^{1/\epsilon})$ o $O(n^{k+1})$. Si $\epsilon \to 0$, el exponente puede explotar.</li>
+      <li><strong>FPTAS (Fully Polynomial-Time Approximation Scheme):</strong> El tiempo es polinomial tanto en el tamaño de entrada $n$ como en $1/\epsilon$, por ejemplo $O(n^3 \cdot \epsilon^{-1})$. ¡Es el estándar dorado de la aproximación!</li>
+    </ul>
+  </section>
+
+  <!-- SECCIÓN 2: SET COVER VORAZ -->
+  <section class="topic-section" id="set-cover">
+    <div class="topic-header">
+      <span class="topic-badge badge-aprox">Caso de Estudio 1</span>
+      <h3 class="m-0">2. Set Cover Aproximado (Voraz con Cota Armónica)</h3>
+    </div>
+    <p>
+      <strong>Definición del Problema:</strong> Dado un universo $U$ de elementos y una colección de subconjuntos $S = \{S_1, S_2, \dots, S_m\}$ donde cada $S_i \subseteq U$ tiene un costo asociado $w_i \ge 0$, se busca encontrar una subcolección $C \subseteq S$ tal que $\bigcup_{S_i \in C} S_i = U$ minimizando el costo total $\sum_{S_i \in C} w_i$.
+    </p>
+    <p>
+      <strong>Regla Voraz de Selección:</strong> En cada iteración, no elegimos simplemente el de menor peso ni el de más elementos. Elegimos el subconjunto $S_i$ que tenga el <strong>menor costo por elemento nuevo cubierto</strong>:
+    </p>
+    <div class="cota-card">
+      <div class="cota-math">
+        $$\text{Elegir } S_i \text{ que minimice } \frac{w_i}{|S_i \cap R|}$$
+      </div>
+      <p class="small text-muted text-center m-0">Donde $R \subseteq U$ es el conjunto de elementos que aún permanecen sin cubrir.</p>
+    </div>
+
+    <!-- Simulador Interactivo Paso a Paso Set Cover con el ejemplo exacto de clase -->
+    <div class="interactive-stepper" id="stepperSetCover">
+      <div class="stepper-controls">
+        <div>
+          <span class="badge bg-primary me-2">Simulador Interactivo</span>
+          <strong>Ejemplo Oficial de Clase: Set Cover</strong>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <button class="stepper-btn" onclick="prevSetCoverStep()" id="scBtnPrev" disabled>◀ Anterior</button>
+          <span class="stepper-progress-text" id="scStepIndicator">Paso 0 de 4</span>
+          <button class="stepper-btn" onclick="nextSetCoverStep()" id="scBtnNext">Siguiente ▶</button>
+          <button class="stepper-btn" onclick="resetSetCoverStep()">↺ Reset</button>
+        </div>
+      </div>
+      <div class="stepper-view" id="scViewContent">
+        <!-- Contenido dinámico inyectado por JS -->
+      </div>
+    </div>
+
+    <h5>Garantía de Calidad Teórica de Set Cover</h5>
+    <div class="cota-card">
+      <div class="cota-title">📐 Cota de Chvátal / Johnson: Función Armónica</div>
+      <div class="cota-math">
+        $$W \le H(d^*) \cdot W^* \quad \text{donde} \quad d^* = \max_i |S_i| \quad \text{y} \quad H(d^*) = \sum_{i=1}^{d^*} \frac{1}{i} \approx \ln(d^*) \le O(\log d^*)$$
+      </div>
+      <p class="small text-muted m-0">
+        <strong>Corolario clave:</strong> Cuanto más pequeños sean los subconjuntos $S_i$, mejor será la garantía. Si cada conjunto cubre a lo sumo 2 elementos (como en Vertex Cover), $H(2) = 1 + 1/2 = 1.5$.
+      </p>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 3: VERTEX COVER POR RELAJACIÓN LINEAL -->
+  <section class="topic-section" id="vc-lineal">
+    <div class="topic-header">
+      <span class="topic-badge badge-aprox">Caso de Estudio 2</span>
+      <h3 class="m-0">3. Vertex Cover: Aproximación por Relajación Lineal (Rounding)</h3>
+    </div>
+    <p>
+      En <strong>Vertex Cover Ponderado</strong>, tenemos un grafo $G=(V, E)$ y cada vértice $v_i$ tiene peso $w_i \ge 0$. Buscamos $S \subseteq V$ de costo mínimo tal que toda arista $(i, j) \in E$ tenga al menos un extremo en $S$.
+    </p>
+
+    <div class="card-grid-2">
+      <div class="concept-box">
+        <h5>1. Modelo Entero (PLE) — NP-Hard</h5>
+        <div class="small">
+          $$\min \sum_{i \in V} w_i X_i$$
+          $$\text{s.a.} \quad X_i + X_j \ge 1 \quad \forall (i, j) \in E$$
+          $$X_i \in \{0, 1\}$$
+        </div>
+        <p class="small text-muted mt-2">
+          Resolverlo exactamente es NP-Hard (en la lista de los 21 problemas de Karp).
+        </p>
+      </div>
+      <div class="concept-box">
+        <h5>2. Relajación Lineal (RL) — Polinomial</h5>
+        <div class="small">
+          $$\min \sum_{i \in V} w_i X_i$$
+          $$\text{s.a.} \quad X_i + X_j \ge 1 \quad \forall (i, j) \in E$$
+          $$\mathbf{0 \le X_i \le 1}$$
+        </div>
+        <p class="small text-muted mt-2">
+          Se eliminó la restricción de integralidad. Es resoluble en tiempo polinomial (ej. Simplex / Puntos Interiores).
+        </p>
+      </div>
+    </div>
+
+    <h5>La Técnica de Redondeo (Rounding) y Demostración de la 2-Aproximación</h5>
+    <ol>
+      <li>
+        <strong>Cota de Relajación:</strong> Como la región factible continua contiene a todos los puntos enteros $\{0, 1\}$, el mínimo continuo es igual o mejor que el entero:
+        $$w(S_{RL}) \le w(S^*) \quad (\text{Cota Inferior})$$
+      </li>
+      <li>
+        <strong>Regla de Redondeo:</strong> Sea $\{X_i^*\}$ la solución fraccionaria de la RL. Definimos el conjunto aproximado:
+        $$S = \{i \in V : X_i^* \ge 0.5\}$$
+      </li>
+      <li>
+        <strong>Factibilidad garantizada:</strong> Para cualquier arista $(i, j) \in E$, la restricción exige $X_i^* + X_j^* \ge 1$. Por el principio del palomar, es matemáticamente imposible que ambos sean menores a $0.5$. Al menos uno debe tener $X^* \ge 0.5$, por lo que al menos un extremo entra a $S$. <em>¡$S$ siempre es un Vertex Cover válido!</em>
+      </li>
+      <li>
+        <strong>Acotación del costo:</strong>
+        $$\sum_{i \in S} w_i \le \sum_{i \in S} 2 w_i X_i^* \le 2 \sum_{i \in V} w_i X_i^* = 2 w(S_{RL}) \le 2 w(S^*)$$
+        <strong>Conclusión:</strong> El costo es a lo sumo el doble del óptimo. ¡Es una <strong>2-aproximación</strong>!
+      </li>
+    </ol>
+
+    <div class="alert alert-danger" role="alert">
+      <strong>⚠️ ¡Peligro de Parcial!: Reducciones de Decisión vs Reducciones en Aproximación</strong><br>
+      Sabemos que $IndependentSet \le_P VertexCover$ (un conjunto $I$ es independiente sii su complemento $V \setminus I$ es Vertex Cover).
+      Sin embargo, <strong>no se puede usar un algoritmo de aproximación de Vertex Cover para resolver Independent Set</strong>.
+      Si un grafo tiene 1000 nodos, $VC^* = 10$ e $IS^* = 990$, una 2-aproximación de VC puede costar 20 nodos. Su complemento tendrá $1000 - 20 = 980$ nodos (apenas un error despreciable). Pero si $VC^* = 990$ e $IS^* = 10$, una 2-aproximación de VC podría devolver un cover de tamaño 995, dejando un conjunto independiente de solo 5 nodos (¡la mitad del óptimo!), perdiendo por completo la razón de aproximación.
+    </div>
+  </section>
+
+  <!-- SECCIÓN 4: PRICING METHOD (PRIMAL-DUAL) -->
+  <section class="topic-section" id="pricing-method">
+    <div class="topic-header">
+      <span class="topic-badge badge-aprox">Caso de Estudio 3</span>
+      <h3 class="m-0">4. Vertex Cover por Pricing Method (Método Primal-Dual)</h3>
+    </div>
+    <p>
+      Introducido por Dantzig, Ford y Fulkerson (1956). Plantea una <strong>metáfora económica</strong>:
+      Las aristas son "clientes" que pagan un precio $p_e \ge 0$ para ser cubiertas por alguno de los vértices que las tocan.
+    </p>
+    <ul>
+      <li><strong>Precio Acorde (Fair):</strong> Sería abusivo cobrarle a las aristas más de lo que cuesta el vértice que las cubre. Por lo tanto, para cada vértice $v_i$:
+        $$\sum_{e \text{ incidente a } v_i} p_e \le w_i$$
+      </li>
+      <li><strong>Definición:</strong> Un vértice está <em>completamente pago</em> sii $\sum_{e \text{ inc } v_i} p_e = w_i$.</li>
+      <li><strong>Cota Inferior:</strong> Para cualquier solución óptima $S^*$, como cubre todas las aristas y cada vértice cobra a lo sumo su peso:
+        $$\sum_{e \in E} p_e \le \sum_{i \in S^*} \sum_{e=(i, j)} p_e \le \sum_{i \in S^*} w_i = w(S^*)$$
+      </li>
+      <li><strong>Factor 2 de Aproximación:</strong> Como una arista $e=(u,v)$ tiene 2 extremos, a lo sumo aporta su precio $p_e$ dos veces si ambos extremos terminan en la solución $S$:
+        $$w(S) = \sum_{i \in S} w_i = \sum_{i \in S} \sum_{e \text{ inc } i} p_e \le 2 \sum_{e \in E} p_e \le 2 w(S^*)$$
+      </li>
+    </ul>
+
+    <!-- Simulador Interactivo Pricing Method -->
+    <div class="interactive-stepper" id="stepperPricing">
+      <div class="stepper-controls">
+        <div>
+          <span class="badge bg-success me-2">Seguimiento Interactivo</span>
+          <strong>Ejemplo de Clase: Grafo Diamante {a(4), b(3), c(5), d(3)}</strong>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+          <button class="stepper-btn" onclick="prevPricingStep()" id="prBtnPrev" disabled>◀ Anterior</button>
+          <span class="stepper-progress-text" id="prStepIndicator">Paso 0 de 3</span>
+          <button class="stepper-btn" onclick="nextPricingStep()" id="prBtnNext">Siguiente ▶</button>
+          <button class="stepper-btn" onclick="resetPricingStep()">↺ Reset</button>
+        </div>
+      </div>
+      <div class="stepper-view" id="prViewContent">
+        <!-- Renderizado dinámico del grafo y tablas -->
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 5: MOCHILA (GREEDY 2.0 & FPTAS) -->
+  <section class="topic-section" id="mochila-aprox">
+    <div class="topic-header">
+      <span class="topic-badge badge-aprox">Caso de Estudio 4</span>
+      <h3 class="m-0">5. El Problema de la Mochila: Heurísticas, Cotas y FPTAS</h3>
+    </div>
+    <p>
+      En la Mochila 0-1 estándar tenemos capacidad $W$ y $n$ elementos con peso $w_i$ y beneficio $v_i$.
+      Buscamos maximizar el valor sin superar la capacidad.
+    </p>
+
+    <div class="card-grid-2">
+      <div class="concept-box">
+        <h5>Greedy 1.0 vs Greedy 2.0</h5>
+        <p class="small">
+          Ordenar por densidad $v_i / w_i$ y tomar en orden voraz puede ser <strong>arbitrariamente malo</strong>
+          (ej. ítem 1 de peso 1 beneficio 2, ítem 2 de peso $W$ beneficio $W$).
+        </p>
+        <div class="alert alert-info py-2 px-3 small">
+          <strong>Greedy 2.0 (Garantía 0.5):</strong> Sea $Z'$ el valor obtenido por la heurística voraz, y $P_c$ el beneficio del <em>elemento crítico</em> (el primer elemento que no entró).
+          Definimos:
+          $$Z'' = \max(Z', \; P_c)$$
+          Como $Z_{\text{opt}} < Z' + P_c$, ¡uno de los dos debe ser al menos $\frac{1}{2} Z_{\text{opt}}$!
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h5>Cotas Superiores: Relajación y Martello-Toth</h5>
+        <ul class="small">
+          <li><strong>Cota 1 (Relajación Lineal Continua):</strong> Se permite fraccionar el elemento crítico $c$:
+            $$U_1 = Z' + \bar{c} \cdot \frac{P_c}{W_c}$$
+          </li>
+          <li><strong>Cota 2 (Martello y Toth 1990):</strong> En vez de fraccionar el elemento crítico, se consideran 2 ramas enteras: incluirlo obligatoriamente o excluirlo, tomando $U_2 = \max(W_1, W_2)$. Cota mucho más ajustada.</li>
+          <li><strong>PTAS de Sahni (1975):</strong> Probar por fuerza bruta todos los subconjuntos de hasta $k$ elementos fijos y completar con greedy. Complejidad $O(n^{k+1})$, factor $k/(k+1)$.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h5>FPTAS para Mochila mediante Escalado de Beneficios</h5>
+    <p>
+      El algoritmo clásico de Programación Dinámica corre en $O(n W)$ (pseudopolinomial). Si $W$ es gigante, no sirve.
+      Sin embargo, existe una formulación dual de Programación Dinámica basada en el beneficio:
+      $OPT(i, V)$ = <em>mínima capacidad requerida para alcanzar exactamente el beneficio $V$ con los primeros $i$ elementos</em>.
+      Corre en $O(n^2 \cdot v^*)$ donde $v^* = \max v_i$.
+    </p>
+    <div class="cota-card">
+      <div class="cota-title">🎯 Algoritmo FPTAS de Escalado (Rounding and Scaling)</div>
+      <ol class="small mb-2">
+        <li>Fijamos el parámetro de precisión deseado $\epsilon > 0$.</li>
+        <li>Definimos el factor de escala: $$b = \frac{\epsilon}{2n} \cdot \max_{i} (v_i)$$</li>
+        <li>Redondeamos el beneficio de cada ítem a múltiplos de $b$: $$\tilde{v}_i = \left\lceil \frac{v_i}{b} \right\rceil \cdot b$$</li>
+        <li>Resolvemos la nueva instancia reescalada usando la Programación Dinámica dual en $O(n^2 \tilde{v}^*)$.</li>
+      </ol>
+      <div class="cota-math">
+        $$\text{Complejidad Final} = O\left(n^3 \cdot \frac{1}{\epsilon}\right) \quad \text{con garantía} \quad \sum_{i \in S} v_i \ge (1 - \epsilon) \cdot \text{OPT}$$
+      </div>
+      <p class="small text-muted text-center m-0">Es totalmente polinomial en $n$ y en $1/\epsilon$.</p>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 6: BALANCEO DE CARGA -->
+  <section class="topic-section" id="balanceo-carga">
+    <div class="topic-header">
+      <span class="topic-badge badge-aprox">Caso de Estudio 5</span>
+      <h3 class="m-0">6. Balanceo de Carga (Load Balancing / Makespan)</h3>
+    </div>
+    <p>
+      Disponemos de $m$ máquinas idénticas y $n$ tareas con duraciones $t_1, t_2, \dots, t_n$.
+      Buscamos asignar cada tarea a una máquina de modo de minimizar la carga máxima o makespan $T = \max_{i} T_i$.
+    </p>
+
+    <div class="card-grid-2">
+      <div class="concept-box">
+        <h5>1. Algoritmo Greedy de Graham (List Scheduling)</h5>
+        <p class="small">
+          Regla Voraz: Procesar las tareas en el orden en que llegan y asignar la tarea $j$ a la máquina que tenga <strong>menor carga actual</strong>.
+        </p>
+        <div class="alert alert-secondary py-2 small mb-0">
+          <strong>Demostración de la 2-Aproximación:</strong><br>
+          Cota A: $T^* \ge \frac{1}{m} \sum t_j$ (promedio ideal).<br>
+          Cota B: $T^* \ge \max_j t_j$ (la tarea más larga).<br>
+          Sea $M_i$ la máquina que terminó con la carga máxima $T$, y sea $t_j$ su última tarea asignada. Antes de recibir $t_j$, su carga era $T_i - t_j$. Como era la de menor carga:
+          $$T_i - t_j \le \frac{1}{m} \sum_{k=1}^m T_k \le T^* \implies T_i \le T^* + t_j \le T^* + T^* = 2T^*$$
+          <strong>Garantía:</strong> $T \le 2T^*$ (2-aproximación).
+        </div>
+      </div>
+
+      <div class="concept-box">
+        <h5>2. Mejora LPT (Longest Processing Time First)</h5>
+        <p class="small">
+          Regla Voraz Mejorada: <strong>Ordenar las tareas en orden decreciente de duración</strong> ($t_1 \ge t_2 \ge \dots \ge t_n$) antes de aplicar la asignación voraz.
+        </p>
+        <div class="alert alert-success py-2 small mb-0">
+          <strong>Demostración de la Cota 3/2 (1.5-Aproximación):</strong><br>
+          Si $n \le m$, cada tarea va a una máquina distinta (óptimo).<br>
+          Si $n > m$, cuando se asigna la tarea $m+1$, alguna máquina ya tiene al menos 2 tareas. Como las tareas están ordenadas decrecientes, cada una de las primeras $m+1$ tareas dura al menos $t_{m+1}$. Por lo tanto:
+          $$T^* \ge 2 t_{m+1} \implies t_{m+1} \le \frac{1}{2} T^*$$
+          La última tarea asignada a la máquina máxima cumple $t_j \le t_{m+1} \le \frac{1}{2} T^*$. Sumando a $T_i - t_j \le T^*$:
+          $$T \le T^* + \frac{1}{2} T^* = \frac{3}{2} T^*$$
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparativa visual con el ejemplo numérico de clase -->
+    <div class="interactive-simulator">
+      <h6>📊 Comparativa Visual del Ejemplo de Clase: 3 Máquinas y Tareas {2, 3, 4, 6, 2, 2}</h6>
+      <div class="row text-center mt-3">
+        <div class="col-md-6 mb-3">
+          <div class="p-3 border rounded bg-card">
+            <h6 class="text-danger">Greedy de Graham (Sin Ordenar)</h6>
+            <div style="font-size: 0.85rem; line-height: 1.8;">
+              $M_1: 2 + 6 = \mathbf{8}$ 🔴 (Makespan)<br>
+              $M_2: 3 + 2 = 5$<br>
+              $M_3: 4 + 2 = 6$<br>
+              <strong>Makespan obtenido: 8</strong>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <div class="p-3 border rounded bg-card">
+            <h6 class="text-success">LPT Ordenado Decreciente {6, 4, 3, 2, 2, 2}</h6>
+            <div style="font-size: 0.85rem; line-height: 1.8;">
+              $M_1: 6 = 6$<br>
+              $M_2: 4 + 2 = 6$<br>
+              $M_3: 3 + 2 + 2 = \mathbf{7}$ 🟢 (Makespan Óptimo)<br>
+              <strong>Makespan obtenido: 7</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 7: EL PROBLEMA DEL VIAJANTE (TSP) -->
+  <section class="topic-section" id="tsp-aprox">
+    <div class="topic-header">
+      <span class="topic-badge badge-aprox">Caso de Estudio 6</span>
+      <h3 class="m-0">7. El Problema del Viajante de Comercio (TSP)</h3>
+    </div>
+    <p>
+      El TSP general no admite ningún algoritmo de aproximación con factor constante a menos que P = NP.
+      Sin embargo, cuando las distancias cumplen la <strong>desigualdad triangular</strong> ($c(u, w) \le c(u, v) + c(v, w)$, conocido como <em>TSP Métrico</em>), podemos diseñar algoritmos con garantías asombrosas.
+    </p>
+
+    <div class="mermaid-wrapper">
+      <pre class="mermaid">
+flowchart LR
+    A["1. Árbol Cobertura Mínimo (MST)<br/>costo ≤ OPT"] --> B["2. Vértices de Grado Impar<br/>(siempre son cantidad par)"]
+    B --> C["3. Matching Perfecto Mínimo (M)<br/>costo ≤ 0.5 OPT"]
+    C --> D["4. Unir T ∪ M (Multigrafo Euleriano)<br/>costo ≤ 1.5 OPT"]
+    D --> E["5. Tour Euleriano + Shortcuts<br/>Garantía Christofides: 3/2 = 1.5"]
+    classDef step fill:#1e3a8a,stroke:#3b82f6,color:#fff;
+    class A,B,C,D,E step;
+      </pre>
+    </div>
+
+    <div class="row g-3 my-2">
+      <div class="col-md-6">
+        <div class="concept-box h-100">
+          <h5>Algoritmos de Construcción vs Mejora</h5>
+          <ul class="small mb-0">
+            <li><strong>Construcción:</strong> Crean un tour desde cero a partir de los datos.
+              <ul>
+                <li><em>Vecino más cercano:</em> $O(n^2)$, ~25% sobre cota Held-Karp.</li>
+                <li><em>Tramo más corto (Kruskal-like):</em> $O(n^2 \log n)$, ~15-20% sobre Held-Karp.</li>
+                <li><em>Christofides:</em> $O(n^3)$, garantía teórica $3/2$ ($1.5$), ~6.7% sobre Held-Karp en la práctica.</li>
+              </ul>
+            </li>
+            <li><strong>Mejora (Búsqueda Local):</strong> Parten de una solución factible e intentan mejorarla iterativamente.
+              <ul>
+                <li><em>$k$-intercambios (2-opt, 3-opt):</em> Reemplazar $k$ aristas.</li>
+                <li><em>Lin-Kernighan, Búsqueda Tabú, Simulated Annealing.</em></li>
+                <li><em>Algoritmo de Arora:</em> PTAS para TSP euclídeo garantizando $(1 + 1/c)$.</li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="concept-box h-100">
+          <h5>¿Por qué funciona 2-Opt en Grafos Euclídeos?</h5>
+          <p class="small text-muted">
+            <em>"Si un ciclo Hamiltoniano se cruza a sí mismo, puede ser fácilmente acortado: basta con eliminar las dos aristas que se cruzan y reconectar los caminos resultantes mediante aristas que no se corten. El ciclo final es estrictamente más corto."</em>
+          </p>
+          <div class="text-center p-2 border rounded bg-card">
+            <svg viewBox="0 0 280 120" style="width: 100%; max-height: 120px;">
+              <!-- Caso cruzado -->
+              <circle cx="20" cy="20" r="5" fill="#ef4444" />
+              <circle cx="110" cy="100" r="5" fill="#ef4444" />
+              <circle cx="20" cy="100" r="5" fill="#ef4444" />
+              <circle cx="110" cy="20" r="5" fill="#ef4444" />
+              <line x1="20" y1="20" x2="110" y2="100" stroke="#ef4444" stroke-width="2" stroke-dasharray="4" />
+              <line x1="20" y1="100" x2="110" y2="20" stroke="#ef4444" stroke-width="2" stroke-dasharray="4" />
+              <text x="65" y="115" font-size="10" text-anchor="middle" fill="currentColor">Aristas Cruzadas (Mayor longitud)</text>
+
+              <!-- Flecha de transición -->
+              <text x="140" y="65" font-size="18" text-anchor="middle" fill="#3b82f6">➔</text>
+
+              <!-- Caso descruzado -->
+              <circle cx="170" cy="20" r="5" fill="#10b981" />
+              <circle cx="260" cy="20" r="5" fill="#10b981" />
+              <circle cx="170" cy="100" r="5" fill="#10b981" />
+              <circle cx="260" cy="100" r="5" fill="#10b981" />
+              <line x1="170" y1="20" x2="260" y2="20" stroke="#10b981" stroke-width="2.5" />
+              <line x1="170" y1="100" x2="260" y2="100" stroke="#10b981" stroke-width="2.5" />
+              <text x="215" y="115" font-size="10" text-anchor="middle" fill="currentColor">Descruzadas por 2-Opt (Menor longitud)</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabla empírica de resultados reales del dataset d15112 de clase -->
+    <div class="mt-4 p-3 border rounded bg-card">
+      <h6 class="text-primary fw-bold">📊 Comparación Empírica Oficial de Heurísticas de TSP (Dataset real d15112)</h6>
+      <p class="small text-muted mb-2">
+        Evaluación de la distancia porcentual al límite de la Cota Inferior de <strong>Held-Karp (Relajación Lineal)</strong> y tiempo de ejecución:
+      </p>
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Heurística / Algoritmo</th>
+              <th>Tipo</th>
+              <th>Distancia a Held-Karp (%)</th>
+              <th>Tiempo (segundos)</th>
+              <th>Garantía Teórica</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="highlight-row">
+              <td><strong>Christofides</strong></td>
+              <td>Árbol + Matching</td>
+              <td><strong>6.7%</strong> 🟢 (Mejor calidad)</td>
+              <td>14.1 s</td>
+              <td>3/2 = 1.5 (TSP Métrico)</td>
+            </tr>
+            <tr>
+              <td><strong>Boruvka</strong></td>
+              <td>Greedy adaptado</td>
+              <td>15.0%</td>
+              <td>0.26 s</td>
+              <td>Sin garantía formal</td>
+            </tr>
+            <tr>
+              <td><strong>Goloso (Tramo más corto)</strong></td>
+              <td>Greedy (Kruskal-like)</td>
+              <td>15.2%</td>
+              <td>0.44 s</td>
+              <td>Sin garantía formal</td>
+            </tr>
+            <tr>
+              <td><strong>Inserción más cercana</strong></td>
+              <td>Inserción incremental</td>
+              <td>22.8%</td>
+              <td>2.84 s</td>
+              <td>Sin garantía formal</td>
+            </tr>
+            <tr>
+              <td><strong>Vecino más cercano</strong></td>
+              <td>Greedy local</td>
+              <td>25.1% 🔴 (Peor calidad)</td>
+              <td><strong>0.14 s</strong> ⚡ (Más veloz)</td>
+              <td>Sin garantía formal</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- BLOQUE 2: ALGORITMOS RANDOMIZADOS                                         -->
+  <!-- ========================================================================= -->
+
+  <!-- SECCIÓN 8: RANDOMIZADOS: FUNDAMENTOS -->
+  <section class="topic-section" id="rand-fundamentos">
+    <div class="topic-header">
+      <span class="topic-badge badge-rand">Fundamentos Randomizados</span>
+      <h3 class="m-0">8. Algoritmos Randomizados: El Azar como Herramienta</h3>
+    </div>
+    <p>
+      El azar no se introduce en computación solo para videojuegos o simulaciones.
+      Se utiliza cuando <strong>si el algoritmo se comportase de forma puramente determinística, fallaría o sería infinitamente más lento</strong>
+      (por ejemplo, ante entradas patológicas construidas por un atacante o adversario).
+    </p>
+
+    <div class="card-grid-2">
+      <div class="concept-box" style="border-top: 4px solid #3b82f6;">
+        <h5>🎰 Algoritmos Monte Carlo</h5>
+        <span class="badge bg-primary mb-2">Nicholas Metropolis (1947)</span>
+        <ul class="small mb-0">
+          <li><strong>Tiempo de ejecución:</strong> Determinado y acotado (orden polinomial estricto).</li>
+          <li><strong>Exactitud de la respuesta:</strong> Puede ser <em>incorrecta con cierta probabilidad</em> acotada.</li>
+          <li><strong>Estrategia de mitigación:</strong> Repitiendo el algoritmo $k$ veces independientes, la probabilidad de error decrece exponencialmente a $(p_{\text{error}})^k$.</li>
+          <li><strong>Ejemplos del curso:</strong> Algoritmo de Contracción de Karger (Min-Cut), Test de Primalidad de Miller-Rabin.</li>
+        </ul>
+      </div>
+
+      <div class="concept-box" style="border-top: 4px solid #10b981;">
+        <h5>🎲 Algoritmos Las Vegas</h5>
+        <span class="badge bg-success mb-2">László Babai (1979)</span>
+        <ul class="small mb-0">
+          <li><strong>Exactitud de la respuesta:</strong> La respuesta es <strong>siempre correcta</strong> (o informa explícitamente que no pudo encontrarla).</li>
+          <li><strong>Tiempo de ejecución:</strong> El tiempo es una variable aleatoria, pero su <em>esperanza matemática</em> es polinomial $E[T] = O(n)$.</li>
+          <li><strong>Estrategia de mitigación:</strong> Si no encuentra solución, se repite el ensayo.</li>
+          <li><strong>Ejemplos del curso:</strong> QuickSort Randomizado, QuickSelect (Selección de Mediana), N-Reinas aleatorio.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cota-card">
+      <div class="cota-title">📐 Recordatorio Fundamental: Linealidad de la Esperanza</div>
+      <div class="cota-math">
+        $$E[X + Y] = E[X] + E[Y]$$
+      </div>
+      <p class="small text-muted text-center m-0">
+        ¡Válido <strong>siempre</strong>, sin importar si las variables aleatorias $X$ e $Y$ son dependientes o independientes! Esta propiedad es la piedra angular de casi todas las demostraciones del paradigma.
+      </p>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 9: RESOLUCIÓN DE COLISIONES -->
+  <section class="topic-section" id="colisiones-red">
+    <div class="topic-header">
+      <span class="topic-badge badge-rand">Aplicación Randomizada 1</span>
+      <h3 class="m-0">9. Resolución de Colisiones en Redes (Rotura de Simetría)</h3>
+    </div>
+    <p>
+      <strong>El Problema:</strong> Un servidor atiende a $n$ clientes idénticos en intervalos de tiempo $t$. Los clientes no se conocen ni pueden comunicarse entre sí. Si 2 o más clientes intentan transmitir al servidor en el mismo lapso $t$, se produce una colisión, todos fallan y nadie se comunica.
+    </p>
+    <p>
+      <strong>Solución por Azar:</strong> Como no hay jerarquía para decidir quién va primero, usamos el azar para <strong>romper la simetría</strong>. Cada cliente intenta transmitir con probabilidad $p \in (0, 1)$, y con probabilidad $1-p$ decide esperar.
+    </p>
+    <div class="cota-card">
+      <div class="cota-title">🎯 Deducción del Valor Óptimo de \(p\)</div>
+      <p class="small mb-1">La probabilidad de que un cliente específico logre transmitir con éxito (él transmite y los otros $n-1$ callan) es:</p>
+      <div class="cota-math">$$P(\text{éxito individual}) = p \cdot (1 - p)^{n-1}$$</div>
+      <p class="small mb-1">Para maximizar el throughput total de la red o la probabilidad de éxito, derivamos respecto a $p$ e igualamos a 0:</p>
+      <div class="cota-math">$$\frac{d}{dp} \left[ p(1-p)^{n-1} \right] = (1-p)^{n-1} - p(n-1)(1-p)^{n-2} = 0 \implies \mathbf{p = \frac{1}{n}}$$</div>
+      <p class="small text-muted text-center m-0">Con $p = 1/n$, para $n$ grande la probabilidad de éxito se estabiliza en $\frac{1}{n} \left(1 - \frac{1}{n}\right)^{n-1} \approx \frac{1}{e \cdot n}$.</p>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 10: KARGER MIN-CUT -->
+  <section class="topic-section" id="karger-mincut">
+    <div class="topic-header">
+      <span class="topic-badge badge-rand">Aplicación Randomizada 2</span>
+      <h3 class="m-0">10. Corte Mínimo Global: Algoritmo de Contracción de Karger (1993)</h3>
+    </div>
+    <p>
+      <strong>Definición:</strong> Dado un grafo no dirigido $G=(V, E)$, un corte $(A, B)$ es una partición de los nodos en dos conjuntos no vacíos. El tamaño del corte es la cantidad de aristas que conectan un nodo de $A$ con uno de $B$. Buscamos el corte de menor tamaño posible.
+    </p>
+    <p>
+      <strong>Enfoque previo con Redes de Flujo:</strong> Como el grafo es no dirigido, transformamos cada arista en dos dirigidas con capacidad 1, fijamos un nodo $s$ y corremos Ford-Fulkerson para todos los posibles sumideros $t \in V \setminus \{s\}$ ($|V|-1$ ejecuciones). Es polinomial pero costoso.
+    </p>
+
+    <h5>Mecánica del Algoritmo de Contracción de Karger</h5>
+    <ol>
+      <li>Comenzar con el multigrafo $G=(V, E)$ (admite aristas paralelas).</li>
+      <li>Elegir una arista $e=(u, v)$ uniformemente al azar.</li>
+      <li><strong>Contraer la arista $e$:</strong> Fusionar $u$ y $v$ en un supervértice $w$, eliminar los bucles propios $(w, w)$, pero conservar las aristas paralelas hacia otros nodos.</li>
+      <li>Repetir hasta que queden exactamente <strong>dos supervértices</strong>.</li>
+      <li>Las aristas que sobreviven entre ambos supervértices constituyen el corte.</li>
+    </ol>
+
+    <!-- Simulador Interactivo Karger -->
+    <div class="interactive-simulator">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <div>
+          <span class="badge bg-warning text-dark me-2">Simulador Karger</span>
+          <strong>Demostración de Contracción Aleatoria</strong>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="stepper-btn" onclick="contractKargerStep()" id="kgBtnStep">Contraer Arista al Azar 🎲</button>
+          <button class="stepper-btn" onclick="resetKargerSim()">↺ Reiniciar Grafo</button>
+        </div>
+      </div>
+      <div class="row align-items-center">
+        <div class="col-md-7 text-center">
+          <svg id="kargerSvg" viewBox="0 0 360 220" class="graph-svg"></svg>
+        </div>
+        <div class="col-md-5">
+          <div class="sim-output-box" id="kargerConsole">
+            Iniciando con 4 nodos {a, b, c, d} y 5 aristas.<br>
+            Hacé click en "Contraer Arista al Azar" para observar cómo se fusionan los vértices.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h5>Análisis de Probabilidad y Amplificación de Éxito</h5>
+    <div class="cota-card">
+      <div class="cota-title">📐 ¿Por qué la probabilidad no es exponencialmente pequeña?</div>
+      <p class="small mb-1">
+        Si el corte mínimo tiene tamaño $k$, cada nodo tiene grado al menos $k \implies |E| \ge \frac{nk}{2}$.
+        La probabilidad de NO arruinar el corte en el primer paso al elegir una arista al azar es:
+      </p>
+      <div class="cota-math">
+        $$P(\text{éxito en 1 corrida}) \ge \frac{1}{\binom{n}{2}} = \frac{2}{n(n-1)}$$
+      </div>
+      <p class="small mb-1">
+        Si repetimos el algoritmo $\binom{n}{2} \ln n$ veces independientes y nos quedamos con el menor corte hallado:
+      </p>
+      <div class="cota-math">
+        $$P(\text{fracasar en todas las corridas}) \le \left( 1 - \frac{1}{\binom{n}{2}} \right)^{\binom{n}{2} \ln n} \le e^{-\ln n} = \mathbf{\frac{1}{n}}$$
+      </div>
+      <p class="small text-muted text-center m-0">
+        ¡La probabilidad de éxito sube al $1 - \frac{1}{n}$ (más del $99.9\%$ para $n$ grande) en tiempo $O(n^4 \log n)$!
+        Karger-Stein (1996) mejora esto a $O(n^2 \log^3 n)$ usando Divide y Conquista.
+      </p>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 11: MAX 3-SAT (EL MÉTODO PROBABILÍSTICO) -->
+  <section class="topic-section" id="max-3sat">
+    <div class="topic-header">
+      <span class="topic-badge badge-rand">Aplicación Randomizada 3</span>
+      <h3 class="m-0">11. MAX 3-SAT: El Poder del Método Probabilístico (Garantía 7/8)</h3>
+    </div>
+    <p>
+      El problema de decisión 3-SAT es NP-Completo. Su versión de optimización, <strong>MAX 3-SAT</strong>, busca encontrar una asignación de verdad que maximice la cantidad de cláusulas satisfechas (es NP-Hard). Cada cláusula está compuesta por 3 literales disyuntos ($C_i = l_1 \lor l_2 \lor l_3$).
+    </p>
+
+    <h5>El Algoritmo Más Simple del Mundo</h5>
+    <p>
+      Para cada variable booleana $x_j$, lanzamos una moneda equilibrada: asignamos <code>True</code> con probabilidad $1/2$ y <code>False</code> con probabilidad $1/2$, de manera independiente.
+    </p>
+
+    <div class="cota-card">
+      <div class="cota-title">🎯 Deducción Matemática de la Garantía 7/8</div>
+      <p class="small mb-1">Para que una cláusula $C_i$ de 3 literales quede <strong>insatisfecha</strong>, sus 3 literales deben evaluarse en <code>False</code>:</p>
+      <div class="cota-math">$$P(C_i = \text{False}) = \left(\frac{1}{2}\right)^3 = \frac{1}{8} \implies P(C_i = \text{Satisfecha}) = 1 - \frac{1}{8} = \mathbf{\frac{7}{8}}$$</div>
+      <p class="small mb-1">Definamos $Z_i = 1$ si $C_i$ está satisfecha y $0$ si no. La cantidad total de cláusulas satisfechas es $Z = \sum_{i=1}^k Z_i$. Por Linealidad de la Esperanza:</p>
+      <div class="cota-math">$$E[Z] = \sum_{i=1}^k E[Z_i] = \sum_{i=1}^k \frac{7}{8} = \mathbf{\frac{7}{8} k}$$</div>
+      <p class="small text-muted text-center m-0">
+        Como el óptimo no puede superar $k$, el número esperado de cláusulas satisfechas se encuentra a al menos <strong>$\frac{7}{8}$ ($87.5\%$) del óptimo</strong>.
+      </p>
+    </div>
+
+    <div class="alert alert-success" role="alert">
+      <strong>🎉 Dato Curioso Demostrado en Clase:</strong><br>
+      Si una fórmula de 3-SAT tiene <strong>7 o menos cláusulas</strong> ($k \le 7$), ¡siempre es 100% satisfacible!<br>
+      <em>Demostración:</em> Con $k \le 7$, $E[Z] = \frac{7}{8} k > k - 1$. Como la cantidad de cláusulas satisfechas debe ser un número entero, existe al menos una asignación que satisface $k$ cláusulas (todas).
+    </div>
+
+    <!-- Simulador Interactivo MAX 3-SAT -->
+    <div class="interactive-simulator">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <div>
+          <span class="badge bg-warning text-dark me-2">Simulador Monte Carlo</span>
+          <strong>Laboratorio Experimental: Asignación Aleatoria en MAX 3-SAT</strong>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="stepper-btn" onclick="runMax3SatSingle()">🎲 Tirar Monedas (1 Ensayo)</button>
+          <button class="stepper-btn" onclick="runMax3SatMulti(100)">⚡ Correr 100 Ensayos</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 mb-2">
+          <div class="p-3 border rounded bg-card small h-100">
+            <h6>Fórmula de Prueba: 8 Cláusulas de 3 Variables</h6>
+            <div id="sat3FormulaDisplay" class="font-monospace small mb-2" style="line-height: 1.7;"></div>
+            <div id="sat3VarAssignment" class="small text-muted">Variables aún no asignadas.</div>
+          </div>
+        </div>
+        <div class="col-md-6 mb-2">
+          <div class="p-3 border rounded bg-card small h-100">
+            <h6>Resultados del Ensayo</h6>
+            <div id="sat3Stats">
+              <p class="mb-1">Cláusulas satisfechas: <strong>- / 8</strong></p>
+              <p class="mb-2">Porcentaje alcanzado: <strong>-%</strong> (Meta teórica esperada: $\ge 87.5\%$)</p>
+              <div class="progress mb-2" style="height: 12px;">
+                <div id="sat3ProgressBar" class="progress-bar bg-success" style="width: 0%;"></div>
+              </div>
+              <p class="text-muted small m-0" id="sat3Log">Hacé click en "Tirar Monedas" para evaluar.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 12: QUICKSELECT Y SELECCIÓN DE MEDIANA -->
+  <section class="topic-section" id="quickselect-mediana">
+    <div class="topic-header">
+      <span class="topic-badge badge-rand">Aplicación Randomizada 4</span>
+      <h3 class="m-0">12. Selección de la Mediana y QuickSelect Randomizado</h3>
+    </div>
+    <p>
+      Dado un conjunto desordenado $S$ de $n$ elementos, queremos hallar el $k$-ésimo menor (para $k=n/2$, la mediana).
+      Ordenar primero y tomar la posición $k$ toma $O(n \log n)$.
+      Podemos lograr <strong>$O(n)$ tiempo esperado</strong> mediante QuickSelect con pivote aleatorio.
+    </p>
+
+    <div class="concept-box">
+      <h5>El Concepto de Elemento Central</h5>
+      <p class="small">
+        Decimos que un elemento es <strong>central</strong> si al menos el $25\%$ de los elementos de $S$ son menores que él y al menos el $25\%$ son mayores (la mitad central de los datos, entre el percentil 25% y 75%).
+      </p>
+      <div class="text-center my-2">
+        <span class="badge bg-secondary p-2">25% Extremo Inferior</span>
+        <span class="badge bg-success p-2">50% Elementos Centrales (Ideales)</span>
+        <span class="badge bg-secondary p-2">25% Extremo Superior</span>
+      </div>
+      <ul class="small mb-0">
+        <li>Si el pivote elegido es central, se descarta al menos el $25\%$ del conjunto restante. El subproblema se reduce a lo sumo a $\frac{3}{4} |S|$.</li>
+        <li>Como el $50\%$ de los elementos son centrales, la probabilidad de acertar a uno con selección uniforme es $p = 1/2$.</li>
+        <li>La cantidad esperada de intentos para dar con un elemento central es $\frac{1}{p} = 2$ iteraciones.</li>
+      </ul>
+    </div>
+
+    <div class="cota-card">
+      <div class="cota-title">📐 Suma Geométrica de las Fases</div>
+      <div class="cota-math">
+        $$E[\text{Pasos}] \le \sum_{j} 2 c n \left(\frac{3}{4}\right)^j = 2 c n \sum_{j=0}^{\infty} \left(\frac{3}{4}\right)^j = 2 c n \cdot \frac{1}{1 - 3/4} = 8 c n = \mathbf{O(n)}$$
+      </div>
+      <p class="small text-muted text-center m-0">Es un algoritmo de tipo <strong>Las Vegas</strong>: siempre devuelve el elemento exacto y tarda $O(n)$ en promedio.</p>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 13: ESTRUCTURAS DE DATOS RANDOMIZADAS -->
+  <section class="topic-section" id="estructuras-rand">
+    <div class="topic-header">
+      <span class="topic-badge badge-struct">Estructuras de Datos</span>
+      <h3 class="m-0">13. Estructuras de Datos Randomizadas: Skip Lists &amp; Treaps</h3>
+    </div>
+    <p>
+      Los árboles binarios balanceados tradicionales (AVL, Red-Black) requieren complejas rotaciones y factores de balanceo deterministas.
+      Las estructuras randomizadas aprovechan un teorema fundamental:
+      <em>"La altura esperada de un árbol binario de búsqueda creado en orden de inserción aleatorio es $O(\log n)$."</em>
+    </p>
+
+    <div class="card-grid-2">
+      <!-- Skip Lists -->
+      <div class="concept-box">
+        <h5>🪜 Skip Lists (Listas por Saltos)</h5>
+        <p class="small text-muted">William Pugh (1990) — La alternativa elegante a los árboles balanceados.</p>
+        <p class="small">
+          Consiste en una jerarquía de listas enlazadas superpuestas. Todos los elementos están en la lista base (Capa 0).
+          Al insertar un nodo, se lanza una moneda: con probabilidad $p$ (comúnmente $1/2$) sube a la Capa 1; si vuelve a salir cara, sube a la Capa 2, y así sucesivamente.
+        </p>
+        <div class="p-2 border rounded bg-card small mb-2">
+          <strong>Ruta Exprés:</strong> La búsqueda comienza en la capa más alta. Si el siguiente nodo es menor que la clave buscada, avanza horizontalmente ("skip"); si es mayor, desciende de nivel.
+        </div>
+        <ul class="small mb-0">
+          <li><strong>Búsqueda, Inserción, Borrado:</strong> $O(\log n)$ promedio con alta probabilidad.</li>
+          <li><strong>Cantidad esperada de listas:</strong> $\log_{1/p} n$.</li>
+          <li><strong>Espacio:</strong> $O(n)$ promedio.</li>
+        </ul>
+      </div>
+
+      <!-- Treaps -->
+      <div class="concept-box">
+        <h5>🌲 Treaps (Tree + Heap)</h5>
+        <p class="small text-muted">R. Seidel &amp; C. Aragon (1989) — Tree + Heap unidos.</p>
+        <p class="small">
+          Cada nodo almacena dos valores:
+          <strong>Clave</strong> (mantiene propiedad de BST: izquierda menor, derecha mayor) y
+          <strong>Prioridad Aleatoria</strong> (generada uniformemente al azar, mantiene propiedad de Max-Heap: padre mayor que hijos).
+        </p>
+        <div class="p-2 border rounded bg-card small mb-2">
+          <strong>Operaciones mediante Rotaciones:</strong><br>
+          • <em>Inserción:</em> Se inserta como BST por clave en una hoja. Luego se rota hacia arriba (Left/Right Rotate) hasta que su prioridad respete el Heap.<br>
+          • <em>Borrado:</em> Se asigna prioridad $-\infty$ al nodo a borrar y se lo rota hacia abajo hasta convertirlo en hoja, donde se elimina trivialmente.
+        </div>
+        <ul class="small mb-0">
+          <li>El orden aleatorio de las prioridades simula que los nodos se hubieran insertado en orden aleatorio.</li>
+          <li>Operaciones en $O(\log n)$ con altísima probabilidad.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Diagramas Visuales de Clase: Skip List y Treap -->
+    <div class="row g-3 mt-3">
+      <div class="col-lg-6">
+        <div class="p-3 border rounded bg-card h-100">
+          <h6 class="text-primary fw-bold">🗺️ Esquema Oficial de Skip List: Niveles y Ruta Exprés</h6>
+          <p class="small text-muted mb-2">Búsqueda del elemento <strong>59</strong>: salta en la capa superior y desciende solo cuando el valor siguiente lo supera:</p>
+          <div class="text-center">
+            <svg viewBox="0 0 460 160" style="width: 100%; max-height: 160px; background: var(--bg-main); border-radius: 6px; padding: 10px;">
+              <!-- Nivel 2 -->
+              <text x="10" y="32" font-size="10" font-weight="bold" fill="currentColor">Nivel 2:</text>
+              <rect x="60" y="18" width="34" height="22" rx="4" fill="#3b82f6" />
+              <text x="77" y="33" fill="#fff" font-size="11" text-anchor="middle" font-weight="bold">14</text>
+              <line x1="94" y1="29" x2="260" y2="29" stroke="#3b82f6" stroke-width="2" marker-end="url(#arrow)" />
+              <rect x="260" y="18" width="34" height="22" rx="4" fill="#3b82f6" />
+              <text x="277" y="33" fill="#fff" font-size="11" text-anchor="middle" font-weight="bold">72</text>
+
+              <!-- Nivel 1 -->
+              <text x="10" y="77" font-size="10" font-weight="bold" fill="currentColor">Nivel 1:</text>
+              <rect x="60" y="63" width="34" height="22" rx="4" fill="#60a5fa" />
+              <text x="77" y="78" fill="#fff" font-size="11" text-anchor="middle">14</text>
+              <line x1="94" y1="74" x2="140" y2="74" stroke="#60a5fa" stroke-width="2" />
+              <rect x="140" y="63" width="34" height="22" rx="4" fill="#60a5fa" />
+              <text x="157" y="78" fill="#fff" font-size="11" text-anchor="middle">34</text>
+              <line x1="174" y1="74" x2="185" y2="74" stroke="#60a5fa" stroke-width="2" />
+              <rect x="185" y="63" width="34" height="22" rx="4" fill="#60a5fa" />
+              <text x="202" y="78" fill="#fff" font-size="11" text-anchor="middle">42</text>
+              <line x1="219" y1="74" x2="260" y2="74" stroke="#60a5fa" stroke-width="2" />
+              <rect x="260" y="63" width="34" height="22" rx="4" fill="#60a5fa" />
+              <text x="277" y="78" fill="#fff" font-size="11" text-anchor="middle">72</text>
+
+              <!-- Nivel 0 (Base) -->
+              <text x="10" y="122" font-size="10" font-weight="bold" fill="currentColor">Nivel 0:</text>
+              <rect x="60" y="108" width="28" height="20" rx="3" fill="#93c5fd" />
+              <text x="74" y="122" fill="#0f172a" font-size="10" text-anchor="middle">14</text>
+              <rect x="95" y="108" width="28" height="20" rx="3" fill="#93c5fd" />
+              <text x="109" y="122" fill="#0f172a" font-size="10" text-anchor="middle">23</text>
+              <rect x="130" y="108" width="28" height="20" rx="3" fill="#93c5fd" />
+              <text x="144" y="122" fill="#0f172a" font-size="10" text-anchor="middle">34</text>
+              <rect x="165" y="108" width="28" height="20" rx="3" fill="#93c5fd" />
+              <text x="179" y="122" fill="#0f172a" font-size="10" text-anchor="middle">42</text>
+              <rect x="200" y="108" width="28" height="20" rx="3" fill="#93c5fd" />
+              <text x="214" y="122" fill="#0f172a" font-size="10" text-anchor="middle">50</text>
+              <rect x="235" y="108" width="28" height="20" rx="3" fill="#22c55e" />
+              <text x="249" y="122" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">59</text>
+              <rect x="270" y="108" width="28" height="20" rx="3" fill="#93c5fd" />
+              <text x="284" y="122" fill="#0f172a" font-size="10" text-anchor="middle">66</text>
+              <rect x="305" y="108" width="28" height="20" rx="3" fill="#93c5fd" />
+              <text x="319" y="122" fill="#0f172a" font-size="10" text-anchor="middle">72</text>
+              <rect x="340" y="108" width="28" height="20" rx="3" fill="#93c5fd" />
+              <text x="354" y="122" fill="#0f172a" font-size="10" text-anchor="middle">79</text>
+
+              <!-- Conexiones verticales entre niveles -->
+              <line x1="77" y1="40" x2="77" y2="63" stroke="#94a3b8" stroke-dasharray="2" />
+              <line x1="77" y1="85" x2="77" y2="108" stroke="#94a3b8" stroke-dasharray="2" />
+              <line x1="157" y1="85" x2="144" y2="108" stroke="#94a3b8" stroke-dasharray="2" />
+              <line x1="202" y1="85" x2="179" y2="108" stroke="#94a3b8" stroke-dasharray="2" />
+              <line x1="277" y1="40" x2="277" y2="63" stroke="#94a3b8" stroke-width="1.5" />
+              <line x1="277" y1="85" x2="319" y2="108" stroke="#94a3b8" stroke-dasharray="2" />
+            </svg>
+          </div>
+          <div class="small text-muted mt-2">
+            <strong>Ruta de búsqueda para 59:</strong> De 14 (nivel 2) mira 72 (>59) $\to$ baja a nivel 1 $\to$ avanza a 34 $\to$ 42 $\to$ mira 72 (>59) $\to$ baja a nivel 0 $\to$ 50 $\to$ <strong>59 (Encontrado)</strong> en solo 5 comparaciones vs 6 secuenciales.
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="p-3 border rounded bg-card h-100">
+          <h6 class="text-primary fw-bold">🔄 Inserción en Treap y Rotación para Mantener Heap</h6>
+          <p class="small text-muted mb-2">Inserción de la clave <strong>80</strong> con prioridad aleatoria <strong>12</strong> (mayor que su padre 70 de prioridad 10):</p>
+          <div class="text-center">
+            <svg viewBox="0 0 380 140" style="width: 100%; max-height: 140px; background: var(--bg-main); border-radius: 6px; padding: 10px;">
+              <!-- Árbol antes de rotar -->
+              <circle cx="80" cy="30" r="16" fill="#1e293b" />
+              <text x="80" y="28" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">50</text>
+              <text x="80" y="39" fill="#38bdf8" font-size="9" text-anchor="middle">p=15</text>
+
+              <line x1="80" y1="46" x2="120" y2="70" stroke="#64748b" stroke-width="2" />
+              <circle cx="120" cy="70" r="16" fill="#1e293b" />
+              <text x="120" y="68" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">70</text>
+              <text x="120" y="79" fill="#38bdf8" font-size="9" text-anchor="middle">p=10</text>
+
+              <line x1="120" y1="86" x2="150" y2="110" stroke="#ef4444" stroke-width="2" />
+              <circle cx="150" cy="110" r="16" fill="#ef4444" />
+              <text x="150" y="108" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">80</text>
+              <text x="150" y="119" fill="#fff" font-size="9" text-anchor="middle">p=12</text>
+
+              <!-- Flecha de rotación -->
+              <text x="200" y="70" font-size="16" fill="#3b82f6" text-anchor="middle">Left Rotate</text>
+              <text x="200" y="86" font-size="18" fill="#3b82f6" text-anchor="middle">➔</text>
+
+              <!-- Árbol después de rotar -->
+              <circle cx="280" cy="30" r="16" fill="#1e293b" />
+              <text x="280" y="28" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">50</text>
+              <text x="280" y="39" fill="#38bdf8" font-size="9" text-anchor="middle">p=15</text>
+
+              <line x1="280" y1="46" x2="320" y2="70" stroke="#10b981" stroke-width="2" />
+              <circle cx="320" cy="70" r="16" fill="#10b981" />
+              <text x="320" y="68" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">80</text>
+              <text x="320" y="79" fill="#fff" font-size="9" text-anchor="middle">p=12</text>
+
+              <line x1="320" y1="86" x2="295" y2="110" stroke="#64748b" stroke-width="2" />
+              <circle cx="295" cy="110" r="16" fill="#1e293b" />
+              <text x="295" y="108" fill="#fff" font-size="10" font-weight="bold" text-anchor="middle">70</text>
+              <text x="295" y="119" fill="#38bdf8" font-size="9" text-anchor="middle">p=10</text>
+            </svg>
+          </div>
+          <div class="small text-muted mt-2">
+            La rotación a izquierda preserva el orden de claves ($70 < 80$, hijo izquierdo) y <strong>restaura la propiedad de Max-Heap</strong> porque la prioridad $12$ ahora es superior a $10$.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 14: STREAMING Y CONTEO ALEATORIO (HAMLET) -->
+  <section class="topic-section" id="streaming-conteo">
+    <div class="topic-header">
+      <span class="topic-badge badge-rand">Algoritmo de Streaming</span>
+      <h3 class="m-0">14. Conteo Probabilístico con Memoria Acotada (Ejemplo Hamlet)</h3>
+    </div>
+    <p>
+      <strong>El Desafío:</strong> Queremos estimar la cantidad de palabras <em>diferentes</em> que contiene una obra colosal (ej. <em>Hamlet</em> de Shakespeare), pero disponemos de una memoria extremadamente limitada que solo permite almacenar hasta $m = 100$ palabras a la vez.
+    </p>
+
+    <h5>Mecánica de Rondas y Monedas del Algoritmo Oficial</h5>
+    <ol>
+      <li>Llenamos la memoria con las primeras $m = 100$ palabras distintas que encontremos.</li>
+      <li>Al llegar a 100, lanzamos una moneda por cada palabra guardada: si sale cara la conservamos, si sale cruz la descartamos (se espera que queden $\approx 50$ palabras).</li>
+      <li>Continuamos leyendo. Cada vez que aparece una palabra ya vista, se lanza una moneda para ver si se mantiene.</li>
+      <li>Cada vez que la memoria vuelve a llenarse a $m=100$, aumentamos la ronda $K$ y ahora se exigen $K$ monedas consecutivas para conservar cada palabra.</li>
+      <li>Al final de la ronda $K$, cada palabra distinta sobrevive con probabilidad exacta $(1/2)^K$.</li>
+    </ol>
+
+    <div class="cota-card">
+      <div class="cota-title">🎯 Estimación Matemática y Resultados del Material</div>
+      <div class="cota-math">
+        $$\text{Total Estimado de Palabras} = |S_{\text{final}}| \cdot 2^K$$
+      </div>
+      <p class="small text-muted text-center m-0">
+        <strong>Resultado real sobre Hamlet:</strong> Tras 6 rondas ($K=6$), terminaron $61$ palabras en memoria.<br>
+        Estimación: $61 \cdot 2^6 = 61 \cdot 64 = \mathbf{3904\text{ palabras}}$.<br>
+        Hamlet tiene exactamente $3967$ palabras distintas. <strong>¡Menos de un 2% de error usando una memoria diminuta!</strong>
+        Con $m=1000$, el error desciende a menos del $0.01\%$.
+      </p>
+    </div>
+
+    <!-- Simulador Interactivo de Conteo de Hamlet -->
+    <div class="interactive-simulator">
+      <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+        <div>
+          <span class="badge bg-info text-dark me-2">Simulador Streaming</span>
+          <strong>Experimento de Conteo Probabilístico (Hamlet)</strong>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="stepper-btn" onclick="runHamletSimulation()">🪙 Simular Flujo de Hamlet (m=100)</button>
+          <button class="stepper-btn" onclick="resetHamletSim()">↺ Reset</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5 mb-2">
+          <div class="p-3 border rounded bg-card small h-100">
+            <h6>Parámetros de la Prueba</h6>
+            <ul class="mb-2">
+              <li>Capacidad de memoria $m$: <strong>100 palabras</strong></li>
+              <li>Palabras distintas reales: <strong>3967</strong></li>
+              <li>Ronda actual $K$: <strong id="hamletK">0</strong></li>
+              <li>Palabras en memoria: <strong id="hamletWordsCount">0 / 100</strong></li>
+            </ul>
+            <div class="progress mb-2" style="height: 14px;">
+              <div id="hamletMemoryBar" class="progress-bar bg-primary" style="width: 0%;"></div>
+            </div>
+            <div class="alert alert-secondary py-1 px-2 m-0 small" id="hamletStatusAlert">
+              Listo para simular la lectura de Hamlet.
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7 mb-2">
+          <div class="p-3 border rounded bg-card small h-100">
+            <h6>Evolución de las Rondas y Estimación</h6>
+            <div class="sim-output-box" id="hamletConsole" style="height: 150px;">
+              Esperando inicio de la simulación...<br>
+              Al presionar "Simular Flujo", el texto se leerá en streaming y cada saturación de memoria disparará el descarte por monedas.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 15: HASHING UNIVERSAL -->
+  <section class="topic-section" id="hashing-universal">
+    <div class="topic-header">
+      <span class="topic-badge badge-rand">Hashing Teórico</span>
+      <h3 class="m-0">15. Hashing Universal: Neutralizando el Peor Caso</h3>
+    </div>
+    <p>
+      <strong>El Peligro del Hash Fijo:</strong> Si elegimos cualquier función de hashing fija $h: U \to \{0, 1, \dots, n-1\}$, para cualquier universo $|U| > n^2$ siempre existirá un conjunto de $n$ elementos que producen exactamente el mismo valor de hash. Un adversario podría enviar esos elementos y degradar las operaciones a $O(n)$ lineal.
+    </p>
+
+    <h5>Definición de Clase Universal (Carter &amp; Wegman 1979)</h5>
+    <p>
+      Una familia de funciones de hash $\mathcal{H}$ es <strong>Universal</strong> si para cualquier par de elementos distintos $x \ne y \in U$, al elegir una función $h \in \mathcal{H}$ uniformemente al azar:
+    </p>
+    <div class="cota-card">
+      <div class="cota-math">
+        $$\Pr_{h \in \mathcal{H}}[h(x) = h(y)] \le \frac{1}{n}$$
+      </div>
+      <p class="small text-muted text-center m-0">
+        La probabilidad de colisión entre dos elementos cualesquiera es tan baja como si los asignáramos al azar en la tabla.
+      </p>
+    </div>
+
+    <h5>Construcción Algebraica con Números Primos</h5>
+    <ol class="small">
+      <li>Elegir un número primo $p \ge n$.</li>
+      <li>Representar cada elemento $x$ como un vector de $r$ componentes: $x = (x_1, x_2, \dots, x_r)$ con $0 \le x_i < p$.</li>
+      <li>Elegir un vector aleatorio de coeficientes $a = (a_1, a_2, \dots, a_r)$ con $0 \le a_i < p$.</li>
+      <li>Definir la función de hash:
+        $$h_a(x) = \left( \sum_{i=1}^r a_i x_i \right) \bmod p$$
+      </li>
+    </ol>
+    <div class="concept-box small">
+      <strong>Demostración de Cátedra:</strong> Si $x \ne y$, difieren en al menos una coordenada $j$ ($x_j \ne y_j$). La colisión $h_a(x) = h_a(y)$ ocurre si:
+      $$a_j(y_j - x_j) \equiv \sum_{i \ne j} a_i(x_i - y_i) \pmod p$$
+      Como $p$ es primo y $y_j - x_j \not\equiv 0$, existe un <strong>único valor inverso</strong> para $a_j$ que satisface la igualdad. Como $a_j$ se eligió al azar entre $p$ posibilidades, la probabilidad de colisión es exactamente $\frac{1}{p} \le \frac{1}{n}$.
+    </div>
+  </section>
+
+  <!-- SECCIÓN 16: EJERCICIOS DE EXAMEN PROPUESTOS -->
+  <section class="topic-section" id="ejercicios-clase">
+    <div class="topic-header">
+      <span class="topic-badge badge-rand">Práctica Oficial</span>
+      <h3 class="m-0">16. Ejercicios Propuestos de Clase Resueltos Paso a Paso</h3>
+    </div>
+
+    <!-- Ejercicio 1 -->
+    <div class="concept-box mb-4">
+      <h5 class="text-primary">📝 Ejercicio 1: 2-Partition Problem (Demostración de 2-Aproximación)</h5>
+      <p class="small">
+        <strong>Enunciado oficial:</strong> Dado un conjunto $S$ de números positivos, encontrar una partición de $S$ en dos subconjuntos $P_1$ y $P_2$ tal que el máximo de las sumas sea el mínimo posible.<br>
+        <em>Algoritmo propuesto:</em> Inicializar $P_1 = \emptyset$ y $P_2 = \emptyset$. Para cada elemento $s \in S$, agregarlo al conjunto que tenga menor suma hasta el momento. Demostrar que es una 2-aproximación.
+      </p>
+      <div class="p-3 border rounded bg-card small">
+        <strong>Demostración Formal:</strong>
+        <ol class="mb-0">
+          <li>Sea $W = \sum_{s \in S} s$. En cualquier partición, la suma total es $W$, por lo que el óptimo $OPT$ cumple:
+            $$OPT \ge \frac{W}{2} = \frac{1}{2} \sum_{s \in S} s \quad (\text{Cota A})$$
+          </li>
+          <li>Además, el elemento más grande debe estar en alguna de las particiones, por lo que:
+            $$OPT \ge \max_{s \in S} s \quad (\text{Cota B})$$
+          </li>
+          <li>Supongamos sin pérdida de generalidad que $P_1$ termina con la mayor suma $S(P_1) \ge S(P_2)$. Sea $s^*$ el último elemento agregado a $P_1$. En el momento en que se le asignó $s^*$, $P_1$ tenía menor o igual suma que $P_2$:
+            $$S(P_1) - s^* \le S(P_2)$$
+          </li>
+          <li>Sumando $S(P_1) - s^*$ a ambos lados:
+            $$2(S(P_1) - s^*) \le S(P_1) - s^* + S(P_2) \le W \implies S(P_1) - s^* \le \frac{W}{2} \le OPT$$
+          </li>
+          <li>Despejando y aplicando la Cota B ($s^* \le OPT$):
+            $$S(P_1) \le \frac{W}{2} + s^* \le OPT + OPT = \mathbf{2 \cdot OPT}$$
+          </li>
+          <li><strong>Conclusión:</strong> El algoritmo voraz es garantizadamente una <strong>2-aproximación</strong>. $\blacksquare$</li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- Ejercicio 2 -->
+    <div class="concept-box">
+      <h5 class="text-success">📝 Ejercicio 2: Problema de las N-Reinas vía Algoritmo "Las Vegas"</h5>
+      <p class="small">
+        <strong>Enunciado oficial:</strong> Proponer un algoritmo randomizado de tipo <em>Las Vegas</em> para resolver el problema de las N-Reinas. Puede encontrar una solución o fallar. Si falla, se repite el ensayo desde cero. ¿Cuál es la cantidad esperada de veces que hay que repetir el ensayo?
+      </p>
+      <div class="p-3 border rounded bg-card small">
+        <strong>Diseño del Algoritmo y Análisis:</strong>
+        <ol class="mb-0">
+          <li><strong>Procedimiento por Columnas:</strong> Para la columna $c = 1 \dots N$, identificamos las filas donde colocar una reina no cause ataques con las reinas ya ubicadas.</li>
+          <li><strong>Elección Aleatoria:</strong> Entre las casillas libres válidas de la columna $c$, elegimos una al azar con probabilidad uniforme.</li>
+          <li><strong>Condición de Fallo:</strong> Si en alguna columna $c$ no queda ninguna casilla libre disponible, el algoritmo <strong>falla</strong> y se detiene (no hace backtracking pesado).</li>
+          <li><strong>Éxito:</strong> Si llega a ubicar las $N$ reinas sin conflicto, devuelve la solución (que es $100\%$ válida, condición de Las Vegas).</li>
+          <li><strong>Cantidad Esperada de Repeticiones:</strong> Si cada ensayo independiente tiene probabilidad de éxito $p > 0$, la variable aleatoria $X$ (cantidad de ensayos hasta el primer éxito) sigue una distribución geométrica:
+            $$E[X] = \frac{1}{p}$$
+            Para $N=8$, empíricamente $p \approx 0.1293$ (aproximadamente 1 de cada 7.7 intentos triunfa), requiriendo en promedio solo $\approx 7.7$ corridas ultrarrápidas, mucho más veloz que explorar todo el árbol exhaustivo.
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- Scripts lógicos de los simuladores interactivos -->
+<script>
+  // -------------------------------------------------------------
+  // 1. SIMULADOR SET COVER
+  // -------------------------------------------------------------
+  const scSteps = [
+    {
+      step: 0,
+      title: "Paso 0: Estado Inicial",
+      desc: "Universo U = {a, b, c, d, e, f, g, h}. Aún no se seleccionó ningún subconjunto. El conjunto R de elementos por cubrir es todo U (8 elementos).",
+      C: [],
+      R: ["a", "b", "c", "d", "e", "f", "g", "h"],
+      rows: [
+        { name: "{c, d, g, h}", w: "1.0", inter: "{c, d, g, h}", ratio: "0.250", chosen: true },
+        { name: "{a, b, c, d}", w: "1.1", inter: "{a, b, c, d}", ratio: "0.275", chosen: false },
+        { name: "{e, f, g, h}", w: "1.1", inter: "{e, f, g, h}", ratio: "0.275", chosen: false },
+        { name: "{b, f}", w: "1.0", inter: "{b, f}", ratio: "0.500", chosen: false },
+        { name: "{a}", w: "1.0", inter: "{a}", ratio: "1.000", chosen: false },
+        { name: "{e}", w: "1.0", inter: "{e}", ratio: "1.000", chosen: false }
+      ],
+      comment: "El menor ratio es 0.25 (1 / 4) perteneciente a {c, d, g, h}. Se elige para el siguiente paso."
+    },
+    {
+      step: 1,
+      title: "Paso 1: Tras incorporar {c, d, g, h}",
+      desc: "Se agregó {c, d, g, h} a la solución C. Quedan por cubrir R = {a, b, e, f}. Reevaluamos los conjuntos restantes contra R.",
+      C: ["{c, d, g, h}"],
+      R: ["a", "b", "e", "f"],
+      rows: [
+        { name: "{c, d, g, h}", w: "1.0", inter: "Ya en C", ratio: "-", struck: true },
+        { name: "{a, b, c, d}", w: "1.1", inter: "{a, b}", ratio: "0.550", chosen: false },
+        { name: "{e, f, g, h}", w: "1.1", inter: "{e, f}", ratio: "0.550", chosen: false },
+        { name: "{b, f}", w: "1.0", inter: "{b, f}", ratio: "0.500", chosen: true },
+        { name: "{a}", w: "1.0", inter: "{a}", ratio: "1.000", chosen: false },
+        { name: "{e}", w: "1.0", inter: "{e}", ratio: "1.000", chosen: false }
+      ],
+      comment: "El menor ratio sobre elementos nuevos es 0.500 (1 / 2) perteneciente a {b, f}. Se selecciona."
+    },
+    {
+      step: 2,
+      title: "Paso 2: Tras incorporar {b, f}",
+      desc: "Solución parcial C = {{c,d,g,h}, {b,f}}. Elementos restantes R = {a, e}. Reevaluamos.",
+      C: ["{c, d, g, h}", "{b, f}"],
+      R: ["a", "e"],
+      rows: [
+        { name: "{c, d, g, h}", w: "1.0", inter: "Ya en C", ratio: "-", struck: true },
+        { name: "{a, b, c, d}", w: "1.1", inter: "{a}", ratio: "1.100", chosen: false },
+        { name: "{e, f, g, h}", w: "1.1", inter: "{e}", ratio: "1.100", chosen: false },
+        { name: "{b, f}", w: "1.0", inter: "Ya en C", ratio: "-", struck: true },
+        { name: "{a}", w: "1.0", inter: "{a}", ratio: "1.000", chosen: true },
+        { name: "{e}", w: "1.0", inter: "{e}", ratio: "1.000", chosen: false }
+      ],
+      comment: "El ratio de {a} es 1.0 (1 / 1), que es mejor que 1.100 (1.1 / 1). Se selecciona {a}."
+    },
+    {
+      step: 3,
+      title: "Paso 3: Tras incorporar {a}",
+      desc: "Solución parcial C = {{c,d,g,h}, {b,f}, {a}}. Solo resta cubrir R = {e}.",
+      C: ["{c, d, g, h}", "{b, f}", "{a}"],
+      R: ["e"],
+      rows: [
+        { name: "{c, d, g, h}", w: "1.0", inter: "Ya en C", ratio: "-", struck: true },
+        { name: "{a, b, c, d}", w: "1.1", inter: "∅", ratio: "-", struck: true },
+        { name: "{e, f, g, h}", w: "1.1", inter: "{e}", ratio: "1.100", chosen: false },
+        { name: "{b, f}", w: "1.0", inter: "Ya en C", ratio: "-", struck: true },
+        { name: "{a}", w: "1.0", inter: "Ya en C", ratio: "-", struck: true },
+        { name: "{e}", w: "1.0", inter: "{e}", ratio: "1.000", chosen: true }
+      ],
+      comment: "Se elige {e} con ratio 1.000 para completar el universo."
+    },
+    {
+      step: 4,
+      title: "Paso 4: Solución Final y Comparativa",
+      desc: "R = ∅. Todos los elementos fueron cubiertos. El algoritmo termina exitosamente.",
+      C: ["{c, d, g, h}", "{b, f}", "{a}", "{e}"],
+      R: [],
+      isFinal: true
+    }
+  ];
+  let curScStep = 0;
+
+  function renderSetCover() {
+    const s = scSteps[curScStep];
+    const prevBtn = document.getElementById("scBtnPrev");
+    const nextBtn = document.getElementById("scBtnNext");
+    const indicator = document.getElementById("scStepIndicator");
+    const container = document.getElementById("scViewContent");
+
+    prevBtn.disabled = (curScStep === 0);
+    nextBtn.disabled = (curScStep === scSteps.length - 1);
+    indicator.textContent = `Paso ${s.step} de ${scSteps.length - 1}`;
+
+    if (s.isFinal) {
+      container.innerHTML = `
+        <div class="step-explain">
+          <strong>${s.title}</strong>: ${s.desc}
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-6 mb-2">
+            <div class="p-3 border rounded bg-warning bg-opacity-10">
+              <h6 class="text-warning-emphasis">🔶 Solución Hallada por Greedy</h6>
+              <p class="small mb-1">Subconjuntos: <code>${s.C.join(", ")}</code></p>
+              <p class="small mb-0"><strong>Costo Total W:</strong> 1.0 + 1.0 + 1.0 + 1.0 = <strong>4.0</strong></p>
+            </div>
+          </div>
+          <div class="col-md-6 mb-2">
+            <div class="p-3 border rounded bg-success bg-opacity-10">
+              <h6 class="text-success-emphasis">🟢 Solución Óptima Real C*</h6>
+              <p class="small mb-1">Subconjuntos: <code>{a, b, c, d}, {e, f, g, h}</code></p>
+              <p class="small mb-0"><strong>Costo Óptimo W*:</strong> 1.1 + 1.1 = <strong>2.2</strong></p>
+            </div>
+          </div>
+        </div>
+        <div class="alert alert-secondary mt-3 small mb-0">
+          <strong>Verificación de la Cota Armónica:</strong> Tamaño máximo $d^* = 4$. $H(4) = 1 + 1/2 + 1/3 + 1/4 \approx 2.083$.<br>
+          Cota: $W \le H(d^*) \cdot W^* \implies 4.0 \le 2.083 \times 2.2 = 4.58$. ¡La cota teórica se verifica con total precisión!
+        </div>
+      `;
+      if (window.renderMathInElement) {
+        renderMathInElement(container, { delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}] });
+      }
+      return;
+    }
+
+    let rowsHtml = s.rows.map(r => {
+      let cls = r.chosen ? ' class="highlight-row"' : (r.struck ? ' class="struck-row"' : '');
+      let tag = r.chosen ? ' <span class="badge bg-success ms-1">Mínimo (Elegido)</span>' : '';
+      return `<tr${cls}>
+        <td><code>${r.name}</code>${tag}</td>
+        <td>${r.w}</td>
+        <td>${r.inter}</td>
+        <td><strong>${r.ratio}</strong></td>
+      </tr>`;
+    }).join("");
+
+    container.innerHTML = `
+      <div class="step-explain">
+        <strong>${s.title}</strong>: ${s.desc}
+      </div>
+      <div class="d-flex gap-3 flex-wrap small mb-2">
+        <span><strong>Solución C:</strong> <code>{${s.C.join(", ")}}</code></span>
+        <span><strong>Restantes R:</strong> <code>{${s.R.join(", ")}}</code> (${s.R.length} elementos)</span>
+      </div>
+      <div class="table-responsive">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Subconjunto \(S_i\)</th>
+              <th>Peso \(w_i\)</th>
+              <th>Intersección \(S_i \cap R\)</th>
+              <th>Ratio \(w_i / |S_i \cap R|\)</th>
+            </tr>
+          </thead>
+          <tbody>${rowsHtml}</tbody>
+        </table>
+      </div>
+      <div class="small text-muted mt-2"><em>${s.comment}</em></div>
+    `;
+
+    if (window.renderMathInElement) {
+      renderMathInElement(container, { delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}] });
+    }
+  }
+
+  function nextSetCoverStep() {
+    if (curScStep < scSteps.length - 1) {
+      curScStep++;
+      renderSetCover();
+    }
+  }
+  function prevSetCoverStep() {
+    if (curScStep > 0) {
+      curScStep--;
+      renderSetCover();
+    }
+  }
+  function resetSetCoverStep() {
+    curScStep = 0;
+    renderSetCover();
+  }
+
+  // -------------------------------------------------------------
+  // 2. SIMULADOR PRICING METHOD
+  // -------------------------------------------------------------
+  const prSteps = [
+    {
+      step: 0,
+      title: "Paso 0: Precios Iniciales",
+      desc: "Todas las aristas tienen precio p_e = 0. Ningún vértice está pago. Pesos: a=4, b=3, c=5, d=3.",
+      edges: [
+        { name: "(a,b)", p: 0, status: "impaga" },
+        { name: "(a,d)", p: 0, status: "impaga" },
+        { name: "(c,d)", p: 0, status: "impaga" },
+        { name: "(a,c)", p: 0, status: "impaga" },
+        { name: "(b,c)", p: 0, status: "impaga" }
+      ],
+      nodes: { a: { paid: 0, max: 4, isPaid: false }, b: { paid: 0, max: 3, isPaid: false }, c: { paid: 0, max: 5, isPaid: false }, d: { paid: 0, max: 3, isPaid: false } },
+      explain: "Buscamos una arista con ambos extremos impagos. Elegimos la arista (a,b)."
+    },
+    {
+      step: 1,
+      title: "Paso 1: Cobrar Arista (a,b)",
+      desc: "El vértice b tiene peso 3 y a tiene peso 4. El máximo precio acorde que podemos cobrar en (a,b) sin que ningún extremo pague de más es 3.",
+      edges: [
+        { name: "(a,b)", p: 3, status: "cobrada" },
+        { name: "(a,d)", p: 0, status: "impaga" },
+        { name: "(c,d)", p: 0, status: "impaga" },
+        { name: "(a,c)", p: 0, status: "impaga" },
+        { name: "(b,c)", p: 0, status: "impaga" }
+      ],
+      nodes: { a: { paid: 3, max: 4, isPaid: false }, b: { paid: 3, max: 3, isPaid: true }, c: { paid: 0, max: 5, isPaid: false }, d: { paid: 0, max: 3, isPaid: false } },
+      explain: "Vértice b queda totalmente pago (3/3) y entra a S. Al vértice a le resta cobrar 1 (acumuló 3/4)."
+    },
+    {
+      step: 2,
+      title: "Paso 2: Cobrar Arista (a,d)",
+      desc: "La arista (a,d) tiene ambos extremos sin saturar. A 'a' le falta 1, a 'd' le falta 3. El mayor precio acorde es 1.",
+      edges: [
+        { name: "(a,b)", p: 3, status: "cobrada" },
+        { name: "(a,d)", p: 1, status: "cobrada" },
+        { name: "(c,d)", p: 0, status: "impaga" },
+        { name: "(a,c)", p: 0, status: "impaga" },
+        { name: "(b,c)", p: 0, status: "impaga" }
+      ],
+      nodes: { a: { paid: 4, max: 4, isPaid: true }, b: { paid: 3, max: 3, isPaid: true }, c: { paid: 0, max: 5, isPaid: false }, d: { paid: 1, max: 3, isPaid: false } },
+      explain: "Vértice a queda totalmente pago (3 + 1 = 4/4) y entra a S. Al vértice d le resta cobrar 2 (acumuló 1/3)."
+    },
+    {
+      step: 3,
+      title: "Paso 3: Cobrar Arista (c,d) y Cierre",
+      desc: "La arista (c,d) tiene a 'c' con 0/5 y a 'd' con 1/3. A 'd' le falta 2. Fijamos p(c,d) = 2.",
+      edges: [
+        { name: "(a,b)", p: 3, status: "cobrada" },
+        { name: "(a,d)", p: 1, status: "cobrada" },
+        { name: "(c,d)", p: 2, status: "cobrada" },
+        { name: "(a,c)", p: 0, status: "cubierta" },
+        { name: "(b,c)", p: 0, status: "cubierta" }
+      ],
+      nodes: { a: { paid: 4, max: 4, isPaid: true }, b: { paid: 3, max: 3, isPaid: true }, c: { paid: 2, max: 5, isPaid: false }, d: { paid: 3, max: 3, isPaid: true } },
+      explain: "¡Vértice d queda totalmente pago (1 + 2 = 3/3) y entra a S! Ya todas las aristas tienen al menos un extremo pago. Fin del algoritmo."
+    }
+  ];
+  let curPrStep = 0;
+
+  function renderPricing() {
+    const s = prSteps[curPrStep];
+    const prevBtn = document.getElementById("prBtnPrev");
+    const nextBtn = document.getElementById("prBtnNext");
+    const indicator = document.getElementById("prStepIndicator");
+    const container = document.getElementById("prViewContent");
+
+    prevBtn.disabled = (curPrStep === 0);
+    nextBtn.disabled = (curPrStep === prSteps.length - 1);
+    indicator.textContent = `Paso ${s.step} de ${prSteps.length - 1}`;
+
+    const colorNode = (n) => s.nodes[n].isPaid ? "#22c55e" : "#94a3b8";
+
+    let svgGraph = `
+      <svg viewBox="0 0 340 220" style="max-width: 380px; width: 100%; height: auto; max-height: 210px; margin: 0 auto; display: block;">
+        <!-- Aristas -->
+        <line x1="170" y1="30" x2="60" y2="110" stroke="#cbd5e1" stroke-width="${s.edges[0].p > 0 ? 4 : 2}" />
+        <line x1="170" y1="30" x2="280" y2="110" stroke="#cbd5e1" stroke-width="${s.edges[1].p > 0 ? 4 : 2}" />
+        <line x1="170" y1="30" x2="170" y2="180" stroke="#cbd5e1" stroke-width="${s.edges[3].p > 0 ? 4 : 2}" />
+        <line x1="60" y1="110" x2="170" y2="180" stroke="#cbd5e1" stroke-width="${s.edges[4].p > 0 ? 4 : 2}" />
+        <line x1="280" y1="110" x2="170" y2="180" stroke="#cbd5e1" stroke-width="${s.edges[2].p > 0 ? 4 : 2}" />
+
+        <!-- Etiquetas de Precios en Aristas -->
+        <rect x="95" y="60" width="36" height="20" rx="4" fill="#1e293b" />
+        <text x="113" y="74" fill="#38bdf8" font-size="11" text-anchor="middle" font-weight="bold">p=${s.edges[0].p}</text>
+
+        <rect x="210" y="60" width="36" height="20" rx="4" fill="#1e293b" />
+        <text x="228" y="74" fill="#38bdf8" font-size="11" text-anchor="middle" font-weight="bold">p=${s.edges[1].p}</text>
+
+        <rect x="210" y="145" width="36" height="20" rx="4" fill="#1e293b" />
+        <text x="228" y="159" fill="#38bdf8" font-size="11" text-anchor="middle" font-weight="bold">p=${s.edges[2].p}</text>
+
+        <!-- Nodos -->
+        <!-- a -->
+        <circle cx="170" cy="30" r="18" fill="${colorNode('a')}" stroke="#0f172a" stroke-width="2"/>
+        <text x="170" y="34" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">a</text>
+        <text x="170" y="10" fill="currentColor" font-size="11" font-weight="bold" text-anchor="middle">${s.nodes.a.paid}/${s.nodes.a.max}</text>
+
+        <!-- b -->
+        <circle cx="60" cy="110" r="18" fill="${colorNode('b')}" stroke="#0f172a" stroke-width="2"/>
+        <text x="60" y="114" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">b</text>
+        <text x="25" y="114" fill="currentColor" font-size="11" font-weight="bold" text-anchor="middle">${s.nodes.b.paid}/${s.nodes.b.max}</text>
+
+        <!-- d -->
+        <circle cx="280" cy="110" r="18" fill="${colorNode('d')}" stroke="#0f172a" stroke-width="2"/>
+        <text x="280" y="114" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">d</text>
+        <text x="315" y="114" fill="currentColor" font-size="11" font-weight="bold" text-anchor="middle">${s.nodes.d.paid}/${s.nodes.d.max}</text>
+
+        <!-- c -->
+        <circle cx="170" cy="180" r="18" fill="${colorNode('c')}" stroke="#0f172a" stroke-width="2"/>
+        <text x="170" y="184" fill="#fff" font-size="12" font-weight="bold" text-anchor="middle">c</text>
+        <text x="170" y="210" fill="currentColor" font-size="11" font-weight="bold" text-anchor="middle">${s.nodes.c.paid}/${s.nodes.c.max}</text>
+      </svg>
+    `;
+
+    let paidNodes = Object.keys(s.nodes).filter(k => s.nodes[k].isPaid);
+
+    container.innerHTML = `
+      <div class="step-explain">
+        <strong>${s.title}</strong>: ${s.desc}
+      </div>
+      <div class="row align-items-center">
+        <div class="col-md-6 text-center">
+          ${svgGraph}
+          <div class="small text-muted mt-1">Los nodos verdes están <strong>Totalmente Pagos</strong> (entran al Vertex Cover).</div>
+        </div>
+        <div class="col-md-6">
+          <div class="p-3 border rounded bg-card mb-2 small">
+            <h6>Estado de Vértices:</h6>
+            <ul class="mb-2">
+              <li><strong>a (peso 4):</strong> ${s.nodes.a.paid} cobrado ${s.nodes.a.isPaid ? '✅ (PAGO)' : ''}</li>
+              <li><strong>b (peso 3):</strong> ${s.nodes.b.paid} cobrado ${s.nodes.b.isPaid ? '✅ (PAGO)' : ''}</li>
+              <li><strong>c (peso 5):</strong> ${s.nodes.c.paid} cobrado ${s.nodes.c.isPaid ? '✅ (PAGO)' : ''}</li>
+              <li><strong>d (peso 3):</strong> ${s.nodes.d.paid} cobrado ${s.nodes.d.isPaid ? '✅ (PAGO)' : ''}</li>
+            </ul>
+            <div class="alert alert-info py-1 px-2 m-0 small">
+              <strong>Solución Parcial S:</strong> {${paidNodes.join(", ") || "vacía"}}
+            </div>
+          </div>
+          <div class="small text-muted">${s.explain}</div>
+          ${curPrStep === 3 ? `
+            <div class="p-2 border rounded bg-success bg-opacity-10 mt-2 small">
+              <strong>Cálculo Final:</strong><br>
+              • Vértices elegidos: S = {a, b, d} con Costo = 4 + 3 + 3 = <strong>10</strong>.<br>
+              • Suma de precios pagados: p(a,b)=3 + p(a,d)=1 + p(c,d)=2 = <strong>6</strong>.<br>
+              • Como (a,b) y (a,d) son cubiertas por sus dos extremos: 2*3 + 2*1 + 2 = 10.<br>
+              • Se verifica formalmente: $$w(S) \le 2 \sum p_e \le 2 w(S^*)$$
+            </div>
+          ` : ''}
+        </div>
+      </div>
+    `;
+
+    if (window.renderMathInElement) {
+      renderMathInElement(container, { delimiters: [{left: "$$", right: "$$", display: true}, {left: "$", right: "$", display: false}] });
+    }
+  }
+
+  function nextPricingStep() {
+    if (curPrStep < prSteps.length - 1) {
+      curPrStep++;
+      renderPricing();
+    }
+  }
+  function prevPricingStep() {
+    if (curPrStep > 0) {
+      curPrStep--;
+      renderPricing();
+    }
+  }
+  function resetPricingStep() {
+    curPrStep = 0;
+    renderPricing();
+  }
+
+  // -------------------------------------------------------------
+  // 3. SIMULADOR CONTRACCIÓN DE KARGER
+  // -------------------------------------------------------------
+  let kargerState = {
+    nodes: ["a", "b", "c", "d"],
+    edges: [
+      { u: "a", v: "b", id: "e1" },
+      { u: "b", v: "c", id: "e2" },
+      { u: "c", v: "d", id: "e3" },
+      { u: "a", v: "d", id: "e4" },
+      { u: "a", v: "c", id: "e5" }
+    ],
+    log: []
+  };
+
+  function renderKarger() {
+    const svg = document.getElementById("kargerSvg");
+    const consoleBox = document.getElementById("kargerConsole");
+    const btn = document.getElementById("kgBtnStep");
+
+    if (kargerState.nodes.length <= 2) {
+      btn.disabled = true;
+    } else {
+      btn.disabled = false;
+    }
+
+    // Calcular posiciones de nodos en un círculo
+    const cx = 180, cy = 110, r = 70;
+    let pos = {};
+    kargerState.nodes.forEach((n, idx) => {
+      let angle = (2 * Math.PI * idx) / kargerState.nodes.length;
+      pos[n] = { x: cx + r * Math.cos(angle), y: cy + r * Math.sin(angle) };
+    });
+
+    let edgesSvg = kargerState.edges.map(e => {
+      let p1 = pos[e.u] || { x: cx, y: cy };
+      let p2 = pos[e.v] || { x: cx, y: cy };
+      return `<line x1="${p1.x}" y1="${p1.y}" x2="${p2.x}" y2="${p2.y}" stroke="#64748b" stroke-width="2.5" />`;
+    }).join("");
+
+    let nodesSvg = kargerState.nodes.map(n => {
+      let p = pos[n];
+      return `
+        <circle cx="${p.x}" cy="${p.y}" r="22" fill="#3b82f6" stroke="#1e293b" stroke-width="2" />
+        <text x="${p.x}" y="${p.y + 5}" fill="#ffffff" font-size="11" font-weight="bold" text-anchor="middle">${n}</text>
+      `;
+    }).join("");
+
+    svg.innerHTML = edgesSvg + nodesSvg;
+    consoleBox.innerHTML = kargerState.log.join("<br>") || "Grafo inicial con 4 nodos y 5 aristas listo para contraer.";
+  }
+
+  function contractKargerStep() {
+    if (kargerState.nodes.length <= 2) return;
+
+    // Seleccionar arista al azar
+    const randIdx = Math.floor(Math.random() * kargerState.edges.length);
+    const edge = kargerState.edges[randIdx];
+    const u = edge.u;
+    const v = edge.v;
+    const newName = `{${u},${v}}`;
+
+    kargerState.log.push(`🎲 Se eligió la arista (${u}, ${v}). Fusionando en <strong>${newName}</strong>.`);
+
+    // Eliminar u y v, agregar newName
+    kargerState.nodes = kargerState.nodes.filter(n => n !== u && n !== v);
+    kargerState.nodes.push(newName);
+
+    // Actualizar aristas
+    kargerState.edges = kargerState.edges
+      .map(e => {
+        let nu = (e.u === u || e.u === v) ? newName : e.u;
+        let nv = (e.v === u || e.v === v) ? newName : e.v;
+        return { u: nu, v: nv, id: e.id };
+      })
+      .filter(e => e.u !== e.v); // Eliminar bucles propios
+
+    if (kargerState.nodes.length === 2) {
+      kargerState.log.push(`🏁 ¡Solo quedan 2 supernodos!: <strong>${kargerState.nodes.join(" y ")}</strong>.`);
+      kargerState.log.push(`✂️ Corte resultante: <strong>${kargerState.edges.length} aristas</strong> cruzadas.`);
+    }
+
+    renderKarger();
+  }
+
+  // --- SIMULADOR MAX 3-SAT ---
+  const sat3Clauses = [
+    [{ var: 1, sign: 1 }, { var: 2, sign: 1 }, { var: 3, sign: 1 }],
+    [{ var: 1, sign: -1 }, { var: 2, sign: 1 }, { var: 4, sign: 1 }],
+    [{ var: 2, sign: 1 }, { var: 3, sign: -1 }, { var: 5, sign: 1 }],
+    [{ var: 2, sign: -1 }, { var: 4, sign: -1 }, { var: 5, sign: 1 }],
+    [{ var: 1, sign: 1 }, { var: 3, sign: -1 }, { var: 5, sign: -1 }],
+    [{ var: 1, sign: -1 }, { var: 3, sign: 1 }, { var: 4, sign: 1 }],
+    [{ var: 3, sign: 1 }, { var: 4, sign: -1 }, { var: 5, sign: -1 }],
+    [{ var: 2, sign: -1 }, { var: 4, sign: 1 }, { var: 5, sign: 1 }]
+  ];
+
+  function renderMax3SatFormula(assignment = null) {
+    const container = document.getElementById("sat3FormulaDisplay");
+    if (!container) return;
+
+    let html = "";
+    sat3Clauses.forEach((c, idx) => {
+      let isSat = false;
+      let parts = c.map(lit => {
+        let name = (lit.sign === -1 ? "¬x" : "x") + lit.var;
+        if (assignment) {
+          let val = assignment[lit.var];
+          let litVal = (lit.sign === 1 ? val : !val);
+          if (litVal) isSat = true;
+          return `<span style="color: ${litVal ? '#10b981' : '#ef4444'}; font-weight: ${litVal ? 'bold' : 'normal'}">${name}</span>`;
+        }
+        return name;
+      });
+
+      let badge = "";
+      if (assignment) {
+        badge = isSat 
+          ? `<span class="badge bg-success ms-2">✓ Sat</span>`
+          : `<span class="badge bg-danger ms-2">✗ Falso</span>`;
+      }
+      html += `<div class="p-1 mb-1 border-bottom d-flex justify-content-between align-items-center">
+        <span>C<sub>${idx+1}</sub> = (${parts.join(" ∨ ")})</span>
+        ${badge}
+      </div>`;
+    });
+    container.innerHTML = html;
+  }
+
+  function runMax3SatSingle() {
+    // Generar valores aleatorios para x1..x5
+    const assignment = {};
+    for (let i = 1; i <= 5; i++) {
+      assignment[i] = Math.random() < 0.5;
+    }
+
+    // Mostrar asignación
+    const varEl = document.getElementById("sat3VarAssignment");
+    if (varEl) {
+      let txt = Object.entries(assignment).map(([k, v]) => `<strong>x<sub>${k}</sub> = ${v ? 'V' : 'F'}</strong>`).join(", ");
+      varEl.innerHTML = `Monedas lanzadas: ${txt}`;
+    }
+
+    // Evaluar
+    let satCount = 0;
+    sat3Clauses.forEach(c => {
+      let clauseSat = c.some(lit => {
+        let val = assignment[lit.var];
+        return (lit.sign === 1 ? val : !val);
+      });
+      if (clauseSat) satCount++;
+    });
+
+    renderMax3SatFormula(assignment);
+
+    const stats = document.getElementById("sat3Stats");
+    const pct = ((satCount / sat3Clauses.length) * 100).toFixed(1);
+    if (stats) {
+      stats.innerHTML = `
+        <p class="mb-1">Cláusulas satisfechas: <strong class="fs-5 text-primary">${satCount} / ${sat3Clauses.length}</strong></p>
+        <p class="mb-2">Porcentaje alcanzado: <strong>${pct}%</strong> (Garantía esperada $\\ge 87.5\\%$)</p>
+        <div class="progress mb-2" style="height: 14px;">
+          <div class="progress-bar ${satCount >= 7 ? 'bg-success' : 'bg-warning'}" style="width: ${pct}%;"></div>
+        </div>
+        <p class="small text-muted m-0" id="sat3Log">
+          ${satCount >= 7 ? '🎉 Cumple holgadamente la cota probabilística $7/8$ (≥7 cláusulas).' : '⚠️ En este lanzamiento puntual cayó en ' + satCount + ' cláusulas. La esperanza matemática es $7/8 \\approx 7$.'}
+        </p>
+      `;
+    }
+  }
+
+  function runMax3SatMulti(trials = 100) {
+    let totalSat = 0;
+    let distribution = { 5: 0, 6: 0, 7: 0, 8: 0, others: 0 };
+
+    for (let t = 0; t < trials; t++) {
+      const assignment = {};
+      for (let i = 1; i <= 5; i++) assignment[i] = Math.random() < 0.5;
+
+      let satCount = 0;
+      sat3Clauses.forEach(c => {
+        let ok = c.some(lit => (lit.sign === 1 ? assignment[lit.var] : !assignment[lit.var]));
+        if (ok) satCount++;
+      });
+
+      totalSat += satCount;
+      if (distribution[satCount] !== undefined) {
+        distribution[satCount]++;
+      } else {
+        distribution.others++;
+      }
+    }
+
+    const avg = (totalSat / trials).toFixed(2);
+    const avgPct = ((avg / sat3Clauses.length) * 100).toFixed(1);
+
+    const varEl = document.getElementById("sat3VarAssignment");
+    if (varEl) {
+      varEl.innerHTML = `Simulación masiva de <strong>${trials} ensayos independientes</strong> completada.`;
+    }
+
+    const stats = document.getElementById("sat3Stats");
+    if (stats) {
+      stats.innerHTML = `
+        <p class="mb-1">Promedio de Cláusulas: <strong class="fs-5 text-success">${avg} / 8</strong> (${avgPct}%)</p>
+        <p class="mb-2 text-muted small">Valor Teórico Esperado: $E[Z] = \\frac{7}{8} \\times 8 = \\mathbf{7.00}$ ($87.5\\%$)</p>
+        <div class="progress mb-3" style="height: 14px;">
+          <div class="progress-bar bg-success" style="width: ${avgPct}%;"></div>
+        </div>
+        <h6>Distribución de resultados en ${trials} corridas:</h6>
+        <div class="d-flex justify-content-between small text-center gap-1">
+          <div class="p-1 border rounded bg-card flex-fill">8 Sat: <strong>${distribution[8]}</strong></div>
+          <div class="p-1 border rounded bg-card flex-fill">7 Sat: <strong>${distribution[7]}</strong></div>
+          <div class="p-1 border rounded bg-card flex-fill">6 Sat: <strong>${distribution[6]}</strong></div>
+          <div class="p-1 border rounded bg-card flex-fill">≤ 5 Sat: <strong>${distribution[5] + distribution.others}</strong></div>
+        </div>
+      `;
+    }
+    renderMax3SatFormula(null);
+  }
+
+  // --- SIMULADOR STREAMING Y CONTEO (HAMLET) ---
+  let hamletSimRunning = false;
+
+  function resetHamletSim() {
+    hamletSimRunning = false;
+    document.getElementById("hamletK").textContent = "0";
+    document.getElementById("hamletWordsCount").textContent = "0 / 100";
+    document.getElementById("hamletMemoryBar").style.width = "0%";
+    document.getElementById("hamletStatusAlert").className = "alert alert-secondary py-1 px-2 m-0 small";
+    document.getElementById("hamletStatusAlert").textContent = "Listo para simular la lectura de Hamlet.";
+    document.getElementById("hamletConsole").innerHTML = `
+      Esperando inicio de la simulación...<br>
+      Al presionar "Simular Flujo", el texto se leerá en streaming y cada saturación de memoria disparará el descarte por monedas.
+    `;
+  }
+
+  function runHamletSimulation() {
+    const totalDistinctWords = 3967; // Conteo real de Hamlet
+    const maxCapacity = 100;
+    let k = 0;
+    let memory = new Set();
+    const consoleBox = document.getElementById("hamletConsole");
+    consoleBox.innerHTML = "";
+
+    function log(msg) {
+      consoleBox.innerHTML += `<div>${msg}</div>`;
+      consoleBox.scrollTop = consoleBox.scrollHeight;
+    }
+
+    log(`📖 Iniciando lectura secuencial del texto de Hamlet (3967 palabras únicas)...`);
+
+    // Simulamos la llegada en batches
+    for (let wordId = 1; wordId <= totalDistinctWords; wordId++) {
+      // Si la palabra ya está en memoria, nada
+      if (memory.has(wordId)) continue;
+
+      // Para ser aceptada en la ronda k, debe superar k tiradas de moneda con éxito: prob (1/2)^k
+      if (Math.random() < Math.pow(0.5, k)) {
+        memory.add(wordId);
+      }
+
+      // Si la memoria se satura (m = 100)
+      if (memory.size >= maxCapacity) {
+        k++;
+        log(`⚡ <span class="badge bg-warning text-dark">Memoria llena (100)</span> -> Pasa a <strong>Ronda K = ${k}</strong>.`);
+        
+        // Lanzar moneda para cada palabra en memoria: conservar con prob 0.5
+        const survived = new Set();
+        memory.forEach(w => {
+          if (Math.random() < 0.5) survived.add(w);
+        });
+        const discarded = memory.size - survived.size;
+        memory = survived;
+        log(`🪙 Descarte por monedas: salieron caras ${survived.size}, se descartaron ${discarded} palabras.`);
+      }
+    }
+
+    // Fin del streaming
+    const finalCount = memory.size;
+    const factor = Math.pow(2, k);
+    const estimated = finalCount * factor;
+    const errorPct = (Math.abs(estimated - totalDistinctWords) / totalDistinctWords * 100).toFixed(2);
+
+    document.getElementById("hamletK").textContent = k;
+    document.getElementById("hamletWordsCount").textContent = `${finalCount} / ${maxCapacity}`;
+    document.getElementById("hamletMemoryBar").style.width = `${finalCount}%`;
+
+    const alertEl = document.getElementById("hamletStatusAlert");
+    alertEl.className = "alert alert-success py-1 px-2 m-0 small";
+    alertEl.innerHTML = `<strong>Estimación: ${estimated} palabras</strong> (Real: ${totalDistinctWords}, Error: ${errorPct}%)`;
+
+    log(`🏁 <strong class="text-success">¡Lectura finalizada!</strong>`);
+    log(`📊 Palabras sobrevivientes en memoria ($|S|$): <strong>${finalCount}</strong>`);
+    log(`🎯 Ronda alcanzada: <strong>K = ${k}</strong> (Factor multiplicador: $2^{${k}} = ${factor}$)`);
+    log(`🧮 <strong>Total Estimado = ${finalCount} × ${factor} = ${estimated}</strong>`);
+    log(`✨ Exactitud: <strong>${(100 - errorPct).toFixed(2)}%</strong> (Error menor al ${errorPct}%) usando solo ${maxCapacity} celdas.`);
+  }
+
+  function resetKargerSim() {
+    kargerState = {
+      nodes: ["a", "b", "c", "d"],
+      edges: [
+        { u: "a", v: "b", id: "e1" },
+        { u: "b", v: "c", id: "e2" },
+        { u: "c", v: "d", id: "e3" },
+        { u: "a", v: "d", id: "e4" },
+        { u: "a", v: "c", id: "e5" }
+      ],
+      log: ["Grafo reseteado a 4 nodos {a, b, c, d} y 5 aristas."]
+    };
+    renderKarger();
+  }
+
+  // Funciones de navegación y Cheatsheet Drawer
+  function openCheatsheet() {
+    const drawer = document.getElementById("cheatsheetDrawer");
+    const backdrop = document.getElementById("drawerBackdrop");
+    if (drawer) {
+      drawer.classList.add("is-open");
+      drawer.setAttribute("aria-hidden", "false");
+    }
+    if (backdrop) backdrop.classList.add("is-open");
+  }
+
+  function closeCheatsheet() {
+    const drawer = document.getElementById("cheatsheetDrawer");
+    const backdrop = document.getElementById("drawerBackdrop");
+    if (drawer) {
+      drawer.classList.remove("is-open");
+      drawer.setAttribute("aria-hidden", "true");
+    }
+    if (backdrop) backdrop.classList.remove("is-open");
+  }
+
+  function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  // Inicializar al cargar
+  document.addEventListener("DOMContentLoaded", () => {
+    // 1. Sincronizar tema primero
+    const savedTheme = localStorage.getItem("tda_theme");
+    const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = (savedTheme === "dark") || (!savedTheme && prefersDark);
+
+    if (isDark) {
+      document.body.classList.add("dark-mode");
+      document.documentElement.classList.add("dark-mode");
+      document.documentElement.setAttribute("data-bs-theme", "dark");
+      const icon = document.getElementById("darkModeIcon");
+      if (icon) icon.textContent = "☀️";
+    } else {
+      document.body.classList.remove("dark-mode");
+      document.documentElement.classList.remove("dark-mode");
+      document.documentElement.setAttribute("data-bs-theme", "light");
+      const icon = document.getElementById("darkModeIcon");
+      if (icon) icon.textContent = "🌙";
+    }
+
+    // 2. Inicializar simuladores interactivos
+    renderSetCover();
+    renderPricing();
+    resetKargerSim();
+    renderMax3SatFormula();
+    resetHamletSim();
+
+    // 3. Inicializar diagramas Mermaid con tema sincronizado
+    if (window.mermaid) {
+      document.querySelectorAll(".mermaid").forEach(el => {
+        if (!el.getAttribute("data-mermaid-src")) {
+          el.setAttribute("data-mermaid-src", el.textContent.trim());
+        }
+      });
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: isDark ? "dark" : "neutral",
+        securityLevel: "loose",
+        themeVariables: isDark ? {
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          darkMode: true,
+          background: '#0b1120',
+          mainBkg: '#151e2e',
+          textColor: '#f8fafc',
+          primaryTextColor: '#f8fafc',
+          secondaryTextColor: '#cbd5e1',
+          tertiaryTextColor: '#94a3b8',
+          edgeLabelBackground: '#0b1120',
+          lineColor: '#94a3b8'
+        } : {
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+        }
+      });
+      try {
+        mermaid.run({ querySelector: ".mermaid" });
+      } catch (err) {
+        console.warn("Mermaid init notice:", err);
+      }
+    }
+
+    // 4. Renderizar expresiones matemáticas con KaTeX
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "$", right: "$", display: false },
+          { left: "\\(", right: "\\)", display: false }
+        ]
+      });
+    }
+  });
+
+  async function toggleDarkMode() {
+    const isDark = document.body.classList.toggle("dark-mode");
+    document.documentElement.classList.toggle("dark-mode", isDark);
+    const icon = document.getElementById("darkModeIcon");
+    if (icon) icon.textContent = isDark ? "☀️" : "🌙";
+    try {
+      localStorage.setItem("tda_theme", isDark ? "dark" : "light");
+    } catch(e) {}
+
+    // Re-renderizar Mermaid reactivamente sin recargar la página
+    if (window.mermaid) {
+      document.querySelectorAll(".mermaid").forEach(el => {
+        const src = el.getAttribute("data-mermaid-src");
+        if (src) {
+          el.removeAttribute("data-processed");
+          el.textContent = src;
+        }
+      });
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: isDark ? "dark" : "neutral",
+        securityLevel: "loose",
+        themeVariables: isDark ? {
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          darkMode: true,
+          background: '#0b1120',
+          mainBkg: '#151e2e',
+          textColor: '#f8fafc',
+          primaryTextColor: '#f8fafc',
+          secondaryTextColor: '#cbd5e1',
+          tertiaryTextColor: '#94a3b8',
+          edgeLabelBackground: '#0b1120',
+          lineColor: '#94a3b8'
+        } : {
+          fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+        }
+      });
+      try {
+        await mermaid.run({ querySelector: ".mermaid" });
+      } catch (err) {
+        console.warn("Mermaid dynamic switch notice:", err);
+      }
+    }
+  }
+</script>
+
+</body>
+</html>

@@ -18,7 +18,7 @@ import sec09_integradores
 import sec11_errores_checklist
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-INDEX_FILE = os.path.join(BASE_DIR, "index.html")
+INDEX_FILE = os.path.join(BASE_DIR, "todos.html")
 
 LEGACY_FILES = [
     os.path.join(BASE_DIR, "guia_tda_parciales.md"),
@@ -31,7 +31,7 @@ PARADIGM_TARGETS = [
         "filename": "dyc.html",
         "title": "División y Conquista (12 Ejercicios)",
         "paradigm_key": "dyc",
-        "modules": [sec01_intro_and_matrix, sec02_dyc]
+        "modules": [sec02_dyc]
     },
     {
         "filename": "greedy.html",
@@ -80,7 +80,7 @@ PARADIGM_TARGETS = [
         "title": "Exámenes Parciales Oficiales (29 Ejercicios)",
         "paradigm_key": "parciales",
         "modules": [
-            sec01_intro_and_matrix, sec02_dyc, sec03_greedy, sec03b_greedy_guia,
+            sec02_dyc, sec03_greedy, sec03b_greedy_guia,
             sec04_backtracking, sec05_dp, sec06_pl, sec07_flujo, sec08_reducciones,
             sec09_integradores, sec11_errores_checklist
         ]

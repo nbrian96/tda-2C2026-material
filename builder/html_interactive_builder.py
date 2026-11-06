@@ -226,78 +226,98 @@ def inject_interactive_widgets(html_body):
     return html_body + empty_state_html
 
 def get_hud_and_drawer_html(active_paradigm="all"):
-    pills_config = [
-        ("all", "index.html", "📚 Todos (79)"),
-        ("parciales", "parciales.html", "📝 Parciales (29)"),
-        ("dyc", "dyc.html", "🔷 DyC (12)"),
-        ("greedy", "greedy.html", "🔶 Greedy (26)"),
-        ("backtracking", "backtracking.html", "🟣 Backtracking (14)"),
+    is_home = (active_paradigm == "all")
+    
+    # Menú de paradigmas para dropdown
+    paradigms_menu = [
+        ("todos", "todos.html", "📚 Todos los Ejercicios (79)"),
+        ("dyc", "dyc.html", "🔷 División y Conquista (12)"),
+        ("greedy", "greedy.html", "🔶 Greedy / Voraces (26)"),
+        ("backtracking", "backtracking.html", "🟣 Backtracking & B&B (14)"),
         ("dp", "dp.html", "🟢 Prog. Dinámica (7)"),
         ("pl", "pl.html", "🔵 Prog. Lineal (6)"),
         ("flujo", "flujo.html", "🔴 Redes de Flujo (5)"),
         ("reducciones", "reducciones.html", "🟡 Reducciones NP (4)"),
         ("integradores", "integradores.html", "⚡ Integradores (5)")
     ]
-    rendered_pills = "".join(
-        f'<a href="{href}" class="pill-btn{" active" if key == active_paradigm else ""}" data-paradigm="{key}">{label}</a>'
-        for key, href, label in pills_config
+    
+    dropdown_items_html = "".join(
+        f'<a href="{href}" class="site-dropdown-item{" active" if key == active_paradigm else ""}">{label}</a>'
+        for key, href, label in paradigms_menu
     )
-    html_template = r"""<header class="hud-top-bar" id="hudTopBar">
-  <div class="hud-container">
-    <div class="hud-row-primary">
-      <div class="hud-brand">
-        <a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;">
-          <span class="hud-logo-icon">🚀</span>
-          <div><h1 class="hud-title">TDA — Guía Interactiva de Parciales</h1><span class="hud-subtitle">Edición Intensiva: Salvando el Cuatrimestre (2024–2026)</span></div>
-        </a>
-      </div>
-      <div class="hud-mode-selector" role="group" aria-label="Modo de Estudio">
-        <button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')" title="Mostrar solo los ejercicios 🔴 IMPRESCINDIBLES de examen">
-          <span class="mode-icon">⚡</span><span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span><span class="mode-badge" id="badgeEmergencyCount">48</span>
-        </button>
-        <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')" title="Mostrar ejercicios pendientes de dominar y casos 🟡 IMPORTANTES">
-          <span class="mode-icon">🎯</span><span class="mode-label"><span class="mode-label-long">Modo Táctico (Pendientes)</span><span class="mode-label-short">Táctico</span></span><span class="mode-badge" id="badgeTacticalCount">79</span>
-        </button>
-        <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')" title="Mostrar todos los ejercicios de esta vista">
-          <span class="mode-icon">📚</span><span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span><span class="mode-badge" id="badgeAllCount">79</span>
-        </button>
-      </div>
-      <div class="hud-quick-tools">
-        <button class="tool-btn highlight-tool" onclick="scrollToExercise(78)" title="Ver La Mochila resuelta en todos los paradigmas"><span class="tool-icon">🎒</span> <span class="tool-text">Mochila Multi-P</span></button>
-        <button class="tool-btn highlight-tool" onclick="scrollToExercise(79)" title="Ver El Viajante (TSP) resuelto en todos los paradigmas"><span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span></button>
-        <button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)"><span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span></button>
-        <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro"><span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span></button>
-        <button class="tool-btn" onclick="scrollToTrainer()" title="Ir al simulador de reconocimiento en 30 segundos"><span class="tool-icon">⚡</span> <span class="tool-text">Simulador 30s</span></button>
-        <button class="tool-btn" onclick="toggleDarkMode()" id="btnDarkMode" title="Cambiar modo claro / oscuro"><span class="tool-icon" id="darkModeIcon">🌙</span></button>
-      </div>
+
+    navbar_html = f"""<header class="site-navbar" id="siteNavbar">
+  <div class="site-navbar-container">
+    <a href="index.html" class="site-brand">
+      <span style="font-size: 1.25rem;">🚀</span>
+      <span>TDA FIUBA</span>
+    </a>
+    
+    <nav>
+      <ul class="site-nav-links">
+        <li><a href="index.html" class="site-nav-link{" active" if is_home else ""}">🏠 Inicio</a></li>
+        <li><a href="parciales.html" class="site-nav-link{" active" if active_paradigm == 'parciales' else ""}">📝 Parciales (29)</a></li>
+        <li class="site-dropdown">
+          <a href="#" class="site-nav-link{" active" if active_paradigm in [k for k, _, _ in paradigms_menu] else ""}" onclick="event.preventDefault()">📂 Paradigmas ▾</a>
+          <div class="site-dropdown-menu">
+            {dropdown_items_html}
+          </div>
+        </li>
+        <li><a href="teoria-avanzados.html" class="site-nav-link{" active" if active_paradigm == 'avanzados' else ""}">🎲 Paradigmas Avanzados</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-nav-actions">
+      <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y fórmulas"><span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span></button>
+      <button class="tool-btn" onclick="toggleDarkMode()" id="btnDarkMode" title="Cambiar tema claro / oscuro"><span class="tool-icon" id="darkModeIcon">🌙</span></button>
     </div>
-    <div class="hud-row-secondary">
-      <div class="hud-progress-wrap">
-        <div class="progress-info"><span class="progress-title">Progreso en vista activa:</span><span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">79</span> dominados (<span id="progPercent">0%</span>)</span></div>
-        <div class="progress-track"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
-      </div>
-      <div class="difficulty-filter-group d-flex align-items-center gap-1 flex-wrap" role="group" aria-label="Filtrar por dificultad">
-        <span class="diff-filter-label small text-muted fw-semibold me-1">Dificultad:</span>
-        <button type="button" class="diff-btn active" data-diff="all" onclick="setDifficultyFilter('all')">Todas</button>
-        <button type="button" class="diff-btn" data-diff="1" onclick="setDifficultyFilter('1')" title="Nivel 1/5">1★</button>
-        <button type="button" class="diff-btn" data-diff="2" onclick="setDifficultyFilter('2')" title="Nivel 2/5">2★</button>
-        <button type="button" class="diff-btn" data-diff="3" onclick="setDifficultyFilter('3')" title="Nivel 3/5">3★</button>
-        <button type="button" class="diff-btn" data-diff="4" onclick="setDifficultyFilter('4')" title="Nivel 4/5">4★</button>
-        <button type="button" class="diff-btn" data-diff="5" onclick="setDifficultyFilter('5')" title="Nivel 5/5">5★</button>
-      </div>
-      <div class="hud-search-box">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (tecla /): mochila, tsp, held-karp, arnook, invap..." oninput="handleSearch(this.value)">
-        <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display: none;" title="Limpiar búsqueda">✕</button>
-      </div>
+  </div>
+</header>"""
+
+    # Sub-barra de ejercicios para vistas de ejercicios
+    exercise_bar_html = ""
+    if not is_home:
+        exercise_bar_html = """<div class="exercise-context-bar" id="exerciseContextBar">
+  <div class="exercise-context-inner">
+    <div class="hud-mode-selector" role="group" aria-label="Modo de Estudio">
+      <button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')" title="Ejercicios imprescindibles">
+        <span class="mode-icon">⚡</span><span class="mode-label">Emergencia</span><span class="mode-badge" id="badgeEmergencyCount">-</span>
+      </button>
+      <button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')" title="Ejercicios tácticos">
+        <span class="mode-icon">🎯</span><span class="mode-label">Táctico</span><span class="mode-badge" id="badgeTacticalCount">-</span>
+      </button>
+      <button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')" title="Todos los ejercicios">
+        <span class="mode-icon">📚</span><span class="mode-label">Todos</span><span class="mode-badge" id="badgeAllCount">-</span>
+      </button>
     </div>
-    <div class="hud-row-pills"><div class="filter-pills-scroll" id="paradigmPills"><!-- REND_PILLS --></div></div>
+    
+    <div class="difficulty-filter-group" role="group" aria-label="Filtrar por dificultad">
+      <span class="diff-filter-label">Dificultad:</span>
+      <button type="button" class="diff-btn active" data-diff="all" onclick="setDifficultyFilter('all')">Todas</button>
+      <button type="button" class="diff-btn" data-diff="1" onclick="setDifficultyFilter('1')">1★</button>
+      <button type="button" class="diff-btn" data-diff="2" onclick="setDifficultyFilter('2')">2★</button>
+      <button type="button" class="diff-btn" data-diff="3" onclick="setDifficultyFilter('3')">3★</button>
+      <button type="button" class="diff-btn" data-diff="4" onclick="setDifficultyFilter('4')">4★</button>
+      <button type="button" class="diff-btn" data-diff="5" onclick="setDifficultyFilter('5')">5★</button>
+    </div>
+
+    <div class="hud-search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (/)..." oninput="handleSearch(this.value)">
+      <button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display: none;" title="Limpiar">✕</button>
+    </div>
+
+    <div class="hud-progress-wrap" style="max-width: 170px;">
+      <div class="progress-info"><span class="progress-numbers"><strong id="progMastered">0</strong>/<span id="progTotal">-</span> dominados</span></div>
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
+    </div>
   </div>
-  <div class="emergency-banner" id="emergencyBanner">
-    <div class="banner-inner"><span class="banner-icon">⚡</span><span><strong>Modo Emergencia (48–72h):</strong> Mostrando los <strong id="emergencyBannerCount">50</strong> ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de exámenes reales en esta vista.</span><button class="banner-dismiss" onclick="dismissBanner()" title="Ocultar aviso">✕</button></div>
-  </div>
-</header>
-<div class="drawer-backdrop" id="drawerBackdrop" onclick="closeCheatsheet()"></div>
+</div>
+<div class="emergency-banner" id="emergencyBanner" style="display: none;">
+  <div class="banner-inner"><span class="banner-icon">⚡</span><span><strong>Modo Emergencia (48–72h):</strong> Mostrando solo ejercicios 🔴 <strong>IMPRESCINDIBLES</strong>.</span><button class="banner-dismiss" onclick="dismissBanner()">✕</button></div>
+</div>"""
+
+    drawer_html = r"""<div class="drawer-backdrop" id="drawerBackdrop" onclick="closeCheatsheet()"></div>
 <aside class="cheatsheet-drawer" id="cheatsheetDrawer" aria-hidden="true">
   <div class="drawer-header"><div class="drawer-title-group"><span class="drawer-icon">📐</span><h2>Fórmulas y Recetas Rápidas de Parcial</h2></div><button class="drawer-close-btn" onclick="closeCheatsheet()" aria-label="Cerrar">✕</button></div>
   <div class="drawer-content">
@@ -309,11 +329,9 @@ def get_hud_and_drawer_html(active_paradigm="all"):
     <section class="drawer-section warning-box"><h3>⚠️ Errores Prohibidos que Anulan el Ejercicio</h3><ul><li>❌ <strong>Reducir al revés en NP-C:</strong> Jamás hagas $B \le_P A$. Siempre $A_{\text{conocido}} \le_P B_{\text{nuevo}}$.</li><li>❌ <strong>Afirmar optimalidad en Greedy sin prueba:</strong> Requiere inducción por <em>Greedy Stays Ahead</em> o <em>Intercambio</em>.</li><li>❌ <strong>Olvidar casos base en DP:</strong> Asumir $0$ en estados infactibles corrompe la solución.</li><li>❌ <strong>Omitir aristas residuales backward en Flujo:</strong> No es Ford-Fulkerson sin ellas.</li></ul></section>
   </div>
 </aside>
-<div class="floating-quick-btn" id="floatingQuickBtn">
-  <button class="fab-btn" onclick="openCheatsheet()" title="Fórmulas Rápidas">📐 Recetas</button>
-  <button class="fab-btn fab-secondary" onclick="scrollToTop()" title="Volver Arriba">⬆️</button>
-</div>"""
-    return html_template.replace("<!-- REND_PILLS -->", rendered_pills)
+<div class="floating-quick-btn" id="floatingQuickBtn"><button class="fab-btn" onclick="openCheatsheet()" title="Fórmulas Rápidas">📐 Recetas</button><button class="fab-btn fab-secondary" onclick="scrollToTop()" title="Volver Arriba">⬆️</button></div>"""
+
+    return navbar_html + exercise_bar_html + drawer_html
 
 def normalize_markdown_lists(md_text):
     lines = md_text.split("\n")
@@ -358,6 +376,9 @@ def convert_markdown_to_html(md_text):
         md_text = md_text.replace(f"%%CODE_BLK_{idx}%%", raw_code)
 
     html_raw = markdown.markdown(md_text, extensions=["fenced_code", "tables"])
+
+    # Envolver tablas en un contenedor responsivo para soporte móvil fluido
+    html_raw = re.sub(r'(<table\b[^>]*>[\s\S]*?</table>)', r'<div class="table-responsive">\1</div>', html_raw)
 
     for idx, raw_math in enumerate(math_placeholders):
         html_raw = html_raw.replace(f"%%MATH_BLK_{idx}%%", html.escape(raw_math))
@@ -409,7 +430,7 @@ def build_interactive_html(md_text, output_file, active_paradigm="all", page_tit
 
         intro_header = (
             '<section class="parciales-intro-header py-4 mb-4">'
-            '<div class="card shadow-sm border-primary" style="background: var(--card-bg); border-left: 5px solid #2b6cb0;">'
+            '<div class="card shadow-sm border-primary" style="background: var(--bg-card); border-left: 5px solid #2b6cb0;">'
             '<div class="card-body p-4">'
             '<div class="d-flex align-items-center gap-3">'
             '<span style="font-size: 2.5rem;">📝</span>'
@@ -457,6 +478,19 @@ def build_interactive_html(md_text, output_file, active_paradigm="all", page_tit
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
 <link rel="stylesheet" href="assets/css/styles.css">
+<script>
+  (function() {{
+    const savedTheme = localStorage.getItem("tda_theme");
+    const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    if (savedTheme === "dark" || (!savedTheme && prefersDark)) {{
+      document.documentElement.classList.add("dark-mode");
+      document.documentElement.setAttribute("data-bs-theme", "dark");
+    }} else {{
+      document.documentElement.classList.remove("dark-mode");
+      document.documentElement.setAttribute("data-bs-theme", "light");
+    }}
+  }})();
+</script>
 </head>
 <body>
 {hud_and_drawer}

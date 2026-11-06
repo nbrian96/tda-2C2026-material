@@ -163,22 +163,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     initTrainer();
   }
 
-  // Interceptar clics en los botones de paradigma si estamos en una página con catálogo completo (index.html)
-  const isCatalogPage = !!document.getElementById("tdaCatalogMount");
-  document.querySelectorAll("#paradigmPills .pill-btn").forEach(btn => {
-    btn.addEventListener("click", (e) => {
-      const paradigm = btn.getAttribute("data-paradigm") || "all";
-      if (isCatalogPage) {
-        e.preventDefault();
-        filterByParadigm(paradigm);
-        if (paradigm === "all") {
-          history.replaceState(null, "", window.location.pathname);
-        } else {
-          history.replaceState(null, "", `#paradigma-${paradigm}`);
-        }
-      }
-    });
-  });
+  // Los botones de navegación en #paradigmPills y en la barra navegan directamente a sus vistas dedicadas HTML.
 
   // Abrir temporalmente todos los drawers para que Mermaid calcule la geometría real
   const drawers = document.querySelectorAll(".exercise-solution-drawer");
@@ -235,7 +220,7 @@ function initMathRendering() {
 
 async function initMermaidDiagrams() {
   if (typeof mermaid === "undefined") return;
-  const isDark = document.body.classList.contains("dark-mode");
+  const isDark = document.documentElement.classList.contains("dark-mode") || document.body.classList.contains("dark-mode");
 
   // Preservar el código fuente original de cada diagrama Mermaid para poder re-renderizar al cambiar tema
   document.querySelectorAll(".mermaid").forEach(el => {
@@ -251,8 +236,26 @@ async function initMermaidDiagrams() {
     startOnLoad: false,
     theme: isDark ? "dark" : "neutral",
     securityLevel: "loose",
-    themeVariables: {
-      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+    themeVariables: isDark ? {
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      darkMode: true,
+      background: '#0b1120',
+      mainBkg: '#151e2e',
+      textColor: '#f8fafc',
+      primaryTextColor: '#f8fafc',
+      secondaryTextColor: '#cbd5e1',
+      tertiaryTextColor: '#94a3b8',
+      edgeLabelBackground: '#0b1120',
+      lineColor: '#94a3b8'
+    } : {
+      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+      darkMode: false,
+      background: '#ffffff',
+      mainBkg: '#ffffff',
+      textColor: '#0f172a',
+      primaryTextColor: '#0f172a',
+      edgeLabelBackground: '#ffffff',
+      lineColor: '#64748b'
     }
   });
   try {
@@ -288,8 +291,16 @@ function loadSavedState() {
       checklistState = JSON.parse(savedChecklist);
     }
     const savedTheme = localStorage.getItem("tda_theme");
-    if (savedTheme === "dark") {
+    const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const isDark = savedTheme === "dark" || (!savedTheme && prefersDark);
+    if (isDark) {
+      document.documentElement.classList.add("dark-mode");
+      document.documentElement.setAttribute("data-bs-theme", "dark");
       document.body.classList.add("dark-mode");
+    } else {
+      document.documentElement.classList.remove("dark-mode");
+      document.documentElement.setAttribute("data-bs-theme", "light");
+      document.body.classList.remove("dark-mode");
     }
     const savedMode = localStorage.getItem("tda_study_mode");
     if (savedMode && ["emergency", "tactical", "all"].includes(savedMode)) {
@@ -760,17 +771,30 @@ function closeCheatsheet() {
 function updateDarkModeButtonIcon() {
   const iconEl = document.getElementById("darkModeIcon");
   if (iconEl) {
-    const isDark = document.body.classList.contains("dark-mode");
+    const isDark = document.documentElement.classList.contains("dark-mode") || document.body.classList.contains("dark-mode");
     iconEl.textContent = isDark ? "☀️" : "🌙";
   }
 }
 
 // Theme
 async function toggleDarkMode() {
-  const isDark = document.body.classList.toggle("dark-mode");
+  const isCurrentlyDark = document.documentElement.classList.contains("dark-mode") || document.body.classList.contains("dark-mode");
+  const newTheme = isCurrentlyDark ? "light" : "dark";
+  const isDark = (newTheme === "dark");
+
+  if (isDark) {
+    document.documentElement.classList.add("dark-mode");
+    document.documentElement.setAttribute("data-bs-theme", "dark");
+    document.body.classList.add("dark-mode");
+  } else {
+    document.documentElement.classList.remove("dark-mode");
+    document.documentElement.setAttribute("data-bs-theme", "light");
+    document.body.classList.remove("dark-mode");
+  }
+
   updateDarkModeButtonIcon();
   try {
-    localStorage.setItem("tda_theme", isDark ? "dark" : "light");
+    localStorage.setItem("tda_theme", newTheme);
   } catch (e) {}
   if (typeof initMermaidDiagrams === "function") {
     await initMermaidDiagrams();

@@ -1,105 +1,408 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teoría de Algoritmos — Guía Interactiva Completa (79 Ejercicios) (FIUBA)</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
-<link rel="stylesheet" href="assets/css/styles.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teoría de Algoritmos — Portal de Parciales y Paradigmas (FIUBA)</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem("tda_theme");
+      const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+      if (savedTheme === "dark" || (!savedTheme && prefersDark)) {
+        document.documentElement.classList.add("dark-mode");
+        document.documentElement.setAttribute("data-bs-theme", "dark");
+      } else {
+        document.documentElement.classList.remove("dark-mode");
+        document.documentElement.setAttribute("data-bs-theme", "light");
+      }
+    })();
+  </script>
 </head>
 <body>
-<header class="hud-top-bar" id="hudTopBar"><div class="hud-container">
-<div class="hud-row-primary"><div class="hud-brand">
-<a href="index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 8px;">
-<span class="hud-logo-icon">🚀</span><div><h1 class="hud-title">TDA — Guía Interactiva de Parciales</h1><span class="hud-subtitle">Edición Intensiva: Salvando el Cuatrimestre (2024–2026)</span></div>
-</a></div>
-<div class="hud-mode-selector" role="group" aria-label="Modo de Estudio"><button class="mode-btn active" id="btnModeEmergency" onclick="setStudyMode('emergency')" title="Mostrar solo los ejercicios 🔴 IMPRESCINDIBLES de examen">
-<span class="mode-icon">⚡</span><span class="mode-label"><span class="mode-label-long">Modo Emergencia (48-72h)</span><span class="mode-label-short">48-72h</span></span><span class="mode-badge" id="badgeEmergencyCount">48</span></button>
-<button class="mode-btn" id="btnModeTactical" onclick="setStudyMode('tactical')" title="Mostrar ejercicios pendientes de dominar y casos 🟡 IMPORTANTES">
-<span class="mode-icon">🎯</span><span class="mode-label"><span class="mode-label-long">Modo Táctico (Pendientes)</span><span class="mode-label-short">Táctico</span></span><span class="mode-badge" id="badgeTacticalCount">79</span></button>
-<button class="mode-btn" id="btnModeAll" onclick="setStudyMode('all')" title="Mostrar todos los ejercicios de esta vista">
-<span class="mode-icon">📚</span><span class="mode-label"><span class="mode-label-long">Todos</span><span class="mode-label-short">Todos</span></span><span class="mode-badge" id="badgeAllCount">79</span></button>
-</div>
-<div class="hud-quick-tools"><button class="tool-btn highlight-tool" onclick="scrollToExercise(78)" title="Ver La Mochila resuelta en todos los paradigmas"><span class="tool-icon">🎒</span> <span class="tool-text">Mochila Multi-P</span></button><button class="tool-btn highlight-tool" onclick="scrollToExercise(79)" title="Ver El Viajante (TSP) resuelto en todos los paradigmas"><span class="tool-icon">🚗</span> <span class="tool-text">Viajante Multi-P</span></button><button class="tool-btn" onclick="toggleGlobalSolutions()" id="btnGlobalSolutions" title="Ocultar o mostrar todas las soluciones (Active Recall)"><span class="tool-icon">👁️</span> <span class="tool-text" id="lblGlobalSolutions">Soluciones</span></button><button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y Teorema Maestro"><span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span></button><button class="tool-btn" onclick="scrollToTrainer()" title="Ir al simulador de reconocimiento en 30 segundos"><span class="tool-icon">⚡</span> <span class="tool-text">Simulador 30s</span></button><button class="tool-btn" onclick="toggleDarkMode()" id="btnDarkMode" title="Cambiar modo claro / oscuro"><span class="tool-icon" id="darkModeIcon">🌙</span></button></div>
-</div>
-<div class="hud-row-secondary"><div class="hud-progress-wrap">
-<div class="progress-info"><span class="progress-title">Progreso en vista activa:</span><span class="progress-numbers"><strong id="progMastered">0</strong> de <span id="progTotal">79</span> dominados (<span id="progPercent">0%</span>)</span></div>
-<div class="progress-track"><div class="progress-fill" id="progressFill" style="width: 0%;"></div></div>
-</div>
-<div class="difficulty-filter-group d-flex align-items-center gap-1 flex-wrap" role="group" aria-label="Filtrar por dificultad"><span class="diff-filter-label small text-muted fw-semibold me-1">Dificultad:</span><button type="button" class="diff-btn active" data-diff="all" onclick="setDifficultyFilter('all')">Todas</button><button type="button" class="diff-btn" data-diff="1" onclick="setDifficultyFilter('1')" title="Nivel 1/5">1★</button><button type="button" class="diff-btn" data-diff="2" onclick="setDifficultyFilter('2')" title="Nivel 2/5">2★</button><button type="button" class="diff-btn" data-diff="3" onclick="setDifficultyFilter('3')" title="Nivel 3/5">3★</button><button type="button" class="diff-btn" data-diff="4" onclick="setDifficultyFilter('4')" title="Nivel 4/5">4★</button><button type="button" class="diff-btn" data-diff="5" onclick="setDifficultyFilter('5')" title="Nivel 5/5">5★</button></div>
-<div class="hud-search-box"><span class="search-icon">🔍</span><input type="text" id="exerciseSearch" placeholder="Buscar ejercicio (tecla /): mochila, tsp, held-karp, arnook, invap..." oninput="handleSearch(this.value)">
-<button class="clear-search-btn" id="clearSearchBtn" onclick="clearSearch()" style="display: none;" title="Limpiar búsqueda">✕</button></div>
-</div>
-<div class="hud-row-pills"><div class="filter-pills-scroll" id="paradigmPills"><a href="index.html" class="pill-btn active" data-paradigm="all">📚 Todos (79)</a><a href="parciales.html" class="pill-btn" data-paradigm="parciales">📝 Parciales (29)</a><a href="dyc.html" class="pill-btn" data-paradigm="dyc">🔷 DyC (12)</a><a href="greedy.html" class="pill-btn" data-paradigm="greedy">🔶 Greedy (26)</a><a href="backtracking.html" class="pill-btn" data-paradigm="backtracking">🟣 Backtracking (14)</a><a href="dp.html" class="pill-btn" data-paradigm="dp">🟢 Prog. Dinámica (7)</a><a href="pl.html" class="pill-btn" data-paradigm="pl">🔵 Prog. Lineal (6)</a><a href="flujo.html" class="pill-btn" data-paradigm="flujo">🔴 Redes de Flujo (5)</a><a href="reducciones.html" class="pill-btn" data-paradigm="reducciones">🟡 Reducciones NP (4)</a><a href="integradores.html" class="pill-btn" data-paradigm="integradores">⚡ Integradores (5)</a></div></div>
-</div>
-<div class="emergency-banner" id="emergencyBanner"><div class="banner-inner"><span class="banner-icon">⚡</span><span><strong>Modo Emergencia (48–72h):</strong> Mostrando los <strong id="emergencyBannerCount">50</strong> ejercicios 🔴 <strong>IMPRESCINDIBLES</strong> de exámenes reales en esta vista.</span><button class="banner-dismiss" onclick="dismissBanner()" title="Ocultar aviso">✕</button></div>
-</div>
+
+<!-- Navbar Global Unificado (54px) -->
+<header class="site-navbar" id="siteNavbar">
+  <div class="site-navbar-container">
+    <a href="index.html" class="site-brand">
+      <span style="font-size: 1.25rem;">🚀</span>
+      <span>TDA FIUBA</span>
+    </a>
+    
+    <nav>
+      <ul class="site-nav-links">
+        <li><a href="index.html" class="site-nav-link active">🏠 Inicio</a></li>
+        <li><a href="parciales.html" class="site-nav-link">📝 Parciales (29)</a></li>
+        <li class="site-dropdown">
+          <a href="#" class="site-nav-link" onclick="event.preventDefault()">📂 Paradigmas ▾</a>
+          <div class="site-dropdown-menu">
+            <a href="todos.html" class="site-dropdown-item">📚 Todos los Ejercicios (79)</a>
+            <a href="dyc.html" class="site-dropdown-item">🔷 División y Conquista (12)</a>
+            <a href="greedy.html" class="site-dropdown-item">🔶 Greedy / Voraces (26)</a>
+            <a href="backtracking.html" class="site-dropdown-item">🟣 Backtracking &amp; B&amp;B (14)</a>
+            <a href="dp.html" class="site-dropdown-item">🟢 Prog. Dinámica (7)</a>
+            <a href="pl.html" class="site-dropdown-item">🔵 Prog. Lineal (6)</a>
+            <a href="flujo.html" class="site-dropdown-item">🔴 Redes de Flujo (5)</a>
+            <a href="reducciones.html" class="site-dropdown-item">🟡 Reducciones NP (4)</a>
+            <a href="integradores.html" class="site-dropdown-item">⚡ Integradores (5)</a>
+          </div>
+        </li>
+        <li><a href="teoria-avanzados.html" class="site-nav-link site-nav-link-adv">🎲 Paradigmas Avanzados</a></li>
+      </ul>
+    </nav>
+
+    <div class="site-nav-actions">
+      <button class="tool-btn" onclick="openCheatsheet()" title="Abrir recetas rápidas y fórmulas"><span class="tool-icon">📐</span> <span class="tool-text">Fórmulas</span></button>
+      <button class="tool-btn" onclick="toggleDarkMode()" id="btnDarkMode" title="Cambiar tema claro / oscuro"><span class="tool-icon" id="darkModeIcon">🌙</span></button>
+    </div>
+  </div>
 </header>
+
+<!-- Drawer de Fórmulas y Recetas Rápidas -->
 <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeCheatsheet()"></div>
 <aside class="cheatsheet-drawer" id="cheatsheetDrawer" aria-hidden="true">
-<div class="drawer-header"><div class="drawer-title-group"><span class="drawer-icon">📐</span><h2>Fórmulas y Recetas Rápidas de Parcial</h2></div><button class="drawer-close-btn" onclick="closeCheatsheet()" aria-label="Cerrar">✕</button></div>
-<div class="drawer-content"><section class="drawer-section"><h3>1. Teorema Maestro (División y Conquista)</h3><div class="formula-card">$$T(n) = a \cdot T(n/b) + \Theta(n^c) \quad (a \ge 1, \; b > 1, \; c \ge 0)$$<ul><li><strong>Caso 1 (Hojas dominan):</strong> Si $\log_b a > c \implies T(n) = \Theta(n^{\log_b a})$</li><li><strong>Caso 2 (Balance):</strong> Si $\log_b a = c \implies T(n) = \Theta(n^c \log n)$</li><li><strong>Caso 3 (Raíz domina):</strong> Si $\log_b a < c \implies T(n) = \Theta(n^c)$ <em>(con $a \cdot f(n/b) \le k \cdot f(n)$)</em></li></ul></div></section>
-<section class="drawer-section"><h3>2. Esquema de 4 Pasos Obligatorios para NP-C</h3><ol class="steps-list"><li><strong>Certificado y Verificador en NP:</strong> Definir certificado polinomial $C$ y verificador $V(I_B, C)$ en tiempo $O(n^k)$.</li><li><strong>Problema conocido en NPC:</strong> Seleccionar problema base $A \in \text{NPC}$ (Vertex Cover, 3-SAT, Ciclo Ham, Subset Sum) y reducir $A \le_P B$.</li><li><strong>Transformación polinomial:</strong> Definir $f(I_A) \to I_B$ computable en tiempo polinomial.</li><li><strong>Demostración Bidireccional:</strong> Ida ($I_A \in \text{YES}_A \implies f(I_A) \in \text{YES}_B$) y Vuelta ($f(I_A) \in \text{YES}_B \implies I_A \in \text{YES}_A$).</li></ol></section>
-<section class="drawer-section"><h3>3. Los 5 Pasos de Programación Dinámica</h3><ol class="steps-list"><li><strong>Definición semántica del Estado:</strong> Explicar con palabras qué significa $OPT(i, w)$.</li><li><strong>Casos Base:</strong> Inicializar explícitamente celdas triviales y estados infactibles ($-\infty$ o $+\infty$).</li><li><strong>Ecuación de Recurrencia:</strong> Decisión local, ej. $OPT(i, w) = \max\big(OPT(i-1, w), \; OPT(i-1, w - w_i) + v_i\big)$.</li><li><strong>Orden de Llenado:</strong> Especificar dirección bottom-up (filas crecientes, columnas crecientes).</li><li><strong>Algoritmo de Reconstrucción:</strong> Rastrear las decisiones hacia atrás en la tabla para devolver los ítems.</li></ol></section>
-<section class="drawer-section"><h3>4. Reglas de Oro de Programación Lineal (PLI)</h3><ul><li>Definir variables de decisión con su dominio explícito ($x_i \in \{0, 1\}$ o $y_j \ge 0$).</li><li><strong>¡PROHIBIDO!</strong> Multiplicar variables de decisión ($x_i \cdot y_j$ anula el ejercicio; usar acotación con Big-$M$).</li><li><strong>Linealizar Min-Max / Max-Min:</strong> $\min Z$ sujeto a $Z \ge f_i(x)$ para todo $i$.</li><li>Contar explícitamente cantidad de variables y restricciones en función de la entrada.</li></ul></section>
-<section class="drawer-section"><h3>5. Redes de Flujo (Ford-Fulkerson / Edmonds-Karp)</h3><ul><li>Construir super-fuente $s$ y super-sumidero $t$ para entradas/salidas múltiples.</li><li>Capacidades en aristas dirigidas. Red residual $G_f$ con aristas backward de capacidad $c_f(v, u) = f(u, v)$.</li><li><strong>Teorema Max-Flow Min-Cut:</strong> $|f^*| = C(A, B) = \sum_{u \in A, v \in B} c(u, v)$.</li><li><strong>Teorema de Integralidad:</strong> Capacidades enteras garantizan flujo entero $f(e) \in \mathbb{Z}_{\ge 0}$.</li></ul></section>
-<section class="drawer-section warning-box"><h3>⚠️ Errores Prohibidos que Anulan el Ejercicio</h3><ul><li>❌ <strong>Reducir al revés en NP-C:</strong> Jamás hagas $B \le_P A$. Siempre $A_{\text{conocido}} \le_P B_{\text{nuevo}}$.</li><li>❌ <strong>Afirmar optimalidad en Greedy sin prueba:</strong> Requiere inducción por <em>Greedy Stays Ahead</em> o <em>Intercambio</em>.</li><li>❌ <strong>Olvidar casos base en DP:</strong> Asumir $0$ en estados infactibles corrompe la solución.</li><li>❌ <strong>Omitir aristas residuales backward en Flujo:</strong> No es Ford-Fulkerson sin ellas.</li></ul></section>
-</div>
+  <div class="drawer-header">
+    <div class="drawer-title-group"><span class="drawer-icon">📐</span><h2>Fórmulas y Recetas Rápidas de Parcial</h2></div>
+    <button class="drawer-close-btn" onclick="closeCheatsheet()" aria-label="Cerrar">✕</button>
+  </div>
+  <div class="drawer-content">
+    <section class="drawer-section">
+      <h3>1. Teorema Maestro (División y Conquista)</h3>
+      <div class="formula-card">
+        $$T(n) = a \cdot T(n/b) + \Theta(n^c) \quad (a \ge 1, \; b > 1, \; c \ge 0)$$
+        <ul>
+          <li><strong>Caso 1 (Hojas dominan):</strong> Si $\log_b a > c \implies T(n) = \Theta(n^{\log_b a})$</li>
+          <li><strong>Caso 2 (Balance):</strong> Si $\log_b a = c \implies T(n) = \Theta(n^c \log n)$</li>
+          <li><strong>Caso 3 (Raíz domina):</strong> Si $\log_b a < c \implies T(n) = \Theta(n^c)$</li>
+        </ul>
+      </div>
+    </section>
+    <section class="drawer-section">
+      <h3>2. Esquema de 4 Pasos Obligatorios para NP-C</h3>
+      <ol class="steps-list">
+        <li><strong>Certificado y Verificador en NP:</strong> Definir certificado polinomial $C$ y verificador en $O(n^k)$.</li>
+        <li><strong>Problema conocido en NPC:</strong> Seleccionar problema base $A \in \text{NPC}$ y reducir $A \le_P B$.</li>
+        <li><strong>Transformación polinomial:</strong> Definir $f(I_A) \to I_B$ computable en tiempo polinomial.</li>
+        <li><strong>Demostración Bidireccional:</strong> Ida y Vuelta.</li>
+      </ol>
+    </section>
+    <section class="drawer-section">
+      <h3>3. Los 5 Pasos de Programación Dinámica</h3>
+      <ol class="steps-list">
+        <li><strong>Definición semántica del Estado:</strong> Qué representa $OPT(\dots)$.</li>
+        <li><strong>Casos Base:</strong> Celdas triviales y estados infactibles ($-\infty$ / $+\infty$).</li>
+        <li><strong>Ecuación de Recurrencia:</strong> Decisión óptima local.</li>
+        <li><strong>Orden de Llenado:</strong> Dirección bottom-up.</li>
+        <li><strong>Reconstrucción:</strong> Recuperar los ítems o decisiones.</li>
+      </ol>
+    </section>
+    <section class="drawer-section">
+      <h3>4. Reglas de Oro de Programación Lineal (PLI)</h3>
+      <ul>
+        <li>Variables con dominios explícitos ($x_i \in \{0, 1\}$ o $y_j \ge 0$).</li>
+        <li><strong>¡PROHIBIDO!</strong> Multiplicar variables de decisión ($x_i \cdot x_j$).</li>
+        <li>Linealizar Min-Max / Max-Min con variable auxiliar $Z$.</li>
+        <li>Contar explícitamente variables y restricciones.</li>
+      </ul>
+    </section>
+    <section class="drawer-section">
+      <h3>5. Redes de Flujo</h3>
+      <ul>
+        <li>Super-fuente $s$ y super-sumidero $t$.</li>
+        <li>Capacidades dirigidas y aristas residuales backward con capacidad $f(u, v)$.</li>
+        <li>Teorema Max-Flow Min-Cut y Teorema de Integralidad.</li>
+      </ul>
+    </section>
+  </div>
 </aside>
-<div class="floating-quick-btn" id="floatingQuickBtn"><button class="fab-btn" onclick="openCheatsheet()" title="Fórmulas Rápidas">📐 Recetas</button><button class="fab-btn fab-secondary" onclick="scrollToTop()" title="Volver Arriba">⬆️</button></div>
-<main class="main-content-wrapper container-xl">
-<h1>Teoría de Algoritmos (FIUBA — TB024 / 75.29 / 95.06)</h1>
-<h2>Manual Práctico de Resolución de Parciales</h2>
-<h3>Edición Intensiva: "Salvando el Cuatrimestre"</h3>
-<hr />
-<h2>1. Cómo usar esta guía</h2>
-<p>Este documento fue diseñado con un único objetivo en mente: <strong>aprobar el parcial de Teoría de Algoritmos optimizando cada minuto de estudio</strong>. No es un compendio enciclopédico de teoría ni una transcripción de diapositivas. Es un manual de ingeniería algorítmica para el examen, estructurado a partir del análisis riguroso de los parciales reales tomados por la cátedra (Curso Echevarría) en 2024, 2025 y 2026, e incluye todos los ejercicios de la nueva <code>Guía de Ejercicios Prácticos v1.0 (Agosto 2026 — Curso Echevarría)</code>, alcanzando <strong>79 ejercicios reales oficiales</strong> clasificados por paradigma y ordenados por defecto de forma ascendente según su dificultad (<code>1/5</code> a <code>5/5</code>). Además, la sección <strong>📝 Parciales (<code>parciales.html</code>)</strong> agrupa todos los ejercicios tomados en parciales reales sin importar el paradigma para practicar directamente con exámenes reales.</p>
-<h3>Planes de preparación según tu tiempo disponible</h3>
-<ul><li><strong>Plan de Emergencia (48 a 72 horas antes del examen):</strong><ol><li>Leé la <strong>Sección 3: Guía mental para reconocer el ejercicio en 30 segundos</strong>.</li><li>Entrá a la sección <strong>📝 Parciales (<code>parciales.html</code>)</strong>, que agrupa todos los ejercicios tomados en parciales reales sin importar el paradigma (incluido el nuevo <strong>Parcial 2026-2-1</strong>), y resolvé prioritariamente los marcados como 🔴 <strong>IMPRESCINDIBLE</strong>.</li><li>Memorizá el esquema de 4 pasos obligatorios para <strong>Reducciones NP-Completas</strong> (Sección 10).</li><li>Revisá el <strong>Catálogo de Errores Típicos</strong> y la <strong>Checklist antes de entrar al parcial</strong>.</li></ol>
-</li><li><strong>Plan Táctico (1 semana antes del examen):</strong><ol><li>Realizá el Plan de Emergencia completo.</li><li>Sumá los ejercicios marcados como 🟡 <strong>IMPORTANTE</strong> de la <code>Guía de Ejercicios Prácticos v1.0</code> y enfocá el repaso en tus ejercicios pendientes de dominar.</li><li>Escribí en papel (sin mirar la solución) la <strong>Idea y Justificación en Lenguaje Natural</strong> y el <strong>Semi-Pseudocódigo Simplificado</strong> de cada ejercicio.</li><li>Resolvé los <strong>Ejercicios Integradores Multi-Paradigma</strong> (Sección 11, destacando <strong>La Mochila — Ej 78</strong> y <strong>El Viajante TSP — Ej 79</strong> en todos los paradigmas) y todos los ejercicios de <strong>📝 Parciales (<code>parciales.html</code>)</strong>.</li></ol>
-</li><li><strong>Plan Integral (2 o más semanas):</strong><ol><li>Recorré los <strong>79 ejercicios reales oficiales</strong> de la guía completa clasificados por paradigma y ordenados por defecto de forma ascendente según su dificultad (<code>1/5</code> a <code>5/5</code>, de <code>★☆☆☆☆</code> a <code>★★★★★</code>).</li><li>Implementá en tu computadora los algoritmos más sensibles (o revisá las implementaciones en Python de la carpeta <code>Practicas/</code>).</li><li>Dominá las demostraciones formales de optimalidad por <em>Greedy Stays Ahead</em>, argumento de intercambio y las recurrencias del Teorema Maestro.</li></ol>
-</li></ul>
-<h3>Reglas de oro para rendir el examen</h3>
-<ol><li><strong>Cada ejercicio se entrega en hoja separada:</strong> La cátedra exige entregar cada pregunta en una hoja individual. Todos los ejercicios de esta guía están estructurados exactamente como la <strong>"Respuesta para escribir en la hoja del parcial"</strong>, separando con claridad: <em>1. Idea y Justificación en Lenguaje Natural</em>, <em>2. Semi-Pseudocódigo Simplificado</em> y <em>3. Justificación de Complejidad</em>.</li><li><strong>El pseudocódigo debe ser concreto:</strong> No uses abstracciones vagas como <code>resolver_problema(grafo)</code>. Empleá estructuras de control estándar (<code>SI</code>, <code>PARA</code>, <code>MIENTRAS</code>, <code>RETORNAR</code>) y manipulá arreglos, matrices o listas explícitamente.</li><li><strong>No omitir casos borde:</strong> Estructura vacía, un solo elemento, elementos repetidos, grafo disconexo o capacidades nulas restan puntos valiosos si no están cubiertos.</li><li><strong>La complejidad debe estar justificada:</strong> Decir únicamente $O(n^2)$ sin explicar cuántas iteraciones hace cada bucle y qué costo tiene cada operación interna equivale a puntaje parcial.</li></ol>
-<hr />
-<h2>2. Radiografía de los Parciales de TDA</h2>
-<p>Un examen típico de esta cátedra consta de <strong>5 a 6 ejercicios prácticos</strong>, distribuidos estratégicamente para evaluar si el alumno sabe elegir la herramienta adecuada para cada problema.</p>
-<h3>Inventario de Parciales Reales Analizados</h3>
-<ol><li><strong>Parcial 2024-2 — 1ª Oportunidad (5 de noviembre de 2024):</strong></li><li><em>Ej 1 (Backtracking):</em> Teorema de los cuatro cuadrados de Lagrange ($n = w^2 + x^2 + y^2 + z^2$).</li><li><em>Ej 2 (Greedy):</em> Alan Turing y descifrado de código de submarinos por sustitución de palabras de 4 letras.</li><li><em>Ej 3 (Programación Dinámica):</em> Mochila 2D de Paolo Casanova (peso y volumen) con restricción excluyente y obligatoria de guías de aves.</li><li><em>Ej 4 (Programación Lineal):</em> Salidas de observación de aves con presupuesto de tiempo y máxima cobertura de especies.</li><li><em>Ej 5 (Reducciones NP):</em> Demostrar que Cambio de Monedas no es más difícil que Subset Sum ($\le_P$).</li><li><strong>Parcial 2024-2 — 2ª Oportunidad (26 de noviembre de 2024):</strong></li><li><em>Ej 1 (Backtracking / Exacto):</em> Vertex Cover Mínimo en grafo no dirigido con podas.</li><li><em>Ej 2 (Programación Dinámica):</em> Mínima cantidad de operaciones para llegar de $0$ a $K$ sumando $1$ o duplicando.</li><li><em>Ej 3 (Greedy):</em> Mafioso Arnook en Ciudad República (<em>Interval Scheduling</em> en kilómetros de ruta costera).</li><li><em>Ej 4 (Redes de Flujo):</em> Emparejamiento de médicos y pacientes con franjas horarias en hospital (<em>Matching Bipartito</em>).</li><li><em>Ej 5 (Reducciones NP):</em> Demostrar que Dominating Set es NP-Completo reduciendo desde Vertex Cover.</li><li><strong>Parcial 2024-2 — 3ª Oportunidad / Recuperatorio (10 de diciembre de 2024):</strong></li><li><em>Ej 1 (Redes de Flujo):</em> Análisis V/F con contraejemplo: "Si se suma $1$ a la capacidad de cada arista, ¿el corte mínimo sigue siendo mínimo?".</li><li><em>Ej 2 (Programación Dinámica):</em> Justificación de texto (<em>Word Wrap / Knuth-Plass</em>) minimizando la suma de cuadrados de sobrantes.</li><li><em>Ej 3 (Programación Lineal):</em> Ubicación de antenas de celular en grilla para cubrir al menos el $70\%$ de vecindarios con costo mínimo.</li><li><em>Ej 4 (Greedy):</em> Antenas celulares con costos variables por celda mediante heurística voraz de cobertura.</li><li><em>Ej 5 (Reducciones NP):</em> Dominating Set es NP-Completo (desde Vertex Cover).</li><li><strong>Parcial 2025-1 — 1ª Oportunidad (27 de mayo de 2025):</strong></li><li><em>Ej 1 (Redes de Flujo):</em> Sistema energético argentino (9 regiones) con generación, demanda y capacidades de transporte vía Ford-Fulkerson.</li><li><em>Ej 2 (Greedy):</em> Algoritmo voraz para el sistema energético y discusión de optimalidad.</li><li><em>Ej 3 (Programación Lineal):</em> Modelo de Programación Lineal (Flujo de Costo Mínimo) para el sistema energético.</li><li><em>Ej 4 (Programación Dinámica):</em> Problema del delivery (Mochila con peso, volumen y tope de seguro financiero).</li><li><em>Ej 5 (Reducciones NP):</em> El dilema de Marco el cadete: Reducción de Ciclo Hamiltoniano a TSP de decisión.</li><li><strong>Parcial 2025-1 — 2ª Oportunidad (17 de junio de 2025):</strong></li><li><em>Ej 1 (División y Conquista):</em> Multiplicación de matrices cuadradas $n \times n$ por bloques y Teorema Maestro.</li><li><em>Ej 2 (Programación Dinámica):</em> Traslado de carga crítica INVAP (Ezeiza a Bariloche en etapas de $\le 400\text{ km/día}$ con seguro).</li><li><em>Ej 3 (Greedy):</em> Algoritmo voraz para el traslado INVAP y contraejemplo de por qué no es óptimo.</li><li><em>Ej 4 (Backtracking):</em> Problema de las 8 Reinas con estructuras de datos para chequeo en $O(1)$.</li><li><em>Ej 5 (Programación Lineal):</em> Modelo de PL para el camino óptimo INVAP (o 8 Reinas) con recuento de variables y restricciones.</li><li><strong>Parcial 2026-2 — 1ª Oportunidad (TP-2026-2-1.pdf):</strong></li><li><em>Ej 1 (División y Conquista):</em> Subarreglo contiguo de suma máxima en lista con positivos y negativos ($O(n \log n)$).</li><li><em>Ej 2 (Backtracking):</em> Explorador en laberinto de $N \times M$ desde Entrada hasta Tesoro y variante para hallar el camino más corto.</li><li><em>Ej 3 (Programación Dinámica):</em> Ruta de transporte con $N$ estaciones intermedias con tarifa fija, pudiendo saltear hasta 2 estaciones consecutivas.</li><li><em>Ej 4 (Greedy):</em> Algoritmo voraz para el transporte de las $N$ estaciones, instancia óptima e instancia no óptima (contraejemplo).</li><li><em>Ej 5 (Programación Lineal):</em> Modelo de PLI para el transporte de las $N$ estaciones con conteo de variables y restricciones.</li><li><em>Ej 6 (Redes de Flujo):</em> Transporte de urnas desde $N$ centros de votación hasta el CNE mediante Ford-Fulkerson maximizando urnas por minuto.</li></ol>
-<h3>Matriz de Frecuencia y Dificultad por Tema</h3>
-<table>
-<thead><tr>
-<th style="text-align: left;">Tema / Paradigma</th><th style="text-align: center;">Frecuencia en Exámenes</th><th style="text-align: center;">Presencia Relativa</th><th style="text-align: center;">Dificultad Típica</th><th style="text-align: left;">Tipos de Pregunta Habituales</th></tr>
-</thead>
-<tbody><tr>
-<td style="text-align: left;"><strong>Programación Dinámica (PD)</strong></td><td style="text-align: center;">6 de 6 parciales</td><td style="text-align: center;"><strong>100%</strong></td><td style="text-align: center;">Alta</td><td style="text-align: left;">Mochila multidimensional o con condiciones lógicas, secuencias/texto, saltos de estaciones, mínimas operaciones, caminos en DAGs por etapas.</td></tr>
-<tr><td style="text-align: left;"><strong>Algoritmos Greedy (Voraces)</strong></td><td style="text-align: center;">6 de 6 parciales</td><td style="text-align: center;"><strong>100%</strong></td><td style="text-align: center;">Media-Alta</td><td style="text-align: left;"><em>Interval Scheduling</em>, heurísticas de cobertura o transporte con costos, comparación con soluciones óptimas y demostración de contraejemplos.</td></tr>
-<tr><td style="text-align: left;"><strong>Programación Lineal (PL / PLI)</strong></td><td style="text-align: center;">5 de 6 parciales</td><td style="text-align: center;"><strong>83%</strong></td><td style="text-align: center;">Media-Alta</td><td style="text-align: left;">Cobertura de conjuntos (<em>Set Cover</em>), ventanas de paradas consecutivas, Flujo de Costo Mínimo, caminos en grafos, linealización de funciones no lineales. Recuento de variables y restricciones.</td></tr>
-<tr><td style="text-align: left;"><strong>Reducciones Polinomiales / NP-C</strong></td><td style="text-align: center;">4 de 6 parciales</td><td style="text-align: center;"><strong>67%</strong></td><td style="text-align: center;">Muy Alta</td><td style="text-align: left;">Demostración formal de NP-Completitud (<em>Dominating Set</em>, <em>TSP</em>), reducciones numéricas ($\le_P$), verificadores polinomiales.</td></tr>
-<tr><td style="text-align: left;"><strong>Redes de Flujo (Flujo / Corte)</strong></td><td style="text-align: center;">4 de 6 parciales</td><td style="text-align: center;"><strong>67%</strong></td><td style="text-align: center;">Alta</td><td style="text-align: left;"><em>Matching Bipartito</em> (médicos/pacientes), transporte multipunto con super-fuente/sumidero (energía, urnas electorales), V/F teórico sobre cortes mínimos.</td></tr>
-<tr><td style="text-align: left;"><strong>Backtracking &amp; Branch and Bound</strong></td><td style="text-align: center;">4 de 6 parciales</td><td style="text-align: center;"><strong>67%</strong></td><td style="text-align: center;">Media</td><td style="text-align: left;">Laberintos $N \times M$ y camino más corto, 8 Reinas con estructuras $O(1)$, descomposición numérica (Lagrange), <em>Vertex Cover</em> exacto con podas.</td></tr>
-<tr><td style="text-align: left;"><strong>División y Conquista (DyC)</strong></td><td style="text-align: center;">2 de 6 parciales</td><td style="text-align: center;"><strong>33%</strong></td><td style="text-align: center;">Media</td><td style="text-align: left;">Subarreglo contiguo de suma máxima, multiplicación de matrices por bloques, Teorema Maestro, búsquedas binarias adaptadas.</td></tr>
-</tbody>
-</table>
-<hr />
-<h2>3. Guía Mental: "Cómo Reconocer el Ejercicio en 30 Segundos"</h2>
-<p>Uno de los errores más costosos en un parcial es intentar resolver con Greedy un problema que requiere Programación Dinámica, o plantear Programación Dinámica para un problema NP-Duro que pide Backtracking o Programación Lineal Entera. Utilizá este árbol de decisión rápido en el examen:</p>
-<h3>Árbol de Decisión Rápido</h3>
-<div class="mermaid-wrapper"><pre class="mermaid">flowchart TD
+
+<div class="floating-quick-btn" id="floatingQuickBtn">
+  <button class="fab-btn" onclick="openCheatsheet()" title="Fórmulas Rápidas">📐 Recetas</button>
+  <button class="fab-btn fab-secondary" onclick="scrollToTop()" title="Volver Arriba">⬆️</button>
+</div>
+
+<main class="main-content-wrapper container-xl" style="padding-top: 28px;">
+
+  <!-- Hero Banner Principal del Hub -->
+  <div class="portal-hub-hero">
+    <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+      <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill fw-semibold" style="font-size: 0.85rem;">FIUBA — TB024 / 75.29 / 95.06</span>
+      <span class="badge px-3 py-2 rounded-pill fw-semibold" style="font-size: 0.85rem; background: rgba(255, 255, 255, 0.15); color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.25);">Cátedra Echevarría (2024–2026)</span>
+    </div>
+    <h1 class="portal-hub-title">Teoría de Algoritmos — Portal de Exámenes y Paradigmas</h1>
+    <p class="portal-hub-subtitle">
+      Plataforma interactiva de estudio estructurada en <strong>vistas dedicadas independientes</strong>. Incluye el análisis riguroso de exámenes parciales reales, la guía oficial de 79 ejercicios clasificados por paradigma y el nuevo laboratorio didáctico de <strong>Aproximación y Algoritmos Randomizados</strong> con simuladores ejecutables.
+    </p>
+    <div class="d-flex gap-3 flex-wrap">
+      <a href="parciales.html" class="btn btn-warning px-4 py-2 fw-bold shadow-sm" style="border-radius: 8px;">
+        📝 Practicar con Parciales Reales (29) ➔
+      </a>
+      <a href="teoria-avanzados.html" class="btn btn-primary px-4 py-2 fw-bold shadow-sm" style="background: #4f46e5; border-color: #4f46e5; border-radius: 8px;">
+        🎲 Ver Paradigmas Avanzados (Teoría &amp; Simuladores) ➔
+      </a>
+      <a href="#entrenador-30s" class="btn btn-outline-light px-4 py-2 fw-semibold" style="border-radius: 8px;">
+        ⚡ Entrenador 30s
+      </a>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 1: GRID DE VISTAS DEDICADAS (EXPLORADOR MODULAR) -->
+  <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-3">
+    <div>
+      <h2 class="h3 fw-bold m-0" style="border: none; padding: 0;">📚 Explorador de Módulos y Vistas Dedicadas</h2>
+      <p class="text-muted small m-0">Hacé click en cualquier módulo para abrir su vista limpia y especializada, sin textos colados ni filtros rotos:</p>
+    </div>
+  </div>
+
+  <div class="portal-grid">
+
+    <!-- Card 1: Parciales Reales -->
+    <a href="parciales.html" class="portal-card" style="border-top: 4px solid #f59e0b;">
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="portal-card-badge badge-portal-exam">Exámenes Reales</span>
+          <span class="badge bg-secondary-subtle text-secondary">29 Ejercicios</span>
+        </div>
+        <div class="portal-card-title">📝 Exámenes Parciales Oficiales</div>
+        <div class="portal-card-desc">
+          Colección completa de parciales tomados entre 2024 y 2026 (1ª, 2ª oportunidad, recuperatorios y el reciente 2026-2-1), resueltos paso a paso con el formato exacto de entrega.
+        </div>
+      </div>
+      <div class="portal-card-footer">
+        <span>Abrir Parciales</span>
+        <span>➔</span>
+      </div>
+    </a>
+
+    <!-- Card 2: Paradigmas Avanzados -->
+    <a href="teoria-avanzados.html" class="portal-card" style="border-top: 4px solid #6366f1;">
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="portal-card-badge badge-portal-teoria">Teoría &amp; Simuladores</span>
+          <span class="badge bg-primary-subtle text-primary">Clases 21 a 24</span>
+        </div>
+        <div class="portal-card-title">🎲 Paradigmas Avanzados</div>
+        <div class="portal-card-desc">
+          Aproximación (Set Cover \(H(d^*)\), Vertex Cover LP, Pricing Dual, FPTAS, Graham LPT, Christofides) y Randomizados (Karger, MAX 3-SAT 7/8, Hamlet Streaming, Treaps) con 4 simuladores interactivos.
+        </div>
+      </div>
+      <div class="portal-card-footer">
+        <span>Abrir Teoría Avanzada</span>
+        <span>➔</span>
+      </div>
+    </a>
+
+    <!-- Card 3: DyC -->
+    <a href="dyc.html" class="portal-card" style="border-top: 4px solid #0284c7;">
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="portal-card-badge badge-portal-dyc">Paradigma 1</span>
+          <span class="badge bg-secondary-subtle text-secondary">12 Ejercicios</span>
+        </div>
+        <div class="portal-card-title">🔷 División y Conquista (DyC)</div>
+        <div class="portal-card-desc">
+          Partición de subproblemas disjuntos, Teorema Maestro en sus 3 casos, búsquedas binarias adaptadas, subarreglo de suma máxima y multiplicación por bloques.
+        </div>
+      </div>
+      <div class="portal-card-footer">
+        <span>Ver Módulo DyC</span>
+        <span>➔</span>
+      </div>
+    </a>
+
+    <!-- Card 4: Greedy -->
+    <a href="greedy.html" class="portal-card" style="border-top: 4px solid #d97706;">
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="portal-card-badge badge-portal-greedy">Paradigma 2</span>
+          <span class="badge bg-secondary-subtle text-secondary">26 Ejercicios</span>
+        </div>
+        <div class="portal-card-title">🔶 Algoritmos Greedy (Voraces)</div>
+        <div class="portal-card-desc">
+          Interval Scheduling sin pesos, heurísticas de cobertura, y técnicas formales de demostración de optimalidad: <em>Greedy Stays Ahead</em> y <em>Argumento de Intercambio</em>.
+        </div>
+      </div>
+      <div class="portal-card-footer">
+        <span>Ver Módulo Greedy</span>
+        <span>➔</span>
+      </div>
+    </a>
+
+    <!-- Card 5: Backtracking -->
+    <a href="backtracking.html" class="portal-card" style="border-top: 4px solid #7c3aed;">
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="portal-card-badge badge-portal-bt">Paradigma 3</span>
+          <span class="badge bg-secondary-subtle text-secondary">14 Ejercicios</span>
+        </div>
+        <div class="portal-card-title">🟣 Backtracking &amp; Branch and Bound</div>
+        <div class="portal-card-desc">
+          Exploración de árboles de decisión combinatorios, estructuras de poda de factibilidad en \(O(1)\), 8 Reinas, laberintos con tesoro y problemas exactos NP-Hard.
+        </div>
+      </div>
+      <div class="portal-card-footer">
+        <span>Ver Módulo Backtracking</span>
+        <span>➔</span>
+      </div>
+    </a>
+
+    <!-- Card 6: DP -->
+    <a href="dp.html" class="portal-card" style="border-top: 4px solid #15803d;">
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="portal-card-badge badge-portal-dp">Paradigma 4</span>
+          <span class="badge bg-secondary-subtle text-secondary">7 Ejercicios</span>
+        </div>
+        <div class="portal-card-title">🟢 Programación Dinámica (PD)</div>
+        <div class="portal-card-desc">
+          Subproblemas superpuestos y subestructura óptima: el esquema obligatorio de 5 pasos, Mochila multidimensional, Word Wrap de Knuth y caminos en DAGs por etapas.
+        </div>
+      </div>
+      <div class="portal-card-footer">
+        <span>Ver Módulo DP</span>
+        <span>➔</span>
+      </div>
+    </a>
+
+    <!-- Card 7: PL -->
+    <a href="pl.html" class="portal-card" style="border-top: 4px solid #2563eb;">
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="portal-card-badge badge-portal-pl">Paradigma 5</span>
+          <span class="badge bg-secondary-subtle text-secondary">6 Ejercicios</span>
+        </div>
+        <div class="portal-card-title">🔵 Programación Lineal y Entera (PLI)</div>
+        <div class="portal-card-desc">
+          Modelado formal: variables de decisión, dominios explícitos, linealización de restricciones Min-Max mediante variables auxiliares y recuento estricto de variables y cotas.
+        </div>
+      </div>
+      <div class="portal-card-footer">
+        <span>Ver Módulo PL</span>
+        <span>➔</span>
+      </div>
+    </a>
+
+    <!-- Card 8: Flujo -->
+    <a href="flujo.html" class="portal-card" style="border-top: 4px solid #dc2626;">
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="portal-card-badge badge-portal-flujo">Paradigma 6</span>
+          <span class="badge bg-secondary-subtle text-secondary">5 Ejercicios</span>
+        </div>
+        <div class="portal-card-title">🔴 Redes de Flujo</div>
+        <div class="portal-card-desc">
+          Super-fuente y super-sumidero, redes residuales con aristas backward, algoritmos Ford-Fulkerson y Edmonds-Karp, matching bipartito y cortes mínimos.
+        </div>
+      </div>
+      <div class="portal-card-footer">
+        <span>Ver Módulo Flujo</span>
+        <span>➔</span>
+      </div>
+    </a>
+
+    <!-- Card 9: Reducciones NP -->
+    <a href="reducciones.html" class="portal-card" style="border-top: 4px solid #ca8a04;">
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="portal-card-badge badge-portal-npc">Paradigma 7</span>
+          <span class="badge bg-secondary-subtle text-secondary">4 Ejercicios</span>
+        </div>
+        <div class="portal-card-title">🟡 Reducciones NP-Completas</div>
+        <div class="portal-card-desc">
+          Demostración formal en 4 pasos obligatorios: Verificador en NP, selección del problema base conocido \(A \le_P B\), transformación polinomial y prueba bidireccional.
+        </div>
+      </div>
+      <div class="portal-card-footer">
+        <span>Ver Módulo Reducciones</span>
+        <span>➔</span>
+      </div>
+    </a>
+
+    <!-- Card 10: Integradores -->
+    <a href="integradores.html" class="portal-card" style="border-top: 4px solid #6366f1;">
+      <div>
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <span class="portal-card-badge badge-portal-integ">Integrador</span>
+          <span class="badge bg-secondary-subtle text-secondary">5 Ejercicios</span>
+        </div>
+        <div class="portal-card-title">⚡ Problemas Integradores Multi-Paradigma</div>
+        <div class="portal-card-desc">
+          Los dos problemas clásicos resueltos y comparados bajo todos los paradigmas: <strong>La Mochila (Ej 78)</strong> y <strong>El Viajante TSP (Ej 79)</strong>.
+        </div>
+      </div>
+      <div class="portal-card-footer">
+        <span>Ver Módulo Integrador</span>
+        <span>➔</span>
+      </div>
+    </a>
+
+  </div>
+
+  <hr class="my-5">
+
+  <!-- SECCIÓN 2: ENTRENADOR DE RECONOCIMIENTO EN 30 SEGUNDOS -->
+  <div class="trainer-box" id="entrenador-30s">
+    <div class="trainer-header">
+      <div class="trainer-title-wrap">
+        <span class="trainer-badge-icon">⚡</span>
+        <div>
+          <h3 class="trainer-title">Entrenador Interactivo: Reconocimiento en 30 Segundos</h3>
+          <p class="trainer-subtitle">Entrená la habilidad más crítica del examen: identificar el paradigma exacto sin dudar frente a enunciados reales.</p>
+        </div>
+      </div>
+      <div class="trainer-stats">
+        <span class="stat-pill">Aciertos: <strong id="trainerScore">0</strong> / <strong id="trainerTotal">0</strong></span>
+      </div>
+    </div>
+    <div class="trainer-card">
+      <div class="trainer-card-header">
+        <span class="trainer-counter">Caso <span id="trainerCurrentIndex">1</span> de <span id="trainerTotalQuestions">20</span></span>
+        <span class="trainer-timer-tag">⏱️ Meta: &lt; 30 segundos</span>
+      </div>
+      <div class="trainer-prompt" id="trainerPrompt">Cargando enunciado de examen...</div>
+      <div class="trainer-options-grid" id="trainerOptions">
+        <button class="trainer-btn" onclick="checkTrainerAnswer('dyc')">🔷 División y Conquista</button>
+        <button class="trainer-btn" onclick="checkTrainerAnswer('greedy')">🔶 Greedy (Voraz)</button>
+        <button class="trainer-btn" onclick="checkTrainerAnswer('backtracking')">🟣 Backtracking &amp; B&amp;B</button>
+        <button class="trainer-btn" onclick="checkTrainerAnswer('dp')">🟢 Programación Dinámica</button>
+        <button class="trainer-btn" onclick="checkTrainerAnswer('pl')">🔵 Programación Lineal (PLI)</button>
+        <button class="trainer-btn" onclick="checkTrainerAnswer('flujo')">🔴 Redes de Flujo</button>
+        <button class="trainer-btn" onclick="checkTrainerAnswer('reducciones')">🟡 Reducciones NP-C</button>
+      </div>
+      <div class="trainer-feedback" id="trainerFeedback" style="display: none;">
+        <div class="feedback-result" id="feedbackResult"></div>
+        <div class="feedback-trigger" id="feedbackTrigger"></div>
+      </div>
+      <div class="trainer-actions">
+        <button class="btn btn-primary" id="trainerNextBtn" style="display: none;" onclick="nextTrainerQuestion()">Siguiente Enunciado ➔</button>
+        <button class="btn btn-ghost" onclick="resetTrainer()">Reiniciar Simulador</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 3: ÁRBOL DE DECISIÓN RÁPIDO -->
+  <div class="card p-4 my-4 bg-card border rounded-3 shadow-sm">
+    <h3 class="h4 fw-bold mb-3" style="color: var(--primary-color);">🌲 Árbol Mental de Decisión para el Parcial</h3>
+    <p class="text-muted small">Seguí este flujo para determinar la técnica correcta ante cualquier consigna de examen:</p>
+    <div class="mermaid-wrapper">
+      <pre class="mermaid">
+flowchart TD
     Q(["¿QUÉ PIDE EL ENUNCIADO DEL EXAMEN?"])
-    Q -->|"Demostrar NP-Completo / no es más difícil"| NPC["🟡 REDUCCIONES NP-C<br/>4 Pasos: Verificador NP + A conocido ≤_P B nuevo + Transformación + Ida y Vuelta"]
-    Q -->|"Modelo matemático / variables y restricciones"| PL["🔵 PROGRAMACIÓN LINEAL (PL / PLI)<br/>Variables + Dominios + Función Objetivo Lineal + Restricciones + Conteo"]
-    Q -->|"Asignar turnos / matching / oferta-demanda en red"| FL["🔴 REDES DE FLUJO<br/>Super-fuente s y super-sumidero t + Capacidades + Edmonds-Karp / Corte Mínimo"]
-    Q -->|"Partir en subproblemas disjuntos n/b o búsqueda O(log n)"| DYC["🔷 DIVISIÓN Y CONQUISTA<br/>Caso base + División disjunta + Combinación + Teorema Maestro"]
+    Q -->|"Demostrar NP-Completo / no es más difícil"| NPC["🟡 REDUCCIONES NP-C\n4 Pasos: Verificador NP + A conocido ≤_P B nuevo + Transformación + Ida y Vuelta"]
+    Q -->|"Modelo matemático / variables y restricciones"| PL["🔵 PROGRAMACIÓN LINEAL (PL / PLI)\nVariables + Dominios + Función Objetivo Lineal + Restricciones + Conteo"]
+    Q -->|"Asignar turnos / matching / oferta-demanda en red"| FL["🔴 REDES DE FLUJO\nSuper-fuente s y super-sumidero t + Capacidades + Edmonds-Karp / Corte Mínimo"]
+    Q -->|"Partir en subproblemas disjuntos n/b o búsqueda O(log n)"| DYC["🔷 DIVISIÓN Y CONQUISTA\nCaso base + División disjunta + Combinación + Teorema Maestro"]
     Q -->|"Optimizar (Maximizar / Minimizar) valor"| OPT{"¿Estructura de las decisiones?"}
 
-    OPT -->|"Elección local irrevocable sin comprometer futuro"| GR["🔶 GREEDY (VORAZ)<br/>Ordenamiento voraz + Prueba (Stays Ahead / Intercambio) o Contraejemplo"]
-    OPT -->|"Subproblemas superpuestos / recursos acoplados"| DP["🟢 PROGRAMACIÓN DINÁMICA<br/>5 Pasos: Estado OPT(...) + Casos Base + Recurrencia + Orden Bottom-Up + Reconstrucción"]
-    OPT -->|"NP-Hard exacto en espacio combinatorio / tablero"| BT["🟣 BACKTRACKING & B&B<br/>Árbol de decisiones + Poda Factibilidad O(1) + Poda por Cota (Branch & Bound)"]
+    OPT -->|"Elección local irrevocable sin comprometer futuro"| GR["🔶 GREEDY (VORAZ)\nOrdenamiento voraz + Prueba (Stays Ahead / Intercambio) o Contraejemplo"]
+    OPT -->|"Subproblemas superpuestos / recursos acoplados"| DP["🟢 PROGRAMACIÓN DINÁMICA\n5 Pasos: Estado OPT(...) + Casos Base + Recurrencia + Orden Bottom-Up + Reconstrucción"]
+    OPT -->|"NP-Hard exacto en espacio combinatorio / tablero"| BT["🟣 BACKTRACKING & B&B\nÁrbol de decisiones + Poda Factibilidad O(1) + Poda por Cota (Branch & Bound)"]
+    OPT -->|"Garantía de calidad polinomial para NP-Hard"| APX["🎲 PARADIGMAS AVANZADOS\nAproximación (Cota alfa, FPTAS, Dual) o Randomizados (Monte Carlo, Las Vegas)"]
 
     classDef root fill:#1e3a8a,stroke:#1d4ed8,stroke-width:2px,color:#fff
     classDef dyc fill:#0284c7,stroke:#0369a1,stroke-width:2px,color:#fff
@@ -109,6 +412,7 @@
     classDef pl fill:#2563eb,stroke:#1d4ed8,stroke-width:2px,color:#fff
     classDef fl fill:#dc2626,stroke:#b91c1c,stroke-width:2px,color:#fff
     classDef npc fill:#ca8a04,stroke:#a16207,stroke-width:2px,color:#fff
+    classDef apx fill:#4f46e5,stroke:#4338ca,stroke-width:2px,color:#fff
 
     class Q,OPT root
     class DYC dyc
@@ -118,27 +422,40 @@
     class PL pl
     class FL fl
     class NPC npc
-</pre></div>
-<div class="trainer-box" id="entrenador-30s"><div class="trainer-header"><div class="trainer-title-wrap"><span class="trainer-badge-icon">⚡</span><div><h3 class="trainer-title">Entrenador Interactivo: Reconocimiento en 30 Segundos</h3><p class="trainer-subtitle">Entrená la habilidad más crítica del parcial: identificar el paradigma exacto sin dudar.</p></div></div><div class="trainer-stats"><span class="stat-pill">Aciertos: <strong id="trainerScore">0</strong> / <strong id="trainerTotal">0</strong></span></div></div><div class="trainer-card"><div class="trainer-card-header"><span class="trainer-counter">Caso <span id="trainerCurrentIndex">1</span> de <span id="trainerTotalQuestions">16</span></span><span class="trainer-timer-tag">⏱️ Meta: &lt; 30 segundos</span></div><div class="trainer-prompt" id="trainerPrompt">Cargando enunciado de examen...</div><div class="trainer-options-grid" id="trainerOptions"><button class="trainer-btn" onclick="checkTrainerAnswer('dyc')">🔷 División y Conquista</button><button class="trainer-btn" onclick="checkTrainerAnswer('greedy')">🔶 Greedy (Voraz)</button><button class="trainer-btn" onclick="checkTrainerAnswer('backtracking')">🟣 Backtracking &amp; B&amp;B</button><button class="trainer-btn" onclick="checkTrainerAnswer('dp')">🟢 Programación Dinámica</button><button class="trainer-btn" onclick="checkTrainerAnswer('pl')">🔵 Programación Lineal (PLI)</button><button class="trainer-btn" onclick="checkTrainerAnswer('flujo')">🔴 Redes de Flujo</button><button class="trainer-btn" onclick="checkTrainerAnswer('reducciones')">🟡 Reducciones NP-C</button></div><div class="trainer-feedback" id="trainerFeedback" style="display: none;"><div class="feedback-result" id="feedbackResult"></div><div class="feedback-trigger" id="feedbackTrigger"></div></div><div class="trainer-actions"><button class="btn btn-primary" id="trainerNextBtn" style="display: none;" onclick="nextTrainerQuestion()">Siguiente Enunciado ➔</button><button class="btn btn-ghost" onclick="resetTrainer()">Reiniciar Simulador</button></div></div></div><h3>Tabla de Señales y Disparadores Léxicos</h3>
-<table>
-<thead><tr>
-<th style="text-align: left;">Si el enunciado menciona...</th><th style="text-align: left;">Señal clave</th><th style="text-align: left;">Paradigma sugerido</th><th style="text-align: left;">Estructura / Técnica</th></tr>
-</thead>
-<tbody><tr>
-<td style="text-align: left;">"Intervalos de tiempo", "pedidos no solapados", "deadlines"</td><td style="text-align: left;">Maximizar cantidad sin pesos</td><td style="text-align: left;"><strong>Greedy</strong></td><td style="text-align: left;">Ordenar por tiempo de finalización más temprano ($f_i$).</td></tr>
-<tr><td style="text-align: left;">"Intervalos con pesos o beneficios", "Juan el Vago"</td><td style="text-align: left;">Decisión sobre días/turnos adyacentes</td><td style="text-align: left;"><strong>Programación Dinámica</strong></td><td style="text-align: left;">$OPT(i) = \max(OPT(i-1), \; OPT(p(i)) + v_i)$.</td></tr>
-<tr><td style="text-align: left;">"Mochila con peso y volumen", "delivery", "límite de seguro"</td><td style="text-align: left;">Recursos múltiples acoplados</td><td style="text-align: left;"><strong>Programación Dinámica</strong></td><td style="text-align: left;">Matriz 2D/3D: $OPT(i, w, v, m)$.</td></tr>
-<tr><td style="text-align: left;">"Ubicar antenas en celdas", "visitar lugares para ver especies"</td><td style="text-align: left;">Cobertura de conjuntos (<em>Set Cover</em>)</td><td style="text-align: left;"><strong>Programación Lineal (PLI)</strong></td><td style="text-align: left;">Variables binarias $x_i \in \{0, 1\}$, restricciones $x_i \le \sum y_j$.</td></tr>
-<tr><td style="text-align: left;">"Médicos y turnos", "estudiantes y cupos", "red de cañerías"</td><td style="text-align: left;">Capacidad unitaria o integral de transporte</td><td style="text-align: left;"><strong>Redes de Flujo</strong></td><td style="text-align: left;">Super-fuente $s$, super-sumidero $t$, Ford-Fulkerson / Edmonds-Karp.</td></tr>
-<tr><td style="text-align: left;">"Tablero", "ubicar piezas sin ataques", "4 cuadrados que sumen $n$"</td><td style="text-align: left;">Espacio de búsqueda combinatorio</td><td style="text-align: left;"><strong>Backtracking</strong></td><td style="text-align: left;">Recursión con estructuras booleanas de poda en $O(1)$.</td></tr>
-<tr><td style="text-align: left;">"Demostrar que $X$ es NP-Completo", "compró software para $Y$"</td><td style="text-align: left;">Relación de dificultad de problemas</td><td style="text-align: left;"><strong>Reducciones NP</strong></td><td style="text-align: left;">Reducción de Karp $A \le_P B$ con demostración en 4 pasos.</td></tr>
-</tbody>
-</table>
-<hr />
-<div id="tdaCatalogMount"></div>
+    class APX apx
+      </pre>
+    </div>
+  </div>
+
+  <!-- SECCIÓN 4: REGLAS DE ORO DE PARCIAL -->
+  <div class="row g-3 my-4">
+    <div class="col-md-6">
+      <div class="p-3 border rounded-3 bg-card h-100 shadow-sm">
+        <h5 class="fw-bold text-primary mb-2">📋 Las 4 Reglas de Oro para Rendir</h5>
+        <ol class="small exam-rules-list mb-0" style="line-height: 1.6;">
+          <li><strong>Hoja separada para cada ejercicio:</strong> La cátedra evalúa por separado. Estructurá siempre en: <em>1. Idea en Lenguaje Natural</em>, <em>2. Semi-Pseudocódigo</em> y <em>3. Justificación de Complejidad</em>.</li>
+          <li><strong>Pseudocódigo concreto:</strong> Empleá estructuras de control estándar (<code>SI</code>, <code>PARA</code>, <code>MIENTRAS</code>) y manipulá arreglos o matrices sin delegar en funciones abstractas no definidas.</li>
+          <li><strong>Casos borde obligatorios:</strong> Estructura vacía, un solo elemento, elementos repetidos, grafo disconexo o capacidades nulas restan puntos si no están cubiertos.</li>
+          <li><strong>Complejidad justificada:</strong> Explicar iteraciones de cada bucle y costo de operaciones internas; no poner solamente $O(n^2)$.</li>
+        </ol>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="p-3 border rounded-3 bg-card h-100 shadow-sm">
+        <h5 class="fw-bold text-danger mb-2">⚠️ Errores Prohibidos que Anulan el Ejercicio</h5>
+        <ul class="small exam-errors-list mb-0" style="line-height: 1.6;">
+          <li>❌ <strong>Reducir al revés en NP-C:</strong> Jamás hagas $B \le_P A$. Siempre se reduce del problema conocido al nuevo ($A_{\text{conocido}} \le_P B_{\text{nuevo}}$).</li>
+          <li>❌ <strong>Afirmar optimalidad en Greedy sin prueba:</strong> Todo algoritmo voraz requiere prueba por <em>Greedy Stays Ahead</em> o <em>Argumento de Intercambio</em>.</li>
+          <li>❌ <strong>Olvidar casos base en Programación Dinámica:</strong> Asumir ceros en estados infactibles corrompe la solución de la tabla.</li>
+          <li>❌ <strong>Omitir aristas residuales backward en Redes de Flujo:</strong> No es Ford-Fulkerson sin aristas de retorno $c_f(v, u) = f(u, v)$.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
 </main>
-<script src="assets/js/catalog-bundle.js"></script>
+
+<script src="assets/js/app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
-<script src="assets/js/app.js" defer></script>
 </body>
 </html>
